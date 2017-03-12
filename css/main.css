@@ -189,7 +189,7 @@ body {
   font-size: 14px;
   line-height: 2;
   color: #555;
-  background: #fff;
+  background: blue-bright;
 }
 @media (max-width: 767px) {
   body {
@@ -971,7 +971,7 @@ pre .javascript .function {
   bottom: 19px;
 }
 .header {
-  background: #fff;
+  background: url("http://img1.imgtn.bdimg.com/it/u=34142383,2140663722&fm=23&gp=0.jpg; ");
 }
 .header-inner {
   position: relative;
@@ -1698,7 +1698,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #86a1ff;
+  background: #0bc3d1;
 }
 .links-of-blogroll {
   font-size: 13px;
