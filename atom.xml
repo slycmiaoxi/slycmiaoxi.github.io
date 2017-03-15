@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>秒西</title>
-  <subtitle>try your best</subtitle>
+  
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
   <updated>2017-03-12T06:09:44.000Z</updated>
   <id>http://www.myzwl.win/</id>
-  
-  <author>
-    <name>an lonely man</name>
-    
-  </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
@@ -30,16 +25,61 @@
   </entry>
   
   <entry>
-    <title>&#39;hi&#39;</title>
+    <title>第一篇仅为测试</title>
     <link href="http://www.myzwl.win/2017/03/10/hi/"/>
     <id>http://www.myzwl.win/2017/03/10/hi/</id>
     <published>2017-03-10T09:48:51.000Z</published>
-    <updated>2017-03-10T09:48:54.000Z</updated>
+    <updated>2017-03-15T12:18:30.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>花了好几天业余时间终于搞好了，正是一路踩坑，一路请教google老师，一路折腾，一路不断学习，搭建了一个比较丑的博客</strong></p>
+<blockquote>
+<p>cout&lt;&lt;“so hard”<br>cout&lt;&lt;“这仅仅是一个测试”</p>
+</blockquote>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">这是一个测试代码!</div></pre></td></tr></table></figure>
+<p><a href="./images/avatar.gif" title="avatar.gif">enter description here</a></p>
+<table>
+<thead>
+<tr>
+<th>java</th>
+<th>c</th>
+<th>c++</th>
+<th>hello world</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>c</td>
+<td>c++</td>
+<td>java</td>
+<td>hello</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<hr>
+]]></content>
     
     <summary type="html">
     
+      &lt;p&gt;&lt;strong&gt;花了好几天业余时间终于搞好了，正是一路踩坑，一路请教google老师，一路折腾，一路不断学习，搭建了一个比较丑的博客&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;cout&amp;lt;&amp;lt;“so hard”&lt;br&gt;cout&amp;lt;&amp;lt;“这仅仅
+    
     </summary>
     
+    
+      <category term="感悟 , 随笔,测试" scheme="http://www.myzwl.win/tags/%E6%84%9F%E6%82%9F-%E9%9A%8F%E7%AC%94-%E6%B5%8B%E8%AF%95/"/>
     
   </entry>
   
