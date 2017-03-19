@@ -1,0 +1,1267 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java工具包," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言前段时间因为一些原因要做一个二维码，故此google了许多，当然是在踩了许多坑之后，找到了适合自己的方法，故在此将其总结一下，来提高自己
+什么是二维码总的来说就是用某种特定的几何图形按一定规律在平面（二维方向上）分布的黑白相间的图形记录数据符号信息的；在代码编制上巧妙地利用构成计算机内部逻辑基础的“0”、“1”比特流的概念，使用若干个与二进制相对应的几何形体来表示文字数值信息，最后通过相关设备">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于struts2的二维码">
+<meta property="og:url" content="http://www.myzwl.win/2017/03/18/erweima/index.html">
+<meta property="og:site_name" content="秒西">
+<meta property="og:description" content="前言前段时间因为一些原因要做一个二维码，故此google了许多，当然是在踩了许多坑之后，找到了适合自己的方法，故在此将其总结一下，来提高自己
+什么是二维码总的来说就是用某种特定的几何图形按一定规律在平面（二维方向上）分布的黑白相间的图形记录数据符号信息的；在代码编制上巧妙地利用构成计算机内部逻辑基础的“0”、“1”比特流的概念，使用若干个与二进制相对应的几何形体来表示文字数值信息，最后通过相关设备">
+<meta property="og:updated_time" content="2017-03-19T13:04:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于struts2的二维码">
+<meta name="twitter:description" content="前言前段时间因为一些原因要做一个二维码，故此google了许多，当然是在踩了许多坑之后，找到了适合自己的方法，故在此将其总结一下，来提高自己
+什么是二维码总的来说就是用某种特定的几何图形按一定规律在平面（二维方向上）分布的黑白相间的图形记录数据符号信息的；在代码编制上巧妙地利用构成计算机内部逻辑基础的“0”、“1”比特流的概念，使用若干个与二进制相对应的几何形体来表示文字数值信息，最后通过相关设备">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":true,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.myzwl.win/2017/03/18/erweima/"/>
+
+
+
+
+
+  <title> 基于struts2的二维码 | 秒西 </title>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"   background="imags/bg.jpg" style="opacity: 0.7;background-color: transparent;">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秒西</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+	
+	<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+    function c() {
+        var e = document.createElement("link");
+        e.setAttribute("type", "text/css");
+        e.setAttribute("rel", "stylesheet");
+        e.setAttribute("href", f);
+        e.setAttribute("class", l);
+        document.body.appendChild(e)
+    }
+
+    function h() {
+        var e = document.getElementsByClassName(l);
+        for (var t = 0; t < e.length; t++) {
+            document.body.removeChild(e[t])
+        }
+    }
+
+    function p() {
+        var e = document.createElement("div");
+        e.setAttribute("class", a);
+        document.body.appendChild(e);
+        setTimeout(function() {
+            document.body.removeChild(e)
+        }, 100)
+    }
+
+    function d(e) {
+        return {
+            height : e.offsetHeight,
+            width : e.offsetWidth
+        }
+    }
+
+    function v(i) {
+        var s = d(i);
+        return s.height > e && s.height < n && s.width > t && s.width < r
+    }
+
+    function m(e) {
+        var t = e;
+        var n = 0;
+        while (!!t) {
+            n += t.offsetTop;
+            t = t.offsetParent
+        }
+        return n
+    }
+
+    function g() {
+        var e = document.documentElement;
+        if (!!window.innerWidth) {
+            return window.innerHeight
+        } else if (e && !isNaN(e.clientHeight)) {
+            return e.clientHeight
+        }
+        return 0
+    }
+
+    function y() {
+        if (window.pageYOffset) {
+            return window.pageYOffset
+        }
+        return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+    }
+
+    function E(e) {
+        var t = m(e);
+        return t >= w && t <= b + w
+    }
+
+    function S() {
+        var e = document.createElement("audio");
+        e.setAttribute("class", l);
+        e.src = i;
+        e.loop = false;
+        e.addEventListener("canplay", function() {
+            setTimeout(function() {
+                x(k)
+            }, 500);
+            setTimeout(function() {
+                N();
+                p();
+                for (var e = 0; e < O.length; e++) {
+                    T(O[e])
+                }
+            }, 15500)
+        }, true);
+        e.addEventListener("ended", function() {
+            N();
+            h()
+        }, true);
+        e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+        document.body.appendChild(e);
+        e.play()
+    }
+
+    function x(e) {
+        e.className += " " + s + " " + o
+    }
+
+    function T(e) {
+        e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+    }
+
+    function N() {
+        var e = document.getElementsByClassName(s);
+        var t = new RegExp("\\b" + s + "\\b");
+        for (var n = 0; n < e.length; ) {
+            e[n].className = e[n].className.replace(t, "")
+        }
+    }
+
+    var e = 30;
+    var t = 30;
+    var n = 350;
+    var r = 350;
+    var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+    var s = "mw-harlem_shake_me";
+    var o = "im_first";
+    var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+    var a = "mw-strobe_light";
+    var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+    var l = "mw_added_css";
+    var b = g();
+    var w = y();
+    var C = document.getElementsByTagName("*");
+    var k = null;
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            if (E(A)) {
+                k = A;
+                break
+            }
+        }
+    }
+    if (A === null) {
+        console.warn("Could not find a node of the right size. Please try a different page.");
+        return
+    }
+    c();
+    S();
+    var O = [];
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            O.push(A)
+        }
+    }
+})()    '>让标题抖起来</a> </li>
+	
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/18/erweima/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                基于struts2的二维码
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-18T19:48:51+08:00">
+                2017-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前段时间因为一些原因要做一个二维码，故此google了许多，当然是在踩了许多坑之后，找到了适合自己的方法，故在此将其总结一下，来提高自己</p>
+<h4 id="什么是二维码"><a href="#什么是二维码" class="headerlink" title="什么是二维码"></a>什么是二维码</h4><p>总的来说就是用某种特定的几何图形按一定规律在平面（二维方向上）分布的黑白相间的图形记录数据符号信息的；在代码编制上巧妙地利用构成计算机内部逻辑基础的“0”、“1”比特流的概念，使用若干个与二进制相对应的几何形体来表示文字数值信息，最后通过相关设备读取。</p>
+<h4 id="zxing"><a href="#zxing" class="headerlink" title="zxing"></a>zxing</h4><p>zxing是google的一个开源源码，主要用于java生成和解析的条形码，二维码，通过引用相关jar包，实现其中的相关接口来开发，这里我引用的是QRCode.jar主要是生成二维码</p>
+<h4 id="需求案例"><a href="#需求案例" class="headerlink" title="需求案例"></a>需求案例</h4><p><strong>假设我们通过扫描二维码将数据库中的信息取出来并显示在另一个页面</strong></p>
+<h4 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h4><p>MyEclipse、mysql数据库（这里建了一张简单表，有id、name、password）、ssh整合包（事实上，我们可以单独使用struts2，只不过耗时一些），QRCode.jar包，jquery-1.8.3.js,gson.jar</p>
+<h4 id="二维码工具包"><a href="#二维码工具包" class="headerlink" title="二维码工具包"></a>二维码工具包</h4><p>这里主要有三个类，一个是图像本身类（包含其本身一些属性）、二维码处理类（包括生成和解析图像二维码），最后一个是将本地图片通过调用处理类转化为二维码。<br>这里我将其放在com.zwl.util包下（以下是相关代码）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class QRCodeImageBean implements QRCodeImage&#123;</div><div class="line"></div><div class="line">	  BufferedImage bufImg;  </div><div class="line">	    </div><div class="line">	    public QRCodeImageBean(BufferedImage bufImg) &#123;  </div><div class="line">	        this.bufImg = bufImg;  </div><div class="line">	    &#125;  </div><div class="line">	    public int getHeight() &#123;  </div><div class="line">	        return bufImg.getHeight();  </div><div class="line">	    &#125;  </div><div class="line">	    public int getPixel(int x, int y) &#123;  </div><div class="line">	        return bufImg.getRGB(x, y);  </div><div class="line">	    &#125;  </div><div class="line">	    public int getWidth() &#123;  </div><div class="line">	        return bufImg.getWidth();  </div><div class="line">	    &#125;  </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>生成和解析二维码类</strong><br>public class QRCode {</p>
+<pre><code> /**
+ * 解析二维码(QRCode)
+ * @param imgPath
+ * @return content（返回二维码内容）
+ */
+public static  String decoderQRCode(String imgPath) {  
+    // QRCode 二维码图片的文件  
+    File imageFile = new File(imgPath);  
+    BufferedImage bufImg = null;  
+    String content = null;  
+    try {  
+        bufImg = ImageIO.read(imageFile);  
+        QRCodeDecoder decoder = new QRCodeDecoder();  
+        content = new String(decoder.decode(new QRCodeImageBean(bufImg)), &quot;utf-8&quot;);   
+    } catch (IOException e) {  
+        System.out.println(&quot;Error: &quot; + e.getMessage());  
+        e.printStackTrace();  
+    } catch (DecodingFailedException dfe) {  
+        System.out.println(&quot;Error: &quot; + dfe.getMessage());  
+        dfe.printStackTrace();  
+    }  
+    return content;  
+}  
+
+/**  
+ * 生成二维码(QRCode)图片  
+ * @param content 存储内容  
+ * @param imgPath 图片路径  
+ * @param imgType 图片类型  
+ */    
+public static void encoderQRCode(String content, String imgPath, String imgType) {    
+    encoderQRCode(content, imgPath, imgType, 7);    
+}  
+
+/**  
+ * 生成二维码(QRCode)图片  
+ * @param content 存储内容  
+ * @param imgPath 图片路径  
+ * @param imgType 图片类型  
+ * @param size 二维码尺寸  
+ */    
+public static void encoderQRCode(String content, String imgPath, String imgType, int size) {    
+    try {    
+        BufferedImage bufImg = qRCodeCommon(content, imgType, size);    
+
+        File imgFile = new File(imgPath);    
+        // 生成二维码QRCode图片    
+        ImageIO.write(bufImg, imgType, imgFile);    
+    } catch (Exception e) {    
+        e.printStackTrace();    
+    }    
+}  
+
+/**  
+ * 生成二维码(QRCode)图片的公共方法  
+ * @param content 存储内容  
+ * @param imgType 图片类型  
+ * @param size 二维码尺寸  
+ * @return  
+ */    
+private static BufferedImage qRCodeCommon(String content, String imgType, int size) {    
+    BufferedImage bufImg = null;    
+    try {    
+        Qrcode qrcodeHandler = new Qrcode();    
+        // 设置二维码排错率，可选L(7%)、M(15%)、Q(25%)、H(30%)，排错率越高可存储的信息越少，但对二维码清晰度的要求越小    
+        qrcodeHandler.setQrcodeErrorCorrect(&apos;M&apos;);    
+        qrcodeHandler.setQrcodeEncodeMode(&apos;B&apos;);    
+        // 设置设置二维码尺寸，取值范围1-40，值越大尺寸越大，可存储的信息越大    
+        qrcodeHandler.setQrcodeVersion(size);    
+        // 获得内容的字节数组，设置编码格式    
+        byte[] contentBytes = content.getBytes(&quot;utf-8&quot;);    
+        // 图片尺寸    
+        int imgSize = 67 + 12 * (size - 1);    
+        bufImg = new BufferedImage(imgSize, imgSize, BufferedImage.TYPE_INT_RGB);    
+        Graphics2D gs = bufImg.createGraphics();    
+        // 设置背景颜色    
+        gs.setBackground(Color.WHITE);    
+        gs.clearRect(0, 0, imgSize, imgSize);    
+
+        // 设定图像颜色&gt; BLACK    
+        gs.setColor(Color.BLACK);    
+        // 设置偏移量，不设置可能导致解析出错    
+        int pixoff = 2;    
+        // 输出内容&gt; 二维码    
+        if (contentBytes.length &gt; 0 &amp;&amp; contentBytes.length &lt; 800) {    
+            boolean[][] codeOut = qrcodeHandler.calQrcode(contentBytes);    
+            for (int i = 0; i &lt; codeOut.length; i++) {    
+                for (int j = 0; j &lt; codeOut.length; j++) {    
+                    if (codeOut[j][i]) {    
+                        gs.fillRect(j * 3 + pixoff, i * 3 + pixoff, 3, 3);    
+                    }    
+                }    
+            }    
+        } else {    
+            throw new Exception(&quot;QRCode content bytes length = &quot; + contentBytes.length + &quot; not in [0, 800].&quot;);    
+        }    
+        gs.dispose();    
+        bufImg.flush();    
+    } catch (Exception e) {    
+        e.printStackTrace();    
+    }    
+    return bufImg;    
+}  }
+</code></pre><p>最后一个类是本地生成二维码图片</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;  </div><div class="line">       String imgPath = "C:/Users/Administrator/Desktop/img/xiazi.jpg";  </div><div class="line">        QRCode handler = new QRCode();  </div><div class="line">        String qrCon = handler.decoderQRCode(imgPath);</div><div class="line">        String encoderContent = "http://192.168.43.44:100/librarytest/success1.jsp?id=2";    </div><div class="line">       handler.encoderQRCode(encoderContent, imgPath, "png"); </div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p><strong>其中imgPath是本地你想将某个图片生成二维码的那个图片</strong><br><strong>qrCon为解析后的二维码内容，我这里就是一个url地址</strong><br><strong>encoderContent：设置二维码的内容，这里为url带个参数，扫描后就会跳转到相应界面</strong><br>这里的参数想要取出，可以先将内容取出，在通过string类中的方法将字符创相应位置字符取出即可<br>至此，工具类算是有了，接下来就是结合具体配置</p>
+<h4 id="后台方法"><a href="#后台方法" class="headerlink" title="后台方法"></a>后台方法</h4><p>首先是web.xml（启用struts2和spring）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;web-app version="2.5" </div><div class="line">	xmlns="http://java.sun.com/xml/ns/javaee" </div><div class="line">	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" </div><div class="line">	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee </div><div class="line">	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"&gt;</div><div class="line">	&lt;filter&gt;</div><div class="line">		&lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">		&lt;filter-class&gt;org.apache.struts2.dispatcher.FilterDispatcher&lt;/filter-class&gt;</div><div class="line">	&lt;/filter&gt;</div><div class="line">	&lt;filter-mapping&gt;</div><div class="line">		&lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">		&lt;url-pattern&gt;*.action&lt;/url-pattern&gt;</div><div class="line">	&lt;/filter-mapping&gt;</div><div class="line">	&lt;filter-mapping&gt;</div><div class="line">		&lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">		&lt;url-pattern&gt;*.jsp&lt;/url-pattern&gt;</div><div class="line">	&lt;/filter-mapping&gt;</div><div class="line">	&lt;listener&gt;</div><div class="line">		&lt;listener-class&gt;</div><div class="line">		org.springframework.web.context.ContextLoaderListener</div><div class="line">		&lt;/listener-class&gt;</div><div class="line">	&lt;/listener&gt;</div><div class="line">&lt;/web-app&gt;</div></pre></td></tr></table></figure>
+<p>然后是applicationContext.xml（为了方便直接将所有方法都注入了）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;beans</div><div class="line">xmlns="http://www.springframework.org/schema/beans"</div><div class="line">xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"</div><div class="line">xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"&gt;</div><div class="line">	&lt;!-- 定义数据源 --&gt;</div><div class="line">	&lt;bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"&gt;</div><div class="line">		&lt;property name="driverClassName"&gt;</div><div class="line">			&lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="url"&gt;</div><div class="line">			&lt;value&gt;jdbc:mysql://localhost:msql端口/项目&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="username"&gt;</div><div class="line">			&lt;value&gt;你的用户名&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="password"&gt;</div><div class="line">			&lt;value&gt;你的密码&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line">	</div><div class="line">	&lt;!-- 定义SessionFactory --&gt;</div><div class="line">	&lt;bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"&gt;</div><div class="line">		&lt;property name="dataSource"&gt;</div><div class="line">			&lt;ref bean="dataSource"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="hibernateProperties"&gt;</div><div class="line">			&lt;props&gt;</div><div class="line">				&lt;prop key="hibernate.dialect"&gt;</div><div class="line">					org.hibernate.dialect.MySQLDialect</div><div class="line">				&lt;/prop&gt;</div><div class="line">				&lt;prop key="hibernate.show_sql"&gt;false&lt;/prop&gt;</div><div class="line">			&lt;/props&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="mappingResources"&gt;</div><div class="line">			&lt;list&gt;</div><div class="line">				&lt;value&gt;com/zwl/pojo/User.hbm.xml&lt;/value&gt;</div><div class="line">			&lt;/list&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line">	</div><div class="line">	&lt;!-- 定义HibernateTemplate --&gt;</div><div class="line">	&lt;bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate"&gt;</div><div class="line">		&lt;property name="sessionFactory"&gt;</div><div class="line">			&lt;ref bean="sessionFactory"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	&lt;!-- 配置DAO组件 --&gt;</div><div class="line">	&lt;bean id="returnuserdao" class="com.zwl.impl.returnuserdaoimpl"&gt;</div><div class="line">		&lt;property name="hibernateTemplate"&gt;</div><div class="line">			&lt;ref bean="hibernateTemplate"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line">	</div><div class="line">	&lt;!-- 配置业务逻辑组件 --&gt;</div><div class="line">	&lt;bean id="returnuserservice" class="com.zwl.impl.returnuserserviceimpl"&gt;</div><div class="line">		&lt;property name="userdao"&gt;</div><div class="line">			&lt;ref bean="returnuserdao"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line">	</div><div class="line">	&lt;!-- 配置userdengluAction --&gt;</div><div class="line">	&lt;bean id="userreturn" class="com.zwl.action.userreturn"&gt;</div><div class="line">		&lt;property name="returnuser"&gt;</div><div class="line">			&lt;ref bean="returnuserservice"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure></p>
+<p>pojo类（与数据库映射那个类）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class User &#123;</div><div class="line">	private int id;</div><div class="line">	private String name;</div><div class="line">	private String password;</div><div class="line">省略set与get方法。。</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>映射文件</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"</div><div class="line">"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;</div><div class="line">&lt;hibernate-mapping package="com.zwl.pojo"&gt;</div><div class="line">    &lt;class name="User" table="user" &gt;</div><div class="line">        &lt;id name="id" &gt;</div><div class="line">            &lt;generator class="increment"&gt;&lt;/generator&gt;</div><div class="line">        &lt;/id&gt;</div><div class="line">        &lt;property name="name"&gt;</div><div class="line">        &lt;/property&gt;</div><div class="line">        &lt;property name="password"&gt;</div><div class="line">        &lt;/property&gt;</div><div class="line">    &lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div></pre></td></tr></table></figure>
+<h4 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h4><p>接下来就是接口编写</p>
+<p>dao层<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public interface returnuserdao &#123;</div><div class="line">//通过id返回User</div><div class="line">public User returnuserbyid(int id);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>service层</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface returnuserservice &#123;</div><div class="line">public   User  returnuser(int id);</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>分别得实现类</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">public class returnuserdaoimpl extends HibernateDaoSupport implements	returnuserdao &#123;</div><div class="line">	@Override</div><div class="line">	public User returnuserbyid(int id) &#123;</div><div class="line">		List list=this.getHibernateTemplate().find(" from User user where user.id = '" + id + "'");</div><div class="line">		if(list.size()==0)&#123;</div><div class="line">			return null;</div><div class="line">		&#125;else&#123;</div><div class="line">			return (User)list.get(0);</div><div class="line">		&#125;	&#125;&#125;</div><div class="line">public class returnuserserviceimpl implements returnuserservice&#123;</div><div class="line"></div><div class="line">	private returnuserdao userdao;</div><div class="line"></div><div class="line">	public returnuserdao getUserdao() &#123;</div><div class="line">		return userdao;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setUserdao(returnuserdao userdao) &#123;</div><div class="line">		this.userdao = userdao;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public User returnuser(int id) &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		return userdao.returnuserbyid(id);</div><div class="line">	&#125;&#125;</div></pre></td></tr></table></figure>
+<p><strong>这里只有两个页面，一个只有二维码，另一个是扫描后跳转的页面并且可以从数据库中取出相关信息</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">			   &lt;figure&gt;</div><div class="line">&lt;figcaption&gt;图书1扫码:&lt;/figcaption&gt;</div><div class="line">&lt;img src="img/dl.gif"&gt;你本地生成的二维码图片</div><div class="line">&lt;/figure&gt;</div><div class="line">``` </div><div class="line">接下来是通过ajax从后台异步加载数据，当然是在你扫码后，直接将数据显示在表单中</div><div class="line"></div><div class="line">``` stylus</div><div class="line"> &lt;script type="text/javascript"&gt;</div><div class="line">  $(function()&#123;</div><div class="line">      /*     通过ajax异步提交表单 */</div><div class="line">$.ajax(&#123;</div><div class="line">	        /* 提交路径 */</div><div class="line">	url : '$&#123;pageContext.request.contextPath&#125;/userreturn!userreturn.action',</div><div class="line">	data:params,</div><div class="line">	type:"POST",</div><div class="line">	 dataType:"json",</div><div class="line">	/* 提交成功后，并得到后台返回的数据 */</div><div class="line">	success : function(r) &#123;</div><div class="line">		/* 解析后台json格式，并得到对象 */</div><div class="line">		$("#id").val(r.id);</div><div class="line">		$("#name").val(r.name);</div><div class="line">		$("#password").val(r.password);</div><div class="line">&#125;</div><div class="line">&#125;);</div><div class="line">	   &#125;);</div><div class="line">  &lt;/script&gt;</div><div class="line">  </div><div class="line">  &lt;body&gt;</div><div class="line">  &lt;form action="" method="post"&gt;</div><div class="line">  id  :&amp;nbsp;&lt;input id="id" name="id" type="text"/&gt;&lt;br/&gt;</div><div class="line">  name  :&amp;nbsp;&lt;input id="name" name="name" type="text"/&gt;&lt;br/&gt;</div><div class="line">  password  :&amp;nbsp;&lt;input id="password" name="password" type="text"/&gt;&lt;br/&gt;</div><div class="line">  &lt;/form&gt;</div><div class="line">  &lt;/body&gt;</div></pre></td></tr></table></figure>
+<h4 id="Action类"><a href="#Action类" class="headerlink" title="Action类"></a>Action类</h4><p><strong>接下来就是action的编写</strong><br>首先是 QRCodeAction</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">public class QRCodeAction extends ActionSupport &#123;</div><div class="line">	private static final long serialVersionUID = 1L;</div><div class="line">	// 封装上传文件域的属性</div><div class="line">	private File image;</div><div class="line">	// 封装上传文件类型的属性</div><div class="line">	private String imageContentType;</div><div class="line">	// 封装上传文件名的属性</div><div class="line">	private String imageFileName;</div><div class="line">	private String message;</div><div class="line">	private String content;</div><div class="line"></div><div class="line">	此处省略属性的set与get方法。。</div><div class="line">	/**</div><div class="line">	 * 生成二维码</div><div class="line">	 * @return  String</div><div class="line">	 *</div><div class="line">	 */</div><div class="line">	public String encoderQRCode()&#123;</div><div class="line">		String realpath = ServletActionContext.getServletContext().getRealPath("/file");</div><div class="line">		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");</div><div class="line">		String imgName = sdf.format(new Date()) + ".png";</div><div class="line">		String  imgPath= realpath+"/"+imgName;</div><div class="line">		QRCode.encoderQRCode(content, imgPath, "png");</div><div class="line">		message = imgName;</div><div class="line">		return Action.SUCCESS;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	/**</div><div class="line">	 * 获取二维码</div><div class="line">	 * @return  String</div><div class="line">	 *</div><div class="line">	 */</div><div class="line">	public String decoderQRCode() &#123;</div><div class="line">        try &#123;</div><div class="line">        	String realpath = ServletActionContext.getServletContext().getRealPath("/img");</div><div class="line">        	File savefile = new File(new File(realpath), imageFileName);</div><div class="line">        	if (!savefile.getParentFile().exists())</div><div class="line">        		savefile.getParentFile().mkdirs();</div><div class="line">			FileUtils.copyFile(image, savefile);</div><div class="line">			message   = QRCode.decoderQRCode(realpath+"/"+imageFileName);</div><div class="line">		&#125; catch (IOException e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		return Action.SUCCESS;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>然后是我们需要的userreturnaction（主要后台信息通过json格式传给前台）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">public class userreturn  &#123;</div><div class="line"></div><div class="line">	private returnuserservice returnuser;  //通过用户id查询用户信息</div><div class="line">	private String img;                    //接受二维码图片的名字</div><div class="line">	省略set与get方法。。</div><div class="line"></div><div class="line">       //解析二维码，入库查询，并返回用户信息</div><div class="line">	public void userreturn() throws Exception &#123;</div><div class="line">		HttpServletResponse response=ServletActionContext.getResponse();</div><div class="line">		HttpServletRequest request=ServletActionContext.getRequest();</div><div class="line">		response.setCharacterEncoding("UTF-8");</div><div class="line">		response.setContentType("application/json; charset=utf-8");          //返回json数据</div><div class="line">	        response.setHeader("Cache-Control", "no-cache");                 //不要缓存</div><div class="line">	        response.setHeader("Pragma", "no-cache");  </div><div class="line">		PrintWriter out = response.getWriter();</div><div class="line">		System.out.println("被扫描的二维码图片的名字:"+img);</div><div class="line">		QRCode qrcode=new QRCode();</div><div class="line">		String path=qrcode.decoderQRCode("E:/newday/librarytest/WebRoot/img/"+img);//二维码图片地址</div><div class="line">		System.out.println("二维码解析的内容:"+path);</div><div class="line">		int id=Integer.parseInt(path.substring(path.length()-1));</div><div class="line">		System.out.println("用户的id号:"+id);</div><div class="line">		User user=returnuser.returnuser(id);</div><div class="line">		System.out.println("用户的姓名:"+user.getName());</div><div class="line">		System.out.println("用户的密码:"+user.getPassword());</div><div class="line">		JsonObject json=new JsonObject();</div><div class="line">		json.addProperty("id", id);</div><div class="line">		json.addProperty("name", user.getName());</div><div class="line">		json.addProperty("password", user.getPassword());</div><div class="line">		response.getWriter().write(json.toString());</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意在页面中需要jquery-1.8.3.js包，同时此处json格式转换用的是gson.jar包<br>最后就是struts.xml配置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line"></div><div class="line">&lt;!DOCTYPE struts PUBLIC</div><div class="line">    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"</div><div class="line">    "http://struts.apache.org/dtds/struts-2.0.dtd"&gt;</div><div class="line">&lt;struts&gt;</div><div class="line"></div><div class="line">&lt;constant name="struts.i18n.encoding" value="utf-8"/&gt;</div><div class="line">&lt;constant name="struts.enable.DynamicMethodInvocation" value="true" /&gt; </div><div class="line"> &lt;constant name="struts.devMode" value="false" /&gt;</div><div class="line">	&lt;constant name="struts.i18n.encoding" value="UTF-8"/&gt;</div><div class="line">	&lt;constant name="struts.multipart.maxSize" value="10701096"/&gt;&lt;!-- 上传文件最大值 --&gt;</div><div class="line">	&lt;constant name="struts.multipart.saveDir" value="/tmp"/&gt;&lt;!-- 上传文件设置属性 --&gt;</div><div class="line">	&lt;constant name="struts.custom.i18n.resources" value="global" /&gt;</div><div class="line">	&lt;constant name="struts.action.extension" value="action"&gt;&lt;/constant&gt;</div><div class="line">	</div><div class="line">	&lt;package namespace="/"   name="struct2" extends="struts-default"&gt;</div><div class="line">		&lt;action name="userreturn" class="userreturn" method="userreturn"&gt;</div><div class="line">		&lt;/action&gt;</div><div class="line">	&lt;/package&gt;</div><div class="line">	</div><div class="line">     &lt;package name="QRCode" extends="json-default"&gt;</div><div class="line">	    &lt;action name="qRCodeAction_*" class="com.zwl.action.QRCodeAction" method="&#123;1&#125;" &gt;</div><div class="line">	        &lt;result  type="json"&gt;</div><div class="line">		       &lt;param name="root"&gt;message&lt;/param&gt;</div><div class="line">		    &lt;/result&gt;</div><div class="line">		&lt;/action&gt;</div><div class="line">	&lt;/package&gt; </div><div class="line">&lt;/struts&gt;</div></pre></td></tr></table></figure>
+<p>最后打开含有二维码那个页面，然后扫一扫就可以跳转到含数据的界面，当然笔者之前遇到了几个问题，首先是图片地址在action中要正确，不然出现null，其次这是只能一个二维码并且含参数id的，只能有一个action，当然可以优化。。。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>纯属娱乐！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/java工具包/" rel="tag"># java工具包</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/17/danli/" rel="next" title="单例设计模式">
+                <i class="fa fa-chevron-left"></i> 单例设计模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/19/md5/" rel="prev" title="基于servlet的验证码和md5加密">
+                基于servlet的验证码和md5加密 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+     <div class="comments" id="comments">
+       
+            <div id="uyan_frame"></div>
+       
+     </div>
+   
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description">try your best</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/slycmiaoxi" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:1260747128@qq.com" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/images/zwl.png" target="_blank" title="Weixin">
+                  
+                    <i class="fa fa-fw fa-weixin"></i>
+                  
+                  Weixin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+      
+        
+
+
+		
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是二维码"><span class="nav-text">什么是二维码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zxing"><span class="nav-text">zxing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#需求案例"><span class="nav-text">需求案例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#环境准备"><span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二维码工具包"><span class="nav-text">二维码工具包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#后台方法"><span class="nav-text">后台方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口"><span class="nav-text">接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Action类"><span class="nav-text">Action类</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=86 height=100 src="http://music.163.com/outchain/player?type=0&id=120897804&auto=0&height=90&auto=1&height=86&autoPlay=true" style="width:0px;height:0px;"></iframe>
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2127192"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+<!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.min.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {          
+          jQuery("img").lazyload({
+            placeholder:"http://www.arao.me/loading.gif",
+              effect:"fadeIn"
+            });
+          });
+    </script>
+</body>
+</html>

@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java, hexo" />
+  <meta name="keywords" content="java集合," />
 
 
 
@@ -105,15 +105,19 @@
 
 
 
-<meta name="description" content="try your best">
-<meta property="og:type" content="website">
-<meta property="og:title" content="秒西">
-<meta property="og:url" content="http://www.myzwl.win/archives/2017/index.html">
+<meta name="description" content="前言ArrayList也叫数组列表，底层使用的是数组实现的，严格来说是动态数组。 一般情况下，一个问题的认识都是由具体到抽象，先看一个入门案例：
+1234567891011ArrayList&amp;lt;String&amp;gt; al=new ArrayList&amp;lt;&amp;gt;();	al.add(&quot;hello&quot;);	al.add(&quot;world&quot;);	al.add(&quot;lol&quot;);	System.out.pr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识Arraylist底层">
+<meta property="og:url" content="http://www.myzwl.win/2017/03/19/arraylist/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="try your best">
+<meta property="og:description" content="前言ArrayList也叫数组列表，底层使用的是数组实现的，严格来说是动态数组。 一般情况下，一个问题的认识都是由具体到抽象，先看一个入门案例：
+1234567891011ArrayList&amp;lt;String&amp;gt; al=new ArrayList&amp;lt;&amp;gt;();	al.add(&quot;hello&quot;);	al.add(&quot;world&quot;);	al.add(&quot;lol&quot;);	System.out.pr">
+<meta property="og:updated_time" content="2017-03-19T14:23:40.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="秒西">
-<meta name="twitter:description" content="try your best">
+<meta name="twitter:title" content="初识Arraylist底层">
+<meta name="twitter:description" content="前言ArrayList也叫数组列表，底层使用的是数组实现的，严格来说是动态数组。 一般情况下，一个问题的认识都是由具体到抽象，先看一个入门案例：
+1234567891011ArrayList&amp;lt;String&amp;gt; al=new ArrayList&amp;lt;&amp;gt;();	al.add(&quot;hello&quot;);	al.add(&quot;world&quot;);	al.add(&quot;lol&quot;);	System.out.pr">
 
 
 
@@ -141,13 +145,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/archives/2017/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/03/19/arraylist/"/>
 
 
 
 
 
-  <title> 归档 | 秒西 </title>
+  <title> 初识Arraylist底层 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -193,7 +197,7 @@ var _hmt = _hmt || [];
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -463,369 +467,220 @@ var _hmt = _hmt || [];
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 9 篇日志。 继续努力。
-    </span>
-
+  <div id="posts" class="posts-expand">
     
-
-      
-      
-      
-
-      
-        
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
-        </div>
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/19/arraylist/" itemprop="url">
-              
-                <span itemprop="name">初识Arraylist底层</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-19T21:48:51+08:00"
-              content="2017-03-19" >
-          03-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/19/md5/" itemprop="url">
-              
-                <span itemprop="name">基于servlet的验证码和md5加密</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-19T19:48:51+08:00"
-              content="2017-03-19" >
-          03-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/18/erweima/" itemprop="url">
-              
-                <span itemprop="name">基于struts2的二维码</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-18T19:48:51+08:00"
-              content="2017-03-18" >
-          03-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/17/danli/" itemprop="url">
-              
-                <span itemprop="name">单例设计模式</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-17T20:48:51+08:00"
-              content="2017-03-17" >
-          03-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/17/nat123/" itemprop="url">
-              
-                <span itemprop="name">利用nat123搭建本地服务器</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-17T19:48:51+08:00"
-              content="2017-03-17" >
-          03-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/17/fenqu/" itemprop="url">
-              
-                <span itemprop="name">window分区导致双系统无引导界面</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-17T14:09:42+08:00"
-              content="2017-03-17" >
-          03-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/16/dajianserver/" itemprop="url">
-              
-                <span itemprop="name">阿里云服务器上搭建javaweb站点</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-16T17:48:51+08:00"
-              content="2017-03-16" >
-          03-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/12/hexo1/" itemprop="url">
-              
-                <span itemprop="name">初步搭建hexo博客</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-12T17:48:51+08:00"
-              content="2017-03-12" >
-          03-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/10/hi/" itemprop="url">
-              
-                <span itemprop="name">第一篇仅为测试</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-10T17:48:51+08:00"
-              content="2017-03-10" >
-          03-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
 
   
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/19/arraylist/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                初识Arraylist底层
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-19T21:48:51+08:00">
+                2017-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>ArrayList也叫数组列表，底层使用的是数组实现的，严格来说是动态数组。<br> 一般情况下，一个问题的认识都是由具体到抽象，先看一个入门案例：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">ArrayList&lt;String&gt; al=new ArrayList&lt;&gt;();</div><div class="line">	al.add("hello");</div><div class="line">	al.add("world");</div><div class="line">	al.add("lol");</div><div class="line">	System.out.println(al.size());</div><div class="line">	System.out.println(al.get(0));</div><div class="line">	System.out.println(al.get(1));</div><div class="line">	System.out.println(al.get(2));</div><div class="line">	al.remove(1);</div><div class="line">	System.out.println(al.size());</div><div class="line">	System.out.println(al.get(1));</div></pre></td></tr></table></figure>
+<p>测试结果：3 hello world lol 2<br>这个例子也很好理解，大概流程是先创建集合，在依次加入数据，依次取出和大小，在删除其中一个，在看大小和删除的数据是否存在，好了，入门程序就到这了，运用这几个方法我们可以把它复杂化运用到我们以后想要的上面。</p>
+<p>至此下面将开始简单介绍一下add，get，remove方法的源码分析。<br>（当然我们也可以通过设置断点追踪源码）</p>
+<h4 id="add方法"><a href="#add方法" class="headerlink" title="add方法"></a>add方法</h4><p>在此之前，先介绍一下源码中的几个静态常量</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">private static final int DEFAULT_CAPACITY=10;//数组为空默认的最小分配数组容量</div><div class="line">private static final Object[] EMPTY_ELEMENTDATA = &#123;&#125;;//默认空数组</div><div class="line">private int size;//数组长度，初始化默认为0；</div></pre></td></tr></table></figure>
+<p><strong>下面就是add方法</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public boolean add(E e) &#123;</div><div class="line">//保证数组容量的容量始终够用</div><div class="line">     ensureCapacityInternal(size + 1);  </div><div class="line">   //size是elementData数组中元素的个数，初始为0</div><div class="line">     elementData[size++] = e;</div><div class="line">      return true;&#125;</div></pre></td></tr></table></figure>
+<p>首先进入第一个方法分析：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">private void ensureCapacityInternal(int minCapacity) &#123;</div><div class="line">//如果数组没有元素，给数组一个默认大小，会选择实例化时的值与默认大小较大者</div><div class="line">        if (elementData == EMPTY_ELEMENTDATA) &#123;</div><div class="line">            minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);</div><div class="line">        &#125;</div><div class="line">        //保证容量够用</div><div class="line">        ensureExplicitCapacity(minCapacity);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">   private void ensureExplicitCapacity(int minCapacity) &#123;</div><div class="line">//数组发生size更改的次数，默认为0</div><div class="line">        modCount++;</div><div class="line">         //如果数组长度小于默认的容量10，则调用扩大数组大小的方法</div><div class="line">             if (minCapacity - elementData.length &gt; 0)</div><div class="line">            grow(minCapacity);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">//数组长度的上限</div><div class="line">   private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;</div><div class="line">  </div><div class="line">   private void grow(int minCapacity) &#123;</div><div class="line">        // 保证数组容量扩大一倍</div><div class="line">        int oldCapacity = elementData.length;</div><div class="line">        int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);</div><div class="line">        if (newCapacity - minCapacity &lt; 0)</div><div class="line">            newCapacity = minCapacity;</div><div class="line">        if (newCapacity - MAX_ARRAY_SIZE &gt; 0)</div><div class="line">            newCapacity = hugeCapacity(minCapacity);</div><div class="line">        // 得到扩大容量后的新数组</div><div class="line">        elementData = Arrays.copyOf(elementData, newCapacity);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">private static int hugeCapacity(int minCapacity) &#123;</div><div class="line">//返回新数组的大小</div><div class="line">        if (minCapacity &lt; 0) </div><div class="line">            throw new OutOfMemoryError();</div><div class="line">        return (minCapacity &gt; MAX_ARRAY_SIZE) ?</div><div class="line">            Integer.MAX_VALUE :</div><div class="line">            MAX_ARRAY_SIZE;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p><strong>至此算是把add方法的底层分析了一遍，我们现在是不是可以假象一个简单例子来模拟流程</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ArrayList&lt;String&gt; al=new ArrayList&lt;&gt;();</div><div class="line">	al.add("hello");</div></pre></td></tr></table></figure>
+<p>大概执行流程，数组为空，分配一个默认大小为10的容量，容量动态扩充，然后size变化，最后将值赋给数组，说了这么多，还是有点，总之，可以自己模拟数据，然后进行断点调试，就大概了解其过程了。</p>
+<h4 id="get方法"><a href="#get方法" class="headerlink" title="get方法"></a>get方法</h4><p>在此之前先补充一下arraylist的构造函数，如下</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//如果构造函数不指定大小，则将默认空对象给数组对象</div><div class="line">public ArrayList() &#123;</div><div class="line">        super();</div><div class="line">        this.elementData = EMPTY_ELEMENTDATA;</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">//指定初始化数组大小</div><div class="line">public ArrayList(int initialCapacity) &#123;</div><div class="line">        super();</div><div class="line">        if (initialCapacity &lt; 0)</div><div class="line">            throw new IllegalArgumentException("Illegal Capacity: "+</div><div class="line">                                               initialCapacity);</div><div class="line">        this.elementData = new Object[initialCapacity];</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>下面就来看一看get方法的执行过程</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public E get(int index) &#123;</div><div class="line">//判断index是否合法</div><div class="line">        rangeCheck(index);</div><div class="line">      //得到相应的数组数据</div><div class="line">        return elementData(index);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">private void rangeCheck(int index) &#123;</div><div class="line">//判断数组是否越界</div><div class="line">        if (index &gt;= size)</div><div class="line">            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>可以看到它的执行过程就这两步</p>
+<h4 id="remove方法"><a href="#remove方法" class="headerlink" title="remove方法"></a>remove方法</h4><p>这里先说明一下，由于删除操作会改变size，所以每次删除都需要把元素向前移动一个位置，然后把最后一个位置设置为null，一次删除操作完成</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public E remove(int index) &#123;</div><div class="line">   //判断index是否合法</div><div class="line">        rangeCheck(index);</div><div class="line">// size更改的次数</div><div class="line">        modCount++;</div><div class="line">//保存待删除的位置的元素</div><div class="line">        E oldValue = elementData(index);</div><div class="line">        //要移动的元素个数</div><div class="line">        int numMoved = size - index - 1;</div><div class="line">    //如果index不是最后一个元素，则从第index+1到最后一个位置，依次向前移动一个位置</div><div class="line">        if (numMoved &gt; 0)</div><div class="line">            System.arraycopy(elementData, index+1, elementData, index,</div><div class="line">                             numMoved);</div><div class="line"> //元素的size-1并且最后一个元素位置设为null</div><div class="line">        elementData[--size] = null; </div><div class="line">        return oldValue;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public static native void arraycopy(Object src,  int  srcPos,</div><div class="line">                                        Object dest, int destPos,</div><div class="line">                                        int length);</div></pre></td></tr></table></figure>
+<p>很遗憾：断点调试中没有源码，因为其是native，是其他语言编写的，这里只做简单介绍<br>从指定源数组中复制一个数组，复制从指定的位置开始，到目标数组的指定位置结束。从 src 引用的源数组到 dest 引用的目标数组，数组组件的一个子序列被复制下来。被复制的组件的编号等于 length 参数。源数组中位置在 srcPos 到 srcPos+length-1 之间的组件被分别复制到目标数组中的 destPos 到 destPos+length-1 位置。</p>
+<p>最后不得不提的是因为arraylist是动态增长的，即容量增产幅度遵循size/2+1，即默认为10，所以依次为：10,16,25.。。。。<br>这就造成arraylist是线程不安全的，多线程中产生问题，参考单例模式</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>纯属娱乐！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/java集合/" rel="tag"># java集合</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/19/md5/" rel="next" title="基于servlet的验证码和md5加密">
+                <i class="fa fa-chevron-left"></i> 基于servlet的验证码和md5加密
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
 
           
           </div>
           
 
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
 
           
+     <div class="comments" id="comments">
+       
+            <div id="uyan_frame"></div>
+       
+     </div>
+   
 
         </div>
         
@@ -845,8 +700,17 @@ var _hmt = _hmt || [];
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -929,6 +793,22 @@ var _hmt = _hmt || [];
 		
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#add方法"><span class="nav-text">add方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#get方法"><span class="nav-text">get方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#remove方法"><span class="nav-text">remove方法</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1060,11 +940,9 @@ var _hmt = _hmt || [];
 
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
 
 
   
@@ -1099,6 +977,10 @@ var _hmt = _hmt || [];
     
 
 
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2127192"></script>
+      <!-- UY END -->
     
   
 

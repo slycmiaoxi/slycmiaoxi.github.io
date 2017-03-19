@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="设计模式," />
+  <meta name="keywords" content="java工具包," />
 
 
 
@@ -105,28 +105,22 @@
 
 
 
-<meta name="description" content="前言在介绍单例设计模式之前，先简单介绍一下java的内存分析，可以帮助我们更好的了解相关内容。在此之前，先简单介绍几个相关概念
-Stack（栈）存放基本数据类型的数据和对象的引用及存放变量，如果存放的是基本数据类型（非static），直接将变量名和值存入stack中，如果是引用，只将变量名存入栈，然后指向它new的对象（存放在堆中）
-Heap（堆）存放new产生的数据
-静态域存放在对象中用stat">
+<meta name="description" content="前言验证码通俗的讲就是为了防止机器人自动注册无限制，而md5加密则将明文密码转化为一个32位字符串
+验证码这里是基于servlet的，也就是说通过java代码随机生成一个你设置的位数的字符串，然后将其保存在session中，以便后续是通过ajax传给前台验证或者是后台验证首先是生成验证码的类,这里我放在了com.ltw.tools包下
+1234567891011121314151617181920">
 <meta property="og:type" content="article">
-<meta property="og:title" content="单例设计模式">
-<meta property="og:url" content="http://www.myzwl.win/2017/03/17/danli/index.html">
+<meta property="og:title" content="基于servlet的验证码和md5加密">
+<meta property="og:url" content="http://www.myzwl.win/2017/03/19/md5/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="前言在介绍单例设计模式之前，先简单介绍一下java的内存分析，可以帮助我们更好的了解相关内容。在此之前，先简单介绍几个相关概念
-Stack（栈）存放基本数据类型的数据和对象的引用及存放变量，如果存放的是基本数据类型（非static），直接将变量名和值存入stack中，如果是引用，只将变量名存入栈，然后指向它new的对象（存放在堆中）
-Heap（堆）存放new产生的数据
-静态域存放在对象中用stat">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs2/1.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs2/2.gif">
-<meta property="og:updated_time" content="2017-03-19T04:58:30.000Z">
+<meta property="og:description" content="前言验证码通俗的讲就是为了防止机器人自动注册无限制，而md5加密则将明文密码转化为一个32位字符串
+验证码这里是基于servlet的，也就是说通过java代码随机生成一个你设置的位数的字符串，然后将其保存在session中，以便后续是通过ajax传给前台验证或者是后台验证首先是生成验证码的类,这里我放在了com.ltw.tools包下
+1234567891011121314151617181920">
+<meta property="og:updated_time" content="2017-03-19T13:54:46.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="单例设计模式">
-<meta name="twitter:description" content="前言在介绍单例设计模式之前，先简单介绍一下java的内存分析，可以帮助我们更好的了解相关内容。在此之前，先简单介绍几个相关概念
-Stack（栈）存放基本数据类型的数据和对象的引用及存放变量，如果存放的是基本数据类型（非static），直接将变量名和值存入stack中，如果是引用，只将变量名存入栈，然后指向它new的对象（存放在堆中）
-Heap（堆）存放new产生的数据
-静态域存放在对象中用stat">
-<meta name="twitter:image" content="http://www.myzwl.win/images/imgs2/1.gif">
+<meta name="twitter:title" content="基于servlet的验证码和md5加密">
+<meta name="twitter:description" content="前言验证码通俗的讲就是为了防止机器人自动注册无限制，而md5加密则将明文密码转化为一个32位字符串
+验证码这里是基于servlet的，也就是说通过java代码随机生成一个你设置的位数的字符串，然后将其保存在session中，以便后续是通过ajax传给前台验证或者是后台验证首先是生成验证码的类,这里我放在了com.ltw.tools包下
+1234567891011121314151617181920">
 
 
 
@@ -154,13 +148,13 @@ Heap（堆）存放new产生的数据
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/03/17/danli/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/03/19/md5/"/>
 
 
 
 
 
-  <title> 单例设计模式 | 秒西 </title>
+  <title> 基于servlet的验证码和md5加密 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -486,7 +480,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/17/danli/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/19/md5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -507,7 +501,7 @@ var _hmt = _hmt || [];
             
             
               
-                单例设计模式
+                基于servlet的验证码和md5加密
               
             
           </h1>
@@ -522,8 +516,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-17T20:48:51+08:00">
-                2017-03-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-19T19:48:51+08:00">
+                2017-03-19
               </time>
             
 
@@ -563,42 +557,20 @@ var _hmt = _hmt || [];
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>在介绍单例设计模式之前，先简单介绍一下java的内存分析，可以帮助我们更好的了解相关内容。在此之前，先简单介绍几个相关概念</strong></p>
-<h3 id="Stack（栈）"><a href="#Stack（栈）" class="headerlink" title="Stack（栈）"></a>Stack（栈）</h3><p>存放基本数据类型的数据和对象的引用及存放变量，如果存放的是基本数据类型（非static），直接将变量名和值存入stack中，如果是引用，只将变量名存入栈，然后指向它new的对象（存放在堆中）</p>
-<h3 id="Heap（堆）"><a href="#Heap（堆）" class="headerlink" title="Heap（堆）"></a>Heap（堆）</h3><p>存放new产生的数据</p>
-<h3 id="静态域"><a href="#静态域" class="headerlink" title="静态域"></a>静态域</h3><p>存放在对象中用static定义的静态成员（基本类型）</p>
-<h3 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h3><p>存放所有数据</p>
-<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><p><strong>下面将模拟几个实例先说明在证明。（此外注意String不是基本数据类型）</strong><br><img src="/images/imgs2/1.gif" alt="Alt text"><br>上面给出了一个实例，意在了解内存分配，接下来将以String为例说明</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">String str="abc";</div><div class="line">String str1="abc";</div><div class="line">String str2=str;</div><div class="line">String str3=new String("abc");</div><div class="line">String str4=new String("abc");</div><div class="line">String str5=str3;</div><div class="line">static String str6="abc";</div><div class="line">static String str7=new String("abc");</div></pre></td></tr></table></figure>
-<p>对应的测试内存地址是否相等</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">   System.out.println(str==str1);</div><div class="line">System.out.println(str==str2);</div><div class="line">System.out.println(str1==str2);</div></pre></td></tr></table></figure>
-<p>测试结果 true true true<br>说明String 是引用类型，而且上面方法产生的变量都只在栈中并且都是同一个地址</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">   System.out.println(str==str3);</div><div class="line">System.out.println(str3==str4);</div></pre></td></tr></table></figure>
-<p>测试结果：false false<br>说明：new 之后的对象地址存放在堆中，同时堆中每个new之后的对象地址都是不一样的</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">   System.out.println(str==str6);</div><div class="line">System.out.println(str3==str6);</div><div class="line">System.out.println(str6==str7);</div><div class="line">System.out.println(str3==str7);</div></pre></td></tr></table></figure>
-<p>测试结果：true false false false<br>说明：String类型的静态变量存放在栈中，而new之后的静态变量存放在堆中</p>
-<p>关于内存分配，比较复杂，这里只简单验证其中一些，其他可以自己设计案例模拟</p>
-<h3 id="单例"><a href="#单例" class="headerlink" title="单例"></a>单例</h3><p>顾名思义就是指唯一的对象实例<br>具体点说就是保证在整个应用程序的生命周期中，任何一个时刻，单例类的实例只存在一个，<br>通常其结构如下所示。<br><img src="/images/imgs2/2.gif" alt="Alt text"><br>入门案例：首先是单例类</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">package com.zwl.pojo;</div><div class="line"></div><div class="line">public class Singleton &#123;</div><div class="line"> private static Singleton singleton=new Singleton();</div><div class="line"> </div><div class="line"> private Singleton()&#123;&#125;</div><div class="line"></div><div class="line"> public static Singleton getInstance()</div><div class="line"> &#123;</div><div class="line">	 return singleton;</div><div class="line"> &#125;&#125;</div></pre></td></tr></table></figure>
-<p>测试用junit4进行测试</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public void test1()&#123;</div><div class="line">	System.out.println("start test..");</div><div class="line">	Singleton obj1=Singleton.getInstance();</div><div class="line">	Singleton obj2=Singleton.getInstance();</div><div class="line">	System.out.println(obj1==obj2);</div><div class="line">	System.out.println("end test..");</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>测试结果：start test.. true end test..<br>说明，obj1与obj2是同一个实例，间接说明了单例的特性</p>
-<p>至此我们对单例有了一个初步的形式上的认识了，那么它的特点是什么了？主要为三点<br>一：单例类确保自己只有一个实例（构造函数私有：不被外部实例化，也不被继承）<br>二：单例类必须自己创建自己的实例<br>三：单例类必须为其他对象提供唯一的实例</p>
-<p>说到单例就必然涉及到多线程，不多说，先模拟一个多线程来说明单例中存在的并发问题。<br>友情提醒一下，上面用的是饿汉式创建单例，就一开始就创建了一个实例，显然浪费内存，接下来将用懒汉式创建单例<br>主体类代码：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">private static Singleton singleton;</div><div class="line">	</div><div class="line">	 private Singleton()&#123; &#125;</div><div class="line">	 </div><div class="line">	 public static Singleton getInstance()</div><div class="line">	 &#123;</div><div class="line">		 if(singleton==null)&#123;</div><div class="line">			 singleton=new Singleton();</div><div class="line">		 &#125;</div><div class="line">		 return singleton;</div><div class="line">	 &#125;</div></pre></td></tr></table></figure>
-<p>下面将用三个线程模拟，两个线程调用单例类，第三个线程启动前两个线程，测试用junit</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public class thread1 implements Runnable&#123;</div><div class="line">	Singleton singleton;</div><div class="line">	public Singleton getSingleton() &#123;</div><div class="line">		return singleton;</div><div class="line">	&#125;</div><div class="line">	public void setSingleton(Singleton singleton) &#123;</div><div class="line">		this.singleton = singleton;</div><div class="line">	&#125;</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		singleton=Singleton.getInstance();	&#125;&#125;</div><div class="line">		</div><div class="line">public class Thread2 implements Runnable&#123;</div><div class="line">	Singleton singleton;</div><div class="line">	public Singleton getSingleton() &#123;</div><div class="line">		return singleton;	&#125;</div><div class="line">		</div><div class="line">	public void setSingleton(Singleton singleton) &#123;</div><div class="line">		this.singleton = singleton;	&#125;</div><div class="line">		</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		 singleton=Singleton.getInstance();</div><div class="line">			&#125;&#125;</div></pre></td></tr></table></figure>
-<p>简单说明一下，这两个线程目的是调用单例类（注意如果是单例，决不允许出现不同实例）<br>先贴出测试类：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">   thread3 t=new thread3();</div><div class="line">Thread tt=new Thread(t);</div><div class="line">tt.start();</div></pre></td></tr></table></figure>
-<p>这里我们通过控制第三个线程来构造并发，(这里采用数学中的极限思想)</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class thread3 implements Runnable&#123;</div><div class="line">	thread1 t1=new thread1();</div><div class="line">	Thread2 t2=new Thread2();</div><div class="line">	Thread t=new Thread(t1);</div><div class="line">	Thread t3=new Thread(t2);</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">	long start=System.currentTimeMillis();</div><div class="line">		t.start();</div><div class="line">		t3.start();</div><div class="line">		long end=System.currentTimeMillis();</div><div class="line">		System.out.println(end-start);   //并发的时间间隔</div><div class="line">		System.out.println(t1.getSingleton());</div><div class="line">		System.out.println(t2.getSingleton());</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<p>测试结果：0 null null<br>多次运行，又出现另一种结果：6<br>com.zwl.pojo.Singleton@8fdcd1<br>null和其他不同步结果<br>说明在很短的时间间隔类，一个居然已经有了实例，而另一个居然是空，显然不是单例，想想倘若在此时去操作该单例，可能就会是静态类发生变化，也就是并发问题了。</p>
-<p>很自然。那么怎么去解决了，一种很通用的方法就是加锁实现同步</p>
-<h3 id="双锁机制"><a href="#双锁机制" class="headerlink" title="双锁机制"></a>双锁机制</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public static Singleton getInstance()</div><div class="line"> &#123;</div><div class="line">	 if(singleton==null)</div><div class="line">	 &#123;</div><div class="line">		 synchronized(Singleton.class)</div><div class="line">		 &#123;</div><div class="line">	 if(singleton==null)&#123;</div><div class="line">		 singleton=new Singleton();</div><div class="line">	 &#125;</div><div class="line">		 &#125;</div><div class="line">	 &#125;</div><div class="line">	 return singleton;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
-<p>Synchronized关键字，声明使该线程在某处同步，也就是一个线程先占用，另一个线程被阻塞，显然如果不为空，就直接返回对象，对应第二个线程也就不执行if语句了，达到单例效果，可以想象如果为计数变量，同样可以通过二次加锁实现同步<br>  但是实际还是出现不同步，原因是jvm的一个bug，它允许无序写入线程，导致不同步，当然我们可以通过申明volatile关键字。<br> 为什么就可以解决双重解锁的bug了？<br>原因是volatile保证原子性，顺序性，即在双重加锁前保证多线程实现顺序性，举个例子吧，现在有两个线程t1和t2，分别执行b，c操作，如果乱序写入，可能出现t1正在操作b还没完成，t2操作c，致使单例失败，所以需要保证顺序性。<br>经过不断的测试，发现完全同步，只不过时间间隔为0，和null，null，至少是同步了~</p>
-<p><strong>接下来简单比较一下饿汉式和懒汉式的区别</strong><br>从速度和反应时间上，饿汉式加载好，从资源利用率上懒汉式好，<br>饿汉式很明显不会出现多线程并发问题，所以是线程安全的，而懒汉式则是非线程安全的</p>
-<p>关于单例模式的应用，笔者在当初学习过程中，遇到很多，学习总是一个不断压缩与重新认识的过程，像sql工具类，hibernate的懒加载，mybatis及 spring中的一些配置等等，往往把握不好，就会出现错误，这里只列举一些工具类，因为它是笔者接触的第一个单例应用。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Private static Connection connection;</div><div class="line">Private sqlhelper()&#123;&#125;；</div><div class="line">	public static Connection mysqlconn() throws Exception &#123;</div><div class="line">		try &#123;</div><div class="line">			// 加载驱动</div><div class="line">			Class.forName("com.mysql.jdbc.Driver");</div><div class="line">			// 连接数据库</div><div class="line">			 connection = DriverManager.getConnection(</div><div class="line">					"jdbc:mysql://localhost:3306/software", "root", "");</div><div class="line">			System.out.println("获得数据库");</div><div class="line">		&#125; catch (ClassNotFoundException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125; </div><div class="line">		return connection;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>验证码通俗的讲就是为了防止机器人自动注册无限制，而md5加密则将明文密码转化为一个32位字符串</p>
+<h4 id="验证码"><a href="#验证码" class="headerlink" title="验证码"></a>验证码</h4><p>这里是基于servlet的，也就是说通过java代码随机生成一个你设置的位数的字符串，然后将其保存在session中，以便后续是通过ajax传给前台验证或者是后台验证<br><strong>首先是生成验证码的类,这里我放在了com.ltw.tools包下</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">public class yanzhengma extends HttpServlet &#123;</div><div class="line"></div><div class="line">	public void doGet(HttpServletRequest request, HttpServletResponse response)</div><div class="line">			throws ServletException, IOException &#123;</div><div class="line">		// 7.禁止浏览器缓存随机图片</div><div class="line">		response.setDateHeader("Expires", -1);</div><div class="line">		response.setHeader("Cache-Control", "no-cache");</div><div class="line">		response.setHeader("Pragma", "no-cache");</div><div class="line">		// 6.通知客户机以图片方式打开发送过去的数据</div><div class="line">		response.setHeader("Content-Type", "image/jpeg");</div><div class="line">		// 1.在内存中创建一副图片</div><div class="line">		BufferedImage image = new BufferedImage(60, 30,</div><div class="line">				BufferedImage.TYPE_INT_RGB);</div><div class="line">		// 2.向图片上写数据</div><div class="line">		Graphics g = image.getGraphics();</div><div class="line">		// 设背景色</div><div class="line">		g.setColor(Color.BLACK);</div><div class="line">		g.fillRect(0, 0, 60, 30);</div><div class="line">		// 3.设置写入数据的颜色和字体</div><div class="line">		g.setColor(Color.RED);</div><div class="line">		g.setFont(new Font(null, Font.BOLD, 20));</div><div class="line">		// 4.向图片上写数据</div><div class="line">		String num = makeNum();</div><div class="line">		//这句话就是把随机生成的数值，保存到session，</div><div class="line">//通过session就可以直接去到随即生成的验证码了</div><div class="line">		request.getSession().setAttribute("checkcode", num);		g.drawString(num, 0, 20);</div><div class="line">		// 5.把写好数据的图片输出给浏览器</div><div class="line">		ImageIO.write(image, "jpg", response.getOutputStream());</div><div class="line">	&#125;</div><div class="line">	//该函数时随机生成7位数字</div><div class="line">	public String makeNum() &#123;</div><div class="line">		Random r = new Random();</div><div class="line">		//9999999 可以生成7位</div><div class="line">		String num = r.nextInt(99999) + ""; </div><div class="line">		StringBuffer sb = new StringBuffer();</div><div class="line">		//如果不够4位，前面补零</div><div class="line">		for (int i = 0; i &lt; 5 - num.length(); i++) &#123;</div><div class="line">			sb.append("0");</div><div class="line">		&#125;</div><div class="line">		num = sb.toString() + num;</div><div class="line">		return num;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	</div><div class="line">	public void doPost(HttpServletRequest request, HttpServletResponse response)</div><div class="line">			throws ServletException, IOException &#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里需要注意的是随机生成的数字放在session的checkcode中，通过设置r.nextInt(xxx)，xxx表示生成几位，如9999，则为四位验证码，然后在for循环中改成设置的位即可<br><strong>接下来将验证码映射成资源文件，在web.xml中设置</strong></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;servlet&gt;</div><div class="line">    &lt;servlet-name&gt;yanzhengma&lt;/servlet-name&gt;</div><div class="line">    &lt;servlet-class&gt;com<span class="selector-class">.ltw</span><span class="selector-class">.tools</span><span class="selector-class">.yanzhengma</span>&lt;/servlet-class&gt;</div><div class="line">  &lt;/servlet&gt;</div><div class="line">  </div><div class="line">  &lt;servlet-mapping&gt;</div><div class="line">    &lt;servlet-name&gt;yanzhengma&lt;/servlet-name&gt;</div><div class="line">    &lt;url-pattern&gt;/yanzhengma&lt;/url-pattern&gt;</div><div class="line">  &lt;/servlet-mapping&gt;</div></pre></td></tr></table></figure>
+<p>这样该类就被映射成一个资源，然后在页面中直接取资源</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"yanzhenma"</span> placeholder=<span class="string">"请输入验证码"</span> required=<span class="string">"required"</span>&gt;</div><div class="line">&lt;!--      验证码，后台已将该.java映射为文件 --&gt;</div><div class="line">            &lt;<span class="selector-tag">img</span> src=<span class="string">'/项目名/yanzhengma'</span> style=<span class="string">"width:400px;height: 50px;"</span> &gt;</div><div class="line">           &lt;<span class="selector-tag">input</span> id=<span class="string">"submit"</span> type=<span class="string">"submit"</span> value=<span class="string">"登录"</span>&gt;</div></pre></td></tr></table></figure>
+<p>如果这里我们需要在前台输入验证码验证，可以通过ajax传值验证。<br>然后在写一个servlet用来将checkcode转换为json传给前台</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">public class dengluyanzhen extends HttpServlet &#123;</div><div class="line"></div><div class="line">	public void doGet(HttpServletRequest request, HttpServletResponse response)</div><div class="line">			throws ServletException, IOException &#123;&#125;</div><div class="line"></div><div class="line">	public void doPost(HttpServletRequest request, HttpServletResponse response)</div><div class="line">			throws ServletException, IOException &#123;</div><div class="line">		String code = (String) request.getSession().getAttribute("checkcode");  //获得验证码</div><div class="line">		  </div><div class="line">        response.setContentType("text/html; charset=UTF-8");  </div><div class="line">        response.setHeader("Cache-Control", "no-cache");  </div><div class="line">        response.setHeader("Pragma", "no-cache");  </div><div class="line">        PrintWriter out = response.getWriter();  </div><div class="line">          </div><div class="line">        StringBuffer sb = new StringBuffer();  </div><div class="line">        sb.append(code);  </div><div class="line">        out.write(sb.toString());     //转化为json格式将验证码返回给前端</div><div class="line">        out.close();  </div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后在前台，还是上面那个页面增加如下代码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"> &lt;script type="text/javascript"&gt;</div><div class="line">$(function()&#123;</div><div class="line"></div><div class="line">	/* 利用ajax异步传值，result获得后台传过来的json数据，即验证码 */</div><div class="line">	 var result = "";</div><div class="line">       $.ajax(&#123;</div><div class="line">           url:'&lt;%=path%&gt;/dengluyanzhen',</div><div class="line">           type:"POST",</div><div class="line">           dataType:"json",</div><div class="line">           async:true,//关闭异步加载,这样只有加载完成才进行下一步</div><div class="line">           success:function (data) &#123;</div><div class="line">               result = data;</div><div class="line">           &#125;</div><div class="line">       &#125;);</div><div class="line">	 $("#submit").click(function () &#123; </div><div class="line">			var num1=$("[name='yanzhenma']").val();</div><div class="line">			 if(result!=num1)&#123;</div><div class="line">				alert("您输入的验证码不一致！请重新输入");</div><div class="line">				return false;</div><div class="line">				window.location.href="error.jsp";</div><div class="line">			&#125;	</div><div class="line">			&#125;); </div><div class="line">&#125;);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<h4 id="MD5加密"><a href="#MD5加密" class="headerlink" title="MD5加密"></a>MD5加密</h4><p>主要是一个算法</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">public class MD5 &#123;</div><div class="line">	public final static String MD5(String s) &#123;      </div><div class="line">		char hexDigits[] = &#123; '0', '1', '2', '3', '4', '5', '6', '7', '8', '9','a', 'b', 'c', 'd', 'e', 'f' &#125;;      </div><div class="line">		try &#123;      </div><div class="line">			byte[] strTemp = s.getBytes();      </div><div class="line">			MessageDigest mdTemp = MessageDigest.getInstance("MD5");      </div><div class="line">			mdTemp.update(strTemp);      </div><div class="line">			byte[] md = mdTemp.digest();      </div><div class="line">			int j = md.length;      </div><div class="line">			char str[] = new char[j * 2];      </div><div class="line">			int k = 0;      </div><div class="line">			for (int i = 0; i &lt; j; i++) &#123;      </div><div class="line">				byte byte0 = md[i];      </div><div class="line">				str[k++] = hexDigits[byte0 &gt;&gt;&gt; 4 &amp; 0xf];      </div><div class="line">				str[k++] = hexDigits[byte0 &amp; 0xf];      </div><div class="line">			&#125;      </div><div class="line">			return new String(str);      </div><div class="line">		&#125; catch (Exception e) &#123;      </div><div class="line">			return null;      </div><div class="line">		&#125;     </div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果我们想要将一个字符加密，直接调用该类的静态方法即可，如<br>MD5.MD5(users.getPwd())。</p>
 
       
     </div>
@@ -627,7 +599,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/设计模式/" rel="tag"># 设计模式</a>
+            <a href="/source/tags/java工具包/" rel="tag"># java工具包</a>
           
         </div>
       
@@ -640,8 +612,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/17/nat123/" rel="next" title="利用nat123搭建本地服务器">
-                <i class="fa fa-chevron-left"></i> 利用nat123搭建本地服务器
+              <a href="/2017/03/18/erweima/" rel="next" title="基于struts2的二维码">
+                <i class="fa fa-chevron-left"></i> 基于struts2的二维码
               </a>
             
           </div>
@@ -650,8 +622,8 @@ var _hmt = _hmt || [];
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/03/18/erweima/" rel="prev" title="基于struts2的二维码">
-                基于struts2的二维码 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/19/arraylist/" rel="prev" title="初识Arraylist底层">
+                初识Arraylist底层 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -830,7 +802,7 @@ var _hmt = _hmt || [];
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Stack（栈）"><span class="nav-text">Stack（栈）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Heap（堆）"><span class="nav-text">Heap（堆）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态域"><span class="nav-text">静态域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常量池"><span class="nav-text">常量池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例"><span class="nav-text">案例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单例"><span class="nav-text">单例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双锁机制"><span class="nav-text">双锁机制</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#验证码"><span class="nav-text">验证码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MD5加密"><span class="nav-text">MD5加密</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
