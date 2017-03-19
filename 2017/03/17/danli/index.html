@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="踩坑 , window," />
+  <meta name="keywords" content="设计模式," />
 
 
 
@@ -105,28 +105,28 @@
 
 
 
-<meta name="description" content="事实上笔者在去年8月份的时候就已经在自己电脑上通过nat123搭建了一台服务器，即p2p，自己的电脑作为服务器，但是这很不安全，而且每次别人通过外网访问，电脑必须打开而且开着服务器，由于是免费的，导致别人访问网速跟不上等等，最近阿里云有学生9.9元购买服务器，所以笔者买了一个，也很有兴趣将笔者之前写的两个网站部署上，结果很美好，但过程很坑，所以就需要总结来提高自己进入正题笔者也是google了许多">
+<meta name="description" content="前言在介绍单例设计模式之前，先简单介绍一下java的内存分析，可以帮助我们更好的了解相关内容。在此之前，先简单介绍几个相关概念
+Stack（栈）存放基本数据类型的数据和对象的引用及存放变量，如果存放的是基本数据类型（非static），直接将变量名和值存入stack中，如果是引用，只将变量名存入栈，然后指向它new的对象（存放在堆中）
+Heap（堆）存放new产生的数据
+静态域存放在对象中用stat">
 <meta property="og:type" content="article">
-<meta property="og:title" content="阿里云服务器上搭建javaweb站点">
-<meta property="og:url" content="http://www.myzwl.win/2017/03/16/dajianserver/index.html">
+<meta property="og:title" content="单例设计模式">
+<meta property="og:url" content="http://www.myzwl.win/2017/03/17/danli/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="事实上笔者在去年8月份的时候就已经在自己电脑上通过nat123搭建了一台服务器，即p2p，自己的电脑作为服务器，但是这很不安全，而且每次别人通过外网访问，电脑必须打开而且开着服务器，由于是免费的，导致别人访问网速跟不上等等，最近阿里云有学生9.9元购买服务器，所以笔者买了一个，也很有兴趣将笔者之前写的两个网站部署上，结果很美好，但过程很坑，所以就需要总结来提高自己进入正题笔者也是google了许多">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/1.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/1.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/3.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/4.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/5.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/6.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/7.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/8.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/9.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/10.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/10.gif">
-<meta property="og:updated_time" content="2017-03-18T13:20:16.000Z">
+<meta property="og:description" content="前言在介绍单例设计模式之前，先简单介绍一下java的内存分析，可以帮助我们更好的了解相关内容。在此之前，先简单介绍几个相关概念
+Stack（栈）存放基本数据类型的数据和对象的引用及存放变量，如果存放的是基本数据类型（非static），直接将变量名和值存入stack中，如果是引用，只将变量名存入栈，然后指向它new的对象（存放在堆中）
+Heap（堆）存放new产生的数据
+静态域存放在对象中用stat">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs2/1.gif">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs2/2.gif">
+<meta property="og:updated_time" content="2017-03-19T04:58:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="阿里云服务器上搭建javaweb站点">
-<meta name="twitter:description" content="事实上笔者在去年8月份的时候就已经在自己电脑上通过nat123搭建了一台服务器，即p2p，自己的电脑作为服务器，但是这很不安全，而且每次别人通过外网访问，电脑必须打开而且开着服务器，由于是免费的，导致别人访问网速跟不上等等，最近阿里云有学生9.9元购买服务器，所以笔者买了一个，也很有兴趣将笔者之前写的两个网站部署上，结果很美好，但过程很坑，所以就需要总结来提高自己进入正题笔者也是google了许多">
-<meta name="twitter:image" content="http://www.myzwl.win/images/imgs1/1.gif">
+<meta name="twitter:title" content="单例设计模式">
+<meta name="twitter:description" content="前言在介绍单例设计模式之前，先简单介绍一下java的内存分析，可以帮助我们更好的了解相关内容。在此之前，先简单介绍几个相关概念
+Stack（栈）存放基本数据类型的数据和对象的引用及存放变量，如果存放的是基本数据类型（非static），直接将变量名和值存入stack中，如果是引用，只将变量名存入栈，然后指向它new的对象（存放在堆中）
+Heap（堆）存放new产生的数据
+静态域存放在对象中用stat">
+<meta name="twitter:image" content="http://www.myzwl.win/images/imgs2/1.gif">
 
 
 
@@ -154,13 +154,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/03/16/dajianserver/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/03/17/danli/"/>
 
 
 
 
 
-  <title> 阿里云服务器上搭建javaweb站点 | 秒西 </title>
+  <title> 单例设计模式 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -486,7 +486,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/16/dajianserver/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/17/danli/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -507,7 +507,7 @@ var _hmt = _hmt || [];
             
             
               
-                阿里云服务器上搭建javaweb站点
+                单例设计模式
               
             
           </h1>
@@ -522,8 +522,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-16T17:48:51+08:00">
-                2017-03-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-17T20:48:51+08:00">
+                2017-03-17
               </time>
             
 
@@ -563,63 +563,42 @@ var _hmt = _hmt || [];
       
 
       
-        <p><strong>事实上笔者在去年8月份的时候就已经在自己电脑上通过nat123搭建了一台服务器，即p2p，自己的电脑作为服务器，但是这很不安全，而且每次别人通过外网访问，电脑必须打开而且开着服务器，由于是免费的，导致别人访问网速跟不上等等，最近阿里云有学生9.9元购买服务器，所以笔者买了一个，也很有兴趣将笔者之前写的两个网站部署上，结果很美好，但过程很坑，所以就需要总结来提高自己</strong><br><em>进入正题</em><br>笔者也是google了许多例子和前人的经验找到适合自己的方法</p>
-<p><strong>首先需要租一台云服务器，我选择了阿里云</strong><br><img src="/images/imgs1/1.gif" alt="Alt text"></p>
-<p>注意这里操作系统有四个选项，笔者发现只有第四个符合自己（貌似是自定义），然后按照步骤，其中有些需要注意<br><img src="/images/imgs1/1.gif" alt="Alt text"></p>
-<p>安全组，这里暂时可以选择默认的第一个，因为后面如果在搭建web时需要一些端口（如mysql默认3306端口改掉，tomcat8080端口换成80等等），到时可以在后台操作）</p>
-<p><img src="/images/imgs1/3.gif" alt="Alt text"><br>关于镜像选择，因为笔者是window7，而且还是32位的，相对64位只能有不大于4g的内存，</p>
-<p><img src="/images/imgs1/4.gif" alt="Alt text"><br>这里的密码就是之后在本地机子上远程登录这个服务器所要的密码</p>
-<p>ok至此，成功租了一台服务器，这时你会收到一条短信，里面有你这台服务器的公网地址</p>
-<p><strong>然后笔者就开始着手在本机上登录该服务器，当然是为了搭建javaweb准备的</strong></p>
-<ol>
-<li><p>在本机上准备javaweb需要的环境<br><img src="/images/imgs1/5.gif" alt="Alt text"></p>
-</li>
-<li><p>在本机上新建一个分区用来放上述软件供服务器远程使用（其实也可以不用分区，直接复制也行，毕竟笔者被分区坑了，导致后来的双系统引导界面消失）</p>
-</li>
-<li><p>本机上登录远程连接可以用运行-mstsc-直接进入到如下界面<br><img src="/images/imgs1/6.gif" alt="Alt text"><br>其中计算机就是你的公网地址，如果你是新建了一个分区，那么就点选项在本地资源的详细信息中就新建的那个分区勾上，笔者这里是x盘（如果没有的话就直接连接）<br><img src="/images/imgs1/7.gif" alt="Alt text"></p>
-</li>
-<li><p>后面什么证书，安全啊先不管了，应该是进入远程服务器了<br><img src="/images/imgs1/8.gif" alt="Alt text"></p>
-</li>
-<li><p>接下来就是将mysql，jdk等复制到c盘中，因为只有一个盘，后续就是安装配置了</p>
-</li>
-<li>安装jdk，笔者的是jdk1.6（注意jdk版本不同，后续运行高版本会出像版本错误，笔者已吃过亏），配置环境变量</li>
-<li>安装tomcat，配置tomcat环境变量，注意上述不需要自定义文件夹，因为只有一个c盘，tomcat默认端口是8080</li>
-<li>安装mysql，这里面需要注意的是里面有端口设置，可以选择默认的3306或者自定义，然后就是用户与密码设置</li>
-<li>可以使用可视化数据库工具，这里笔者使用了navicat<br><strong>至此算是搭建了一个简单web环境，可以先测试一下</strong><br>拷贝一个已经被编译过的web项目，启动tomcat与mysql，然后利用localhost:8080/项目名访问，如果出现界面就表示以上配置成功</li>
-</ol>
-<p><strong>接下来需要买一个域名</strong><br><img src="/images/imgs1/9.gif" alt="Alt text"></p>
-<ol>
-<li>成功后点击解析，在里面找到新手设置，点进去<br><img src="/images/imgs1/10.gif" alt="Alt text"><br>点击设置网站解析，然后输入公网，即可。</li>
-<li>在远程服务器中，找到tomcat下conf下的server.xml文件，如果我们不想要8080端口并且输入域名时不想要端口的话，就先把8080端口改成80</li>
-</ol>
-<blockquote>
-<p> Connector port=”80” protocol=”HTTP/1.1”<br>               connectionTimeout=”20000”<br>               redirectPort=”8443” /&gt;</p>
-</blockquote>
-<p> 3.然后找到host</p>
-<blockquote>
-<p>  Host name=”你刚刚解析的域名”  appBase=”webapp”<br>            unpackWARs=”true” autoDeploy=”true”&gt;</p>
-<p>&lt;Context path=”” docBase=”/项目名” debug=”0” reloadable=”true” </p>
-</blockquote>
-<p>注意这里appBase是放项目的站点，context内的docBase是你的项目名，目前我们只是一个tomcat运行一个域名执行一个项目<br>然后打开C:\Windows\System32\drivers\etc下的host文件<br>增加如下设置</p>
-<blockquote>
-<p>127.0.0.1       localhost<br>  ::1             localhost<br>192.168.1.11    刚刚的域名</p>
-</blockquote>
-<p>保存，然后重启服务器，可能会发现会遇到一些问题，如80端口被占用，80端口未开放等等，假设未被占有（如果占用，google上有解决方法），<br>如果未开放，这里我们就需要在云服务器上进行端口开放设置</p>
-<p><strong>进入我们购买的云服务器，点击安全组，选中一个实例，点击配置，选择公网入方向，按照步骤开放想要的端口</strong><br> <img src="/images/imgs1/10.gif" alt="Alt text"></p>
-<p> 至此只要输入域名就可以访问了。</p>
-<p> 当然，如果我们想要一个tomcat上配置多个域名，每个域名运行各自不同的项目，那如何做了，经过踩坑后，大概如下步骤</p>
-<ol>
-<li>可以选择在tomcat下新建一个站点，类似于原来的webapp，然后在server.xml中进行配置一个新host</li>
-</ol>
-<blockquote>
-<p>  Host name=”第二个域名”  appBase=”新创建的站点”<br>            unpackWARs=”true” autoDeploy=”true”&gt;</p>
-<p>&lt;Context path=”” docBase=”/第二个项目名” debug=”0” reloadable=”true”</p>
-</blockquote>
-<p>2.然后在hosts文件汇总加入第二个域名</p>
-<blockquote>
-<p>127.0.0.1       localhost<br>  ::1             localhost<br>192.168.1.11    刚刚的域名<br>192.168.1.11    第二个域名</p>
-</blockquote>
-<p>最后重启服务器。<br>笔者在这里遇到了一个很奇怪的坑，同一服务器下的项目出现奇怪的jar包冲突，只要删掉xerces包就行了（当然是在远程服务器上才产生冲突的）</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>在介绍单例设计模式之前，先简单介绍一下java的内存分析，可以帮助我们更好的了解相关内容。在此之前，先简单介绍几个相关概念</strong></p>
+<h3 id="Stack（栈）"><a href="#Stack（栈）" class="headerlink" title="Stack（栈）"></a>Stack（栈）</h3><p>存放基本数据类型的数据和对象的引用及存放变量，如果存放的是基本数据类型（非static），直接将变量名和值存入stack中，如果是引用，只将变量名存入栈，然后指向它new的对象（存放在堆中）</p>
+<h3 id="Heap（堆）"><a href="#Heap（堆）" class="headerlink" title="Heap（堆）"></a>Heap（堆）</h3><p>存放new产生的数据</p>
+<h3 id="静态域"><a href="#静态域" class="headerlink" title="静态域"></a>静态域</h3><p>存放在对象中用static定义的静态成员（基本类型）</p>
+<h3 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h3><p>存放所有数据</p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><p><strong>下面将模拟几个实例先说明在证明。（此外注意String不是基本数据类型）</strong><br><img src="/images/imgs2/1.gif" alt="Alt text"><br>上面给出了一个实例，意在了解内存分配，接下来将以String为例说明</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">String str="abc";</div><div class="line">String str1="abc";</div><div class="line">String str2=str;</div><div class="line">String str3=new String("abc");</div><div class="line">String str4=new String("abc");</div><div class="line">String str5=str3;</div><div class="line">static String str6="abc";</div><div class="line">static String str7=new String("abc");</div></pre></td></tr></table></figure>
+<p>对应的测试内存地址是否相等</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">   System.out.println(str==str1);</div><div class="line">System.out.println(str==str2);</div><div class="line">System.out.println(str1==str2);</div></pre></td></tr></table></figure>
+<p>测试结果 true true true<br>说明String 是引用类型，而且上面方法产生的变量都只在栈中并且都是同一个地址</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">   System.out.println(str==str3);</div><div class="line">System.out.println(str3==str4);</div></pre></td></tr></table></figure>
+<p>测试结果：false false<br>说明：new 之后的对象地址存放在堆中，同时堆中每个new之后的对象地址都是不一样的</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">   System.out.println(str==str6);</div><div class="line">System.out.println(str3==str6);</div><div class="line">System.out.println(str6==str7);</div><div class="line">System.out.println(str3==str7);</div></pre></td></tr></table></figure>
+<p>测试结果：true false false false<br>说明：String类型的静态变量存放在栈中，而new之后的静态变量存放在堆中</p>
+<p>关于内存分配，比较复杂，这里只简单验证其中一些，其他可以自己设计案例模拟</p>
+<h3 id="单例"><a href="#单例" class="headerlink" title="单例"></a>单例</h3><p>顾名思义就是指唯一的对象实例<br>具体点说就是保证在整个应用程序的生命周期中，任何一个时刻，单例类的实例只存在一个，<br>通常其结构如下所示。<br><img src="/images/imgs2/2.gif" alt="Alt text"><br>入门案例：首先是单例类</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">package com.zwl.pojo;</div><div class="line"></div><div class="line">public class Singleton &#123;</div><div class="line"> private static Singleton singleton=new Singleton();</div><div class="line"> </div><div class="line"> private Singleton()&#123;&#125;</div><div class="line"></div><div class="line"> public static Singleton getInstance()</div><div class="line"> &#123;</div><div class="line">	 return singleton;</div><div class="line"> &#125;&#125;</div></pre></td></tr></table></figure>
+<p>测试用junit4进行测试</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public void test1()&#123;</div><div class="line">	System.out.println("start test..");</div><div class="line">	Singleton obj1=Singleton.getInstance();</div><div class="line">	Singleton obj2=Singleton.getInstance();</div><div class="line">	System.out.println(obj1==obj2);</div><div class="line">	System.out.println("end test..");</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试结果：start test.. true end test..<br>说明，obj1与obj2是同一个实例，间接说明了单例的特性</p>
+<p>至此我们对单例有了一个初步的形式上的认识了，那么它的特点是什么了？主要为三点<br>一：单例类确保自己只有一个实例（构造函数私有：不被外部实例化，也不被继承）<br>二：单例类必须自己创建自己的实例<br>三：单例类必须为其他对象提供唯一的实例</p>
+<p>说到单例就必然涉及到多线程，不多说，先模拟一个多线程来说明单例中存在的并发问题。<br>友情提醒一下，上面用的是饿汉式创建单例，就一开始就创建了一个实例，显然浪费内存，接下来将用懒汉式创建单例<br>主体类代码：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">private static Singleton singleton;</div><div class="line">	</div><div class="line">	 private Singleton()&#123; &#125;</div><div class="line">	 </div><div class="line">	 public static Singleton getInstance()</div><div class="line">	 &#123;</div><div class="line">		 if(singleton==null)&#123;</div><div class="line">			 singleton=new Singleton();</div><div class="line">		 &#125;</div><div class="line">		 return singleton;</div><div class="line">	 &#125;</div></pre></td></tr></table></figure>
+<p>下面将用三个线程模拟，两个线程调用单例类，第三个线程启动前两个线程，测试用junit</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public class thread1 implements Runnable&#123;</div><div class="line">	Singleton singleton;</div><div class="line">	public Singleton getSingleton() &#123;</div><div class="line">		return singleton;</div><div class="line">	&#125;</div><div class="line">	public void setSingleton(Singleton singleton) &#123;</div><div class="line">		this.singleton = singleton;</div><div class="line">	&#125;</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		singleton=Singleton.getInstance();	&#125;&#125;</div><div class="line">		</div><div class="line">public class Thread2 implements Runnable&#123;</div><div class="line">	Singleton singleton;</div><div class="line">	public Singleton getSingleton() &#123;</div><div class="line">		return singleton;	&#125;</div><div class="line">		</div><div class="line">	public void setSingleton(Singleton singleton) &#123;</div><div class="line">		this.singleton = singleton;	&#125;</div><div class="line">		</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		 singleton=Singleton.getInstance();</div><div class="line">			&#125;&#125;</div></pre></td></tr></table></figure>
+<p>简单说明一下，这两个线程目的是调用单例类（注意如果是单例，决不允许出现不同实例）<br>先贴出测试类：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">   thread3 t=new thread3();</div><div class="line">Thread tt=new Thread(t);</div><div class="line">tt.start();</div></pre></td></tr></table></figure>
+<p>这里我们通过控制第三个线程来构造并发，(这里采用数学中的极限思想)</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class thread3 implements Runnable&#123;</div><div class="line">	thread1 t1=new thread1();</div><div class="line">	Thread2 t2=new Thread2();</div><div class="line">	Thread t=new Thread(t1);</div><div class="line">	Thread t3=new Thread(t2);</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">	long start=System.currentTimeMillis();</div><div class="line">		t.start();</div><div class="line">		t3.start();</div><div class="line">		long end=System.currentTimeMillis();</div><div class="line">		System.out.println(end-start);   //并发的时间间隔</div><div class="line">		System.out.println(t1.getSingleton());</div><div class="line">		System.out.println(t2.getSingleton());</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>测试结果：0 null null<br>多次运行，又出现另一种结果：6<br>com.zwl.pojo.Singleton@8fdcd1<br>null和其他不同步结果<br>说明在很短的时间间隔类，一个居然已经有了实例，而另一个居然是空，显然不是单例，想想倘若在此时去操作该单例，可能就会是静态类发生变化，也就是并发问题了。</p>
+<p>很自然。那么怎么去解决了，一种很通用的方法就是加锁实现同步</p>
+<h3 id="双锁机制"><a href="#双锁机制" class="headerlink" title="双锁机制"></a>双锁机制</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public static Singleton getInstance()</div><div class="line"> &#123;</div><div class="line">	 if(singleton==null)</div><div class="line">	 &#123;</div><div class="line">		 synchronized(Singleton.class)</div><div class="line">		 &#123;</div><div class="line">	 if(singleton==null)&#123;</div><div class="line">		 singleton=new Singleton();</div><div class="line">	 &#125;</div><div class="line">		 &#125;</div><div class="line">	 &#125;</div><div class="line">	 return singleton;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>Synchronized关键字，声明使该线程在某处同步，也就是一个线程先占用，另一个线程被阻塞，显然如果不为空，就直接返回对象，对应第二个线程也就不执行if语句了，达到单例效果，可以想象如果为计数变量，同样可以通过二次加锁实现同步<br>  但是实际还是出现不同步，原因是jvm的一个bug，它允许无序写入线程，导致不同步，当然我们可以通过申明volatile关键字。<br> 为什么就可以解决双重解锁的bug了？<br>原因是volatile保证原子性，顺序性，即在双重加锁前保证多线程实现顺序性，举个例子吧，现在有两个线程t1和t2，分别执行b，c操作，如果乱序写入，可能出现t1正在操作b还没完成，t2操作c，致使单例失败，所以需要保证顺序性。<br>经过不断的测试，发现完全同步，只不过时间间隔为0，和null，null，至少是同步了~</p>
+<p><strong>接下来简单比较一下饿汉式和懒汉式的区别</strong><br>从速度和反应时间上，饿汉式加载好，从资源利用率上懒汉式好，<br>饿汉式很明显不会出现多线程并发问题，所以是线程安全的，而懒汉式则是非线程安全的</p>
+<p>关于单例模式的应用，笔者在当初学习过程中，遇到很多，学习总是一个不断压缩与重新认识的过程，像sql工具类，hibernate的懒加载，mybatis及 spring中的一些配置等等，往往把握不好，就会出现错误，这里只列举一些工具类，因为它是笔者接触的第一个单例应用。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Private static Connection connection;</div><div class="line">Private sqlhelper()&#123;&#125;；</div><div class="line">	public static Connection mysqlconn() throws Exception &#123;</div><div class="line">		try &#123;</div><div class="line">			// 加载驱动</div><div class="line">			Class.forName("com.mysql.jdbc.Driver");</div><div class="line">			// 连接数据库</div><div class="line">			 connection = DriverManager.getConnection(</div><div class="line">					"jdbc:mysql://localhost:3306/software", "root", "");</div><div class="line">			System.out.println("获得数据库");</div><div class="line">		&#125; catch (ClassNotFoundException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125; </div><div class="line">		return connection;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -648,7 +627,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/踩坑-window/" rel="tag"># 踩坑 , window</a>
+            <a href="/source/tags/设计模式/" rel="tag"># 设计模式</a>
           
         </div>
       
@@ -661,8 +640,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/12/hexo1/" rel="next" title="初步搭建hexo博客">
-                <i class="fa fa-chevron-left"></i> 初步搭建hexo博客
+              <a href="/2017/03/17/nat123/" rel="next" title="利用nat123搭建本地服务器">
+                <i class="fa fa-chevron-left"></i> 利用nat123搭建本地服务器
               </a>
             
           </div>
@@ -670,10 +649,6 @@ var _hmt = _hmt || [];
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/17/fenqu/" rel="prev" title="window分区导致双系统无引导界面">
-                window分区导致双系统无引导界面 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -748,8 +723,17 @@ var _hmt = _hmt || [];
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -832,6 +816,22 @@ var _hmt = _hmt || [];
 		
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Stack（栈）"><span class="nav-text">Stack（栈）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Heap（堆）"><span class="nav-text">Heap（堆）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态域"><span class="nav-text">静态域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常量池"><span class="nav-text">常量池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例"><span class="nav-text">案例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单例"><span class="nav-text">单例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双锁机制"><span class="nav-text">双锁机制</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
