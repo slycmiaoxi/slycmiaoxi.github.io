@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java工具包," />
+  <meta name="keywords" content="五大框架," />
 
 
 
@@ -105,22 +105,37 @@
 
 
 
-<meta name="description" content="前言验证码通俗的讲就是为了防止机器人自动注册无限制，而md5加密则将明文密码转化为一个32位字符串
-验证码这里是基于servlet的，也就是说通过java代码随机生成一个你设置的位数的字符串，然后将其保存在session中，以便后续是通过ajax传给前台验证或者是后台验证首先是生成验证码的类,这里我放在了com.ltw.tools包下
-1234567891011121314151617181920">
+<meta name="description" content="前言ssh三大框架整合主要指的是structs2+hibernate+spring，利用mvc分层思想实现解耦，其中structs2负责业务控制和跳转，hibernate负责持久层，spring管理各层
+ssh下面将以一个简单的登录功能搭建整合环境
+
+首先建立一个web工程，取名ssh2
+
+导入jar包，由于ssh2整合包过多，可以自行官网下载
+
+导入相关配置文件Spring核心文件：applic">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于servlet的验证码和md5加密">
-<meta property="og:url" content="http://www.myzwl.win/2017/03/19/md5/index.html">
+<meta property="og:title" content="ssh三大框架整合">
+<meta property="og:url" content="http://www.myzwl.win/2017/03/21/ssh/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="前言验证码通俗的讲就是为了防止机器人自动注册无限制，而md5加密则将明文密码转化为一个32位字符串
-验证码这里是基于servlet的，也就是说通过java代码随机生成一个你设置的位数的字符串，然后将其保存在session中，以便后续是通过ajax传给前台验证或者是后台验证首先是生成验证码的类,这里我放在了com.ltw.tools包下
-1234567891011121314151617181920">
-<meta property="og:updated_time" content="2017-03-19T13:54:46.000Z">
+<meta property="og:description" content="前言ssh三大框架整合主要指的是structs2+hibernate+spring，利用mvc分层思想实现解耦，其中structs2负责业务控制和跳转，hibernate负责持久层，spring管理各层
+ssh下面将以一个简单的登录功能搭建整合环境
+
+首先建立一个web工程，取名ssh2
+
+导入jar包，由于ssh2整合包过多，可以自行官网下载
+
+导入相关配置文件Spring核心文件：applic">
+<meta property="og:updated_time" content="2017-03-21T12:43:08.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="基于servlet的验证码和md5加密">
-<meta name="twitter:description" content="前言验证码通俗的讲就是为了防止机器人自动注册无限制，而md5加密则将明文密码转化为一个32位字符串
-验证码这里是基于servlet的，也就是说通过java代码随机生成一个你设置的位数的字符串，然后将其保存在session中，以便后续是通过ajax传给前台验证或者是后台验证首先是生成验证码的类,这里我放在了com.ltw.tools包下
-1234567891011121314151617181920">
+<meta name="twitter:title" content="ssh三大框架整合">
+<meta name="twitter:description" content="前言ssh三大框架整合主要指的是structs2+hibernate+spring，利用mvc分层思想实现解耦，其中structs2负责业务控制和跳转，hibernate负责持久层，spring管理各层
+ssh下面将以一个简单的登录功能搭建整合环境
+
+首先建立一个web工程，取名ssh2
+
+导入jar包，由于ssh2整合包过多，可以自行官网下载
+
+导入相关配置文件Spring核心文件：applic">
 
 
 
@@ -148,13 +163,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/03/19/md5/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/03/21/ssh/"/>
 
 
 
 
 
-  <title> 基于servlet的验证码和md5加密 | 秒西 </title>
+  <title> ssh三大框架整合 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -480,7 +495,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/19/md5/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/21/ssh/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -501,7 +516,7 @@ var _hmt = _hmt || [];
             
             
               
-                基于servlet的验证码和md5加密
+                ssh三大框架整合
               
             
           </h1>
@@ -516,8 +531,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-19T19:48:51+08:00">
-                2017-03-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-21T19:48:51+08:00">
+                2017-03-21
               </time>
             
 
@@ -557,20 +572,54 @@ var _hmt = _hmt || [];
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>验证码通俗的讲就是为了防止机器人自动注册无限制，而md5加密则将明文密码转化为一个32位字符串</p>
-<h4 id="验证码"><a href="#验证码" class="headerlink" title="验证码"></a>验证码</h4><p>这里是基于servlet的，也就是说通过java代码随机生成一个你设置的位数的字符串，然后将其保存在session中，以便后续是通过ajax传给前台验证或者是后台验证<br><strong>首先是生成验证码的类,这里我放在了com.ltw.tools包下</strong></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">public class yanzhengma extends HttpServlet &#123;</div><div class="line"></div><div class="line">	public void doGet(HttpServletRequest request, HttpServletResponse response)</div><div class="line">			throws ServletException, IOException &#123;</div><div class="line">		// 7.禁止浏览器缓存随机图片</div><div class="line">		response.setDateHeader("Expires", -1);</div><div class="line">		response.setHeader("Cache-Control", "no-cache");</div><div class="line">		response.setHeader("Pragma", "no-cache");</div><div class="line">		// 6.通知客户机以图片方式打开发送过去的数据</div><div class="line">		response.setHeader("Content-Type", "image/jpeg");</div><div class="line">		// 1.在内存中创建一副图片</div><div class="line">		BufferedImage image = new BufferedImage(60, 30,</div><div class="line">				BufferedImage.TYPE_INT_RGB);</div><div class="line">		// 2.向图片上写数据</div><div class="line">		Graphics g = image.getGraphics();</div><div class="line">		// 设背景色</div><div class="line">		g.setColor(Color.BLACK);</div><div class="line">		g.fillRect(0, 0, 60, 30);</div><div class="line">		// 3.设置写入数据的颜色和字体</div><div class="line">		g.setColor(Color.RED);</div><div class="line">		g.setFont(new Font(null, Font.BOLD, 20));</div><div class="line">		// 4.向图片上写数据</div><div class="line">		String num = makeNum();</div><div class="line">		//这句话就是把随机生成的数值，保存到session，</div><div class="line">//通过session就可以直接去到随即生成的验证码了</div><div class="line">		request.getSession().setAttribute("checkcode", num);		g.drawString(num, 0, 20);</div><div class="line">		// 5.把写好数据的图片输出给浏览器</div><div class="line">		ImageIO.write(image, "jpg", response.getOutputStream());</div><div class="line">	&#125;</div><div class="line">	//该函数时随机生成7位数字</div><div class="line">	public String makeNum() &#123;</div><div class="line">		Random r = new Random();</div><div class="line">		//9999999 可以生成7位</div><div class="line">		String num = r.nextInt(99999) + ""; </div><div class="line">		StringBuffer sb = new StringBuffer();</div><div class="line">		//如果不够4位，前面补零</div><div class="line">		for (int i = 0; i &lt; 5 - num.length(); i++) &#123;</div><div class="line">			sb.append("0");</div><div class="line">		&#125;</div><div class="line">		num = sb.toString() + num;</div><div class="line">		return num;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	</div><div class="line">	public void doPost(HttpServletRequest request, HttpServletResponse response)</div><div class="line">			throws ServletException, IOException &#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里需要注意的是随机生成的数字放在session的checkcode中，通过设置r.nextInt(xxx)，xxx表示生成几位，如9999，则为四位验证码，然后在for循环中改成设置的位即可<br><strong>接下来将验证码映射成资源文件，在web.xml中设置</strong></p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;servlet&gt;</div><div class="line">    &lt;servlet-name&gt;yanzhengma&lt;/servlet-name&gt;</div><div class="line">    &lt;servlet-class&gt;com<span class="selector-class">.ltw</span><span class="selector-class">.tools</span><span class="selector-class">.yanzhengma</span>&lt;/servlet-class&gt;</div><div class="line">  &lt;/servlet&gt;</div><div class="line">  </div><div class="line">  &lt;servlet-mapping&gt;</div><div class="line">    &lt;servlet-name&gt;yanzhengma&lt;/servlet-name&gt;</div><div class="line">    &lt;url-pattern&gt;/yanzhengma&lt;/url-pattern&gt;</div><div class="line">  &lt;/servlet-mapping&gt;</div></pre></td></tr></table></figure>
-<p>这样该类就被映射成一个资源，然后在页面中直接取资源</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"yanzhenma"</span> placeholder=<span class="string">"请输入验证码"</span> required=<span class="string">"required"</span>&gt;</div><div class="line">&lt;!--      验证码，后台已将该.java映射为文件 --&gt;</div><div class="line">            &lt;<span class="selector-tag">img</span> src=<span class="string">'/项目名/yanzhengma'</span> style=<span class="string">"width:400px;height: 50px;"</span> &gt;</div><div class="line">           &lt;<span class="selector-tag">input</span> id=<span class="string">"submit"</span> type=<span class="string">"submit"</span> value=<span class="string">"登录"</span>&gt;</div></pre></td></tr></table></figure>
-<p>如果这里我们需要在前台输入验证码验证，可以通过ajax传值验证。<br>然后在写一个servlet用来将checkcode转换为json传给前台</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">public class dengluyanzhen extends HttpServlet &#123;</div><div class="line"></div><div class="line">	public void doGet(HttpServletRequest request, HttpServletResponse response)</div><div class="line">			throws ServletException, IOException &#123;&#125;</div><div class="line"></div><div class="line">	public void doPost(HttpServletRequest request, HttpServletResponse response)</div><div class="line">			throws ServletException, IOException &#123;</div><div class="line">		String code = (String) request.getSession().getAttribute("checkcode");  //获得验证码</div><div class="line">		  </div><div class="line">        response.setContentType("text/html; charset=UTF-8");  </div><div class="line">        response.setHeader("Cache-Control", "no-cache");  </div><div class="line">        response.setHeader("Pragma", "no-cache");  </div><div class="line">        PrintWriter out = response.getWriter();  </div><div class="line">          </div><div class="line">        StringBuffer sb = new StringBuffer();  </div><div class="line">        sb.append(code);  </div><div class="line">        out.write(sb.toString());     //转化为json格式将验证码返回给前端</div><div class="line">        out.close();  </div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>然后在前台，还是上面那个页面增加如下代码</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"> &lt;script type="text/javascript"&gt;</div><div class="line">$(function()&#123;</div><div class="line"></div><div class="line">	/* 利用ajax异步传值，result获得后台传过来的json数据，即验证码 */</div><div class="line">	 var result = "";</div><div class="line">       $.ajax(&#123;</div><div class="line">           url:'&lt;%=path%&gt;/dengluyanzhen',</div><div class="line">           type:"POST",</div><div class="line">           dataType:"json",</div><div class="line">           async:true,//关闭异步加载,这样只有加载完成才进行下一步</div><div class="line">           success:function (data) &#123;</div><div class="line">               result = data;</div><div class="line">           &#125;</div><div class="line">       &#125;);</div><div class="line">	 $("#submit").click(function () &#123; </div><div class="line">			var num1=$("[name='yanzhenma']").val();</div><div class="line">			 if(result!=num1)&#123;</div><div class="line">				alert("您输入的验证码不一致！请重新输入");</div><div class="line">				return false;</div><div class="line">				window.location.href="error.jsp";</div><div class="line">			&#125;	</div><div class="line">			&#125;); </div><div class="line">&#125;);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
-<h4 id="MD5加密"><a href="#MD5加密" class="headerlink" title="MD5加密"></a>MD5加密</h4><p>主要是一个算法</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">public class MD5 &#123;</div><div class="line">	public final static String MD5(String s) &#123;      </div><div class="line">		char hexDigits[] = &#123; '0', '1', '2', '3', '4', '5', '6', '7', '8', '9','a', 'b', 'c', 'd', 'e', 'f' &#125;;      </div><div class="line">		try &#123;      </div><div class="line">			byte[] strTemp = s.getBytes();      </div><div class="line">			MessageDigest mdTemp = MessageDigest.getInstance("MD5");      </div><div class="line">			mdTemp.update(strTemp);      </div><div class="line">			byte[] md = mdTemp.digest();      </div><div class="line">			int j = md.length;      </div><div class="line">			char str[] = new char[j * 2];      </div><div class="line">			int k = 0;      </div><div class="line">			for (int i = 0; i &lt; j; i++) &#123;      </div><div class="line">				byte byte0 = md[i];      </div><div class="line">				str[k++] = hexDigits[byte0 &gt;&gt;&gt; 4 &amp; 0xf];      </div><div class="line">				str[k++] = hexDigits[byte0 &amp; 0xf];      </div><div class="line">			&#125;      </div><div class="line">			return new String(str);      </div><div class="line">		&#125; catch (Exception e) &#123;      </div><div class="line">			return null;      </div><div class="line">		&#125;     </div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如果我们想要将一个字符加密，直接调用该类的静态方法即可，如<br>MD5.MD5(users.getPwd())。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>ssh三大框架整合主要指的是structs2+hibernate+spring，利用mvc分层思想实现解耦，其中structs2负责业务控制和跳转，hibernate负责持久层，spring管理各层</strong></p>
+<h4 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h4><p>下面将以一个简单的登录功能搭建整合环境</p>
+<ol>
+<li><p>首先建立一个web工程，取名ssh2</p>
+</li>
+<li><p>导入jar包，由于ssh2整合包过多，可以自行官网下载</p>
+</li>
+<li><p>导入相关配置文件<br>Spring核心文件：applicationcontent.xml放在web-inf下<br>web工程核心文件：web.xml也放在web-inf下<br>structs2核心文件：structs.xml放在src目录下<br>里面暂时什么都不配置</p>
+</li>
+<li><p>数据库<br>为了方便，设置三个字段，id（int）、name（varchar）、age（int），其中id为主键，且是自增长的</p>
+</li>
+<li><p>配置核心文件初始化<br>Web.xml配置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;web-app version="2.5" </div><div class="line">	xmlns="http://java.sun.com/xml/ns/javaee" </div><div class="line">	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" </div><div class="line">	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee </div><div class="line">	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"&gt;</div><div class="line">	&lt;filter&gt;</div><div class="line">		&lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">	//启动structs2框架	&lt;filter-class&gt;org.apache.struts2.dispatcher.FilterDispatcher&lt;/filter-class&gt;</div><div class="line">	&lt;/filter&gt;</div><div class="line">//允许后缀名为.action或者.jsp的请求通过</div><div class="line">	&lt;filter-mapping&gt;</div><div class="line">		&lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">		&lt;url-pattern&gt;*.action&lt;/url-pattern&gt;</div><div class="line">	&lt;/filter-mapping&gt;</div><div class="line">	&lt;filter-mapping&gt;</div><div class="line">		&lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">		&lt;url-pattern&gt;*.jsp&lt;/url-pattern&gt;</div><div class="line">	&lt;/filter-mapping&gt;</div><div class="line">//启动spring监听，即开启spring框架</div><div class="line">	&lt;listener&gt;</div><div class="line">		&lt;listener-class&gt;</div><div class="line">			org.springframework.web.context.ContextLoaderListener</div><div class="line">		&lt;/listener-class&gt;</div><div class="line">	&lt;/listener&gt;</div><div class="line">&lt;/web-app&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>Applicationcontent.xml文件配置（目前没有实现任何功能，给出原始配置）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;beans</div><div class="line">xmlns="http://www.springframework.org/schema/beans"</div><div class="line">xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"</div><div class="line">xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"&gt;</div><div class="line">	&lt;!-- 定义数据源 ，即连接数据库所需的配置--&gt;</div><div class="line">	&lt;bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"&gt;</div><div class="line">		&lt;property name="driverClassName"&gt;</div><div class="line">			&lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="url"&gt;</div><div class="line">			&lt;value&gt;jdbc:mysql://localhost:mysql端口/数据库名&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="username"&gt;</div><div class="line">			&lt;value&gt;你的用户名&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="password"&gt;</div><div class="line">			&lt;value&gt;你的密码&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 定义SessionFactory --&gt;</div><div class="line">	&lt;bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"&gt;</div><div class="line">		&lt;property name="dataSource"&gt;</div><div class="line">			&lt;ref bean="dataSource"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="hibernateProperties"&gt;</div><div class="line">			&lt;props&gt;</div><div class="line">//hibernate的方言，决定用哪个数据库</div><div class="line">				&lt;prop key="hibernate.dialect"&gt;</div><div class="line">					org.hibernate.dialect.MySQLDialect</div><div class="line">				&lt;/prop&gt;</div><div class="line">            //是否启动显示sql语句</div><div class="line">				&lt;prop key="hibernate.show_sql"&gt;false&lt;/prop&gt;</div><div class="line">			&lt;/props&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">//声明hibernate的映射文件，目前没有，后续步骤在此处加上</div><div class="line">		&lt;property name="mappingResources"&gt;</div><div class="line">			&lt;list&gt;</div><div class="line">				&lt;value&gt;&lt;/value&gt;</div><div class="line">			&lt;/list&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line">	</div><div class="line">	&lt;!-- 定义HibernateTemplate，相当于纯hibernate的session --&gt;</div><div class="line">	&lt;bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate"&gt;</div><div class="line">		&lt;property name="sessionFactory"&gt;</div><div class="line">			&lt;ref bean="sessionFactory"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line">	省略具体的业务代码注入配置</div><div class="line"></div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure>
+<p>Structs.xml文件配置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line">&lt;!DOCTYPE struts PUBLIC</div><div class="line">    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"</div><div class="line">    "http://struts.apache.org/dtds/struts-2.0.dtd"&gt;</div><div class="line">&lt;struts&gt;</div><div class="line"></div><div class="line">//防止乱码</div><div class="line">&lt;constant name="struts.i18n.encoding" value="utf-8"/&gt;</div><div class="line">&lt;/struts&gt;</div><div class="line">目前该文件里面什么功能都没配置，只是个声明</div></pre></td></tr></table></figure>
+<ol>
+<li>编写业务代码<br>按照mvc思想，先从持久层开始，即编写hibernate的orm对象user.java</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class User &#123;</div><div class="line"></div><div class="line">	private int age;</div><div class="line">	private int id;</div><div class="line">	private String name;</div><div class="line">此处省略set。Get方法&#125;</div></pre></td></tr></table></figure>
+<p>映射文件User.hbm.xml</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC </div><div class="line">"-//Hibernate/Hibernate Mapping DTD 3.0//EN"</div><div class="line">"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;</div><div class="line">&lt;hibernate-mapping package="com.zwl.pojo"&gt;</div><div class="line">&lt;class name="User" &gt;</div><div class="line">&lt;id name="id"&gt;</div><div class="line">&lt;generator class="increment"&gt;&lt;/generator&gt;</div><div class="line">&lt;/id&gt;</div><div class="line">&lt;property name="name"&gt;&lt;/property&gt;</div><div class="line">&lt;property name="age"&gt;&lt;/property&gt;</div><div class="line">&lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div></pre></td></tr></table></figure>
+<p>注意这里普通属性有时为了方便，只要声明一个name，其他属性hibernate会自动识别并补充</p>
+<p>接下来要在spring中声明该映射文件</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;property name=<span class="string">"mappingResources"</span>&gt;</div><div class="line">			&lt;list&gt;</div><div class="line">				&lt;value&gt;com/zwl/pojo/User<span class="selector-class">.hbm</span><span class="selector-class">.xml</span>&lt;/value&gt;</div><div class="line">			&lt;/list&gt;</div><div class="line">		&lt;/property&gt;</div></pre></td></tr></table></figure>
+<p>至此，持久层完成</p>
+<p>接下来是dao层</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">public interface dengludao &#123;</div><div class="line">//登录功能</div><div class="line">public User denglu(User u);</div><div class="line">&#125;</div><div class="line"></div><div class="line">Dao层的实现类</div><div class="line">import org.springframework.orm.hibernate3.support.HibernateDaoSupport;</div><div class="line"></div><div class="line">import com.zwl.pojo.User;</div><div class="line"></div><div class="line">public class dengludaoimpl extends HibernateDaoSupport implements dengludao&#123;</div><div class="line">	//这里用了spring提供的操作hibernate的模板方法</div><div class="line">	@Override</div><div class="line">	public User denglu(User u) &#123;</div><div class="line">    //find里可以写sql语句</div><div class="line">		List&lt;User&gt; list=this.getHibernateTemplate().find("select user from User as user where user.id=?",u.getId());</div><div class="line">		if(list.size()==0)&#123;</div><div class="line">			return null;&#125;</div><div class="line">					else&#123;</div><div class="line">						return (User) list.get(0);</div><div class="line">					&#125;</div><div class="line">	&#125;&#125;</div><div class="line">	</div><div class="line">接下来要在spring中注入到组件</div><div class="line">&lt;!-- 配置DAO组件 --&gt;</div><div class="line">	&lt;bean id="dengludao" class="com.zwl.dao.dengludaoimpl"&gt;</div><div class="line">		&lt;property name="hibernateTemplate"&gt;</div><div class="line">			&lt;ref bean="hibernateTemplate"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div></pre></td></tr></table></figure>
+<p>接下来是业务层：<br> 首先是接口</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">public interface dengluservice &#123;</div><div class="line">public boolean isdenglu(User u);</div><div class="line">&#125;</div><div class="line">然后是实现类</div><div class="line">public class dengluserviceimpl implements dengluservice&#123;</div><div class="line"> //引用dao层组建</div><div class="line">	private dengludao denglu;</div><div class="line">	</div><div class="line">	public dengludao getDenglu() &#123;</div><div class="line">		return denglu;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setDenglu(dengludao denglu) &#123;</div><div class="line">		this.denglu = denglu;</div><div class="line">	&#125;</div><div class="line">	@Override</div><div class="line">	public boolean isdenglu(User u) &#123;</div><div class="line">		if(denglu.denglu(u)!=null)</div><div class="line">		return true;</div><div class="line">		else&#123;</div><div class="line">		return false;</div><div class="line">		&#125;</div><div class="line">	&#125;&#125;</div><div class="line">接下来就要在spring中注入业务层组件</div><div class="line">&lt;!-- 配置业务逻辑组件 --&gt;</div><div class="line">	&lt;bean id="dengluservice" class="com.zwl.dao.dengluserviceimpl"&gt;</div><div class="line">		&lt;property name="denglu"&gt;</div><div class="line">			&lt;ref bean="dengludao"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div></pre></td></tr></table></figure>
+<ol>
+<li>表现层<br>首先是两个页面<br>Index.Jsp主要提交表单</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"userdenglu.action"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">   id:&lt;<span class="selector-tag">input</span> name=<span class="string">"id"</span> type=<span class="string">"text"</span>&gt;</div><div class="line">   &lt;br/&gt;</div><div class="line">   &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">   &lt;/form&gt;</div></pre></td></tr></table></figure>
+<p>Success.jsp<br>主要就是一句success提示</p>
+<ol>
+<li>控制层</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class userdenglu extends ActionSupport&#123;</div><div class="line"></div><div class="line">	private dengluservice dengluservic;</div><div class="line">	private int id;</div><div class="line">省略set与get方法。。</div><div class="line">	@Override</div><div class="line">	public String execute() throws Exception &#123;</div><div class="line">		User u=new User();</div><div class="line">		u.setId(id);</div><div class="line">//如果id存在，返回成功</div><div class="line">		if(dengluservic.isdenglu(u))&#123;</div><div class="line">			return SUCCESS;</div><div class="line">		&#125;</div><div class="line">		return ERROR;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>接下来需要在spring中注入action</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 配置userdengluAction --&gt;</div><div class="line">	&lt;bean id=<span class="string">"userdenglu"</span> class=<span class="string">"com.zwl.action.userdenglu"</span>&gt;</div><div class="line">		&lt;property name=<span class="string">"dengluservic"</span>&gt;</div><div class="line">			&lt;ref bean=<span class="string">"dengluservice"</span>/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div></pre></td></tr></table></figure>
+<p>同时在structs.xml中配置跳转</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;action name=<span class="string">"userdenglu"</span> class=<span class="string">"userdenglu"</span>&gt;</div><div class="line">			&lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">			&lt;result name=<span class="string">"error"</span>&gt;/error.jsp&lt;/result&gt;</div><div class="line">		&lt;/action&gt;</div></pre></td></tr></table></figure>
+<p>最后通过在浏览器输入到index.jsp，然后输入id，数据库中可以预先插入数据，最后跳转，如果成功则跳到success.jsp，否则产生错误</p>
+<p><strong>至此：ssh2框架环境搭建成功，最后提醒的是，这只是一个框架环境，我们可以在此基础上按照mvc思想，可以进行我们想要功能的开发</strong></p>
 
       
     </div>
@@ -599,7 +648,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/java工具包/" rel="tag"># java工具包</a>
+            <a href="/source/tags/五大框架/" rel="tag"># 五大框架</a>
           
         </div>
       
@@ -612,8 +661,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/18/erweima/" rel="next" title="基于struts2的二维码">
-                <i class="fa fa-chevron-left"></i> 基于struts2的二维码
+              <a href="/2017/03/20/execl/" rel="next" title="基于java的execl导入数据库和取数据至页面">
+                <i class="fa fa-chevron-left"></i> 基于java的execl导入数据库和取数据至页面
               </a>
             
           </div>
@@ -622,8 +671,8 @@ var _hmt = _hmt || [];
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/03/19/arraylist/" rel="prev" title="初识Arraylist底层">
-                初识Arraylist底层 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/21/ssm/" rel="prev" title="ssm三大框架整合">
+                ssm三大框架整合 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -802,7 +851,7 @@ var _hmt = _hmt || [];
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#验证码"><span class="nav-text">验证码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MD5加密"><span class="nav-text">MD5加密</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ssh"><span class="nav-text">ssh</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

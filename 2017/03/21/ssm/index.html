@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="踩坑 , window," />
+  <meta name="keywords" content="五大框架," />
 
 
 
@@ -105,25 +105,28 @@
 
 
 
-<meta name="description" content="前言这是笔者去年第一次将web项目通过外网访问，当然结果很美好，过程很艰难，当时也是第一次用文档记录了探索过程，当然也是在google老师的帮助下，诚然学习最大的乐趣就是通过自己忘我的想尽一切办法最后solve的那种快感进入正题
- 1 因为要把服务器架在自己的机子上，所以可以选择花生壳和nat123，于是当时百度了一堆关于该技术，充其量只是了解了概念，然后修改tomcat配置文件，先将默认的808">
+<meta name="description" content="前言 ssm三大框架整合主要指的是spring mvc+mybatis+spring，利用mvc分层思想实现解耦，其中spring mvc负责业务控制和跳转，mybatis负责持久层，spring管理各层，下面将以一个通过id查询用户信息功能搭建整合环境
+
+建立一个web工程
+
+导入ssm整合的相关jar包，包括spring(包含springmvc)，mybatis，mybatis-spring整">
 <meta property="og:type" content="article">
-<meta property="og:title" content="利用nat123搭建本地服务器">
-<meta property="og:url" content="http://www.myzwl.win/2017/03/17/nat123/index.html">
+<meta property="og:title" content="ssm三大框架整合">
+<meta property="og:url" content="http://www.myzwl.win/2017/03/21/ssm/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="前言这是笔者去年第一次将web项目通过外网访问，当然结果很美好，过程很艰难，当时也是第一次用文档记录了探索过程，当然也是在google老师的帮助下，诚然学习最大的乐趣就是通过自己忘我的想尽一切办法最后solve的那种快感进入正题
- 1 因为要把服务器架在自己的机子上，所以可以选择花生壳和nat123，于是当时百度了一堆关于该技术，充其量只是了解了概念，然后修改tomcat配置文件，先将默认的808">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/15.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/16.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/17.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/18.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/19.gif">
-<meta property="og:updated_time" content="2017-03-19T05:11:24.000Z">
+<meta property="og:description" content="前言 ssm三大框架整合主要指的是spring mvc+mybatis+spring，利用mvc分层思想实现解耦，其中spring mvc负责业务控制和跳转，mybatis负责持久层，spring管理各层，下面将以一个通过id查询用户信息功能搭建整合环境
+
+建立一个web工程
+
+导入ssm整合的相关jar包，包括spring(包含springmvc)，mybatis，mybatis-spring整">
+<meta property="og:updated_time" content="2017-03-21T14:29:22.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="利用nat123搭建本地服务器">
-<meta name="twitter:description" content="前言这是笔者去年第一次将web项目通过外网访问，当然结果很美好，过程很艰难，当时也是第一次用文档记录了探索过程，当然也是在google老师的帮助下，诚然学习最大的乐趣就是通过自己忘我的想尽一切办法最后solve的那种快感进入正题
- 1 因为要把服务器架在自己的机子上，所以可以选择花生壳和nat123，于是当时百度了一堆关于该技术，充其量只是了解了概念，然后修改tomcat配置文件，先将默认的808">
-<meta name="twitter:image" content="http://www.myzwl.win/images/imgs1/15.gif">
+<meta name="twitter:title" content="ssm三大框架整合">
+<meta name="twitter:description" content="前言 ssm三大框架整合主要指的是spring mvc+mybatis+spring，利用mvc分层思想实现解耦，其中spring mvc负责业务控制和跳转，mybatis负责持久层，spring管理各层，下面将以一个通过id查询用户信息功能搭建整合环境
+
+建立一个web工程
+
+导入ssm整合的相关jar包，包括spring(包含springmvc)，mybatis，mybatis-spring整">
 
 
 
@@ -151,13 +154,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/03/17/nat123/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/03/21/ssm/"/>
 
 
 
 
 
-  <title> 利用nat123搭建本地服务器 | 秒西 </title>
+  <title> ssm三大框架整合 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -483,7 +486,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/17/nat123/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/21/ssm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -504,7 +507,7 @@ var _hmt = _hmt || [];
             
             
               
-                利用nat123搭建本地服务器
+                ssm三大框架整合
               
             
           </h1>
@@ -519,8 +522,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-17T19:48:51+08:00">
-                2017-03-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-21T20:48:51+08:00">
+                2017-03-21
               </time>
             
 
@@ -560,20 +563,52 @@ var _hmt = _hmt || [];
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>这是笔者去年第一次将web项目通过外网访问，当然结果很美好，过程很艰难，当时也是第一次用文档记录了探索过程，当然也是在google老师的帮助下，诚然学习最大的乐趣就是通过自己忘我的想尽一切办法最后solve的那种快感</strong><br><em>进入正题</em></p>
-<p> 1 因为要把服务器架在自己的机子上，所以可以选择花生壳和nat123，于是当时百度了一堆关于该技术，充其量只是了解了概念，然后修改tomcat配置文件，先将默认的8080端口改为100（按理讲应该改为80，之后注意中讲为什么），然后将root文件夹全部删掉，当然还有一部（但是我配置了只要一输入域名就是空白页，所以我舍弃了这一步）配置域名与tomcat项目的映射</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Context path=<span class="string">""</span> debug=<span class="string">"0"</span> docBase=<span class="string">"你项目的决定路径"</span> reloadable=<span class="string">"true"</span>&gt;&lt;/Context&gt;</div></pre></td></tr></table></figure>
-<p> 2 tomcat部分算是完成了，之后我选择了用nat123，建议去官网下载最新版本，注册，登录然后按照百度步骤，懒得写了就截个图吧<br> <img src="/images/imgs1/15.gif" alt="Alt text"></p>
-<pre><code>注意应用类型我们选80（http）网站，毕竟这是相对来说最佳选择，内网端口（默认可以写80）我选择了100（之后一定要打开和开放端口，后面再说），内网地址，命令行中输入ipconfig查看ip4就是内网，当然也可以用localhost等等（因为他们在tomcat配置，或者在c盘的一个文件中为他们设置了常量，百度就能找到c盘那个源码，tomcat不多说就在配置里面，很好找），其他配置不动，然后保存
-</code></pre><p>  <img src="/images/imgs1/16.gif" alt="Alt text"><br>    这样就有了域名<br>  <img src="/images/imgs1/17.gif" alt="Alt text"></p>
-<pre><code>在打开nav123客户端，出现笑脸，如图等表示映射正常，
-</code></pre><hr>
-<p><strong>然后下面才是最恐怖的地方了（出现各种问题）</strong></p>
-<p><strong>1 如果你内网和tomcat选择的是80端口，注意80端口默认不打开的，先开启控制面板-系统与安全-windows防火墙-高级设置-入站规则-新建规则-端口-80-下一步。。-完成，</strong><br>   然后在用netstat –a看看有没有80端口，假设有了，然后以为顺利 了，结果点击客户端的设置，发现最上面出现无公网连接，也就是说内网的80端口不能映射外网，这下麻烦了，好吧，据需钻研解决方案。试着其中一个靠谱的，说路由器配置中没有开放外网，好吧<br><img src="/images/imgs1/18.gif" alt="Alt text"><br>   先在计算机中输入192.168.1.1（这是电信的），打开路由器（然后简单去了解了一下路由器）先开启dmz主机，指派一个特定内网ip（那个机子对外开放），然后</p>
-<p><img src="/images/imgs1/19.gif" alt="Alt text"></p>
-<p><strong>在虚拟服务中打开相应端口80（暂且不是100），然后自以为一切顺利，在点开客户端那个设置或打开命名行输入ipconfig，都显示自己的公网了，相当于一道闸门打开了，当然也找不出问题了，结果又出现将域名输入出现错误。</strong></p>
-<p><strong>结果觉得可能是80端口被封（可是已经在客户端能做的范围内把80打开了，最好的解释是要去电信局备案，才能在服务器端解封80端口），也就是说，80端口我们用不了了）</strong></p>
-<p><strong>居然一时用不了，就用其他端口吧，就100吧，把之前所有的80开放改为100，然后在打开网页（注意：tomcat没有配置项目初始化，自己指定），然后在用手机或者其他机子试一次，即域名+项目名，结果成功了，但是网速不行啊（又头疼了~~）</strong></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p> ssm三大框架整合主要指的是spring mvc+mybatis+spring，利用mvc分层思想实现解耦，其中spring mvc负责业务控制和跳转，mybatis负责持久层，spring管理各层，下面将以一个通过id查询用户信息功能搭建整合环境</p>
+<ol>
+<li><p>建立一个web工程</p>
+</li>
+<li><p>导入ssm整合的相关jar包，包括spring(包含springmvc)，mybatis，mybatis-spring整合。数据库驱动，jstl，c3p0管理数据源，log4j.由于整合包过多，可以自行到网上下载</p>
+</li>
+<li><p>配置核心文件初始化<br>Web.xml配置</p>
+</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5"&gt;</div><div class="line">  &lt;display-name&gt;springmvc19_day01_01&lt;/display-name&gt;</div><div class="line">  </div><div class="line">  //配置中文乱码过滤器</div><div class="line">  &lt;filter&gt;</div><div class="line">  &lt;filter-name&gt;characterEncoding&lt;/filter-name&gt;</div><div class="line">  &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;</div><div class="line">  &lt;init-param&gt;</div><div class="line">  &lt;param-name&gt;encoding&lt;/param-name&gt;</div><div class="line">  &lt;param-value&gt;UTF-8&lt;/param-value&gt;</div><div class="line">  &lt;/init-param&gt;</div><div class="line">  &lt;/filter&gt;</div><div class="line">  </div><div class="line">  &lt;filter-mapping&gt;</div><div class="line">  &lt;filter-name&gt;characterEncoding&lt;/filter-name&gt;</div><div class="line">  &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</div><div class="line">  &lt;/filter-mapping&gt;</div><div class="line">  </div><div class="line">  //启用spring监听</div><div class="line">  &lt;listener&gt;</div><div class="line">		&lt;listener-class&gt;</div><div class="line">			org.springframework.web.context.ContextLoaderListener</div><div class="line">		&lt;/listener-class&gt;</div><div class="line">	&lt;/listener&gt;</div><div class="line">  </div><div class="line">  //启动spring mvc</div><div class="line">  &lt;servlet&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;</div><div class="line">  &lt;!-- 默认加载方式</div><div class="line">  	   默认加载必须规范：</div><div class="line">  	   * 文件命名：servlet-name-servlet.xml====springmvc-servlet.xml</div><div class="line">  	   * 路径规范：必须在WEB-INF目录下面</div><div class="line">   --&gt;</div><div class="line"> &lt;/servlet&gt;</div><div class="line">  </div><div class="line">  //spring mvc 过滤文件</div><div class="line">  &lt;servlet-mapping&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;url-pattern&gt;*.do&lt;/url-pattern&gt;</div><div class="line">  &lt;/servlet-mapping&gt;</div><div class="line">  </div><div class="line">  //rest格式拦截，主要用在提交带参数问题</div><div class="line">   &lt;servlet-mapping&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;url-pattern&gt;/rest/*&lt;/url-pattern&gt;</div><div class="line">  &lt;/servlet-mapping&gt;</div><div class="line">  </div><div class="line">&lt;/web-app&gt;</div></pre></td></tr></table></figure>
+<ol>
+<li>加载springmvc-servlet.xml文件</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;beans xmlns="http://www.springframework.org/schema/beans"</div><div class="line">	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"</div><div class="line">	xmlns:context="http://www.springframework.org/schema/context"</div><div class="line">	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"</div><div class="line">	xsi:schemaLocation="http://www.springframework.org/schema/beans </div><div class="line">		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/mvc </div><div class="line">		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/context </div><div class="line">		http://www.springframework.org/schema/context/spring-context-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/aop </div><div class="line">		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/tx </div><div class="line">		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd"&gt;</div><div class="line">		//自动扫面根路径以下的所有包，就不要显示配置bean了</div><div class="line">		&lt;context:component-scan base-package="com.zwl"&gt;&lt;/context:component-scan&gt;</div><div class="line">		</div><div class="line">		//默认创建注解处理器映射器，注解处理器适配器。提供json格式支持。</div><div class="line">		 &lt;mvc:annotation-driven&gt;&lt;/mvc:annotation-driven&gt; </div><div class="line">		 </div><div class="line">&lt;!-- 配置sprigmvc视图解析器：解析逻辑视图 </div><div class="line">			 后台返回逻辑试图：index</div><div class="line">			视图解析器解析出真正物理视图：前缀+逻辑试图+后缀====/WEB-INF/jsps/index.jsp</div><div class="line">		--&gt;</div><div class="line"></div><div class="line">		&lt;bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"&gt;</div><div class="line">		&lt;property name="prefix" value="/"&gt;&lt;/property&gt;</div><div class="line">		&lt;property name="suffix" value=".jsp"&gt;&lt;/property&gt;		</div><div class="line">		&lt;/bean&gt;</div><div class="line">		&lt;/beans&gt;</div></pre></td></tr></table></figure>
+<ol>
+<li>加载spring配置文件</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;beans xmlns="http://www.springframework.org/schema/beans"</div><div class="line">	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"</div><div class="line">	xmlns:context="http://www.springframework.org/schema/context"</div><div class="line">	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"</div><div class="line">	xsi:schemaLocation="http://www.springframework.org/schema/beans </div><div class="line">		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/mvc </div><div class="line">		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/context </div><div class="line">		http://www.springframework.org/schema/context/spring-context-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/aop </div><div class="line">		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/tx </div><div class="line">		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd"&gt;</div><div class="line">		//自动扫面根路径以下的所有包，就不要显示配置bean了</div><div class="line">		&lt;context:component-scan base-package="com.zwl"&gt;&lt;/context:component-scan&gt;</div><div class="line">		</div><div class="line">	&lt;!-- 第一步：配置数据源 --&gt;</div><div class="line">	&lt;bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"&gt;</div><div class="line">		&lt;property name="jdbcUrl" value="jdbc:mysql://localhost:mysql端口/你的项目"&gt;&lt;/property&gt;</div><div class="line">		&lt;property name="driverClass" value="com.mysql.jdbc.Driver"&gt;&lt;/property&gt;</div><div class="line">		&lt;property name="user" value="你的用户名"&gt;&lt;/property&gt;</div><div class="line">		&lt;property name="password" value="你的密码"&gt;&lt;/property&gt;</div><div class="line"></div><div class="line">	&lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 第二步：创建sqlSessionFactory。生产sqlSession，即产生会话 --&gt;</div><div class="line">	&lt;bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"&gt;</div><div class="line">	&lt;property name="dataSource" ref="dataSource"&gt;&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 配置mybatis接口代理开发</div><div class="line">		* 接口类名和映射文件必须同名</div><div class="line">		*　接口类和映射文件必须在同一个目录　下</div><div class="line">		* 映射文件namespace名字必须是接口的全类路径名</div><div class="line">		*　接口的方法名必须和映射Statement的ｉｄ一致</div><div class="line">	 --&gt;</div><div class="line">	 &lt;bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"&gt;</div><div class="line">	 &lt;property name="basePackage" value="com.zwl.dao"&gt;&lt;/property&gt;</div><div class="line">	 &lt;property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"&gt;&lt;/property&gt;</div><div class="line">	 &lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 第三步：事务 --&gt;</div><div class="line">	&lt;bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"&gt;</div><div class="line">	&lt;property name="dataSource" ref="dataSource"&gt;&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 配置通知 --&gt;</div><div class="line">	&lt;tx:advice id="txAdvice" transaction-manager="transactionManager"&gt;</div><div class="line">	&lt;tx:attributes&gt;</div><div class="line">	&lt;tx:method name="save*" propagation="REQUIRED" /&gt;</div><div class="line">	&lt;tx:method name="update*" propagation="REQUIRED" /&gt;</div><div class="line">	&lt;tx:method name="delete*" propagation="REQUIRED" /&gt;</div><div class="line">	&lt;tx:method name="insert*" propagation="REQUIRED" /&gt;</div><div class="line">	&lt;tx:method name="*" propagation="REQUIRED" /&gt;	</div><div class="line">	&lt;/tx:attributes&gt;</div><div class="line">	&lt;/tx:advice&gt;</div><div class="line"></div><div class="line">&lt;!-- 配置拦截service --&gt;</div><div class="line">	&lt;aop:config&gt;</div><div class="line">	&lt;aop:advisor advice-ref="txAdvice" pointcut="execution(* com.zwl.service.*.*(..))"/&gt;</div><div class="line">	&lt;/aop:config&gt;</div><div class="line">	</div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure>
+<p>以上三个包都必须在web-inf下</p>
+<ol>
+<li>编写接口代码<br>首先是pojo类</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public class User &#123;</div><div class="line">	 private String name;       //用户名</div><div class="line">	private String pwd;        //密码</div><div class="line">	private int uid;           //用户id</div><div class="line">此处省略set、get方法。&#125;</div></pre></td></tr></table></figure>
+<p>然后利用mapper代理模式开发dao层<br>首先是Usermapper.xml</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line">&lt;!DOCTYPE mapper    </div><div class="line">PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    </div><div class="line">"http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line">&lt;mapper namespace="com.zwl.dao.Usermapper"&gt;</div><div class="line">	&lt;!-- 根据用户ID查询用户信息 --&gt;</div><div class="line">	&lt;select id="findUserById" parameterType="int" resultType="com.zwl.pojo.User"&gt;</div><div class="line">		SELECT</div><div class="line">		* FROM users WHERE uid =#&#123;uid&#125;</div><div class="line">	&lt;/select&gt;</div><div class="line">&lt;/mapper&gt;</div></pre></td></tr></table></figure>
+<p>然后是接口</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface Usermapper &#123;</div><div class="line">	public User findUserById(int id) throws Exception;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>编写service层<br>这里用到spring注解依赖注入</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public interface Userservice &#123;</div><div class="line"></div><div class="line">	public User finduserbyid(Integer id) throws Exception;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>实现类：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//声明业务层为注解，为控制层依赖注入服务</div><div class="line">@Service</div><div class="line">public class Userserviceimpl implements Userservice &#123;</div><div class="line"> </div><div class="line">//通过注解注入dao层组件</div><div class="line">	@Resource</div><div class="line">	private Usermapper usermapper;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public User finduserbyid(Integer id) throws Exception &#123;</div><div class="line">		User user=usermapper.findUserById(id);</div><div class="line">		return user;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>控制层</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">//注解自动在spring中注入该bean</div><div class="line">@Controller</div><div class="line">//请求路径，放在开头，请求url，controller前必须加入该映射路径</div><div class="line">@RequestMapping("/user")</div><div class="line">public class Usercontrol &#123;</div><div class="line">  //自动注入bean</div><div class="line">	@Resource</div><div class="line">	private Userservice userservice;</div><div class="line"></div><div class="line">//请求路径，放在方法前，为请求url，到时根据这个找到类里相应方法</div><div class="line">	@RequestMapping("toadd")</div><div class="line">	public String toadd()&#123;</div><div class="line">//返回视图，在配置文件中已经配置了前缀和后缀，所以返回到index.jsp</div><div class="line">		return "index";</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@RequestMapping("uid")</div><div class="line">	//这里的参数id必须和前台提交的参数name相同，才能接收到</div><div class="line">	public void finduserbyid(Integer id)</div><div class="line">	&#123;</div><div class="line">		try &#123;</div><div class="line">			User u=userservice.finduserbyid(id);</div><div class="line">			System.out.println(u.getName());</div><div class="line">		&#125; catch (Exception e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>页面<br>index.jsp</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/user/uid.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">id：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"id"</span> id=<span class="string">"id"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure>
+<ol>
+<li>数据库<br>里面字段必须为uid，name和password，和pojo类相对应，并且里面有数据</li>
+</ol>
+<p>最后我们可以在浏览器输入http：//localhost:端口/项目名/user/toadd.do到index.jsp页面，最后通过输入id，后台输出用户信息</p>
+<p>至此ssm整合完成，会发现它比ssh2更方便，特别是注解开发</p>
 
       
     </div>
@@ -602,7 +637,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/踩坑-window/" rel="tag"># 踩坑 , window</a>
+            <a href="/source/tags/五大框架/" rel="tag"># 五大框架</a>
           
         </div>
       
@@ -615,8 +650,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/17/fenqu/" rel="next" title="window分区导致双系统无引导界面">
-                <i class="fa fa-chevron-left"></i> window分区导致双系统无引导界面
+              <a href="/2017/03/21/ssh/" rel="next" title="ssh三大框架整合">
+                <i class="fa fa-chevron-left"></i> ssh三大框架整合
               </a>
             
           </div>
@@ -624,10 +659,6 @@ var _hmt = _hmt || [];
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/17/danli/" rel="prev" title="单例设计模式">
-                单例设计模式 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
