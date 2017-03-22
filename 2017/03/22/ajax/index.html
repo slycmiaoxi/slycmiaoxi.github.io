@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="踩坑 , window," />
+  <meta name="keywords" content="学习笔记," />
 
 
 
@@ -105,24 +105,22 @@
 
 
 
-<meta name="description" content="先简单介绍一下情境，笔者电脑上装的是双系统，而且bios上设置了system password（当然，已经忘记了是多少了），然后心血来潮在阿里云买了一个学生优惠的服务器，安装了mysql+tomcat7+jdk，在电脑上d盘已经装了linux，在c盘上分了一个分区，那么问题来了，当再次打开电脑时，无引导界面，取而代之的是
-然后google了许多解决方案，当然是在彩果许多坑之后找到了适合自己的解决方">
+<meta name="description" content="前言1 Ajax是一种网页开发技术，（Asynchronous Javascript+XML）异步JavaScript和xml，2 Ajax是异步交互，局部刷新3 Ajax是减少服务器压力4 Ajax能提高用户体验
+Ajax交互与传统交互比较传统交互：网页整体刷新（同步），服务器压力大，用户体验不好 Ajax交互：局部刷新，服务器压力小，用户体验好
+不妨先来一个实例，先从整体把握，在细节看首先是j">
 <meta property="og:type" content="article">
-<meta property="og:title" content="window分区导致双系统无引导界面">
-<meta property="og:url" content="http://www.myzwl.win/2017/03/17/fenqu/index.html">
+<meta property="og:title" content="初识原生态ajax">
+<meta property="og:url" content="http://www.myzwl.win/2017/03/22/ajax/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="先简单介绍一下情境，笔者电脑上装的是双系统，而且bios上设置了system password（当然，已经忘记了是多少了），然后心血来潮在阿里云买了一个学生优惠的服务器，安装了mysql+tomcat7+jdk，在电脑上d盘已经装了linux，在c盘上分了一个分区，那么问题来了，当再次打开电脑时，无引导界面，取而代之的是
-然后google了许多解决方案，当然是在彩果许多坑之后找到了适合自己的解决方">
-<meta property="og:image" content="http://www.myzwl.win/images/z4.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/z1.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/z2.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/z3.gif">
-<meta property="og:updated_time" content="2017-03-18T13:20:18.000Z">
+<meta property="og:description" content="前言1 Ajax是一种网页开发技术，（Asynchronous Javascript+XML）异步JavaScript和xml，2 Ajax是异步交互，局部刷新3 Ajax是减少服务器压力4 Ajax能提高用户体验
+Ajax交互与传统交互比较传统交互：网页整体刷新（同步），服务器压力大，用户体验不好 Ajax交互：局部刷新，服务器压力小，用户体验好
+不妨先来一个实例，先从整体把握，在细节看首先是j">
+<meta property="og:updated_time" content="2017-03-22T13:57:36.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="window分区导致双系统无引导界面">
-<meta name="twitter:description" content="先简单介绍一下情境，笔者电脑上装的是双系统，而且bios上设置了system password（当然，已经忘记了是多少了），然后心血来潮在阿里云买了一个学生优惠的服务器，安装了mysql+tomcat7+jdk，在电脑上d盘已经装了linux，在c盘上分了一个分区，那么问题来了，当再次打开电脑时，无引导界面，取而代之的是
-然后google了许多解决方案，当然是在彩果许多坑之后找到了适合自己的解决方">
-<meta name="twitter:image" content="http://www.myzwl.win/images/z4.gif">
+<meta name="twitter:title" content="初识原生态ajax">
+<meta name="twitter:description" content="前言1 Ajax是一种网页开发技术，（Asynchronous Javascript+XML）异步JavaScript和xml，2 Ajax是异步交互，局部刷新3 Ajax是减少服务器压力4 Ajax能提高用户体验
+Ajax交互与传统交互比较传统交互：网页整体刷新（同步），服务器压力大，用户体验不好 Ajax交互：局部刷新，服务器压力小，用户体验好
+不妨先来一个实例，先从整体把握，在细节看首先是j">
 
 
 
@@ -150,13 +148,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/03/17/fenqu/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/03/22/ajax/"/>
 
 
 
 
 
-  <title> window分区导致双系统无引导界面 | 秒西 </title>
+  <title> 初识原生态ajax | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -482,7 +480,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/17/fenqu/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/22/ajax/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -503,7 +501,7 @@ var _hmt = _hmt || [];
             
             
               
-                window分区导致双系统无引导界面
+                初识原生态ajax
               
             
           </h1>
@@ -518,8 +516,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-17T14:09:42+08:00">
-                2017-03-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-22T21:48:51+08:00">
+                2017-03-22
               </time>
             
 
@@ -559,36 +557,49 @@ var _hmt = _hmt || [];
       
 
       
-        <p><strong>先简单介绍一下情境，笔者电脑上装的是双系统，而且bios上设置了system password（当然，已经忘记了是多少了），然后心血来潮在阿里云买了一个学生优惠的服务器，安装了mysql+tomcat7+jdk，在电脑上d盘已经装了linux，在c盘上分了一个分区，那么问题来了，当再次打开电脑时，无引导界面，取而代之的是</strong></p>
-<p><img src="/images/z4.gif" alt="Alt text"><br>然后google了许多解决方案，当然是在彩果许多坑之后找到了适合自己的解决方案，毕竟一个问题的解决总不是一帆风顺的。<br>  <em>进入正题</em><br>  <strong>如果我们要重装系统，肯定得用到bios设置，那么问题来了，如果你设置了密码，并且密码忘记了，那怎么办?</strong><br>  一种办法是通过硬件，通过把电池正负极按照网上说的折腾一下，就可以恢复bios出厂设置，显然这种方法有极大风险，可能会损坏硬件（具体参考google）或者用相关修复工具，但是笔者的电脑都无引导界面，尴尬了~<br>  还有一种办法就是在你输入3次错误的密码时会出现如下错误代码</p>
-<p> <img src="/images/z1.gif" alt="Alt text"><br> 然后就是<a href="https://bios.pw.org" target="_blank" rel="external">在这里面设置</a>，如下图，输入上述的错误代码，就出现了bios密码，</p>
-<p> <img src="/images/z2.gif" alt="Alt text"></p>
-<p> <strong>当然，笔者电脑里有许多宝贵的数据，不可能也不愿意重装系统，经过google一番，发现是分区导致引导盘不能引导，只需要找到该分区，在llinux上重新修复就行了</strong></p>
-<blockquote>
-<p>首先在页面中输入如下ls<br>grub rescue&gt; ls<br>出现如下（基本都差不多）<br>hd0，（hd0，nsdoc9），（hd0，nsdoc8），（hd0，nsdoc7），（hd0<br>，nsdoc6），（hd0，nsdoc5），（hd0，nsdoc2），（hd0，nsdoc1）</p>
-</blockquote>
-<p>然后通过ls 如上的分区循环一遍，如ls （hd0，nsdoc9）/<br>上述有一个会出现详细信息，他就是安装linux那个分区，其余都是unknown filesystem，当然如果出现bad filesystem那是你没加/<br>如下图：</p>
-<p><img src="/images/z3.gif" alt="Alt text"></p>
-<p><strong>接下来设置root引导盘</strong></p>
-<blockquote>
-<p>set root=(hd0，nsdoc6）<br>这里设置的是上述找到分区的那个盘<br>set prefix=(hd0，nsdoc6）/boot/grub/</p>
-</blockquote>
-<p>然后可以用set验证一下</p>
-<blockquote>
-<p>set<br>会出现上述设置的信息</p>
-</blockquote>
-<p>最后执行下述命令</p>
-<blockquote>
-<p>insmod normal<br>在输入normal，就会自动跳转到引导界面，我们选择ubuntu进入，在里面进行修复即可</p>
-</blockquote>
-<p>进入linux系统打开终端，先更新grub，即输入</p>
-<blockquote>
-<p>sudo update-grub</p>
-</blockquote>
-<p>ok后在输入</p>
-<blockquote>
-<p>sudo grub-install /dev/sda<br>结束后，我们就可以重启电脑，一切都ok了。<br>进入电脑后笔者做的第一件事就是备份数据，毕竟要给自己留条后路，如果遇到更复杂的情况就后悔莫及了。。</p>
-</blockquote>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>1 Ajax是一种网页开发技术，（Asynchronous Javascript+XML）异步JavaScript和xml，<br>2 Ajax是异步交互，局部刷新<br>3 Ajax是减少服务器压力<br>4 Ajax能提高用户体验</p>
+<h4 id="Ajax交互与传统交互比较"><a href="#Ajax交互与传统交互比较" class="headerlink" title="Ajax交互与传统交互比较"></a>Ajax交互与传统交互比较</h4><p>传统交互：网页整体刷新（同步），服务器压力大，用户体验不好<br> Ajax交互：局部刷新，服务器压力小，用户体验好</p>
+<p>不妨先来一个实例，先从整体把握，在细节看<br>首先是jsp页面：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;div style="text-align: center;"&gt;</div><div class="line">    &lt;div&gt;</div><div class="line">    &lt;input type="button" value="ajax异步交互" onclick="loadname()"/&gt;&amp;nbsp;&amp;nbsp;&lt;input type="text" name="name" id="name"/&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+<p>有个按钮事件，用于验证ajax</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;script type="text/javascript"&gt;</div><div class="line">	function loadname()&#123;</div><div class="line">		var xmlHttp;</div><div class="line">		if(window.XMLHttpRequest)&#123;</div><div class="line">			xmlHttp=new XMLHttpRequest();</div><div class="line">		&#125;</div><div class="line">		else&#123;</div><div class="line">			xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");</div><div class="line">		&#125;</div><div class="line">		xmlHttp.open("post", "getajaxname?name=666&amp;age=16", true);</div><div class="line">		xmlHttp.send();	</div><div class="line">	&#125;</div><div class="line">	&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>这段作用是利用ajax异步向后台传了两个参数name=666与age=16，路径是getajaxname为一个servlet路径，通过post方式</p>
+<p>后台servlet</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public void doPost(HttpServletRequest request, HttpServletResponse response)</div><div class="line">			throws ServletException, IOException &#123;</div><div class="line"></div><div class="line">		response.setContentType("text/html,charset=utf-8");</div><div class="line">		PrintWriter out = response.getWriter();</div><div class="line">      String name= request.getParameter("name");</div><div class="line">      String age= request.getParameter("age");</div><div class="line">      System.out.println(name);</div><div class="line">      System.out.println(age);</div><div class="line">		out.flush();</div><div class="line">		out.close();</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>这里接受前台传来的参数并打印出来</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Web.xml文件</div><div class="line">&lt;servlet&gt;</div><div class="line">    &lt;servlet-name&gt;getajaxname&lt;/servlet-name&gt;</div><div class="line">    &lt;<span class="attribute">display</span>-name&gt;This is the display name of my J2EE component&lt;/display-name&gt;</div><div class="line">    &lt;description&gt;This is the description of my J2EE component&lt;/description&gt;</div><div class="line">    &lt;servlet-class&gt;com<span class="selector-class">.zwl</span><span class="selector-class">.servlet</span><span class="selector-class">.getajaxname</span>&lt;/servlet-class&gt;</div><div class="line">  &lt;/servlet&gt;</div><div class="line"></div><div class="line">  &lt;servlet-mapping&gt;</div><div class="line">    &lt;servlet-name&gt;getajaxname&lt;/servlet-name&gt;</div><div class="line">    &lt;url-pattern&gt;/getajaxname&lt;/url-pattern&gt;</div><div class="line">  &lt;/servlet-mapping&gt;</div></pre></td></tr></table></figure>
+<p>主要是映射一个servlet</p>
+<p>至此入门程序算是完成，下面将对上述部分进行分析</p>
+<h4 id="创建XMLHttpRequest对象"><a href="#创建XMLHttpRequest对象" class="headerlink" title="创建XMLHttpRequest对象"></a>创建XMLHttpRequest对象</h4><p>所有现代浏览器均支持XMLHttpRequest 对象（IE5 和IE6 使用ActiveXObject）<br>XMLHttpRequest 用于在后台与服务器交换数据。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。<br>创建语法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var xmlHttp;</div><div class="line">		if(window.XMLHttpRequest)&#123;</div><div class="line">			xmlHttp=new XMLHttpRequest();</div><div class="line">		&#125;</div><div class="line">		else&#123;</div><div class="line">			xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");</div><div class="line">		&#125;</div></pre></td></tr></table></figure>
+<h4 id="XMLHttpRequest-对象请求后台"><a href="#XMLHttpRequest-对象请求后台" class="headerlink" title="XMLHttpRequest 对象请求后台"></a>XMLHttpRequest 对象请求后台</h4><p>open(method,url,async)<br>规定请求的类型、URL 以及是否异步处理请求。<br>method：请求的类型；GET 或POST<br>url：文件在服务器上的位置<br>async：true（异步）或false（同步）</p>
+<p>send(string)<br>将请求发送到服务器。<br>string：仅用于POST 请求</p>
+<p>语法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">xmlHttp.open("post", "getajaxname?name=666&amp;age=16", true);</div><div class="line">xmlHttp.send();</div></pre></td></tr></table></figure>
+<p>有时候需要将参数封装在一个函数中<br>首先得声明setRequestHeader(header,value)</p>
+<p>向请求添加HTTP 头。<br>header: 规定头的名称<br>value: 规定头的值<br>创建语法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");</div></pre></td></tr></table></figure>
+<p>将入门程序部分代码修改如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">xmlHttp.open("post", "getajaxname", true);</div><div class="line">	xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");</div><div class="line">		xmlHttp.send("name=666&amp;age=16");</div></pre></td></tr></table></figure>
+<h4 id="XMLHttpRequest-对象响应服务器"><a href="#XMLHttpRequest-对象响应服务器" class="headerlink" title="XMLHttpRequest 对象响应服务器"></a>XMLHttpRequest 对象响应服务器</h4><p>现在在前面的代码基础上添加几行代码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">alert("readystate:"+xmlHttp.readyState+" status:"+xmlHttp.status);</div><div class="line">		xmlHttp.onreadystatechange=function()&#123;</div><div class="line">			alert("readystate:"+xmlHttp.readyState+" status:"+xmlHttp.status);</div><div class="line">		&#125;;</div><div class="line">		</div><div class="line">		xmlHttp.open("post", "getajaxname", true);</div><div class="line">		xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");</div><div class="line">		xmlHttp.send("name=666&amp;age=16");</div></pre></td></tr></table></figure>
+<p>先分析一下onreadystatechange 事件<br>当请求被发送到服务器时，我们需要执行一些基于响应的任务。<br>每当readyState 改变时，就会触发onreadystatechange 事件。<br>readyState 属性存有XMLHttpRequest 的状态信息。</p>
+<p>下面是XMLHttpRequest 对象的三个重要的属性：<br>onreadystatechange存储函数（或函数名）<br>每当readyState 属性改变时，就会调用该函数。</p>
+<p>readyState<br>存有XMLHttpRequest 的状态。从0 到4 发生变化。<br>0: 请求未初始化<br>1: 服务器连接已建立<br>2: 请求已接收<br>3: 请求处理中<br>4: 请求已完成，且响应已就绪</p>
+<p>status<br>200: “OK”<br>404: 未找到页面</p>
+<p>执行上面程序就会发现相应值的变化</p>
+<p>接下来在后台加入返回的信息<br>public void doPost(HttpServletRequest request, HttpServletResponse response)<br>            throws ServletException, IOException {</p>
+<pre><code>    response.setContentType(&quot;text/html,charset=utf-8&quot;);
+    PrintWriter out = response.getWriter();
+//向前台返回一个信息
+  out.println(&quot;ajax ok&quot;);
+    out.flush();
+    out.close();
+}
+</code></pre><p>页面：根据前面的状态码，进行接收参数</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if(xmlHttp.readyState==4 &amp;&amp; xmlHttp.status==200)&#123;</div><div class="line">				document.getElementById("name").value=xmlHttp.responseText;</div><div class="line">			&#125;</div></pre></td></tr></table></figure>
+<p>responseText 获得字符串形式的响应数据</p>
+<p>最后会发现表单被自动填充</p>
 
       
     </div>
@@ -617,7 +628,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/踩坑-window/" rel="tag"># 踩坑 , window</a>
+            <a href="/source/tags/学习笔记/" rel="tag"># 学习笔记</a>
           
         </div>
       
@@ -630,8 +641,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/16/dajianserver/" rel="next" title="阿里云服务器上搭建javaweb站点">
-                <i class="fa fa-chevron-left"></i> 阿里云服务器上搭建javaweb站点
+              <a href="/2017/03/22/git/" rel="next" title="初识git">
+                <i class="fa fa-chevron-left"></i> 初识git
               </a>
             
           </div>
@@ -639,10 +650,6 @@ var _hmt = _hmt || [];
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/17/nat123/" rel="prev" title="利用nat123搭建本地服务器">
-                利用nat123搭建本地服务器 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -717,8 +724,17 @@ var _hmt = _hmt || [];
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -823,6 +839,22 @@ var _hmt = _hmt || [];
 		
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Ajax交互与传统交互比较"><span class="nav-text">Ajax交互与传统交互比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建XMLHttpRequest对象"><span class="nav-text">创建XMLHttpRequest对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XMLHttpRequest-对象请求后台"><span class="nav-text">XMLHttpRequest 对象请求后台</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XMLHttpRequest-对象响应服务器"><span class="nav-text">XMLHttpRequest 对象响应服务器</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

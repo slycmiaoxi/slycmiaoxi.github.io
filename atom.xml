@@ -5,10 +5,140 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-03-21T14:29:22.000Z</updated>
+  <updated>2017-03-22T13:57:36.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>初识原生态ajax</title>
+    <link href="http://www.myzwl.win/2017/03/22/ajax/"/>
+    <id>http://www.myzwl.win/2017/03/22/ajax/</id>
+    <published>2017-03-22T13:48:51.000Z</published>
+    <updated>2017-03-22T13:57:36.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>1 Ajax是一种网页开发技术，（Asynchronous Javascript+XML）异步JavaScript和xml，<br>2 Ajax是异步交互，局部刷新<br>3 Ajax是减少服务器压力<br>4 Ajax能提高用户体验</p>
+<h4 id="Ajax交互与传统交互比较"><a href="#Ajax交互与传统交互比较" class="headerlink" title="Ajax交互与传统交互比较"></a>Ajax交互与传统交互比较</h4><p>传统交互：网页整体刷新（同步），服务器压力大，用户体验不好<br> Ajax交互：局部刷新，服务器压力小，用户体验好</p>
+<p>不妨先来一个实例，先从整体把握，在细节看<br>首先是jsp页面：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;div style="text-align: center;"&gt;</div><div class="line">    &lt;div&gt;</div><div class="line">    &lt;input type="button" value="ajax异步交互" onclick="loadname()"/&gt;&amp;nbsp;&amp;nbsp;&lt;input type="text" name="name" id="name"/&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+<p>有个按钮事件，用于验证ajax</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;script type="text/javascript"&gt;</div><div class="line">	function loadname()&#123;</div><div class="line">		var xmlHttp;</div><div class="line">		if(window.XMLHttpRequest)&#123;</div><div class="line">			xmlHttp=new XMLHttpRequest();</div><div class="line">		&#125;</div><div class="line">		else&#123;</div><div class="line">			xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");</div><div class="line">		&#125;</div><div class="line">		xmlHttp.open("post", "getajaxname?name=666&amp;age=16", true);</div><div class="line">		xmlHttp.send();	</div><div class="line">	&#125;</div><div class="line">	&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>这段作用是利用ajax异步向后台传了两个参数name=666与age=16，路径是getajaxname为一个servlet路径，通过post方式</p>
+<p>后台servlet</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public void doPost(HttpServletRequest request, HttpServletResponse response)</div><div class="line">			throws ServletException, IOException &#123;</div><div class="line"></div><div class="line">		response.setContentType("text/html,charset=utf-8");</div><div class="line">		PrintWriter out = response.getWriter();</div><div class="line">      String name= request.getParameter("name");</div><div class="line">      String age= request.getParameter("age");</div><div class="line">      System.out.println(name);</div><div class="line">      System.out.println(age);</div><div class="line">		out.flush();</div><div class="line">		out.close();</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>这里接受前台传来的参数并打印出来</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Web.xml文件</div><div class="line">&lt;servlet&gt;</div><div class="line">    &lt;servlet-name&gt;getajaxname&lt;/servlet-name&gt;</div><div class="line">    &lt;<span class="attribute">display</span>-name&gt;This is the display name of my J2EE component&lt;/display-name&gt;</div><div class="line">    &lt;description&gt;This is the description of my J2EE component&lt;/description&gt;</div><div class="line">    &lt;servlet-class&gt;com<span class="selector-class">.zwl</span><span class="selector-class">.servlet</span><span class="selector-class">.getajaxname</span>&lt;/servlet-class&gt;</div><div class="line">  &lt;/servlet&gt;</div><div class="line"></div><div class="line">  &lt;servlet-mapping&gt;</div><div class="line">    &lt;servlet-name&gt;getajaxname&lt;/servlet-name&gt;</div><div class="line">    &lt;url-pattern&gt;/getajaxname&lt;/url-pattern&gt;</div><div class="line">  &lt;/servlet-mapping&gt;</div></pre></td></tr></table></figure>
+<p>主要是映射一个servlet</p>
+<p>至此入门程序算是完成，下面将对上述部分进行分析</p>
+<h4 id="创建XMLHttpRequest对象"><a href="#创建XMLHttpRequest对象" class="headerlink" title="创建XMLHttpRequest对象"></a>创建XMLHttpRequest对象</h4><p>所有现代浏览器均支持XMLHttpRequest 对象（IE5 和IE6 使用ActiveXObject）<br>XMLHttpRequest 用于在后台与服务器交换数据。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。<br>创建语法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var xmlHttp;</div><div class="line">		if(window.XMLHttpRequest)&#123;</div><div class="line">			xmlHttp=new XMLHttpRequest();</div><div class="line">		&#125;</div><div class="line">		else&#123;</div><div class="line">			xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");</div><div class="line">		&#125;</div></pre></td></tr></table></figure>
+<h4 id="XMLHttpRequest-对象请求后台"><a href="#XMLHttpRequest-对象请求后台" class="headerlink" title="XMLHttpRequest 对象请求后台"></a>XMLHttpRequest 对象请求后台</h4><p>open(method,url,async)<br>规定请求的类型、URL 以及是否异步处理请求。<br>method：请求的类型；GET 或POST<br>url：文件在服务器上的位置<br>async：true（异步）或false（同步）</p>
+<p>send(string)<br>将请求发送到服务器。<br>string：仅用于POST 请求</p>
+<p>语法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">xmlHttp.open("post", "getajaxname?name=666&amp;age=16", true);</div><div class="line">xmlHttp.send();</div></pre></td></tr></table></figure>
+<p>有时候需要将参数封装在一个函数中<br>首先得声明setRequestHeader(header,value)</p>
+<p>向请求添加HTTP 头。<br>header: 规定头的名称<br>value: 规定头的值<br>创建语法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");</div></pre></td></tr></table></figure>
+<p>将入门程序部分代码修改如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">xmlHttp.open("post", "getajaxname", true);</div><div class="line">	xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");</div><div class="line">		xmlHttp.send("name=666&amp;age=16");</div></pre></td></tr></table></figure>
+<h4 id="XMLHttpRequest-对象响应服务器"><a href="#XMLHttpRequest-对象响应服务器" class="headerlink" title="XMLHttpRequest 对象响应服务器"></a>XMLHttpRequest 对象响应服务器</h4><p>现在在前面的代码基础上添加几行代码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">alert("readystate:"+xmlHttp.readyState+" status:"+xmlHttp.status);</div><div class="line">		xmlHttp.onreadystatechange=function()&#123;</div><div class="line">			alert("readystate:"+xmlHttp.readyState+" status:"+xmlHttp.status);</div><div class="line">		&#125;;</div><div class="line">		</div><div class="line">		xmlHttp.open("post", "getajaxname", true);</div><div class="line">		xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");</div><div class="line">		xmlHttp.send("name=666&amp;age=16");</div></pre></td></tr></table></figure>
+<p>先分析一下onreadystatechange 事件<br>当请求被发送到服务器时，我们需要执行一些基于响应的任务。<br>每当readyState 改变时，就会触发onreadystatechange 事件。<br>readyState 属性存有XMLHttpRequest 的状态信息。</p>
+<p>下面是XMLHttpRequest 对象的三个重要的属性：<br>onreadystatechange存储函数（或函数名）<br>每当readyState 属性改变时，就会调用该函数。</p>
+<p>readyState<br>存有XMLHttpRequest 的状态。从0 到4 发生变化。<br>0: 请求未初始化<br>1: 服务器连接已建立<br>2: 请求已接收<br>3: 请求处理中<br>4: 请求已完成，且响应已就绪</p>
+<p>status<br>200: “OK”<br>404: 未找到页面</p>
+<p>执行上面程序就会发现相应值的变化</p>
+<p>接下来在后台加入返回的信息<br>public void doPost(HttpServletRequest request, HttpServletResponse response)<br>            throws ServletException, IOException {</p>
+<pre><code>    response.setContentType(&quot;text/html,charset=utf-8&quot;);
+    PrintWriter out = response.getWriter();
+//向前台返回一个信息
+  out.println(&quot;ajax ok&quot;);
+    out.flush();
+    out.close();
+}
+</code></pre><p>页面：根据前面的状态码，进行接收参数</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if(xmlHttp.readyState==4 &amp;&amp; xmlHttp.status==200)&#123;</div><div class="line">				document.getElementById("name").value=xmlHttp.responseText;</div><div class="line">			&#125;</div></pre></td></tr></table></figure>
+<p>responseText 获得字符串形式的响应数据</p>
+<p>最后会发现表单被自动填充</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;1 Ajax是一种网页开发技术，（Asynchronous Javascript+XML）异步JavaScript和xml，&lt;br&gt;2 Aj
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>初识git</title>
+    <link href="http://www.myzwl.win/2017/03/22/git/"/>
+    <id>http://www.myzwl.win/2017/03/22/git/</id>
+    <published>2017-03-22T12:48:51.000Z</published>
+    <updated>2017-03-22T11:33:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="git"><a href="#git" class="headerlink" title="git"></a>git</h2><p>git是linux之父Linus的第二个伟大的作品，它是分布式版本控制系统，即每个人可以通过clone将工作建立在本地库中</p>
+<p>对比之前我们是通过hexo d的提交给远程仓库的master branch，当然我们也可以git提交或者clone到本地。</p>
+<p><strong>远程仓库代码clone到本地</strong></p>
+<ol>
+<li>首先需要生成公钥与仓库连接<br>首先添加用户名<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --global user<span class="selector-class">.name</span> <span class="string">"yourname"</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>其次添加e-mail</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --global user<span class="selector-class">.email</span> <span class="string">"youreamil"</span></div></pre></td></tr></table></figure>
+<p>默认在administrator目录下生成.ssh并在下生成两个文件id_rsa和id_rsa.pub秘钥，</p>
+<p>生成公钥</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -C <span class="string">"youremail"</span></div></pre></td></tr></table></figure>
+<p>这时候我们可以在.ssh文件下用 ls -al显示所有文件（因为.ssh是隐藏的，我是新建了一个.ssh）</p>
+<p>2 配置公钥<br>在setting中的ssh and GPG keys中新建ssh key将id_rsa.pub中的内容辅助进去<br>最后用ssh -T git@github.com检查公钥是否配置成功</p>
+<p>3 初始化.git<br>在本地新建任意一个文件，在该路径下，<br>初始化为本地仓库<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git init</div></pre></td></tr></table></figure></p>
+<p>提交文件到缓存区</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git add filename（.表示所有文件）</div></pre></td></tr></table></figure>
+<p>查看状态</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git status</div></pre></td></tr></table></figure>
+<p>本地提交，即完成提交至远程仓库的准备</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git commit -m <span class="string">"words"</span></div></pre></td></tr></table></figure>
+<p>查看commit记录</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git log</div></pre></td></tr></table></figure>
+<p>远程最新的代码更新到本地</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git pull origin master</div></pre></td></tr></table></figure>
+<p>本地代码推到远程仓库，实现本地与远程仓库的同步</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push origin master</div></pre></td></tr></table></figure>
+<p>这里我是先将我的一个仓库先clone到本地</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone 仓库地址</div></pre></td></tr></table></figure>
+<p>然后在该仓库目录下执行add和commit，最后在push提交到远程仓库，如果没有远程仓库，可先关联</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git remote add origin 仓库</div></pre></td></tr></table></figure>
+<p>再push</p>
+<p>3.其他常用命令<br>查看当前项目有哪些远程仓库可以执行</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git remote -v</div></pre></td></tr></table></figure>
+<p>建立分支<br>查看分支（branch）</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch</div></pre></td></tr></table></figure>
+<p>默认都是master，并且master提交<br>新建分支</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch name</div></pre></td></tr></table></figure>
+<p>切换分支`</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout name</div></pre></td></tr></table></figure>
+<p>删除分支</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch -d name</div></pre></td></tr></table></figure>
+<p>如果我们想要传送另一个分支到远程仓库<br>只需在push中</p>
+<p>git push origin branch master</p>
+<p>当然git的命令太多了，只总结了学习过程中实验到的</p>
+<p>接下来如果将别人代码clone到本地，一般先fork，在利用clone</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;git&quot;&gt;&lt;a href=&quot;#git&quot; class=&quot;headerlink&quot; title=&quot;git&quot;&gt;&lt;/a&gt;git&lt;/h2&gt;&lt;p&gt;git是linux之父Linus的第二个伟大的作品，它是分布式版本控制系统，即每个人可以通过clone将工作建立在本地库中&lt;/p&gt;
+
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
   
   <entry>
     <title>ssm三大框架整合</title>
