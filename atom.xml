@@ -5,10 +5,100 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-03-22T13:57:36.000Z</updated>
+  <updated>2017-03-23T04:15:22.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>jquery之ajax</title>
+    <link href="http://www.myzwl.win/2017/03/23/jqajax/"/>
+    <id>http://www.myzwl.win/2017/03/23/jqajax/</id>
+    <published>2017-03-23T13:48:51.000Z</published>
+    <updated>2017-03-23T04:15:22.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>ajax ：异步请求，浏览器地址栏不改变，进行局部刷新</p>
+<p>首先先来看一下ajax在浏览器与服务器之间的传输过程</p>
+<p><img src="/images/imgs2/3.gif" alt="Alt text"></p>
+<h4 id="ajax"><a href="#ajax" class="headerlink" title="ajax"></a>ajax</h4><p>jquery中有多种ajax请求，根据应用场景不同，选择的ajax不同</p>
+<p><img src="/images/imgs2/4.gif" alt="Alt text"></p>
+<ol>
+<li><p>$.ajax(…) 最底层ajax请求，编写最复杂，完成功能最全的</p>
+</li>
+<li><p>load() 、$.get() 、$.post() </p>
+</li>
+<li><p>$.getJSON() 可以完成js“跨域”请求<br>域名：域名+端口+项目，js默认不能跨域请求</p>
+</li>
+</ol>
+<ol>
+<li>$.getScript()  动态加载js文件。</li>
+</ol>
+<h4 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h4><p><img src="/images/imgs2/5.gif" alt="Alt text"></p>
+<h4 id="json解析"><a href="#json解析" class="headerlink" title="json解析"></a>json解析</h4><p><img src="/images/imgs2/6.gif" alt="Alt text"></p>
+<p>下面将对上面部分进行模拟<br>首先是有一个按钮</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"button"</span> value=<span class="string">"发送ajax"</span> /&gt;</div></pre></td></tr></table></figure>
+<p>然后在js中操作</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">   // 请求路径，我这里是请求到一个servlet</div><div class="line">var url = "getajaxname";</div><div class="line">// 请求参数，采用json</div><div class="line">var params = &#123;"username":"盲僧", "password":"我的最爱"&#125;;</div></pre></td></tr></table></figure>
+<p>接下来就是利用不同形式的ajax发送请求<br>1 load()函数 ，必须使用jquery对象</p>
+<pre><code>* * 格式：load(url, [data], [callback])
+*         参数1：url ，请求路径
+*         参数2：data，请求参数
+*         参数3：callback，回调函数
+* * 如果没有请求参数，发送的GET请求
+* * 如果有请求参数，发送的POST请求。请求没有中文乱码
+* * 回调函数的参数
+*         参数1：data，响应数据。load()永远获得字符串，如果需要使用，必须手动转换json对象。
+*         
+</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$(this).load(url,params,function(data)&#123;</div><div class="line">		//转换json对象</div><div class="line">		var jsonData = eval("("+data+")");</div><div class="line">		alert(jsonData.value);</div><div class="line">	&#125;);</div></pre></td></tr></table></figure>
+<p>后台servlet，这里利用gson.jar包回送json数据</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public void doPost(HttpServletRequest request, HttpServletResponse response)</div><div class="line">			throws ServletException, IOException &#123;</div><div class="line"></div><div class="line">		response.setContentType("text/html,charset=utf-8");</div><div class="line">		PrintWriter out = response.getWriter();</div><div class="line">   String name= request.getParameter("username");</div><div class="line">      String age= request.getParameter("password");</div><div class="line">      System.out.println(name);</div><div class="line">      System.out.println(age);</div><div class="line">      /*out.println("ajax ok");*/</div><div class="line">      JsonObject json=new JsonObject();</div><div class="line">      json.addProperty("value", "ok");</div><div class="line">      response.getWriter().write(json.toString());</div><div class="line">		out.flush();</div><div class="line">		out.close();</div><div class="line"></div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>我们可以通过火狐里的firebug进行测试和观察</p>
+<p>2 $.get() 全局函数，发送get请求</p>
+<pre><code>* * 格式：jQuery.get(url, [data], [callback], [type])
+*         * 参数4：type ，返回内容格式，xml, html, script, json, text, _default。
+* * GET请求不适合发送中文数据，存放请求的中文乱码。
+*         必须手动解码   new String(username.getBytes(&quot;ISO-8859-1&quot;) ,&quot;UTF-8&quot;)
+* * 响应数据，如果使用  application/json;charset=UTF-8 ，jQuery自动将数据转换json对象。
+* * 响应数据，如果使用  text/html;charset=UTF-8 ，回调函数获得字符串数据，需要手动转换。
+*         使用“参数4”，设置&quot;json&quot;，jQuery将字符串 转换成 json对象
+</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.get(url,params,function(data)&#123;</div><div class="line">		alert(data.value);</div><div class="line">	&#125;,"json");</div></pre></td></tr></table></figure>
+<p>将servlet中post中代码copy到get中，但是后台接受的是乱码</p>
+<p>3 $.post() 全局函数，发送post请求</p>
+<pre><code>* * 格式：jQuery.post(url, [data], [callback], [type])
+</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.post(url,params,function(data)&#123;</div><div class="line">		alert(data.value);</div><div class="line">	&#125;,"json")</div></pre></td></tr></table></figure>
+<p>4 $.ajax() 底层功能最强大的</p>
+<pre><code>* * 格式：jQuery.ajax([settings])
+*         参数settings：设置所有的参数
+*             url:发送请求的地址
+*             data:发送到服务器的数据,请求参数
+*             type:请求方式 (&quot;POST&quot; 或 &quot;GET&quot;)， 
+*             success:成功的回调函数，success(data, textStatus, jqXHR)
+*             error:请求失败时调用此函数
+*             dataType:预期服务器返回的数据类型
+*                 &quot;xml&quot;: 返回 XML 文档，可用 jQuery 处理。
+*                 &quot;html&quot;: 返回纯文本 HTML 信息；包含的script标签会在插入dom时执行。
+*                 &quot;script&quot;: 返回纯文本 JavaScript 代码。不会自动缓存结果。除非设置了&quot;cache&quot;参数。&apos;&apos;&apos;注意：&apos;&apos;&apos;在远程请求时(不在同一个域下)，所有POST请求都将转为GET请求。(因为将使用DOM的script标签来加载)
+*                 &quot;json&quot;: 返回 JSON 数据 。
+*                 &quot;jsonp&quot;: JSONP 格式。使用 JSONP 形式调用函数时，如 &quot;myurl?callback=?&quot; jQuery 将自动替换 ? 为正确的函数名，以执行回调函数。
+*                 &quot;text&quot;: 返回纯文本字符串
+*/
+</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">	"url":url,</div><div class="line">	"data":params,</div><div class="line">	"type":"POST",</div><div class="line">	"success":function(data)&#123;</div><div class="line">		alert(data.value);</div><div class="line">	&#125;,</div><div class="line">	"error":function()&#123;</div><div class="line">		alert("服务器繁忙，请稍后重试");</div><div class="line">	&#125;,</div><div class="line">	"dataType":"json"</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>一般情况下，我都会选择使用.ajax前后台交互，因为它功能相对较多，其次我们也可以选择适合我们的属性用。</p>
+<p>当然后面的ajax，平时也没用到过，所以就不介绍了，当然api是最好的资料，google是最好的老师。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;ajax ：异步请求，浏览器地址栏不改变，进行局部刷新&lt;/p&gt;
+&lt;p&gt;首先先来看一下ajax在浏览器与服务器之间的传输过程&lt;/p&gt;
+&lt;p&gt;&lt;
+    
+    </summary>
+    
+    
+      <category term="jquery" scheme="http://www.myzwl.win/source/tags/jquery/"/>
+    
+  </entry>
   
   <entry>
     <title>初识原生态ajax</title>
