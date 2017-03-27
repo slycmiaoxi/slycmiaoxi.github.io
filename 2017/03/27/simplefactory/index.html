@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="测试," />
+  <meta name="keywords" content="设计模式," />
 
 
 
@@ -105,78 +105,27 @@
 
 
 
-<meta name="description" content="花了好几天业余时间终于搞好了，正是一路踩坑，一路请教google老师，一路折腾，一路不断学习，搭建了一个比较丑的博客
-
-cout&amp;lt;&amp;lt;“so hard”cout&amp;lt;&amp;lt;“这仅仅是一个测试”
-
-1这是一个测试代码!
-
-
-
-
-java
-c
-c++
-hello world
-
-
-
-
-c
-c++
-java
-hello">
+<meta name="description" content="前言简单工厂模式又叫静态工厂设计模式。通俗的讲，就是通过专门定义一个类来负责建立其他类的实例，与此同时被创建的类都必须满足他们有共同的父类，所以，它是一种创建型模式。
+这里Leesin（盲僧）与Js（剑圣）继承Jungle（打野），而JungleFactory（打野生产工厂）产生具体打野对象下面将以简单工厂创建他们，满足通过传入打野工厂不同的参数，产生不同的打野对象
+打野接口
+1234567891">
 <meta property="og:type" content="article">
-<meta property="og:title" content="第一篇仅为测试">
-<meta property="og:url" content="http://www.myzwl.win/2017/03/10/hi/index.html">
+<meta property="og:title" content="简单工厂设计模式">
+<meta property="og:url" content="http://www.myzwl.win/2017/03/27/simplefactory/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="花了好几天业余时间终于搞好了，正是一路踩坑，一路请教google老师，一路折腾，一路不断学习，搭建了一个比较丑的博客
-
-cout&amp;lt;&amp;lt;“so hard”cout&amp;lt;&amp;lt;“这仅仅是一个测试”
-
-1这是一个测试代码!
-
-
-
-
-java
-c
-c++
-hello world
-
-
-
-
-c
-c++
-java
-hello">
-<meta property="og:image" content="http://www.myzwl.win/images/avatar.gif">
-<meta property="og:updated_time" content="2017-03-18T13:11:20.000Z">
+<meta property="og:description" content="前言简单工厂模式又叫静态工厂设计模式。通俗的讲，就是通过专门定义一个类来负责建立其他类的实例，与此同时被创建的类都必须满足他们有共同的父类，所以，它是一种创建型模式。
+这里Leesin（盲僧）与Js（剑圣）继承Jungle（打野），而JungleFactory（打野生产工厂）产生具体打野对象下面将以简单工厂创建他们，满足通过传入打野工厂不同的参数，产生不同的打野对象
+打野接口
+1234567891">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs2/11.gif">
+<meta property="og:updated_time" content="2017-03-27T11:53:32.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="第一篇仅为测试">
-<meta name="twitter:description" content="花了好几天业余时间终于搞好了，正是一路踩坑，一路请教google老师，一路折腾，一路不断学习，搭建了一个比较丑的博客
-
-cout&amp;lt;&amp;lt;“so hard”cout&amp;lt;&amp;lt;“这仅仅是一个测试”
-
-1这是一个测试代码!
-
-
-
-
-java
-c
-c++
-hello world
-
-
-
-
-c
-c++
-java
-hello">
-<meta name="twitter:image" content="http://www.myzwl.win/images/avatar.gif">
+<meta name="twitter:title" content="简单工厂设计模式">
+<meta name="twitter:description" content="前言简单工厂模式又叫静态工厂设计模式。通俗的讲，就是通过专门定义一个类来负责建立其他类的实例，与此同时被创建的类都必须满足他们有共同的父类，所以，它是一种创建型模式。
+这里Leesin（盲僧）与Js（剑圣）继承Jungle（打野），而JungleFactory（打野生产工厂）产生具体打野对象下面将以简单工厂创建他们，满足通过传入打野工厂不同的参数，产生不同的打野对象
+打野接口
+1234567891">
+<meta name="twitter:image" content="http://www.myzwl.win/images/imgs2/11.gif">
 
 
 
@@ -204,13 +153,13 @@ hello">
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/03/10/hi/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/03/27/simplefactory/"/>
 
 
 
 
 
-  <title> 第一篇仅为测试 | 秒西 </title>
+  <title> 简单工厂设计模式 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -556,7 +505,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/10/hi/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/27/simplefactory/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -577,7 +526,7 @@ var _hmt = _hmt || [];
             
             
               
-                第一篇仅为测试
+                简单工厂设计模式
               
             
           </h1>
@@ -592,8 +541,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-10T17:48:51+08:00">
-                2017-03-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-27T12:48:51+08:00">
+                2017-03-27
               </time>
             
 
@@ -607,6 +556,28 @@ var _hmt = _hmt || [];
   <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
 
 		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习总结/" itemprop="url" rel="index">
+                    <span itemprop="name">学习总结</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -638,43 +609,23 @@ var _hmt = _hmt || [];
       
 
       
-        <p><strong>花了好几天业余时间终于搞好了，正是一路踩坑，一路请教google老师，一路折腾，一路不断学习，搭建了一个比较丑的博客</strong></p>
-<blockquote>
-<p>cout&lt;&lt;“so hard”<br>cout&lt;&lt;“这仅仅是一个测试”</p>
-</blockquote>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">这是一个测试代码!</div></pre></td></tr></table></figure>
-<p><img src="/images/avatar.gif" alt="Alt text"></p>
-<table>
-<thead>
-<tr>
-<th>java</th>
-<th>c</th>
-<th>c++</th>
-<th>hello world</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>c</td>
-<td>c++</td>
-<td>java</td>
-<td>hello</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr>
-<hr>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>简单工厂模式又叫静态工厂设计模式。通俗的讲，就是通过专门定义一个类来负责建立其他类的实例，与此同时被创建的类都必须满足他们有共同的父类，所以，它是一种创建型模式。</p>
+<p><img src="/images/imgs2/11.gif" alt="Alt text"><br>这里Leesin（盲僧）与Js（剑圣）继承Jungle（打野），而JungleFactory（打野生产工厂）产生具体打野对象<br>下面将以简单工厂创建他们，满足通过传入打野工厂不同的参数，产生不同的打野对象</p>
+<p>打野接口</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">//打野英雄</div><div class="line">public interface Jungle &#123;</div><div class="line"></div><div class="line">	//gank能力强</div><div class="line">	public void gankenemy();</div><div class="line">	</div><div class="line">	//本身足够灵活</div><div class="line">	public void flexible();</div><div class="line">	</div><div class="line">	//打野不太伤</div><div class="line">	public void killbeast();</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>盲僧</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class LeeSin implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		System.out.println("盲僧正在gank");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		System.out.println("盲僧太灵活了");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		System.out.println("盲僧正在打野怪");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>剑圣</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class Js implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		System.out.println("剑圣正在gank");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		System.out.println("js也灵活");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		System.out.println("剑圣正在打野");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>打野工厂</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public class JungleFactory &#123;</div><div class="line"></div><div class="line">	public static Jungle createJungle(String Junglename)&#123;</div><div class="line">		 Jungle jungle=null;</div><div class="line">		 switch(Junglename)&#123;</div><div class="line">		 case "LeeSin":</div><div class="line">			 jungle=new LeeSin();</div><div class="line">			 break;</div><div class="line">		 case "Js" :</div><div class="line">			 jungle=new Js();</div><div class="line">			 break;</div><div class="line">		 default :</div><div class="line">			  break;</div><div class="line">		 </div><div class="line">		 &#125;</div><div class="line">		return jungle;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下面是测试类</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line">		Jungle jungle= JungleFactory.createJungle("LeeSin");</div><div class="line">		jungle.gankenemy();</div><div class="line"></div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>当然，我们这里通过不同的参数，获得不同的打野英雄<br>当然这个例子也很好理解简单工厂</p>
+<p>事实上，我们知道如果我们一开始用的是sql server数据库，然后我们想换数据库，如果不用工厂模式，那么将替换许多东西，如果这时，使用简单工厂模式，就会使问题变简单许多。</p>
+<p>利用简单工厂模式大概思路就是先创建一个抽象数据库(DBobject)，然后是具体实现类sql server与mysql类，然后再来一个生成数据库工厂(DBobjectFactory)通过传入不同的数据库参数，从而连接不同的数据库</p>
+<p>至此我们发现，简单工厂的优点在于工厂类中包含了必要的逻辑判断，而且可以根据客户端的选择条件不同而动态的实例化相关的类</p>
+<p>当然它的缺点也很明显，当我们创建的抽象实例过多时，显然高内聚就增多了，不利于维护了</p>
 
       
     </div>
@@ -715,7 +666,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/测试/" rel="tag"># 测试</a>
+            <a href="/source/tags/设计模式/" rel="tag"># 设计模式</a>
           
         </div>
       
@@ -728,14 +679,18 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/03/26/filter/" rel="next" title="职责链设计模式">
+                <i class="fa fa-chevron-left"></i> 职责链设计模式
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/03/12/hexo1/" rel="prev" title="初步搭建hexo博客">
-                初步搭建hexo博客 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/27/factory/" rel="prev" title="工厂方法设计模式">
+                工厂方法设计模式 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -811,8 +766,17 @@ var _hmt = _hmt || [];
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -827,7 +791,7 @@ var _hmt = _hmt || [];
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -849,7 +813,7 @@ var _hmt = _hmt || [];
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -904,6 +868,22 @@ var _hmt = _hmt || [];
 		
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

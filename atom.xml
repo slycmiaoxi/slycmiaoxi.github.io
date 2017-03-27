@@ -5,10 +5,125 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-03-27T09:07:22.000Z</updated>
+  <updated>2017-03-27T15:18:30.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>抽象工厂设计模式</title>
+    <link href="http://www.myzwl.win/2017/03/27/abstractfactory/"/>
+    <id>http://www.myzwl.win/2017/03/27/abstractfactory/</id>
+    <published>2017-03-27T08:48:51.000Z</published>
+    <updated>2017-03-27T15:18:30.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>##前言</p>
+<p>抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。</p>
+<p>这里还是以之前的例子为例，假设有一个产生top（上单）的机器，另一个产生Jungle（打野）的机器，同时top可以有ad（物理上单）和ap(法术上单)，同样，Jungle可以有ad和ap打野，现在需要一个工厂，可以同时产生仅含ad的打野和上单，另一个产生仅含ap的打野和上单，当然可以按照自己的组合<br><img src="/images/imgs2/13.gif" alt="Alt text"><br>打野</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public interface Jungle &#123;</div><div class="line"></div><div class="line">	//gank能力强</div><div class="line">	public void gankenemy();</div><div class="line">	</div><div class="line">	//本身足够灵活</div><div class="line">	public void flexible();</div><div class="line">	</div><div class="line">	//打野不太伤</div><div class="line">	public void killbeast();</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>ad打野</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class AdJungle implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>ap打野<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class ApJungle implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上单<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public interface Top &#123;</div><div class="line">	//gank能力强</div><div class="line">	public void gankenemy();</div><div class="line">	</div><div class="line">	//本身足够灵活</div><div class="line">	public void flexible();</div><div class="line">	</div><div class="line">	//打野不太伤</div><div class="line">	public void killbeast();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>ad上单<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class AdTop implements Top &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>ap上单<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class ApTop implements Top &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>生产打野和上单的工厂<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public interface AbstractFactory &#123;</div><div class="line">public Top factorytop();</div><div class="line">public Jungle factoryjungle();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>生产ad打野和上单的工厂<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class AdFactory implements AbstractFactory &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public Top factorytop() &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		return new AdTop();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public Jungle factoryjungle() &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		return new AdJungle();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>生产ap打野和上单的工厂<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class ApFactory implements AbstractFactory &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public Top factorytop() &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		return new ApTop();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public Jungle factoryjungle() &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		return new ApJungle();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>通过上面例子，我们可以发现抽象工厂易于交换产品系列，通过按需改变具体工厂从而使用不同的产品配置，同时它也将创建实例的过程与客户端分类</p>
+<p>当然它的缺点就是和简单工厂一样，如果要从sql server切换到mysql，需要重新实例很多次</p>
+<p>最后对应工厂系列的设计模式，无论选择哪一个，最终的目的都是为了解耦！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;##前言&lt;/p&gt;
+&lt;p&gt;抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。&lt;/p&gt;
+&lt;p&gt;这里还是以之前的例子为例，假设有一个产生top（上单）的机器，另一个产生Jungle
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>工厂方法设计模式</title>
+    <link href="http://www.myzwl.win/2017/03/27/factory/"/>
+    <id>http://www.myzwl.win/2017/03/27/factory/</id>
+    <published>2017-03-27T06:48:51.000Z</published>
+    <updated>2017-03-27T14:27:46.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>##前言<br>工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式</p>
+<p><img src="/images/imgs2/12.gif" alt="Alt text"><br>这里Jungle的每个具体类都对应一个具体工厂<br>下面就是以工厂方法创建它们，通过抽象工厂选择不同的具体子工厂，从而产生不同的具体打野类</p>
+<p>打野接口<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">//打野英雄</div><div class="line">public interface Jungle &#123;</div><div class="line"></div><div class="line">	//gank能力强</div><div class="line">	public void gankenemy();</div><div class="line">	</div><div class="line">	//本身足够灵活</div><div class="line">	public void flexible();</div><div class="line">	</div><div class="line">	//打野不太伤</div><div class="line">	public void killbeast();</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>工厂接口<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public interface junglefactor &#123;</div><div class="line">//产生打野</div><div class="line">public Jungle createjungle();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>盲僧</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class LeeSin implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		System.out.println("盲僧正在gank");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		System.out.println("盲僧太灵活了");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		System.out.println("盲僧正在打野怪");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>剑圣</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class Js implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		System.out.println("剑圣正在gank");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		System.out.println("js也灵活");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		System.out.println("剑圣正在打野");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>盲僧工厂<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">public class LeeSinFactory implements junglefactor &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public Jungle createjungle() &#123;</div><div class="line">		</div><div class="line">		return new LeeSin();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line">``` </div><div class="line"></div><div class="line">剑圣工厂</div><div class="line">``` stylus</div><div class="line">public class JsFactory implements junglefactor &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public Jungle createjungle() &#123;</div><div class="line">		</div><div class="line">		return new Js();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line">``` </div><div class="line"></div><div class="line">测试类：</div><div class="line">``` stylus</div><div class="line">public static void main(String[] args) &#123;</div><div class="line">		// Jungle jungle= JungleFactory.createJungle("LeeSin");</div><div class="line">		// jungle.gankenemy();</div><div class="line"></div><div class="line">      junglefactor factory=new LeeSinFactory();</div><div class="line">    Jungle jubjle=factory.createjungle();</div><div class="line">    jubjle.flexible();</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>这里通过多态，产生不同的工厂，从而产生不同的打野</p>
+<p>工厂方法比较简单工厂模式</p>
+<p>现在我们要是把打野对象由盲僧换成剑圣的话，利用简单工厂，那就要<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Jungle jungle= JungleFactory.createJungle("Js");</div><div class="line">``` </div><div class="line">如果是100或者更多的话，那就要重复上述代码那么多次</div><div class="line"></div><div class="line">但是如果采用工厂方法，只需要改一处</div><div class="line">```stylus</div><div class="line">junglefactor factory=new JsFactory();</div></pre></td></tr></table></figure></p>
+<p>显然对外扩展开放，对内修改关闭更好。而简单工厂则违背了该原则</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;##前言&lt;br&gt;工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/imgs2/12.gif&quot; alt=&quot;Alt text&quot;&gt;&lt;br&gt;这里Jun
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>简单工厂设计模式</title>
+    <link href="http://www.myzwl.win/2017/03/27/simplefactory/"/>
+    <id>http://www.myzwl.win/2017/03/27/simplefactory/</id>
+    <published>2017-03-27T04:48:51.000Z</published>
+    <updated>2017-03-27T11:53:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>简单工厂模式又叫静态工厂设计模式。通俗的讲，就是通过专门定义一个类来负责建立其他类的实例，与此同时被创建的类都必须满足他们有共同的父类，所以，它是一种创建型模式。</p>
+<p><img src="/images/imgs2/11.gif" alt="Alt text"><br>这里Leesin（盲僧）与Js（剑圣）继承Jungle（打野），而JungleFactory（打野生产工厂）产生具体打野对象<br>下面将以简单工厂创建他们，满足通过传入打野工厂不同的参数，产生不同的打野对象</p>
+<p>打野接口</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">//打野英雄</div><div class="line">public interface Jungle &#123;</div><div class="line"></div><div class="line">	//gank能力强</div><div class="line">	public void gankenemy();</div><div class="line">	</div><div class="line">	//本身足够灵活</div><div class="line">	public void flexible();</div><div class="line">	</div><div class="line">	//打野不太伤</div><div class="line">	public void killbeast();</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>盲僧</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class LeeSin implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		System.out.println("盲僧正在gank");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		System.out.println("盲僧太灵活了");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		System.out.println("盲僧正在打野怪");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>剑圣</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class Js implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		System.out.println("剑圣正在gank");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		System.out.println("js也灵活");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		System.out.println("剑圣正在打野");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>打野工厂</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public class JungleFactory &#123;</div><div class="line"></div><div class="line">	public static Jungle createJungle(String Junglename)&#123;</div><div class="line">		 Jungle jungle=null;</div><div class="line">		 switch(Junglename)&#123;</div><div class="line">		 case "LeeSin":</div><div class="line">			 jungle=new LeeSin();</div><div class="line">			 break;</div><div class="line">		 case "Js" :</div><div class="line">			 jungle=new Js();</div><div class="line">			 break;</div><div class="line">		 default :</div><div class="line">			  break;</div><div class="line">		 </div><div class="line">		 &#125;</div><div class="line">		return jungle;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下面是测试类</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line">		Jungle jungle= JungleFactory.createJungle("LeeSin");</div><div class="line">		jungle.gankenemy();</div><div class="line"></div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>当然，我们这里通过不同的参数，获得不同的打野英雄<br>当然这个例子也很好理解简单工厂</p>
+<p>事实上，我们知道如果我们一开始用的是sql server数据库，然后我们想换数据库，如果不用工厂模式，那么将替换许多东西，如果这时，使用简单工厂模式，就会使问题变简单许多。</p>
+<p>利用简单工厂模式大概思路就是先创建一个抽象数据库(DBobject)，然后是具体实现类sql server与mysql类，然后再来一个生成数据库工厂(DBobjectFactory)通过传入不同的数据库参数，从而连接不同的数据库</p>
+<p>至此我们发现，简单工厂的优点在于工厂类中包含了必要的逻辑判断，而且可以根据客户端的选择条件不同而动态的实例化相关的类</p>
+<p>当然它的缺点也很明显，当我们创建的抽象实例过多时，显然高内聚就增多了，不利于维护了</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;简单工厂模式又叫静态工厂设计模式。通俗的讲，就是通过专门定义一个类来负责建立其他类的实例，与此同时被创建的类都必须满足他们有共同的父类，所以
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>职责链设计模式</title>
@@ -1066,65 +1181,6 @@ private static BufferedImage qRCodeCommon(String content, String imgType, int si
     
     
       <category term="踩坑 , hexo" scheme="http://www.myzwl.win/source/tags/%E8%B8%A9%E5%9D%91-hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>第一篇仅为测试</title>
-    <link href="http://www.myzwl.win/2017/03/10/hi/"/>
-    <id>http://www.myzwl.win/2017/03/10/hi/</id>
-    <published>2017-03-10T09:48:51.000Z</published>
-    <updated>2017-03-18T13:11:20.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>花了好几天业余时间终于搞好了，正是一路踩坑，一路请教google老师，一路折腾，一路不断学习，搭建了一个比较丑的博客</strong></p>
-<blockquote>
-<p>cout&lt;&lt;“so hard”<br>cout&lt;&lt;“这仅仅是一个测试”</p>
-</blockquote>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">这是一个测试代码!</div></pre></td></tr></table></figure>
-<p><img src="/images/avatar.gif" alt="Alt text"></p>
-<table>
-<thead>
-<tr>
-<th>java</th>
-<th>c</th>
-<th>c++</th>
-<th>hello world</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>c</td>
-<td>c++</td>
-<td>java</td>
-<td>hello</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr>
-<hr>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;花了好几天业余时间终于搞好了，正是一路踩坑，一路请教google老师，一路折腾，一路不断学习，搭建了一个比较丑的博客&lt;/strong&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;cout&amp;lt;&amp;lt;“so hard”&lt;br&gt;cout&amp;lt;&amp;lt;“这仅仅
-    
-    </summary>
-    
-    
-      <category term="测试" scheme="http://www.myzwl.win/source/tags/%E6%B5%8B%E8%AF%95/"/>
     
   </entry>
   
