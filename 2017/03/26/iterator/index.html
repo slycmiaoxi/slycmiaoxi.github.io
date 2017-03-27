@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java, hexo" />
+  <meta name="keywords" content="设计模式," />
 
 
 
@@ -105,15 +105,22 @@
 
 
 
-<meta name="description" content="try your best">
-<meta property="og:type" content="website">
-<meta property="og:title" content="秒西">
-<meta property="og:url" content="http://www.myzwl.win/archives/2017/03/index.html">
+<meta name="description" content="前言 为什么会有迭代器？当我们想要 遍历取出集合一组数据时，一般都是用for里面套着i循环，或者使用for（对象 x :某个集合)的形式取出，不过因为集合类型的不同，取出的形式也不同，但是当我们想要一种统一的方法去遍历集合时，就可以用迭代器去实现，说了那么多，不如来一个直观的例子。
+这里模仿Arraylist集合中的迭代器实现过程，其中Iterator:执行递增遍历的接口Collection:一些">
+<meta property="og:type" content="article">
+<meta property="og:title" content="迭代器设计模式">
+<meta property="og:url" content="http://www.myzwl.win/2017/03/26/iterator/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="try your best">
+<meta property="og:description" content="前言 为什么会有迭代器？当我们想要 遍历取出集合一组数据时，一般都是用for里面套着i循环，或者使用for（对象 x :某个集合)的形式取出，不过因为集合类型的不同，取出的形式也不同，但是当我们想要一种统一的方法去遍历集合时，就可以用迭代器去实现，说了那么多，不如来一个直观的例子。
+这里模仿Arraylist集合中的迭代器实现过程，其中Iterator:执行递增遍历的接口Collection:一些">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs2/7.gif">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs2/8.gif">
+<meta property="og:updated_time" content="2017-03-27T07:18:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="秒西">
-<meta name="twitter:description" content="try your best">
+<meta name="twitter:title" content="迭代器设计模式">
+<meta name="twitter:description" content="前言 为什么会有迭代器？当我们想要 遍历取出集合一组数据时，一般都是用for里面套着i循环，或者使用for（对象 x :某个集合)的形式取出，不过因为集合类型的不同，取出的形式也不同，但是当我们想要一种统一的方法去遍历集合时，就可以用迭代器去实现，说了那么多，不如来一个直观的例子。
+这里模仿Arraylist集合中的迭代器实现过程，其中Iterator:执行递增遍历的接口Collection:一些">
+<meta name="twitter:image" content="http://www.myzwl.win/images/imgs2/7.gif">
 
 
 
@@ -141,13 +148,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/archives/2017/03/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/03/26/iterator/"/>
 
 
 
 
 
-  <title> 归档 | 秒西 </title>
+  <title> 迭代器设计模式 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -193,7 +200,7 @@ var _hmt = _hmt || [];
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -483,665 +490,257 @@ var _hmt = _hmt || [];
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 17 篇日志。 继续努力。
-    </span>
-
+  <div id="posts" class="posts-expand">
     
-
-      
-      
-      
-
-      
-        
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
-        </div>
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/26/filter/" itemprop="url">
-              
-                <span itemprop="name">职责链设计模式</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-26T22:48:51+08:00"
-              content="2017-03-26" >
-          03-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/26/iterator/" itemprop="url">
-              
-                <span itemprop="name">迭代器设计模式</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-26T21:48:51+08:00"
-              content="2017-03-26" >
-          03-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/23/jqajax/" itemprop="url">
-              
-                <span itemprop="name">jquery之ajax</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-23T21:48:51+08:00"
-              content="2017-03-23" >
-          03-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/22/ajax/" itemprop="url">
-              
-                <span itemprop="name">初识原生态ajax</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-22T21:48:51+08:00"
-              content="2017-03-22" >
-          03-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/22/git/" itemprop="url">
-              
-                <span itemprop="name">初识git</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-22T20:48:51+08:00"
-              content="2017-03-22" >
-          03-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/21/ssm/" itemprop="url">
-              
-                <span itemprop="name">ssm三大框架整合</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-21T20:48:51+08:00"
-              content="2017-03-21" >
-          03-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/21/ssh/" itemprop="url">
-              
-                <span itemprop="name">ssh三大框架整合</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-21T19:48:51+08:00"
-              content="2017-03-21" >
-          03-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/20/execl/" itemprop="url">
-              
-                <span itemprop="name">基于java的execl导入数据库和取数据至页面</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-20T19:48:51+08:00"
-              content="2017-03-20" >
-          03-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/19/arraylist/" itemprop="url">
-              
-                <span itemprop="name">初识Arraylist底层</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-19T21:48:51+08:00"
-              content="2017-03-19" >
-          03-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/19/md5/" itemprop="url">
-              
-                <span itemprop="name">基于servlet的验证码和md5加密</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-19T19:48:51+08:00"
-              content="2017-03-19" >
-          03-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/18/erweima/" itemprop="url">
-              
-                <span itemprop="name">基于struts2的二维码</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-18T19:48:51+08:00"
-              content="2017-03-18" >
-          03-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/17/danli/" itemprop="url">
-              
-                <span itemprop="name">单例设计模式</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-17T20:48:51+08:00"
-              content="2017-03-17" >
-          03-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/17/nat123/" itemprop="url">
-              
-                <span itemprop="name">利用nat123搭建本地服务器</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-17T19:48:51+08:00"
-              content="2017-03-17" >
-          03-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/17/fenqu/" itemprop="url">
-              
-                <span itemprop="name">window分区导致双系统无引导界面</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-17T14:09:42+08:00"
-              content="2017-03-17" >
-          03-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/16/dajianserver/" itemprop="url">
-              
-                <span itemprop="name">阿里云服务器上搭建javaweb站点</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-16T17:48:51+08:00"
-              content="2017-03-16" >
-          03-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/12/hexo1/" itemprop="url">
-              
-                <span itemprop="name">初步搭建hexo博客</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-12T17:48:51+08:00"
-              content="2017-03-12" >
-          03-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/10/hi/" itemprop="url">
-              
-                <span itemprop="name">第一篇仅为测试</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-10T17:48:51+08:00"
-              content="2017-03-10" >
-          03-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
 
   
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/26/iterator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                迭代器设计模式
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-26T21:48:51+08:00">
+                2017-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习总结/" itemprop="url" rel="index">
+                    <span itemprop="name">学习总结</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p> 为什么会有迭代器？<br>当我们想要 遍历取出集合一组数据时，一般都是用for里面套着i循环，或者使用for（对象 x :某个集合)的形式取出，不过因为集合类型的不同，取出的形式也不同，但是当我们想要一种统一的方法去遍历集合时，就可以用迭代器去实现，说了那么多，不如来一个直观的例子。</p>
+<p><img src="/images/imgs2/7.gif" alt="Alt text"><br>这里模仿Arraylist集合中的迭代器实现过程，其中<br>Iterator:执行递增遍历的接口<br>Collection:一些集合的上层接口<br>Arraylist: 目前只实现了add、size及迭代器<br>ArrayListIterator: 用于Arraylist的迭代器</p>
+<p>Iterator接口</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public interface Iterator &#123;</div><div class="line">//取得下一个元素</div><div class="line">Object next();</div><div class="line">//检查有没有下一个元素</div><div class="line">boolean hasNext();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Collection接口</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public interface Collection &#123;</div><div class="line">public void add(Object o);//增加一个对象</div><div class="line">public int size();//返回长度</div><div class="line">Iterator iterator();//内聚迭代器</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Arraylist类（这里ArrayListIterator是其内部类）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line">package com.zwl.iterator;</div><div class="line"></div><div class="line">public class ArrayList implements Collection&#123;</div><div class="line">//默认都是初始化为10的</div><div class="line">Object objects[]=new Object[10];</div><div class="line">//默认集合长度都为0的</div><div class="line">int index=0;</div><div class="line"></div><div class="line">//增加方法</div><div class="line">public void add(Object o)&#123;</div><div class="line">//集合长度动态增长，每次都使其长度增加2倍，并且创建一个增长后的新数组</div><div class="line">//将旧数组先copy给新数组，在指向旧数组的引用</div><div class="line">//同时保证每添加一个对象，集合长度自增长，这样就不会出现越界情况</div><div class="line">	if(index==objects.length)&#123;</div><div class="line">		Object newobjects[]=new Object[objects.length*2];</div><div class="line">		System.arraycopy(objects, 0, newobjects, 0, objects.length);</div><div class="line">		objects=newobjects;</div><div class="line">	&#125;</div><div class="line">	objects[index]=o;</div><div class="line">	index++;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//返回集合长度</div><div class="line">public int size()&#123;</div><div class="line">	return index;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//统一迭代器方法</div><div class="line">@Override</div><div class="line">public Iterator iterator() &#123;</div><div class="line">	// TODO Auto-generated method stub</div><div class="line">	return new ArrayListIterator();</div><div class="line">&#125;</div><div class="line"></div><div class="line">//内部类，返回arraylist的专有迭代器</div><div class="line">private class ArrayListIterator implements Iterator&#123;</div><div class="line">    //取集合中对象的索引</div><div class="line">        private int currentIndex=0;</div><div class="line">    </div><div class="line">   //取出集合中当前索引的一个对象</div><div class="line">	@Override</div><div class="line">	public Object next() &#123;</div><div class="line">		Object o = objects[currentIndex];</div><div class="line">		currentIndex ++;</div><div class="line">		return o;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">//判断集合是否含有下一个元素</div><div class="line">	@Override</div><div class="line">	public boolean hasNext() &#123;</div><div class="line">//索引值超出集合长度，集合中元素取完</div><div class="line">		if(currentIndex&gt;=index) return false;</div><div class="line">		else</div><div class="line">			return true;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试类：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line"></div><div class="line">		Collection al=new ArrayList();</div><div class="line">		</div><div class="line"> for(int i=0;i&lt;15;i++)&#123;</div><div class="line">	 al.add(new Object());</div><div class="line"> &#125;</div><div class="line"> System.out.println(al.size());</div><div class="line"> </div><div class="line"> Iterator it=al.iterator();</div><div class="line"> while(it.hasNext())&#123;</div><div class="line">	 Object o=it.next();</div><div class="line">	 System.out.println(o+"  ");</div><div class="line"> &#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>至此，可以归纳一下迭代器设计模式的一般形式<br><img src="/images/imgs2/8.gif" alt="Alt text"></p>
+<p>其中：<br>1：Iterator(迭代器) 参与者：<br> 定义访问和遍历元素的接口（如Iterator)</p>
+<p>2.ConcreteIterator(具体迭代器)参与者<br>实现迭代器的接口(如ArrayListIterator)</p>
+<p>3.Aggregate(聚合)参与者<br>定义建立Iterator参与者的接口(如Collection)</p>
+<p>4.ConcreteAggregate（具体聚合）参与者<br>实现Aggregate所定义的接口（如Arraylist）</p>
+<p>最后不得不提的是，无论一个集合实现的结果如何，都能使用iterator，此外，我们通过改变iterato，来增加各种iterator，如反向遍历，双向遍历（即，增加一个previous方法），只要注意一下currentInde和index就可以了</p>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>纯属娱乐！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/设计模式/" rel="tag"># 设计模式</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/23/jqajax/" rel="next" title="jquery之ajax">
+                <i class="fa fa-chevron-left"></i> jquery之ajax
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/26/filter/" rel="prev" title="职责链设计模式">
+                职责链设计模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
 
           
           </div>
           
 
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
 
           
+     <div class="comments" id="comments">
+       
+            <div id="uyan_frame"></div>
+       
+     </div>
+   
 
         </div>
         
@@ -1161,8 +760,17 @@ var _hmt = _hmt || [];
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -1254,6 +862,22 @@ var _hmt = _hmt || [];
 		
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1379,11 +1003,9 @@ var _hmt = _hmt || [];
 
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
 
 
   
@@ -1418,6 +1040,10 @@ var _hmt = _hmt || [];
     
 
 
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2127192"></script>
+      <!-- UY END -->
     
   
 

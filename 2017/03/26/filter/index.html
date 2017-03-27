@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="踩坑 , window," />
+  <meta name="keywords" content="设计模式," />
 
 
 
@@ -105,28 +105,25 @@
 
 
 
-<meta name="description" content="事实上笔者在去年8月份的时候就已经在自己电脑上通过nat123搭建了一台服务器，即p2p，自己的电脑作为服务器，但是这很不安全，而且每次别人通过外网访问，电脑必须打开而且开着服务器，由于是免费的，导致别人访问网速跟不上等等，最近阿里云有学生9.9元购买服务器，所以笔者买了一个，也很有兴趣将笔者之前写的两个网站部署上，结果很美好，但过程很坑，所以就需要总结来提高自己进入正题笔者也是google了许多">
+<meta name="description" content="前言 职责链，通俗地讲就是把责任处理对象连城一条链，这样当一个处理对象不能及时处理的时候就会交给下一个处理对象直到被处理为止。就好比生活中，我们有事向学校请假，得找班主任签字同意，然后有些时候需要院里签字，甚至教务处，最后将假条交给同学，最后在给相应授课老师，可能这个例子还不太准确，但是总之经过一些列流程，最后才会处理。
+当然，在程序中，最常见的就是过滤关键字了，首先模拟一下非web下的责任链
+首">
 <meta property="og:type" content="article">
-<meta property="og:title" content="阿里云服务器上搭建javaweb站点">
-<meta property="og:url" content="http://www.myzwl.win/2017/03/16/dajianserver/index.html">
+<meta property="og:title" content="职责链设计模式">
+<meta property="og:url" content="http://www.myzwl.win/2017/03/26/filter/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="事实上笔者在去年8月份的时候就已经在自己电脑上通过nat123搭建了一台服务器，即p2p，自己的电脑作为服务器，但是这很不安全，而且每次别人通过外网访问，电脑必须打开而且开着服务器，由于是免费的，导致别人访问网速跟不上等等，最近阿里云有学生9.9元购买服务器，所以笔者买了一个，也很有兴趣将笔者之前写的两个网站部署上，结果很美好，但过程很坑，所以就需要总结来提高自己进入正题笔者也是google了许多">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/1.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/1.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/3.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/4.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/5.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/6.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/7.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/8.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/9.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/10.gif">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs1/10.gif">
-<meta property="og:updated_time" content="2017-03-18T13:20:16.000Z">
+<meta property="og:description" content="前言 职责链，通俗地讲就是把责任处理对象连城一条链，这样当一个处理对象不能及时处理的时候就会交给下一个处理对象直到被处理为止。就好比生活中，我们有事向学校请假，得找班主任签字同意，然后有些时候需要院里签字，甚至教务处，最后将假条交给同学，最后在给相应授课老师，可能这个例子还不太准确，但是总之经过一些列流程，最后才会处理。
+当然，在程序中，最常见的就是过滤关键字了，首先模拟一下非web下的责任链
+首">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs2/9.gif">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs2/10.gif">
+<meta property="og:updated_time" content="2017-03-27T09:07:22.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="阿里云服务器上搭建javaweb站点">
-<meta name="twitter:description" content="事实上笔者在去年8月份的时候就已经在自己电脑上通过nat123搭建了一台服务器，即p2p，自己的电脑作为服务器，但是这很不安全，而且每次别人通过外网访问，电脑必须打开而且开着服务器，由于是免费的，导致别人访问网速跟不上等等，最近阿里云有学生9.9元购买服务器，所以笔者买了一个，也很有兴趣将笔者之前写的两个网站部署上，结果很美好，但过程很坑，所以就需要总结来提高自己进入正题笔者也是google了许多">
-<meta name="twitter:image" content="http://www.myzwl.win/images/imgs1/1.gif">
+<meta name="twitter:title" content="职责链设计模式">
+<meta name="twitter:description" content="前言 职责链，通俗地讲就是把责任处理对象连城一条链，这样当一个处理对象不能及时处理的时候就会交给下一个处理对象直到被处理为止。就好比生活中，我们有事向学校请假，得找班主任签字同意，然后有些时候需要院里签字，甚至教务处，最后将假条交给同学，最后在给相应授课老师，可能这个例子还不太准确，但是总之经过一些列流程，最后才会处理。
+当然，在程序中，最常见的就是过滤关键字了，首先模拟一下非web下的责任链
+首">
+<meta name="twitter:image" content="http://www.myzwl.win/images/imgs2/9.gif">
 
 
 
@@ -154,13 +151,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/03/16/dajianserver/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/03/26/filter/"/>
 
 
 
 
 
-  <title> 阿里云服务器上搭建javaweb站点 | 秒西 </title>
+  <title> 职责链设计模式 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -506,7 +503,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/16/dajianserver/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/26/filter/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -527,7 +524,7 @@ var _hmt = _hmt || [];
             
             
               
-                阿里云服务器上搭建javaweb站点
+                职责链设计模式
               
             
           </h1>
@@ -542,8 +539,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-16T17:48:51+08:00">
-                2017-03-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-26T22:48:51+08:00">
+                2017-03-26
               </time>
             
 
@@ -557,6 +554,28 @@ var _hmt = _hmt || [];
   <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
 
 		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习总结/" itemprop="url" rel="index">
+                    <span itemprop="name">学习总结</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -588,63 +607,41 @@ var _hmt = _hmt || [];
       
 
       
-        <p><strong>事实上笔者在去年8月份的时候就已经在自己电脑上通过nat123搭建了一台服务器，即p2p，自己的电脑作为服务器，但是这很不安全，而且每次别人通过外网访问，电脑必须打开而且开着服务器，由于是免费的，导致别人访问网速跟不上等等，最近阿里云有学生9.9元购买服务器，所以笔者买了一个，也很有兴趣将笔者之前写的两个网站部署上，结果很美好，但过程很坑，所以就需要总结来提高自己</strong><br><em>进入正题</em><br>笔者也是google了许多例子和前人的经验找到适合自己的方法</p>
-<p><strong>首先需要租一台云服务器，我选择了阿里云</strong><br><img src="/images/imgs1/1.gif" alt="Alt text"></p>
-<p>注意这里操作系统有四个选项，笔者发现只有第四个符合自己（貌似是自定义），然后按照步骤，其中有些需要注意<br><img src="/images/imgs1/1.gif" alt="Alt text"></p>
-<p>安全组，这里暂时可以选择默认的第一个，因为后面如果在搭建web时需要一些端口（如mysql默认3306端口改掉，tomcat8080端口换成80等等），到时可以在后台操作）</p>
-<p><img src="/images/imgs1/3.gif" alt="Alt text"><br>关于镜像选择，因为笔者是window7，而且还是32位的，相对64位只能有不大于4g的内存，</p>
-<p><img src="/images/imgs1/4.gif" alt="Alt text"><br>这里的密码就是之后在本地机子上远程登录这个服务器所要的密码</p>
-<p>ok至此，成功租了一台服务器，这时你会收到一条短信，里面有你这台服务器的公网地址</p>
-<p><strong>然后笔者就开始着手在本机上登录该服务器，当然是为了搭建javaweb准备的</strong></p>
-<ol>
-<li><p>在本机上准备javaweb需要的环境<br><img src="/images/imgs1/5.gif" alt="Alt text"></p>
-</li>
-<li><p>在本机上新建一个分区用来放上述软件供服务器远程使用（其实也可以不用分区，直接复制也行，毕竟笔者被分区坑了，导致后来的双系统引导界面消失）</p>
-</li>
-<li><p>本机上登录远程连接可以用运行-mstsc-直接进入到如下界面<br><img src="/images/imgs1/6.gif" alt="Alt text"><br>其中计算机就是你的公网地址，如果你是新建了一个分区，那么就点选项在本地资源的详细信息中就新建的那个分区勾上，笔者这里是x盘（如果没有的话就直接连接）<br><img src="/images/imgs1/7.gif" alt="Alt text"></p>
-</li>
-<li><p>后面什么证书，安全啊先不管了，应该是进入远程服务器了<br><img src="/images/imgs1/8.gif" alt="Alt text"></p>
-</li>
-<li><p>接下来就是将mysql，jdk等复制到c盘中，因为只有一个盘，后续就是安装配置了</p>
-</li>
-<li>安装jdk，笔者的是jdk1.6（注意jdk版本不同，后续运行高版本会出像版本错误，笔者已吃过亏），配置环境变量</li>
-<li>安装tomcat，配置tomcat环境变量，注意上述不需要自定义文件夹，因为只有一个c盘，tomcat默认端口是8080</li>
-<li>安装mysql，这里面需要注意的是里面有端口设置，可以选择默认的3306或者自定义，然后就是用户与密码设置</li>
-<li>可以使用可视化数据库工具，这里笔者使用了navicat<br><strong>至此算是搭建了一个简单web环境，可以先测试一下</strong><br>拷贝一个已经被编译过的web项目，启动tomcat与mysql，然后利用localhost:8080/项目名访问，如果出现界面就表示以上配置成功</li>
-</ol>
-<p><strong>接下来需要买一个域名</strong><br><img src="/images/imgs1/9.gif" alt="Alt text"></p>
-<ol>
-<li>成功后点击解析，在里面找到新手设置，点进去<br><img src="/images/imgs1/10.gif" alt="Alt text"><br>点击设置网站解析，然后输入公网，即可。</li>
-<li>在远程服务器中，找到tomcat下conf下的server.xml文件，如果我们不想要8080端口并且输入域名时不想要端口的话，就先把8080端口改成80</li>
-</ol>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p> 职责链，通俗地讲就是把责任处理对象连城一条链，这样当一个处理对象不能及时处理的时候就会交给下一个处理对象直到被处理为止。就好比生活中，我们有事向学校请假，得找班主任签字同意，然后有些时候需要院里签字，甚至教务处，最后将假条交给同学，最后在给相应授课老师，可能这个例子还不太准确，但是总之经过一些列流程，最后才会处理。</p>
+<p>当然，在程序中，最常见的就是过滤关键字了，首先模拟一下非web下的责任链</p>
+<p><strong>首先定义一个过滤接口</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface Filter &#123;</div><div class="line">	String doFilter(String str);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>接下来就是各式各样的过滤字</strong><br>敏感字过滤</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public class SesitiveFilter implements Filter &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public String doFilter(String str) &#123;</div><div class="line">		//第一个参数是非法字符，第二个参数是被替换的字符</div><div class="line">		String r = str.replace("瞎子", "李青")</div><div class="line">			 .replace("小学僧", "盲僧");</div><div class="line">		</div><div class="line">		return r;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>过滤html标签</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public class HTMLFilter implements Filter &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public String doFilter(String str) &#123;</div><div class="line">	//&lt;&gt;被替换成[]</div><div class="line">		String r = str.replace('&lt;', '[')</div><div class="line">				   .replace('&gt;', ']');</div><div class="line">		return r;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>过滤链:将过滤器串成一个链，并保存过滤后的字</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">public class FilterChain implements Filter &#123;</div><div class="line">     //保存所有的具体过滤器</div><div class="line">	List&lt;Filter&gt; filters=new ArrayList&lt;Filter&gt;();</div><div class="line">	</div><div class="line">    //过滤器串成链</div><div class="line">	public FilterChain addFilter(Filter f)</div><div class="line">	&#123;</div><div class="line">		this.filters.add(f);</div><div class="line">		return this;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">  //返回过滤后的字符</div><div class="line">	@Override</div><div class="line">	public String doFilter(String str) &#123;</div><div class="line">		String r=str;</div><div class="line">		for(Filter f:filters)&#123;</div><div class="line">			r=f.doFilter(r);</div><div class="line">		&#125;</div><div class="line">		return r;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line">		String msg = "因为一个英雄而爱上了lol，他就是瞎子，虽然我是小学僧，但是我还是只坚信我的&lt;我的信仰&gt;英雄！！";</div><div class="line">		FilterChain fc = new FilterChain();</div><div class="line">		fc.addFilter(new SesitiveFilter())</div><div class="line">		  .addFilter(new HTMLFilter());</div><div class="line">		String result=fc.doFilter(msg);</div><div class="line">		System.out.println(result);</div><div class="line"></div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>输出结果:</p>
 <blockquote>
-<p> Connector port=”80” protocol=”HTTP/1.1”<br>               connectionTimeout=”20000”<br>               redirectPort=”8443” /&gt;</p>
+<p>因为一个英雄而爱上了lol，他就是李青，虽然我是盲僧，但是我还是只坚信我的[我的信仰]英雄！！</p>
 </blockquote>
-<p> 3.然后找到host</p>
+<h4 id="Web下责任链"><a href="#Web下责任链" class="headerlink" title="Web下责任链"></a>Web下责任链</h4><p>当然一般情况下，都是过滤web环境下的字符，大概思路跟非web下差不多</p>
+<p>首先需要建立request和response对象，即接收和响应</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class Request &#123;</div><div class="line">String requestStr;</div><div class="line"></div><div class="line">public String getRequestStr() &#123;</div><div class="line">	return requestStr;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public void setRequestStr(String requestStr) &#123;</div><div class="line">	this.requestStr = requestStr;</div><div class="line">&#125;	</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class Response &#123;</div><div class="line">	 String responseStr;</div><div class="line">	public String getResponseStr() &#123;</div><div class="line">		return responseStr;</div><div class="line">	&#125;</div><div class="line">	public void setResponseStr(String responseStr) &#123;</div><div class="line">		this.responseStr = responseStr;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后是Filter接口</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface Filter &#123;</div><div class="line">	void doFilter(Request request, Response response, FilterChain chain);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>紧接着是filterchain类</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">public class FilterChain implements Filter &#123;</div><div class="line">    //存放各种filter</div><div class="line">	List&lt;Filter&gt; filters = new ArrayList&lt;Filter&gt;();</div><div class="line">   </div><div class="line">    //控制filter的索引</div><div class="line">	int index = 0;</div><div class="line"></div><div class="line">    //添加filter</div><div class="line">	public FilterChain addFilter(Filter f) &#123;</div><div class="line">		this.filters.add(f);</div><div class="line">		return this;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">//filter链，特别注意这里有一个迭代，与具体filter里的迭代相呼应</div><div class="line">//主要是依次先取出request的接受字符过滤，然后在倒叙依次取完response的响应过滤,而这恰恰是struts2框架原理的核心，当然spring mvc(直接基于servlet)也类似，都是基于拦截或者过滤实现的</div><div class="line">	@Override</div><div class="line">	public void doFilter(Request request, Response response, FilterChain chain) &#123;</div><div class="line">		// 过滤器取完退出</div><div class="line">if(index == filters.size()) return ;</div><div class="line">		</div><div class="line">	//依次取出过滤器</div><div class="line">		Filter f = filters.get(index);</div><div class="line">		index ++;</div><div class="line">		f.doFilter(request, response, chain);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后就是具体的filter了（这里就是web中的真实拦截顺序了）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public class SesitiveFilter implements Filter &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void doFilter(Request request, Response response, FilterChain chain) &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		request.requestStr = request.requestStr.replace("瞎子", "李青")</div><div class="line">				 .replace("小学僧", "盲僧") ;</div><div class="line">		chain.doFilter(request, response, chain);</div><div class="line">		response.responseStr += "SesitiveFilterresponse";</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>另一个filter</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public class HTMLFilter implements Filter &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void doFilter(Request request, Response response,FilterChain chain) &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		request.requestStr = request.requestStr.replace('&lt;', '[')</div><div class="line">				   .replace('&gt;', ']') ;</div><div class="line">		</div><div class="line">		chain.doFilter(request, response, chain);</div><div class="line">		response.responseStr += "HTMLFilterresponse";</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>先附一张structs2原理图，来对比一下上述过滤过程<br><img src="/images/imgs2/9.gif" alt="Alt text"><br>主要关注action invocation中部分</p>
+<p>测试类:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line">		String msg = "因为一个英雄而爱上了lol，他就是瞎子，虽然我是小学僧，但是我还是只坚信我的&lt;我的信仰&gt;英雄！！";</div><div class="line">		Request request = new Request();</div><div class="line">		request.setRequestStr(msg);</div><div class="line">		Response response = new Response();</div><div class="line">		response.setResponseStr("response");</div><div class="line">		FilterChain fc = new FilterChain();</div><div class="line">		fc.addFilter(new HTMLFilter())</div><div class="line">		  .addFilter(new SesitiveFilter())</div><div class="line">		  ;</div><div class="line">		</div><div class="line">		fc.doFilter(request, response, fc);</div><div class="line">		System.out.println(request.getRequestStr());</div><div class="line">		System.out.println(response.getResponseStr());</div><div class="line"></div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>结果:</p>
 <blockquote>
-<p>  Host name=”你刚刚解析的域名”  appBase=”webapp”<br>            unpackWARs=”true” autoDeploy=”true”&gt;</p>
-<p>&lt;Context path=”” docBase=”/项目名” debug=”0” reloadable=”true” </p>
+<p>因为一个英雄而爱上了lol，他就是李青，虽然我是盲僧，但是我还是只坚信我的[我的信仰]英雄！！<br>response–SesitiveFilterresponse–HTMLFilterresponse</p>
 </blockquote>
-<p>注意这里appBase是放项目的站点，context内的docBase是你的项目名，目前我们只是一个tomcat运行一个域名执行一个项目<br>然后打开C:\Windows\System32\drivers\etc下的host文件<br>增加如下设置</p>
-<blockquote>
-<p>127.0.0.1       localhost<br>  ::1             localhost<br>192.168.1.11    刚刚的域名</p>
-</blockquote>
-<p>保存，然后重启服务器，可能会发现会遇到一些问题，如80端口被占用，80端口未开放等等，假设未被占有（如果占用，google上有解决方法），<br>如果未开放，这里我们就需要在云服务器上进行端口开放设置</p>
-<p><strong>进入我们购买的云服务器，点击安全组，选中一个实例，点击配置，选择公网入方向，按照步骤开放想要的端口</strong><br> <img src="/images/imgs1/10.gif" alt="Alt text"></p>
-<p> 至此只要输入域名就可以访问了。</p>
-<p> 当然，如果我们想要一个tomcat上配置多个域名，每个域名运行各自不同的项目，那如何做了，经过踩坑后，大概如下步骤</p>
-<ol>
-<li>可以选择在tomcat下新建一个站点，类似于原来的webapp，然后在server.xml中进行配置一个新host</li>
-</ol>
-<blockquote>
-<p>  Host name=”第二个域名”  appBase=”新创建的站点”<br>            unpackWARs=”true” autoDeploy=”true”&gt;</p>
-<p>&lt;Context path=”” docBase=”/第二个项目名” debug=”0” reloadable=”true”</p>
-</blockquote>
-<p>2.然后在hosts文件汇总加入第二个域名</p>
-<blockquote>
-<p>127.0.0.1       localhost<br>  ::1             localhost<br>192.168.1.11    刚刚的域名<br>192.168.1.11    第二个域名</p>
-</blockquote>
-<p>最后重启服务器。<br>笔者在这里遇到了一个很奇怪的坑，同一服务器下的项目出现奇怪的jar包冲突，只要删掉xerces包就行了（当然是在远程服务器上才产生冲突的）</p>
+<p>最后归纳一下责任链设计模式的一般形式<br><img src="/images/imgs2/10.gif" alt="Alt text"><br>分别为客户端、处理者和具体处理者</p>
 
       
     </div>
@@ -685,7 +682,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/踩坑-window/" rel="tag"># 踩坑 , window</a>
+            <a href="/source/tags/设计模式/" rel="tag"># 设计模式</a>
           
         </div>
       
@@ -698,8 +695,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/12/hexo1/" rel="next" title="初步搭建hexo博客">
-                <i class="fa fa-chevron-left"></i> 初步搭建hexo博客
+              <a href="/2017/03/26/iterator/" rel="next" title="迭代器设计模式">
+                <i class="fa fa-chevron-left"></i> 迭代器设计模式
               </a>
             
           </div>
@@ -707,10 +704,6 @@ var _hmt = _hmt || [];
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/17/fenqu/" rel="prev" title="window分区导致双系统无引导界面">
-                window分区导致双系统无引导界面 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -785,8 +778,17 @@ var _hmt = _hmt || [];
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -878,6 +880,22 @@ var _hmt = _hmt || [];
 		
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Web下责任链"><span class="nav-text">Web下责任链</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
