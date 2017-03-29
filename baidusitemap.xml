@@ -3,12 +3,72 @@
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/03/28/observer/</loc>
-    <lastmod>2017-03-28T13:35:06.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/03/29/dyproxy3/</loc>
+    <lastmod>2017-03-29T15:06:50.000Z</lastmod>
     <data>
         <display>
-        <title>观察者设计模式</title>
-        <pubTime>2017-03-28T08:48:51.000Z</pubTime>
+        <title>代理模式（四）之模仿spring Aop及真实jdk的动态代理</title>
+        <pubTime>2017-03-29T12:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/29/dyproxy2/</loc>
+    <lastmod>2017-03-29T15:06:50.000Z</lastmod>
+    <data>
+        <display>
+        <title>代理模式（三）之模仿jdk底层动态代理实现</title>
+        <pubTime>2017-03-29T10:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/29/dyproxy1/</loc>
+    <lastmod>2017-03-29T10:32:28.000Z</lastmod>
+    <data>
+        <display>
+        <title>代理模式（二）之初识动态代理</title>
+        <pubTime>2017-03-29T09:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/29/stproxy/</loc>
+    <lastmod>2017-03-29T06:21:08.000Z</lastmod>
+    <data>
+        <display>
+        <title>代理模式（一）之静态代理</title>
+        <pubTime>2017-03-29T08:48:51.000Z</pubTime>
         
         <tag>设计模式 </tag>
          
@@ -24,7 +84,7 @@
     
   <url>
     <loc>http://www.myzwl.win/2017/03/27/abstractfactory/</loc>
-    <lastmod>2017-03-27T15:18:30.000Z</lastmod>
+    <lastmod>2017-03-29T05:31:36.000Z</lastmod>
     <data>
         <display>
         <title>抽象工厂设计模式</title>
@@ -43,8 +103,28 @@
 
     
   <url>
+    <loc>http://www.myzwl.win/2017/03/28/observer/</loc>
+    <lastmod>2017-03-29T05:31:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>观察者设计模式</title>
+        <pubTime>2017-03-28T08:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.myzwl.win/2017/03/27/factory/</loc>
-    <lastmod>2017-03-27T14:27:46.000Z</lastmod>
+    <lastmod>2017-03-29T05:31:34.000Z</lastmod>
     <data>
         <display>
         <title>工厂方法设计模式</title>

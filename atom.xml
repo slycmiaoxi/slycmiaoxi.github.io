@@ -5,19 +5,202 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-03-28T13:35:06.000Z</updated>
+  <updated>2017-03-29T15:06:50.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>代理模式（四）之模仿spring Aop及真实jdk的动态代理</title>
+    <link href="http://www.myzwl.win/2017/03/29/dyproxy3/"/>
+    <id>http://www.myzwl.win/2017/03/29/dyproxy3/</id>
+    <published>2017-03-29T12:48:51.000Z</published>
+    <updated>2017-03-29T15:06:50.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>代理模式，尤其是动态代理，他从思想上改变了我们对编程的认识，可以想象一个切面我们在其中添加任何控制如事务、日志、权限等，而这也是面向切面编程的核心，更是spring Aop的核心，而设计才是实用的，框架和配置都是虚的，尤其当抛开jdk底层代码设计，才发现其中的来龙去脉和乐趣。</p>
+<p>总之，动态代理设计模式的思想太强大了。接下来将用之前模拟的jdk动态代码和jdk本身自带的动态来模拟一个案例</p>
+<p>大概物理情景是，添加一个打野信息接口和打野代理，利用InvocationHandler实现代理对具体打野的代理</p>
+<p>首先是一个打野接口</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">package com.zwl.pr;</div><div class="line"></div><div class="line">public interface JungleInfo &#123;</div><div class="line"></div><div class="line">	public void addJungle();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>打野接口实现类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">package com.zwl.pr;</div><div class="line"></div><div class="line">public class JungleInfoimpl implements JungleInfo &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void addJungle() &#123;</div><div class="line">		System.out.println("Js is ganking");</div><div class="line">		System.out.println("Leesin is ganking");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>打野代理<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">package com.zwl.pr;</div><div class="line"></div><div class="line">import java.lang.reflect.Method;</div><div class="line"></div><div class="line">public class JungleHandler implements InvocationHandler &#123;</div><div class="line"></div><div class="line">private Object target;</div><div class="line">	</div><div class="line">	public JungleHandler(Object target) &#123;</div><div class="line">		super();</div><div class="line">		this.target = target;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void invoke(Object o, Method m) &#123;</div><div class="line">		//控制之前的业务逻辑</div><div class="line">		System.out.println("JungleHandler is starting");</div><div class="line">		try &#123;</div><div class="line">			m.invoke(target);</div><div class="line">		&#125; catch (Exception e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		//控制之后的业务逻辑</div><div class="line">		System.out.println("JungleHandler is ending");</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>为了方便这里只是打印了一个语句<br>测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">      //被代理对象</div><div class="line">      JungleInfo jun=new JungleInfoimpl();</div><div class="line">      //代理类</div><div class="line">InvocationHandler invo=new JungleHandler(jun);</div><div class="line">JungleInfo jung=(JungleInfo) Proxy.newProxyInstance(JungleInfo.class, invo);</div><div class="line">jung.addJungle();</div></pre></td></tr></table></figure></p>
+<p>输出结果：</p>
+<blockquote>
+<p>class com.zwl.pr.LeeSinTimeProxy<br>JungleHandler is starting<br>Js is ganking<br>Leesin is ganking<br>JungleHandler is ending</p>
+</blockquote>
+<p>至此我们发现如果我们想在这个切面中再加一个控制，好办，再写一个handle类，代理其它handle类，达到切面控制效果。<br>当然，以后只要实现InvocationHandler接口就能达到效果，而proxy底层都不需要知道</p>
+<h3 id="jdk的动态代理"><a href="#jdk的动态代理" class="headerlink" title="jdk的动态代理"></a>jdk的动态代理</h3><p>同样是上面的例子，知识代理handler需要改变</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">     package com.zwl.pr;</div><div class="line"></div><div class="line">import java.lang.reflect.InvocationHandler;</div><div class="line">import java.lang.reflect.Method;</div><div class="line"></div><div class="line">public class JungleHandlers implements InvocationHandler &#123;</div><div class="line"></div><div class="line">	</div><div class="line">private Object target;</div><div class="line">	</div><div class="line">	public JungleHandlers(Object target) &#123;</div><div class="line">		super();</div><div class="line">		this.target = target;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public Object invoke(Object proxy, Method method, Object[] args)</div><div class="line">			throws Throwable &#123;</div><div class="line">		System.out.println("Jdk is starting");</div><div class="line">		method.invoke(target, args);</div><div class="line">		System.out.println("Jdk is ending");</div><div class="line">		return null;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中Object proxy是指代理类，Method method是指被代理的方法，Object[] args为该方法的参数数组</p>
+<p>接下来是测试类</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">      JungleInfo jun=new JungleInfoimpl();</div><div class="line">JungleHandlers invo=new JungleHandlers(jun);</div><div class="line">JungleInfo jung=(JungleInfo) Proxy.newProxyInstance(JungleInfo.class.getClassLoader(),new Class&lt;?&gt;[]&#123;JungleInfo.class&#125;,  invo);</div><div class="line">jung.addJungle();</div></pre></td></tr></table></figure>
+<p>其中jung将返回一个代理类的实例JungleInfo.class.getClassLoader()是类装载器，第二个参数是任何真实类拥有的全部接口的数组，第三个参数就是真实的handles</p>
+<p>测试结果：</p>
+<blockquote>
+<p>Jdk is starting<br>Js is ganking<br>Leesin is ganking<br>Jdk is ending</p>
+</blockquote>
+<p>至此，我们利用动态代理，就可以在不修改原来代码的基础上，就可以在原来代码的基础上做操作，而这恰恰就是AOP编程的核心</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;代理模式，尤其是动态代理，他从思想上改变了我们对编程的认识，可以想象一个切面我们在其中添加任何控制如事务、日志、权限等，而这也是面向切面编程
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>代理模式（三）之模仿jdk底层动态代理实现</title>
+    <link href="http://www.myzwl.win/2017/03/29/dyproxy2/"/>
+    <id>http://www.myzwl.win/2017/03/29/dyproxy2/</id>
+    <published>2017-03-29T10:48:51.000Z</published>
+    <updated>2017-03-29T15:06:50.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在前面的基础上在做进一步的改进，前面我们是动态写死了方法，即自己指定了方法名，当然我们可以利用反射帮我们完成函数名的动态指定</p>
+<p>首先是一个反射例子<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//拿到相应的类</div><div class="line">Method[]  methods=com.zwl.pr.Jungle.class.getMethods();</div><div class="line">		for(Method method: methods)&#123;</div><div class="line">		//循环输出该类的函数名，如public void ss();最后只输出ss</div><div class="line">			System.out.println(method.getName());</div><div class="line">		&#125;</div></pre></td></tr></table></figure></p>
+<p>有了这个原理就可以对之前的proxy进行改造</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line">public static Object newProxyInstance(Class interfac) throws Exception&#123;</div><div class="line">      </div><div class="line">      //动态拿到方法的代码</div><div class="line">		String methodStr = "";</div><div class="line">		String rt = "\r\n";</div><div class="line">		</div><div class="line">		//将指定的动态接口类名拿到</div><div class="line">		Method[] methods = interfac.getMethods();</div><div class="line"></div><div class="line">		//循环添加方法</div><div class="line">		for(Method m : methods) &#123;</div><div class="line">			methodStr += "@Override" + rt + </div><div class="line">						 "public void " + m.getName() + "() &#123;" + rt +</div><div class="line">						 	"   long start = System.currentTimeMillis();" + rt +</div><div class="line">							"   leesin." + m.getName() + "();" + rt +</div><div class="line">							"   long end = System.currentTimeMillis();" + rt +</div><div class="line">							"   System.out.println(\"time:\" + (end-start));" + rt +</div><div class="line">						 "&#125;";</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		String str=</div><div class="line">				"package com.zwl.pr;" + rt +</div><div class="line"></div><div class="line">				"public class LeeSinTimeProxy implements "+interfac.getName()+ "&#123;" + rt +</div><div class="line"></div><div class="line">					</div><div class="line">					"Jungle leesin;" + rt +</div><div class="line">					</div><div class="line">					</div><div class="line">					"public LeeSinTimeProxy(Jungle leesin) &#123;" + rt +</div><div class="line">						"super();" + rt +</div><div class="line">						"this.leesin = leesin;" + rt +</div><div class="line">					"&#125;" + rt +</div><div class="line"></div><div class="line">          //这里循环动态输出方法</div><div class="line">					methodStr +</div><div class="line"></div><div class="line">				"&#125;" ;</div><div class="line">		</div><div class="line">		//System.out.println(System.getProperty("user.dir"));</div><div class="line"></div><div class="line">		//这里将动态生成的代理文件放到指定文件夹中，避免与bin里的.class文件冲突</div><div class="line">		String filename=</div><div class="line">				"E:/src/com/zwl/pr/LeeSinTimeProxy.java";</div><div class="line">		File f=new File(filename);</div><div class="line">		FileWriter fw=new FileWriter(f);</div><div class="line">		fw.write(str);</div><div class="line">		fw.flush();</div><div class="line">		fw.close();</div><div class="line"></div><div class="line">		   //compile</div><div class="line">				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();</div><div class="line">				StandardJavaFileManager fileMgr = compiler.getStandardFileManager(null, null, null);</div><div class="line">				Iterable units = fileMgr.getJavaFileObjects(filename);</div><div class="line">				CompilationTask t = compiler.getTask(null, fileMgr, null, null, null, units);</div><div class="line">				t.call();</div><div class="line">				fileMgr.close();</div><div class="line">				</div><div class="line">				//load into memory and create an instance</div><div class="line">				//更改到指定文件夹</div><div class="line">				URL[] urls = new URL[] &#123;new URL("file:/" + "E:/src/")&#125;;</div><div class="line">				URLClassLoader ul = new URLClassLoader(urls);</div><div class="line">				Class c = ul.loadClass("com.zwl.pr.LeeSinTimeProxy");</div><div class="line">				System.out.println(c);</div><div class="line">				</div><div class="line">				Constructor ctr = c.getConstructor(Jungle.class);</div><div class="line">				</div><div class="line">				//返回任意一个类</div><div class="line">				Object jungle=ctr.newInstance(new LeeSin());</div><div class="line">				</div><div class="line">		</div><div class="line">		return jungle;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<pre><code>注意这里和之前做了几处修改
+1.利用反射动态生成方法
+2.更改编译后生成文件的目录
+3.返回类型为object
+4具体在代码里有注释
+
+测试类：
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Jungle jungle=(Jungle) Proxy.newProxyInstance(Jungle.class);</div><div class="line">		jungle.gank();</div></pre></td></tr></table></figure>
+</code></pre><p>输出结果</p>
+<blockquote>
+<p>class com.zwl.pr.LeeSinTimeProxy<br>LeeSin is ganking…<br>gank time:1336<br>time:1336</p>
+</blockquote>
+<p>这里很明显发现方法都是固定的，如果想要方法都是动态生成的，则要进行进一步修改<br>首先增加一个<br>InvocationHandler动态生成类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface InvocationHandler &#123;</div><div class="line">	public void invoke(Object o, Method m);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后是具体的针对所有接口的时间处理类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">public class TimeHandler implements InvocationHandler &#123;</div><div class="line"></div><div class="line">   //代理类</div><div class="line">	private Object target;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">	public TimeHandler(Object target) &#123;</div><div class="line">		super();</div><div class="line">		this.target = target;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void invoke(Object o, Method m) &#123;</div><div class="line">		long start = System.currentTimeMillis();</div><div class="line">		try &#123;</div><div class="line">			//指定代理类的动态方法</div><div class="line">			m.invoke(target);</div><div class="line">		&#125; catch (Exception e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		long end = System.currentTimeMillis();</div><div class="line">		System.out.println("time:" + (end-start));</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后proxy里也要进行相应修改</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">//参数分别为被代理对象与代理对象</div><div class="line">public static Object newProxyInstance(Class interfac,InvocationHandler h) throws Exception&#123;</div><div class="line">		String methodStr = "";</div><div class="line">		String rt = "\r\n";</div><div class="line">		</div><div class="line">		Method[] methods = interfac.getMethods();</div><div class="line">		</div><div class="line">	//动态生成方法，其中this是指代理对象本身，而md是指方法名，这里的h是构造函数传的代理对象</div><div class="line">		for(Method m : methods) &#123;</div><div class="line">			methodStr += "@Override" + rt + </div><div class="line">						 "public void " + m.getName() + "() &#123;" + rt +</div><div class="line">						 "    try &#123;" + rt +</div><div class="line">						 "    Method md = " + interfac.getName() + ".class.getMethod(\"" + m.getName() + "\");" + rt +</div><div class="line">						 "    h.invoke(this, md);" + rt +</div><div class="line">						 "    &#125;catch(Exception e) &#123;e.printStackTrace();&#125;" + rt +</div><div class="line">						</div><div class="line">						 "&#125;";</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		</div><div class="line">		String str=</div><div class="line">				"package com.zwl.pr;" + rt +</div><div class="line">               "import java.lang.reflect.Method;" + rt +</div><div class="line">				"public class LeeSinTimeProxy implements "+interfac.getName()+ "&#123;" + rt +</div><div class="line"></div><div class="line">					</div><div class="line">					"com.zwl.pr.InvocationHandler h;" + rt +</div><div class="line">					</div><div class="line">					</div><div class="line">					"public LeeSinTimeProxy(InvocationHandler h) &#123;" + rt +</div><div class="line">						"super();" + rt +</div><div class="line">						"this.h = h;" + rt +</div><div class="line">					"&#125;" + rt +</div><div class="line"></div><div class="line"></div><div class="line">					methodStr +</div><div class="line"></div><div class="line">				"&#125;" ;</div><div class="line">		</div><div class="line">		//System.out.println(System.getProperty("user.dir"));</div><div class="line">		String filename=</div><div class="line">				"E:/src/com/zwl/pr/LeeSinTimeProxy.java";</div><div class="line">		File f=new File(filename);</div><div class="line">		FileWriter fw=new FileWriter(f);</div><div class="line">		fw.write(str);</div><div class="line">		fw.flush();</div><div class="line">		fw.close();</div><div class="line"></div><div class="line">		   //compile</div><div class="line">				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();</div><div class="line">				StandardJavaFileManager fileMgr = compiler.getStandardFileManager(null, null, null);</div><div class="line">				Iterable units = fileMgr.getJavaFileObjects(filename);</div><div class="line">				CompilationTask t = compiler.getTask(null, fileMgr, null, null, null, units);</div><div class="line">				t.call();</div><div class="line">				fileMgr.close();</div><div class="line">				</div><div class="line">				//load into memory and create an instance</div><div class="line">				URL[] urls = new URL[] &#123;new URL("file:/" + "E:/src/")&#125;;</div><div class="line">				URLClassLoader ul = new URLClassLoader(urls);</div><div class="line">				Class c = ul.loadClass("com.zwl.pr.LeeSinTimeProxy");</div><div class="line">				System.out.println(c);</div><div class="line">				</div><div class="line">				//返回代理类</div><div class="line">				Constructor ctr = c.getConstructor(InvocationHandler.class);</div><div class="line">				</div><div class="line">				Object jungle=ctr.newInstance(h);</div><div class="line">				</div><div class="line">		</div><div class="line">		return jungle;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>测试类：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//被代理对象</div><div class="line">LeeSin leesin=new LeeSin();</div><div class="line">//代理对象</div><div class="line">		InvocationHandler ivo=new TimeHandler(leesin);</div><div class="line">		Jungle jungle=(Jungle) Proxy.newProxyInstance(Jungle.class,ivo);</div><div class="line">		jungle.gank();</div></pre></td></tr></table></figure>
+<p>对应生成的java文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">package com.zwl.pr;</div><div class="line">import java.lang.reflect.Method;</div><div class="line">public class LeeSinTimeProxy implements com.zwl.pr.Jungle&#123;</div><div class="line">com.zwl.pr.InvocationHandler h;</div><div class="line">public LeeSinTimeProxy(InvocationHandler h) &#123;</div><div class="line">super();</div><div class="line">this.h = h;</div><div class="line">&#125;</div><div class="line">@Override</div><div class="line">public void gank() &#123;</div><div class="line">    try &#123;</div><div class="line">    Method md = com.zwl.pr.Jungle.class.getMethod("gank");</div><div class="line">    h.invoke(this, md);</div><div class="line">    &#125;catch(Exception e) &#123;e.printStackTrace();&#125;</div><div class="line">&#125;&#125;</div></pre></td></tr></table></figure></p>
+<p>对应的测试结果 </p>
+<blockquote>
+<p>class com.zwl.pr.LeeSinTimeProxy<br>LeeSin is ganking…<br>gank time:2642<br>time:2642</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在前面的基础上在做进一步的改进，前面我们是动态写死了方法，即自己指定了方法名，当然我们可以利用反射帮我们完成函数名的动态指定&lt;/p&gt;
+&lt;p&gt;
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>代理模式（二）之初识动态代理</title>
+    <link href="http://www.myzwl.win/2017/03/29/dyproxy1/"/>
+    <id>http://www.myzwl.win/2017/03/29/dyproxy1/</id>
+    <published>2017-03-29T09:48:51.000Z</published>
+    <updated>2017-03-29T10:32:28.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前我们通过静态代理可以在编译期创建一个代理对象，如果要求我们必须在运行时创建一个代理，如时间代理，如何做了？<br>也就是说，需要写一个代理（proxy），然后我们只需要传入相关接口，它就可以主动生成代理对象</p>
+<p>再一次使用之前的情景，即有一个打野对象接口和具体打野盲僧，然后编写一个针对打野的动态代理（proxy），只要传入（打野接口对象），就可以动态自动生成该java文件，并且载入内存并不jvm编译</p>
+<p>下面就是其代码实现</p>
+<p>Jungle（打野接口）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public interface Jungle &#123;</div><div class="line">  //打野gank方法</div><div class="line">	public void gank();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>LeeSin（盲僧）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class LeeSin implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gank() &#123;</div><div class="line">		//gank开始时间</div><div class="line">		long starts=System.currentTimeMillis();</div><div class="line">		System.out.println("LeeSin is ganking...");</div><div class="line">		</div><div class="line">		try &#123;</div><div class="line">			//gank进行中</div><div class="line">			Thread.sleep(new Random().nextInt(10000));</div><div class="line">		&#125; catch (InterruptedException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		//gank结束时间</div><div class="line">        long ends=System.currentTimeMillis();</div><div class="line">        System.out.println("gank time:"+(ends-starts));</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果想要动态生成一个事件代理（按常理应该新建一个代理类），按照动态思想，我们将该创建该类的所以涉及的代码赋给一个字符串<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">String str=</div><div class="line">		"package com.zwl.pr;" +</div><div class="line"></div><div class="line">		"public class LeeSinTimeProxy implements Jungle &#123;" +</div><div class="line"></div><div class="line">			</div><div class="line">			"Jungle leesin;" +</div><div class="line">			</div><div class="line">			</div><div class="line">			"public LeeSinTimeProxy(Jungle leesin) &#123;" +</div><div class="line">				"super();" +</div><div class="line">				"this.leesin = leesin;" +</div><div class="line">			"&#125;" +</div><div class="line"></div><div class="line"></div><div class="line">			"@Override" +</div><div class="line">			"public void gank() &#123;" +</div><div class="line">				"long starts=System.currentTimeMillis();" +</div><div class="line">				"leesin.gank();" +</div><div class="line">				 "long ends=System.currentTimeMillis();" +</div><div class="line">			      "  System.out.println(\"gank time:\"+(ends-starts));" +</div><div class="line"></div><div class="line">			"&#125;" +</div><div class="line"></div><div class="line">		"&#125;" ;</div></pre></td></tr></table></figure></p>
+<p>上面字符串就是创建该代理的代码，然后如果jvm能自动将其编译成.class并且载入内存，就是一个真的类了，按照这种思想，我们可以通过jvm提供的方法完成<br>为了方便先把上述动态创建时间代理放在测试中（也就是main函数中）<br>1.首先将代码格式修整一下，即加个换行，同时将字符写入时间代理文件中<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"> //换行，防止所有代码全部挤在一行</div><div class="line">String rt = "\r\n";</div><div class="line"></div><div class="line">//要动态生成的类的代码</div><div class="line">		String str=</div><div class="line">				"package com.zwl.pr;" + rt +</div><div class="line"></div><div class="line">				"public class LeeSinTimeProxy implements Jungle &#123;" + rt +</div><div class="line"></div><div class="line">					</div><div class="line">					"Jungle leesin;" + rt +</div><div class="line">					</div><div class="line">					</div><div class="line">					"public LeeSinTimeProxy(Jungle leesin) &#123;" + rt +</div><div class="line">						"super();" + rt +</div><div class="line">						"this.leesin = leesin;" + rt +</div><div class="line">					"&#125;" + rt +</div><div class="line"></div><div class="line"></div><div class="line">					"@Override" + rt +</div><div class="line">					"public void gank() &#123;" + rt +</div><div class="line">						"long starts=System.currentTimeMillis();" + rt +</div><div class="line">						"leesin.gank();" + rt +</div><div class="line">						 "long ends=System.currentTimeMillis();" + rt +</div><div class="line">					      "  System.out.println(\"gank time:\"+(ends-starts));" + rt +</div><div class="line"></div><div class="line">					"&#125;" + rt +</div><div class="line"></div><div class="line">				"&#125;" ;</div><div class="line">		//得到该项目的根路径</div><div class="line">		//System.out.println(System.getProperty("user.dir"));</div><div class="line"></div><div class="line">		//该时间代理文件的完整路径，不存在则创建（第一次自动动态创建）</div><div class="line">		String filename=System.getProperty("user.dir")+</div><div class="line">				"/src/com/zwl/pr/LeeSinTimeProxy.java";</div><div class="line">		//将字符写入该文件</div><div class="line">		File f=new File(filename);</div><div class="line">		FileWriter fw=new FileWriter(f);</div><div class="line">		fw.write(str);</div><div class="line">		fw.flush();</div><div class="line">		fw.close();</div></pre></td></tr></table></figure></p>
+<p>这里先一小段一小段的加，目前是已经在该包下生成一个LeeSinTimeProxy.java文件，并且里面有被写入的字符，但是纯粹只是一个文件，因为还没被编译和载入内存</p>
+<p>2.进行编译<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">            //compile</div><div class="line">            //得到java编译器，也就是javac了，至此我们可以最终将其编译，得到.class（二进制文件）</div><div class="line">JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();</div><div class="line">           //管理编译文件，默认为空就行</div><div class="line">StandardJavaFileManager fileMgr = compiler.getStandardFileManager(null, null, null);</div><div class="line">//所有编译的文件，目前就一个，当然可以传入多个</div><div class="line">Iterable units = fileMgr.getJavaFileObjects(filename);</div><div class="line">//编译任务管理，目前传入上面两个参数，其余默认为空就行</div><div class="line">CompilationTask t = compiler.getTask(null, fileMgr, null, null, null, units);</div><div class="line">//执行任务编译</div><div class="line">t.call();</div><div class="line">fileMgr.close();</div></pre></td></tr></table></figure></p>
+<p>至此，在包下也动态生成了一个.class文件，而平常我们编译时都会在path路径下，jdk主动生成.class，而此时我们自己指定了位置</p>
+<p>3.载入内存<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//指定载入内存的url</div><div class="line">URL[] urls = new URL[] &#123;new URL("file:/" + System.getProperty("user.dir")+"/src")&#125;;</div><div class="line">				URLClassLoader ul = new URLClassLoader(urls);</div><div class="line">//指定class文件载入</div><div class="line">				Class c = ul.loadClass("com.zwl.pr.LeeSinTimeProxy");</div><div class="line">				System.out.println(c);</div></pre></td></tr></table></figure></p>
+<p>4.利用反射取出实例</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//反射取出类</div><div class="line">Constructor ctr = c.getConstructor(Jungle.class);</div><div class="line">				</div><div class="line">		//操作该类相应方法，此处是动态返回类</div><div class="line">				Jungle jubgle= (Jungle) ctr.newInstance(new LeeSin());</div><div class="line">				//调用gank方法</div><div class="line">				jubgle.gank();</div></pre></td></tr></table></figure>
+<p>以下是结果：</p>
+<blockquote>
+<p>class com.zwl.pr.LeeSinTimeProxy<br>LeeSin is ganking…<br>gank time:7557<br>gank time:7563</p>
+</blockquote>
+<p>至此算是动态生成了时间代理，但是目前是很有局限性的，因为我们指定了一个特定接口，而不是泛指，当然通过这个例子，也算是初识了一把动态模式的魅力，当然它的最大魅力，在于制定任何接口，返回相应的代理类</p>
+<p>在这里我们先将测试的类中代码移至Proxy类中</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">public class Proxy &#123;</div><div class="line"> </div><div class="line"> //这里的interfac就是动态指定了任何接口代理，而且必须取它的名字，否则是执行其tostring方法</div><div class="line">	public static Object newProxyInstance(Class interfac) throws Exception&#123;</div><div class="line">		String rt = "\r\n";</div><div class="line">		String str=</div><div class="line">				"package com.zwl.pr;" + rt +</div><div class="line"></div><div class="line">				"public class LeeSinTimeProxy implements "+interfac.getName()+ "&#123;" + rt +</div><div class="line"></div><div class="line">					</div><div class="line">					"Jungle leesin;" + rt +</div><div class="line">					</div><div class="line">					</div><div class="line">					"public LeeSinTimeProxy(Jungle leesin) &#123;" + rt +</div><div class="line">						"super();" + rt +</div><div class="line">						"this.leesin = leesin;" + rt +</div><div class="line">					"&#125;" + rt +</div><div class="line"></div><div class="line"></div><div class="line">					"@Override" + rt +</div><div class="line">					"public void gank() &#123;" + rt +</div><div class="line">						"long starts=System.currentTimeMillis();" + rt +</div><div class="line">						"leesin.gank();" + rt +</div><div class="line">						 "long ends=System.currentTimeMillis();" + rt +</div><div class="line">					      "  System.out.println(\"gank time:\"+(ends-starts));" + rt +</div><div class="line"></div><div class="line">					"&#125;" + rt +</div><div class="line"></div><div class="line">				"&#125;" ;</div><div class="line">		</div><div class="line">		//System.out.println(System.getProperty("user.dir"));</div><div class="line">		String filename=System.getProperty("user.dir")+</div><div class="line">				"/src/com/zwl/pr/LeeSinTimeProxy.java";</div><div class="line">		File f=new File(filename);</div><div class="line">		FileWriter fw=new FileWriter(f);</div><div class="line">		fw.write(str);</div><div class="line">		fw.flush();</div><div class="line">		fw.close();</div><div class="line"></div><div class="line">		   //compile</div><div class="line">				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();</div><div class="line">				StandardJavaFileManager fileMgr = compiler.getStandardFileManager(null, null, null);</div><div class="line">				Iterable units = fileMgr.getJavaFileObjects(filename);</div><div class="line">				CompilationTask t = compiler.getTask(null, fileMgr, null, null, null, units);</div><div class="line">				t.call();</div><div class="line">				fileMgr.close();</div><div class="line">				</div><div class="line">				//load into memory and create an instance</div><div class="line">				URL[] urls = new URL[] &#123;new URL("file:/" + System.getProperty("user.dir")+"/src")&#125;;</div><div class="line">				URLClassLoader ul = new URLClassLoader(urls);</div><div class="line">				Class c = ul.loadClass("com.zwl.pr.LeeSinTimeProxy");</div><div class="line">				System.out.println(c);</div><div class="line">				</div><div class="line">				Constructor ctr = c.getConstructor(Jungle.class);</div><div class="line">				</div><div class="line">				Jungle jubgle= (Jungle) ctr.newInstance(new LeeSin());</div><div class="line">				jubgle.gank();</div><div class="line">		</div><div class="line">		return null;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>目前先不管错误，在做测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">      LeeSin leesin=new LeeSin();</div><div class="line">Jungle jungle=(Jungle) Proxy.newProxyInstance(Jungle.class);</div><div class="line">jungle.gank();</div></pre></td></tr></table></figure></p>
+<p>这里参数我们可以设置任何class接口，当然先不管错误，至少动态代理算是成功了。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;之前我们通过静态代理可以在编译期创建一个代理对象，如果要求我们必须在运行时创建一个代理，如时间代理，如何做了？&lt;br&gt;也就是说，需要写一个代
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>代理模式（一）之静态代理</title>
+    <link href="http://www.myzwl.win/2017/03/29/stproxy/"/>
+    <id>http://www.myzwl.win/2017/03/29/stproxy/</id>
+    <published>2017-03-29T08:48:51.000Z</published>
+    <updated>2017-03-29T06:21:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>代理模式从定义上说就是给某一个对象提供一个代理对象，并由代理对象控制对原对象的引用</p>
+<p>一般情况下，我们可以通过继承或者聚合来实现代理，当然继承会造成类爆炸，而聚合则更灵活<br>不多说，模拟一个静态代理的情景<br>假设打野是一个接口，有gank方法，记录打野行为，打野具体对象盲僧，实现其gank的时间并记录下来，然后后续打野盲僧1、盲僧2分别记录打野具体对象的gank时间和gank日志（目前打野对象为LeeSin）</p>
+<p>Jungle（打野接口）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public interface Jungle &#123;</div><div class="line">  //打野gank方法</div><div class="line">	public void gank();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>LeeSin（盲僧）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class LeeSin implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gank() &#123;</div><div class="line">		//gank开始时间</div><div class="line">		long starts=System.currentTimeMillis();</div><div class="line">		System.out.println("LeeSin is ganking...");</div><div class="line">		</div><div class="line">		try &#123;</div><div class="line">			//gank进行中</div><div class="line">			Thread.sleep(new Random().nextInt(10000));</div><div class="line">		&#125; catch (InterruptedException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		//gank结束时间</div><div class="line">        long ends=System.currentTimeMillis();</div><div class="line">        System.out.println("gank time:"+(ends-starts));</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接下来就是使用代理对象，比如用一个代理记录打野gank方法的时间<br>不妨先用继承（与后面聚合比较会发现继承将造成类爆炸）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">//时间代理，记录gank时间</div><div class="line">public class LeeSin1 extends LeeSin &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gank() &#123;</div><div class="line">		long starts=System.currentTimeMillis();</div><div class="line">		super.gank();</div><div class="line">		 long ends=System.currentTimeMillis();</div><div class="line">	        System.out.println("gank time:"+(ends-starts));</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果这时再有一个log代理，记录gank日志<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class LeeSin2 extends LeeSin &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gank() &#123;</div><div class="line">		System.out.println("LeeSin starts ganking");</div><div class="line">		super.gank();</div><div class="line">		System.out.println("LeeSin ends ganking");		 </div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果这时说先记录日志在记录时间或者先记录时间在记录日志，这时就要写两个类<br>列出主体代码（另一个调换位置）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line">@Override</div><div class="line">public void gank() &#123;</div><div class="line">	System.out.println("LeeSin starts ganking");</div><div class="line">	long starts=System.currentTimeMillis();</div><div class="line">	super.gank();</div><div class="line">	 long ends=System.currentTimeMillis();</div><div class="line">        System.out.println("gank time:"+(ends-starts));</div><div class="line">        System.out.println("LeeSin ends ganking");	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可能目前代理类较少，还没有缺陷，如果是100个甚至更多，只要稍微要求下顺序或者其他，就要增加一个类，显然造成类爆炸，所以继承代理不可取</p>
+<p>利用聚合代理（因为被代理类都是继承或者实现Jungle，所以可以用jungle代理，知识子类行为不同而已<br>打野时间代理类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class LeeSinTimeProxy implements Jungle &#123;</div><div class="line"></div><div class="line">	//代理对象</div><div class="line">	Jungle leesin;</div><div class="line">	</div><div class="line">	</div><div class="line">	public LeeSinTimeProxy(Jungle leesin) &#123;</div><div class="line">		super();</div><div class="line">		this.leesin = leesin;</div><div class="line">	&#125;</div><div class="line"></div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gank() &#123;</div><div class="line">		long starts=System.currentTimeMillis();</div><div class="line">		leesin.gank();</div><div class="line">		 long ends=System.currentTimeMillis();</div><div class="line">	        System.out.println("gank time:"+(ends-starts));</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>日志代理<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class LeeSinlogProxy implements Jungle &#123;</div><div class="line"></div><div class="line">	</div><div class="line">	Jungle leesin;</div><div class="line">	</div><div class="line">	</div><div class="line">	public LeeSinlogProxy(Jungle leesin) &#123;</div><div class="line">		super();</div><div class="line">		this.leesin = leesin;</div><div class="line">	&#125;</div><div class="line"></div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gank() &#123;</div><div class="line">		System.out.println("LeeSin starts ganking");</div><div class="line">		leesin.gank();</div><div class="line">		System.out.println("LeeSin ends ganking");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line">		LeeSin leesin=new LeeSin();</div><div class="line">		</div><div class="line">		Jungle jungletime=new LeeSinTimeProxy(leesin);</div><div class="line">		Jungle junglelog=new LeeSinlogProxy(jungletime);</div><div class="line">		junglelog.gank();</div><div class="line"></div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>测试结果：</p>
+<blockquote>
+<p>LeeSin starts ganking<br>LeeSin is ganking…<br>gank time:1005<br>gank time:1005<br>LeeSin ends ganking</p>
+</blockquote>
+<p>注意这里是日志代理时间，时间代理盲僧，如果更改顺序，只需改变被代理对象即可<br><img src="/images/imgs2/15.gif" alt="Alt text"></p>
+<p>至此我们可以简单归纳一下静态代理<br>大概有抽象角色：如打野  ，代理角色（被聚合类的引用），以及真实角色</p>
+<p>最后不得不提的是静态代理虽然简单，但是有很多局限性，比如它是在编译期由我们主动创建的，也就说在程序运行前已经存在在.class文件中了，如果代理类一旦多的话，代理内容就无法复用，新增方法时，代理对象也要跟着增加方法。</p>
+<p>所以代理设计模式真正的魅力和强大之处而是动态代理！！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;代理模式从定义上说就是给某一个对象提供一个代理对象，并由代理对象控制对原对象的引用&lt;/p&gt;
+&lt;p&gt;一般情况下，我们可以通过继承或者聚合来实现
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>观察者设计模式</title>
     <link href="http://www.myzwl.win/2017/03/28/observer/"/>
     <id>http://www.myzwl.win/2017/03/28/observer/</id>
     <published>2017-03-28T08:48:51.000Z</published>
-    <updated>2017-03-28T13:35:06.000Z</updated>
+    <updated>2017-03-29T05:31:36.000Z</updated>
     
-    <content type="html"><![CDATA[<p>##前言<br>观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模型和“拉”模型，前者是被观察者将所有信息通知所有人，而后者则是被观察者不主动提供信息，观察者主动索要信息</p>
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模型和“拉”模型，前者是被观察者将所有信息通知所有人，而后者则是被观察者不主动提供信息，观察者主动索要信息</p>
 <p>在这里还是以之前的例子为例</p>
 <p><img src="/images/imgs2/14.gif" alt="Alt text"></p>
 <p>这是一个推模型，也就是被观察者根据状态发生改变时将所有信息都主动通知观察者<br>其中：Jungle（打野）是被观察者，即如果有一些状态变化，如对方打野有动作则将通知observer（目前假定只有上路和adc）<br>observer：观察者，用来监听被观察者并且根据相应的变化做出变化<br>top：上单  adc：Adc LesSin：打野盲僧<br>以下是相关代码：</p>
@@ -42,8 +225,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;##前言&lt;br&gt;观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模型和“拉”模型，前者是被观察者将所有信息通知所有人，而后者则是被观察者不主动提供信息，观察者主动索要信息&lt;/p&gt;
-&lt;p
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模
     
     </summary>
     
@@ -59,10 +241,9 @@
     <link href="http://www.myzwl.win/2017/03/27/abstractfactory/"/>
     <id>http://www.myzwl.win/2017/03/27/abstractfactory/</id>
     <published>2017-03-27T08:48:51.000Z</published>
-    <updated>2017-03-27T15:18:30.000Z</updated>
+    <updated>2017-03-29T05:31:36.000Z</updated>
     
-    <content type="html"><![CDATA[<p>##前言</p>
-<p>抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。</p>
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。</p>
 <p>这里还是以之前的例子为例，假设有一个产生top（上单）的机器，另一个产生Jungle（打野）的机器，同时top可以有ad（物理上单）和ap(法术上单)，同样，Jungle可以有ad和ap打野，现在需要一个工厂，可以同时产生仅含ad的打野和上单，另一个产生仅含ap的打野和上单，当然可以按照自己的组合<br><img src="/images/imgs2/13.gif" alt="Alt text"><br>打野</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public interface Jungle &#123;</div><div class="line"></div><div class="line">	//gank能力强</div><div class="line">	public void gankenemy();</div><div class="line">	</div><div class="line">	//本身足够灵活</div><div class="line">	public void flexible();</div><div class="line">	</div><div class="line">	//打野不太伤</div><div class="line">	public void killbeast();</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>ad打野</p>
@@ -81,9 +262,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;##前言&lt;/p&gt;
-&lt;p&gt;抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。&lt;/p&gt;
-&lt;p&gt;这里还是以之前的例子为例，假设有一个产生top（上单）的机器，另一个产生Jungle
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同
     
     </summary>
     
@@ -99,9 +278,9 @@
     <link href="http://www.myzwl.win/2017/03/27/factory/"/>
     <id>http://www.myzwl.win/2017/03/27/factory/</id>
     <published>2017-03-27T06:48:51.000Z</published>
-    <updated>2017-03-27T14:27:46.000Z</updated>
+    <updated>2017-03-29T05:31:34.000Z</updated>
     
-    <content type="html"><![CDATA[<p>##前言<br>工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式</p>
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式</p>
 <p><img src="/images/imgs2/12.gif" alt="Alt text"><br>这里Jungle的每个具体类都对应一个具体工厂<br>下面就是以工厂方法创建它们，通过抽象工厂选择不同的具体子工厂，从而产生不同的具体打野类</p>
 <p>打野接口<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">//打野英雄</div><div class="line">public interface Jungle &#123;</div><div class="line"></div><div class="line">	//gank能力强</div><div class="line">	public void gankenemy();</div><div class="line">	</div><div class="line">	//本身足够灵活</div><div class="line">	public void flexible();</div><div class="line">	</div><div class="line">	//打野不太伤</div><div class="line">	public void killbeast();</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>工厂接口<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public interface junglefactor &#123;</div><div class="line">//产生打野</div><div class="line">public Jungle createjungle();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -118,8 +297,8 @@
     
     <summary type="html">
     
-      &lt;p&gt;##前言&lt;br&gt;工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/imgs2/12.gif&quot; alt=&quot;Alt text&quot;&gt;&lt;br&gt;这里Jun
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式&lt;/p&gt;
+
     
     </summary>
     
@@ -980,251 +1159,6 @@ private static BufferedImage qRCodeCommon(String content, String imgType, int si
     
     
       <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>利用nat123搭建本地服务器</title>
-    <link href="http://www.myzwl.win/2017/03/17/nat123/"/>
-    <id>http://www.myzwl.win/2017/03/17/nat123/</id>
-    <published>2017-03-17T11:48:51.000Z</published>
-    <updated>2017-03-19T05:11:24.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>这是笔者去年第一次将web项目通过外网访问，当然结果很美好，过程很艰难，当时也是第一次用文档记录了探索过程，当然也是在google老师的帮助下，诚然学习最大的乐趣就是通过自己忘我的想尽一切办法最后solve的那种快感</strong><br><em>进入正题</em></p>
-<p> 1 因为要把服务器架在自己的机子上，所以可以选择花生壳和nat123，于是当时百度了一堆关于该技术，充其量只是了解了概念，然后修改tomcat配置文件，先将默认的8080端口改为100（按理讲应该改为80，之后注意中讲为什么），然后将root文件夹全部删掉，当然还有一部（但是我配置了只要一输入域名就是空白页，所以我舍弃了这一步）配置域名与tomcat项目的映射</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Context path=<span class="string">""</span> debug=<span class="string">"0"</span> docBase=<span class="string">"你项目的决定路径"</span> reloadable=<span class="string">"true"</span>&gt;&lt;/Context&gt;</div></pre></td></tr></table></figure>
-<p> 2 tomcat部分算是完成了，之后我选择了用nat123，建议去官网下载最新版本，注册，登录然后按照百度步骤，懒得写了就截个图吧<br> <img src="/images/imgs1/15.gif" alt="Alt text"></p>
-<pre><code>注意应用类型我们选80（http）网站，毕竟这是相对来说最佳选择，内网端口（默认可以写80）我选择了100（之后一定要打开和开放端口，后面再说），内网地址，命令行中输入ipconfig查看ip4就是内网，当然也可以用localhost等等（因为他们在tomcat配置，或者在c盘的一个文件中为他们设置了常量，百度就能找到c盘那个源码，tomcat不多说就在配置里面，很好找），其他配置不动，然后保存
-</code></pre><p>  <img src="/images/imgs1/16.gif" alt="Alt text"><br>    这样就有了域名<br>  <img src="/images/imgs1/17.gif" alt="Alt text"></p>
-<pre><code>在打开nav123客户端，出现笑脸，如图等表示映射正常，
-</code></pre><hr>
-<p><strong>然后下面才是最恐怖的地方了（出现各种问题）</strong></p>
-<p><strong>1 如果你内网和tomcat选择的是80端口，注意80端口默认不打开的，先开启控制面板-系统与安全-windows防火墙-高级设置-入站规则-新建规则-端口-80-下一步。。-完成，</strong><br>   然后在用netstat –a看看有没有80端口，假设有了，然后以为顺利 了，结果点击客户端的设置，发现最上面出现无公网连接，也就是说内网的80端口不能映射外网，这下麻烦了，好吧，据需钻研解决方案。试着其中一个靠谱的，说路由器配置中没有开放外网，好吧<br><img src="/images/imgs1/18.gif" alt="Alt text"><br>   先在计算机中输入192.168.1.1（这是电信的），打开路由器（然后简单去了解了一下路由器）先开启dmz主机，指派一个特定内网ip（那个机子对外开放），然后</p>
-<p><img src="/images/imgs1/19.gif" alt="Alt text"></p>
-<p><strong>在虚拟服务中打开相应端口80（暂且不是100），然后自以为一切顺利，在点开客户端那个设置或打开命名行输入ipconfig，都显示自己的公网了，相当于一道闸门打开了，当然也找不出问题了，结果又出现将域名输入出现错误。</strong></p>
-<p><strong>结果觉得可能是80端口被封（可是已经在客户端能做的范围内把80打开了，最好的解释是要去电信局备案，才能在服务器端解封80端口），也就是说，80端口我们用不了了）</strong></p>
-<p><strong>居然一时用不了，就用其他端口吧，就100吧，把之前所有的80开放改为100，然后在打开网页（注意：tomcat没有配置项目初始化，自己指定），然后在用手机或者其他机子试一次，即域名+项目名，结果成功了，但是网速不行啊（又头疼了~~）</strong></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;这是笔者去年第一次将web项目通过外网访问，当然结果很美好，过程很艰难，当时也是第一次用文档记录了探索过程，当然也是在goo
-    
-    </summary>
-    
-    
-      <category term="踩坑 , window" scheme="http://www.myzwl.win/source/tags/%E8%B8%A9%E5%9D%91-window/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>window分区导致双系统无引导界面</title>
-    <link href="http://www.myzwl.win/2017/03/17/fenqu/"/>
-    <id>http://www.myzwl.win/2017/03/17/fenqu/</id>
-    <published>2017-03-17T06:09:42.000Z</published>
-    <updated>2017-03-18T13:20:18.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>先简单介绍一下情境，笔者电脑上装的是双系统，而且bios上设置了system password（当然，已经忘记了是多少了），然后心血来潮在阿里云买了一个学生优惠的服务器，安装了mysql+tomcat7+jdk，在电脑上d盘已经装了linux，在c盘上分了一个分区，那么问题来了，当再次打开电脑时，无引导界面，取而代之的是</strong></p>
-<p><img src="/images/z4.gif" alt="Alt text"><br>然后google了许多解决方案，当然是在彩果许多坑之后找到了适合自己的解决方案，毕竟一个问题的解决总不是一帆风顺的。<br>  <em>进入正题</em><br>  <strong>如果我们要重装系统，肯定得用到bios设置，那么问题来了，如果你设置了密码，并且密码忘记了，那怎么办?</strong><br>  一种办法是通过硬件，通过把电池正负极按照网上说的折腾一下，就可以恢复bios出厂设置，显然这种方法有极大风险，可能会损坏硬件（具体参考google）或者用相关修复工具，但是笔者的电脑都无引导界面，尴尬了~<br>  还有一种办法就是在你输入3次错误的密码时会出现如下错误代码</p>
-<p> <img src="/images/z1.gif" alt="Alt text"><br> 然后就是<a href="https://bios.pw.org" target="_blank" rel="external">在这里面设置</a>，如下图，输入上述的错误代码，就出现了bios密码，</p>
-<p> <img src="/images/z2.gif" alt="Alt text"></p>
-<p> <strong>当然，笔者电脑里有许多宝贵的数据，不可能也不愿意重装系统，经过google一番，发现是分区导致引导盘不能引导，只需要找到该分区，在llinux上重新修复就行了</strong></p>
-<blockquote>
-<p>首先在页面中输入如下ls<br>grub rescue&gt; ls<br>出现如下（基本都差不多）<br>hd0，（hd0，nsdoc9），（hd0，nsdoc8），（hd0，nsdoc7），（hd0<br>，nsdoc6），（hd0，nsdoc5），（hd0，nsdoc2），（hd0，nsdoc1）</p>
-</blockquote>
-<p>然后通过ls 如上的分区循环一遍，如ls （hd0，nsdoc9）/<br>上述有一个会出现详细信息，他就是安装linux那个分区，其余都是unknown filesystem，当然如果出现bad filesystem那是你没加/<br>如下图：</p>
-<p><img src="/images/z3.gif" alt="Alt text"></p>
-<p><strong>接下来设置root引导盘</strong></p>
-<blockquote>
-<p>set root=(hd0，nsdoc6）<br>这里设置的是上述找到分区的那个盘<br>set prefix=(hd0，nsdoc6）/boot/grub/</p>
-</blockquote>
-<p>然后可以用set验证一下</p>
-<blockquote>
-<p>set<br>会出现上述设置的信息</p>
-</blockquote>
-<p>最后执行下述命令</p>
-<blockquote>
-<p>insmod normal<br>在输入normal，就会自动跳转到引导界面，我们选择ubuntu进入，在里面进行修复即可</p>
-</blockquote>
-<p>进入linux系统打开终端，先更新grub，即输入</p>
-<blockquote>
-<p>sudo update-grub</p>
-</blockquote>
-<p>ok后在输入</p>
-<blockquote>
-<p>sudo grub-install /dev/sda<br>结束后，我们就可以重启电脑，一切都ok了。<br>进入电脑后笔者做的第一件事就是备份数据，毕竟要给自己留条后路，如果遇到更复杂的情况就后悔莫及了。。</p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;先简单介绍一下情境，笔者电脑上装的是双系统，而且bios上设置了system password（当然，已经忘记了是多少了），然后心血来潮在阿里云买了一个学生优惠的服务器，安装了mysql+tomcat7+jdk，在电脑上d盘已经装了linux，在c盘上分了一
-    
-    </summary>
-    
-    
-      <category term="踩坑 , window" scheme="http://www.myzwl.win/source/tags/%E8%B8%A9%E5%9D%91-window/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>阿里云服务器上搭建javaweb站点</title>
-    <link href="http://www.myzwl.win/2017/03/16/dajianserver/"/>
-    <id>http://www.myzwl.win/2017/03/16/dajianserver/</id>
-    <published>2017-03-16T09:48:51.000Z</published>
-    <updated>2017-03-18T13:20:16.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>事实上笔者在去年8月份的时候就已经在自己电脑上通过nat123搭建了一台服务器，即p2p，自己的电脑作为服务器，但是这很不安全，而且每次别人通过外网访问，电脑必须打开而且开着服务器，由于是免费的，导致别人访问网速跟不上等等，最近阿里云有学生9.9元购买服务器，所以笔者买了一个，也很有兴趣将笔者之前写的两个网站部署上，结果很美好，但过程很坑，所以就需要总结来提高自己</strong><br><em>进入正题</em><br>笔者也是google了许多例子和前人的经验找到适合自己的方法</p>
-<p><strong>首先需要租一台云服务器，我选择了阿里云</strong><br><img src="/images/imgs1/1.gif" alt="Alt text"></p>
-<p>注意这里操作系统有四个选项，笔者发现只有第四个符合自己（貌似是自定义），然后按照步骤，其中有些需要注意<br><img src="/images/imgs1/1.gif" alt="Alt text"></p>
-<p>安全组，这里暂时可以选择默认的第一个，因为后面如果在搭建web时需要一些端口（如mysql默认3306端口改掉，tomcat8080端口换成80等等），到时可以在后台操作）</p>
-<p><img src="/images/imgs1/3.gif" alt="Alt text"><br>关于镜像选择，因为笔者是window7，而且还是32位的，相对64位只能有不大于4g的内存，</p>
-<p><img src="/images/imgs1/4.gif" alt="Alt text"><br>这里的密码就是之后在本地机子上远程登录这个服务器所要的密码</p>
-<p>ok至此，成功租了一台服务器，这时你会收到一条短信，里面有你这台服务器的公网地址</p>
-<p><strong>然后笔者就开始着手在本机上登录该服务器，当然是为了搭建javaweb准备的</strong></p>
-<ol>
-<li><p>在本机上准备javaweb需要的环境<br><img src="/images/imgs1/5.gif" alt="Alt text"></p>
-</li>
-<li><p>在本机上新建一个分区用来放上述软件供服务器远程使用（其实也可以不用分区，直接复制也行，毕竟笔者被分区坑了，导致后来的双系统引导界面消失）</p>
-</li>
-<li><p>本机上登录远程连接可以用运行-mstsc-直接进入到如下界面<br><img src="/images/imgs1/6.gif" alt="Alt text"><br>其中计算机就是你的公网地址，如果你是新建了一个分区，那么就点选项在本地资源的详细信息中就新建的那个分区勾上，笔者这里是x盘（如果没有的话就直接连接）<br><img src="/images/imgs1/7.gif" alt="Alt text"></p>
-</li>
-<li><p>后面什么证书，安全啊先不管了，应该是进入远程服务器了<br><img src="/images/imgs1/8.gif" alt="Alt text"></p>
-</li>
-<li><p>接下来就是将mysql，jdk等复制到c盘中，因为只有一个盘，后续就是安装配置了</p>
-</li>
-<li>安装jdk，笔者的是jdk1.6（注意jdk版本不同，后续运行高版本会出像版本错误，笔者已吃过亏），配置环境变量</li>
-<li>安装tomcat，配置tomcat环境变量，注意上述不需要自定义文件夹，因为只有一个c盘，tomcat默认端口是8080</li>
-<li>安装mysql，这里面需要注意的是里面有端口设置，可以选择默认的3306或者自定义，然后就是用户与密码设置</li>
-<li>可以使用可视化数据库工具，这里笔者使用了navicat<br><strong>至此算是搭建了一个简单web环境，可以先测试一下</strong><br>拷贝一个已经被编译过的web项目，启动tomcat与mysql，然后利用localhost:8080/项目名访问，如果出现界面就表示以上配置成功</li>
-</ol>
-<p><strong>接下来需要买一个域名</strong><br><img src="/images/imgs1/9.gif" alt="Alt text"></p>
-<ol>
-<li>成功后点击解析，在里面找到新手设置，点进去<br><img src="/images/imgs1/10.gif" alt="Alt text"><br>点击设置网站解析，然后输入公网，即可。</li>
-<li>在远程服务器中，找到tomcat下conf下的server.xml文件，如果我们不想要8080端口并且输入域名时不想要端口的话，就先把8080端口改成80</li>
-</ol>
-<blockquote>
-<p> Connector port=”80” protocol=”HTTP/1.1”<br>               connectionTimeout=”20000”<br>               redirectPort=”8443” /&gt;</p>
-</blockquote>
-<p> 3.然后找到host</p>
-<blockquote>
-<p>  Host name=”你刚刚解析的域名”  appBase=”webapp”<br>            unpackWARs=”true” autoDeploy=”true”&gt;</p>
-<p>&lt;Context path=”” docBase=”/项目名” debug=”0” reloadable=”true” </p>
-</blockquote>
-<p>注意这里appBase是放项目的站点，context内的docBase是你的项目名，目前我们只是一个tomcat运行一个域名执行一个项目<br>然后打开C:\Windows\System32\drivers\etc下的host文件<br>增加如下设置</p>
-<blockquote>
-<p>127.0.0.1       localhost<br>  ::1             localhost<br>192.168.1.11    刚刚的域名</p>
-</blockquote>
-<p>保存，然后重启服务器，可能会发现会遇到一些问题，如80端口被占用，80端口未开放等等，假设未被占有（如果占用，google上有解决方法），<br>如果未开放，这里我们就需要在云服务器上进行端口开放设置</p>
-<p><strong>进入我们购买的云服务器，点击安全组，选中一个实例，点击配置，选择公网入方向，按照步骤开放想要的端口</strong><br> <img src="/images/imgs1/10.gif" alt="Alt text"></p>
-<p> 至此只要输入域名就可以访问了。</p>
-<p> 当然，如果我们想要一个tomcat上配置多个域名，每个域名运行各自不同的项目，那如何做了，经过踩坑后，大概如下步骤</p>
-<ol>
-<li>可以选择在tomcat下新建一个站点，类似于原来的webapp，然后在server.xml中进行配置一个新host</li>
-</ol>
-<blockquote>
-<p>  Host name=”第二个域名”  appBase=”新创建的站点”<br>            unpackWARs=”true” autoDeploy=”true”&gt;</p>
-<p>&lt;Context path=”” docBase=”/第二个项目名” debug=”0” reloadable=”true”</p>
-</blockquote>
-<p>2.然后在hosts文件汇总加入第二个域名</p>
-<blockquote>
-<p>127.0.0.1       localhost<br>  ::1             localhost<br>192.168.1.11    刚刚的域名<br>192.168.1.11    第二个域名</p>
-</blockquote>
-<p>最后重启服务器。<br>笔者在这里遇到了一个很奇怪的坑，同一服务器下的项目出现奇怪的jar包冲突，只要删掉xerces包就行了（当然是在远程服务器上才产生冲突的）</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;事实上笔者在去年8月份的时候就已经在自己电脑上通过nat123搭建了一台服务器，即p2p，自己的电脑作为服务器，但是这很不安全，而且每次别人通过外网访问，电脑必须打开而且开着服务器，由于是免费的，导致别人访问网速跟不上等等，最近阿里云有学生9.9元购买服务器
-    
-    </summary>
-    
-    
-      <category term="踩坑 , window" scheme="http://www.myzwl.win/source/tags/%E8%B8%A9%E5%9D%91-window/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>初步搭建hexo博客</title>
-    <link href="http://www.myzwl.win/2017/03/12/hexo1/"/>
-    <id>http://www.myzwl.win/2017/03/12/hexo1/</id>
-    <published>2017-03-12T09:48:51.000Z</published>
-    <updated>2017-03-18T13:11:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>博客是一种能够更好提高自己的途径，关于利用hexo搭建博客，笔者是一路google一路踩坑，才完成的，当然关于这方面的搭建，实在太多了，笔者也只是稍微总结一下</p>
-<ol>
-<li>首先在github上注册一个账号</li>
-<li>创建代码库（repository），一般以yourname/youname.github.io</li>
-<li>setting中选择主题</li>
-<li>购买一个域名（这里以笔者在阿里云买的为例）</li>
-<li>点击域名里的解析<br><img src="/images/imgs1/12.gif" alt="Alt text"><br>注意CNAME为你的仓库名，其他套用<br>6.回到setting中在Custom domain下填写你刚才的域名，然后在code中会出现一个CNAME文件<br>7.yourname.gthub.io访问你的博客，目前应该只是一个默认主页</li>
-</ol>
-<p><strong>接下来就是本地安装hexo与github page联系起来</strong><br> 1.官网安装node.js（注意是32位还是64位）<br> 2安装git（在过程中会有一项自带环境变量设置，选中，不然后面无法识别git）<br> 3安装hexo（以笔者的在e:/blog下为例）<br> 在git bush中</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-cli -g</div></pre></td></tr></table></figure>
-<p>然后在输入</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo --save</div></pre></td></tr></table></figure>
-<p>然后利用</p>
-<blockquote>
-<p>hexo -v</p>
-</blockquote>
-<p>验证安装是否成功</p>
-<p> 4.然后在要创建的目录下初始化hexo</p>
-<blockquote>
-<p>hexo init</p>
-</blockquote>
-<p>5安装所需的组件和依赖组件<br>  npm install</p>
-<p>笔者当时一下子全部安装了很多扩展组件如:</p>
-<blockquote>
-<p>npm install hexo-deployer-git –save</p>
-</blockquote>
-<p>在看看目录下应该产生如下目录<br><img src="/images/imgs1/13.gif" alt="Alt text"></p>
-<p>6 生成静态文件</p>
-<blockquote>
-<p>hexo g</p>
-</blockquote>
-<p>7 启动服务器，进行本地预览访问</p>
-<blockquote>
-<p>hexo s</p>
-</blockquote>
-<p>然后在浏览器中打开<a href="http://localhost:4000/，会出现一个默认的hexo主页" target="_blank" rel="external">http://localhost:4000/，会出现一个默认的hexo主页</a></p>
-<p>8 Hexo与github page 联系<br>首先是配置Git个人信息</p>
-<blockquote>
-<p>git config –global user.name “用户名”<br>git config –global user.email “邮箱地址”</p>
-</blockquote>
-<p>9 生成密钥</p>
-<blockquote>
-<p>sh-keygen -t rsa -C “邮箱地址”</p>
-</blockquote>
-<p>这里笔者遇到一个坑，默认是在administrator目录下生成一个.ssh文件夹里面包含<br><img src="/images/imgs1/14.gif" alt="Alt text"><br>结果没有，所以自己在该目录下创建一个.ssh文件夹</p>
-<p>10 配置Deployment（以笔者的为例）</p>
-<blockquote>
-<p>deploy:<br>  type: git<br>repository: <a href="http://github.com/slycmiaoxi/slycmiaoxi.github.io.git" target="_blank" rel="external">http://github.com/slycmiaoxi/slycmiaoxi.github.io.git</a><br>branch: master</p>
-</blockquote>
-<p>这里的repository是git上对应的use ssh进行clone的</p>
-<p>11 登录到git的use ssh将.ssh文件下的id_rsa.pub里的内容复制到改里面</p>
-<p>12 写文章上传</p>
-<blockquote>
-<p>hexo new post “article title” 新建一个文章，默认放再_post下<br>  hexo clean 清空public里的文件，该文件夹是上传到git上<br>  hexo g 生成到public文件夹中<br>  hexo d 部署，此过程要输入用户名和密码，</p>
-</blockquote>
-<p>  笔者在hexo d过程中曾出现一致无权限，后来在google老师的指引下需要设置用户名和密码，在.ssh文件下生成known_hosts文件，如果没有遇到，那是比较幸运了<br>  目前还是默认的主题，显然不好看，其次编写文章需要markdown语言，笔者使用的是小书匠，因为其组件丰富，操作简单</p>
-<p> 13 更换主题<br> 首先需要cd到你的hexo根目录，然后</p>
-<blockquote>
-<p>git clone <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">https://github.com/iissnan/hexo-theme-next</a> themes/next</p>
-</blockquote>
-<p> 我选择的是next主题，因为其功能，配置方面相对较强大，当然在主题配置方面一路是坑，这里推荐去next官网看配置，大部分都涉及到<br> 如果我们启用next主题，只要在_config.yml（站配置文件中）找到theme，将默认的改成next即可，<br> 另一方面，在theme文件夹下的next文件夹下的_config.yml(主题配置文件）进行主题的配置，当然里面其他文件也是可以配置的，当然google是最好的帮手<br> 最后主题也配置好了，只需要输入yourname.github.io就可以访问你的博客了<br> 当然笔者是一路踩坑过来，很多google也不一定适合自己，只有自己探索过的才是最适合自己的。<br> 最后需要说一下，多说老是注册异常，后来干脆选择友言代替，总之theme里面有很多需要探索的，google是最好的老师</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;博客是一种能够更好提高自己的途径，关于利用hexo搭建博客，笔者是一路google一路踩坑，才完成的，当然关于这方面的搭建，实在太多了，笔者也只是稍微总结一下&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;首先在github上注册一个账号&lt;/li&gt;
-&lt;li&gt;创建代码库（repository），
-    
-    </summary>
-    
-    
-      <category term="踩坑 , hexo" scheme="http://www.myzwl.win/source/tags/%E8%B8%A9%E5%9D%91-hexo/"/>
     
   </entry>
   

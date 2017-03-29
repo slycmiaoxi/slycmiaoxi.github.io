@@ -105,26 +105,26 @@
 
 
 
-<meta name="description" content="##前言观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模型和“拉”模型，前者是被观察者将所有信息通知所有人，而后者则是被观察者不主动提供信息，观察者主动索要信息
+<meta name="description" content="前言观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模型和“拉”模型，前者是被观察者将所有信息通知所有人，而后者则是被观察者不主动提供信息，观察者主动索要信息
 在这里还是以之前的例子为例
 
-这是一个推模型，也就是被观察者根据状态发生改变时将所有信息都主动通知观察者其中：Jungle（打野）是被观察者，即如">
+这是一个推模型，也就是被观察者根据状态发生改变时将所有信息都主动通知观察者其中：Jungle（打野）是被观察者，即如果有">
 <meta property="og:type" content="article">
 <meta property="og:title" content="观察者设计模式">
 <meta property="og:url" content="http://www.myzwl.win/2017/03/28/observer/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="##前言观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模型和“拉”模型，前者是被观察者将所有信息通知所有人，而后者则是被观察者不主动提供信息，观察者主动索要信息
+<meta property="og:description" content="前言观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模型和“拉”模型，前者是被观察者将所有信息通知所有人，而后者则是被观察者不主动提供信息，观察者主动索要信息
 在这里还是以之前的例子为例
 
-这是一个推模型，也就是被观察者根据状态发生改变时将所有信息都主动通知观察者其中：Jungle（打野）是被观察者，即如">
+这是一个推模型，也就是被观察者根据状态发生改变时将所有信息都主动通知观察者其中：Jungle（打野）是被观察者，即如果有">
 <meta property="og:image" content="http://www.myzwl.win/images/imgs2/14.gif">
-<meta property="og:updated_time" content="2017-03-28T13:35:06.000Z">
+<meta property="og:updated_time" content="2017-03-29T05:31:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="观察者设计模式">
-<meta name="twitter:description" content="##前言观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模型和“拉”模型，前者是被观察者将所有信息通知所有人，而后者则是被观察者不主动提供信息，观察者主动索要信息
+<meta name="twitter:description" content="前言观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模型和“拉”模型，前者是被观察者将所有信息通知所有人，而后者则是被观察者不主动提供信息，观察者主动索要信息
 在这里还是以之前的例子为例
 
-这是一个推模型，也就是被观察者根据状态发生改变时将所有信息都主动通知观察者其中：Jungle（打野）是被观察者，即如">
+这是一个推模型，也就是被观察者根据状态发生改变时将所有信息都主动通知观察者其中：Jungle（打野）是被观察者，即如果有">
 <meta name="twitter:image" content="http://www.myzwl.win/images/imgs2/14.gif">
 
 
@@ -609,7 +609,7 @@ var _hmt = _hmt || [];
       
 
       
-        <p>##前言<br>观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模型和“拉”模型，前者是被观察者将所有信息通知所有人，而后者则是被观察者不主动提供信息，观察者主动索要信息</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模型和“拉”模型，前者是被观察者将所有信息通知所有人，而后者则是被观察者不主动提供信息，观察者主动索要信息</p>
 <p>在这里还是以之前的例子为例</p>
 <p><img src="/images/imgs2/14.gif" alt="Alt text"></p>
 <p>这是一个推模型，也就是被观察者根据状态发生改变时将所有信息都主动通知观察者<br>其中：Jungle（打野）是被观察者，即如果有一些状态变化，如对方打野有动作则将通知observer（目前假定只有上路和adc）<br>observer：观察者，用来监听被观察者并且根据相应的变化做出变化<br>top：上单  adc：Adc LesSin：打野盲僧<br>以下是相关代码：</p>
@@ -693,6 +693,10 @@ var _hmt = _hmt || [];
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/03/29/stproxy/" rel="prev" title="代理模式（一）之静态代理">
+                代理模式（一）之静态代理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -766,8 +770,17 @@ var _hmt = _hmt || [];
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -782,7 +795,7 @@ var _hmt = _hmt || [];
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -859,6 +872,22 @@ var _hmt = _hmt || [];
 		
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

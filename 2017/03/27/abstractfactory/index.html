@@ -105,23 +105,20 @@
 
 
 
-<meta name="description" content="##前言
-抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。
-这里还是以之前的例子为例，假设有一个产生top（上单）的机器，另一个产生Jungle（打野）的机器，同时top可以有ad（物理上单）和ap(法术上单)，同样，Jungle可以有ad和ap打野，现在需要一个工厂，可以同时产生仅含ad的打野和">
+<meta name="description" content="前言抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。
+这里还是以之前的例子为例，假设有一个产生top（上单）的机器，另一个产生Jungle（打野）的机器，同时top可以有ad（物理上单）和ap(法术上单)，同样，Jungle可以有ad和ap打野，现在需要一个工厂，可以同时产生仅含ad的打野和上单，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="抽象工厂设计模式">
 <meta property="og:url" content="http://www.myzwl.win/2017/03/27/abstractfactory/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="##前言
-抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。
-这里还是以之前的例子为例，假设有一个产生top（上单）的机器，另一个产生Jungle（打野）的机器，同时top可以有ad（物理上单）和ap(法术上单)，同样，Jungle可以有ad和ap打野，现在需要一个工厂，可以同时产生仅含ad的打野和">
+<meta property="og:description" content="前言抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。
+这里还是以之前的例子为例，假设有一个产生top（上单）的机器，另一个产生Jungle（打野）的机器，同时top可以有ad（物理上单）和ap(法术上单)，同样，Jungle可以有ad和ap打野，现在需要一个工厂，可以同时产生仅含ad的打野和上单，">
 <meta property="og:image" content="http://www.myzwl.win/images/imgs2/13.gif">
-<meta property="og:updated_time" content="2017-03-27T15:18:30.000Z">
+<meta property="og:updated_time" content="2017-03-29T05:31:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="抽象工厂设计模式">
-<meta name="twitter:description" content="##前言
-抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。
-这里还是以之前的例子为例，假设有一个产生top（上单）的机器，另一个产生Jungle（打野）的机器，同时top可以有ad（物理上单）和ap(法术上单)，同样，Jungle可以有ad和ap打野，现在需要一个工厂，可以同时产生仅含ad的打野和">
+<meta name="twitter:description" content="前言抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。
+这里还是以之前的例子为例，假设有一个产生top（上单）的机器，另一个产生Jungle（打野）的机器，同时top可以有ad（物理上单）和ap(法术上单)，同样，Jungle可以有ad和ap打野，现在需要一个工厂，可以同时产生仅含ad的打野和上单，">
 <meta name="twitter:image" content="http://www.myzwl.win/images/imgs2/13.gif">
 
 
@@ -606,8 +603,7 @@ var _hmt = _hmt || [];
       
 
       
-        <p>##前言</p>
-<p>抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。</p>
 <p>这里还是以之前的例子为例，假设有一个产生top（上单）的机器，另一个产生Jungle（打野）的机器，同时top可以有ad（物理上单）和ap(法术上单)，同样，Jungle可以有ad和ap打野，现在需要一个工厂，可以同时产生仅含ad的打野和上单，另一个产生仅含ap的打野和上单，当然可以按照自己的组合<br><img src="/images/imgs2/13.gif" alt="Alt text"><br>打野</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public interface Jungle &#123;</div><div class="line"></div><div class="line">	//gank能力强</div><div class="line">	public void gankenemy();</div><div class="line">	</div><div class="line">	//本身足够灵活</div><div class="line">	public void flexible();</div><div class="line">	</div><div class="line">	//打野不太伤</div><div class="line">	public void killbeast();</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>ad打野</p>
@@ -762,8 +758,17 @@ var _hmt = _hmt || [];
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -778,7 +783,7 @@ var _hmt = _hmt || [];
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -855,6 +860,22 @@ var _hmt = _hmt || [];
 		
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

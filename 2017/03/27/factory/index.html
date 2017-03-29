@@ -105,23 +105,23 @@
 
 
 
-<meta name="description" content="##前言工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式
+<meta name="description" content="前言工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式
 这里Jungle的每个具体类都对应一个具体工厂下面就是以工厂方法创建它们，通过抽象工厂选择不同的具体子工厂，从而产生不同的具体打野类
-打野接口12345678910111213//打野英雄public interface Jungle &amp;#123;	//gan">
+打野接口12345678910111213//打野英雄public interface Jungle &amp;#123;	//gank能">
 <meta property="og:type" content="article">
 <meta property="og:title" content="工厂方法设计模式">
 <meta property="og:url" content="http://www.myzwl.win/2017/03/27/factory/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="##前言工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式
+<meta property="og:description" content="前言工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式
 这里Jungle的每个具体类都对应一个具体工厂下面就是以工厂方法创建它们，通过抽象工厂选择不同的具体子工厂，从而产生不同的具体打野类
-打野接口12345678910111213//打野英雄public interface Jungle &amp;#123;	//gan">
+打野接口12345678910111213//打野英雄public interface Jungle &amp;#123;	//gank能">
 <meta property="og:image" content="http://www.myzwl.win/images/imgs2/12.gif">
-<meta property="og:updated_time" content="2017-03-27T14:27:46.000Z">
+<meta property="og:updated_time" content="2017-03-29T05:31:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="工厂方法设计模式">
-<meta name="twitter:description" content="##前言工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式
+<meta name="twitter:description" content="前言工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式
 这里Jungle的每个具体类都对应一个具体工厂下面就是以工厂方法创建它们，通过抽象工厂选择不同的具体子工厂，从而产生不同的具体打野类
-打野接口12345678910111213//打野英雄public interface Jungle &amp;#123;	//gan">
+打野接口12345678910111213//打野英雄public interface Jungle &amp;#123;	//gank能">
 <meta name="twitter:image" content="http://www.myzwl.win/images/imgs2/12.gif">
 
 
@@ -606,7 +606,7 @@ var _hmt = _hmt || [];
       
 
       
-        <p>##前言<br>工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>工厂方法模式又被称为多态工厂模式，通俗的讲就是定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中，因此，也属于创建型模式</p>
 <p><img src="/images/imgs2/12.gif" alt="Alt text"><br>这里Jungle的每个具体类都对应一个具体工厂<br>下面就是以工厂方法创建它们，通过抽象工厂选择不同的具体子工厂，从而产生不同的具体打野类</p>
 <p>打野接口<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">//打野英雄</div><div class="line">public interface Jungle &#123;</div><div class="line"></div><div class="line">	//gank能力强</div><div class="line">	public void gankenemy();</div><div class="line">	</div><div class="line">	//本身足够灵活</div><div class="line">	public void flexible();</div><div class="line">	</div><div class="line">	//打野不太伤</div><div class="line">	public void killbeast();</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>工厂接口<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public interface junglefactor &#123;</div><div class="line">//产生打野</div><div class="line">public Jungle createjungle();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -759,8 +759,17 @@ var _hmt = _hmt || [];
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -775,7 +784,7 @@ var _hmt = _hmt || [];
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -852,6 +861,22 @@ var _hmt = _hmt || [];
 		
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
