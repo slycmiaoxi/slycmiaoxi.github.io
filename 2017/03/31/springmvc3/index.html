@@ -105,37 +105,28 @@
 
 
 
-<meta name="description" content="前言ssh三大框架整合主要指的是structs2+hibernate+spring，利用mvc分层思想实现解耦，其中structs2负责业务控制和跳转，hibernate负责持久层，spring管理各层
-ssh下面将以一个简单的登录功能搭建整合环境
-
-首先建立一个web工程，取名ssh2
-
-导入jar包，由于ssh2整合包过多，可以自行官网下载
-
-导入相关配置文件Spring核心文件：applic">
+<meta name="description" content="前言之前我们都是通过xml方式显示配置，会发现配置起来特别麻烦。当使用注解时，有时只需在相关类中做相关的声明，就能完成同样的工作。
+不多说：先来一个注解开发例子
+步骤一：首先创建一个web工程
+步骤二：添加jar包
+步骤三：配置web.xml123456789101112131415161718192021222324252627282930313233&amp;lt;?xml version=&quot;1.0&quot;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ssh三大框架整合">
-<meta property="og:url" content="http://www.myzwl.win/2017/03/21/ssh/index.html">
+<meta property="og:title" content="spring mvc之三:注解开发">
+<meta property="og:url" content="http://www.myzwl.win/2017/03/31/springmvc3/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="前言ssh三大框架整合主要指的是structs2+hibernate+spring，利用mvc分层思想实现解耦，其中structs2负责业务控制和跳转，hibernate负责持久层，spring管理各层
-ssh下面将以一个简单的登录功能搭建整合环境
-
-首先建立一个web工程，取名ssh2
-
-导入jar包，由于ssh2整合包过多，可以自行官网下载
-
-导入相关配置文件Spring核心文件：applic">
-<meta property="og:updated_time" content="2017-03-21T12:43:08.000Z">
+<meta property="og:description" content="前言之前我们都是通过xml方式显示配置，会发现配置起来特别麻烦。当使用注解时，有时只需在相关类中做相关的声明，就能完成同样的工作。
+不多说：先来一个注解开发例子
+步骤一：首先创建一个web工程
+步骤二：添加jar包
+步骤三：配置web.xml123456789101112131415161718192021222324252627282930313233&amp;lt;?xml version=&quot;1.0&quot;">
+<meta property="og:updated_time" content="2017-03-31T15:27:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ssh三大框架整合">
-<meta name="twitter:description" content="前言ssh三大框架整合主要指的是structs2+hibernate+spring，利用mvc分层思想实现解耦，其中structs2负责业务控制和跳转，hibernate负责持久层，spring管理各层
-ssh下面将以一个简单的登录功能搭建整合环境
-
-首先建立一个web工程，取名ssh2
-
-导入jar包，由于ssh2整合包过多，可以自行官网下载
-
-导入相关配置文件Spring核心文件：applic">
+<meta name="twitter:title" content="spring mvc之三:注解开发">
+<meta name="twitter:description" content="前言之前我们都是通过xml方式显示配置，会发现配置起来特别麻烦。当使用注解时，有时只需在相关类中做相关的声明，就能完成同样的工作。
+不多说：先来一个注解开发例子
+步骤一：首先创建一个web工程
+步骤二：添加jar包
+步骤三：配置web.xml123456789101112131415161718192021222324252627282930313233&amp;lt;?xml version=&quot;1.0&quot;">
 
 
 
@@ -163,13 +154,13 @@ ssh下面将以一个简单的登录功能搭建整合环境
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/03/21/ssh/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/03/31/springmvc3/"/>
 
 
 
 
 
-  <title> ssh三大框架整合 | 秒西 </title>
+  <title> spring mvc之三:注解开发 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -515,7 +506,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/21/ssh/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/31/springmvc3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -536,7 +527,7 @@ var _hmt = _hmt || [];
             
             
               
-                ssh三大框架整合
+                spring mvc之三:注解开发
               
             
           </h1>
@@ -551,8 +542,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-21T19:48:51+08:00">
-                2017-03-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-31T19:48:51+08:00">
+                2017-03-31
               </time>
             
 
@@ -566,6 +557,28 @@ var _hmt = _hmt || [];
   <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
 
 		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习总结/" itemprop="url" rel="index">
+                    <span itemprop="name">学习总结</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -597,54 +610,54 @@ var _hmt = _hmt || [];
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>ssh三大框架整合主要指的是structs2+hibernate+spring，利用mvc分层思想实现解耦，其中structs2负责业务控制和跳转，hibernate负责持久层，spring管理各层</strong></p>
-<h4 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h4><p>下面将以一个简单的登录功能搭建整合环境</p>
-<ol>
-<li><p>首先建立一个web工程，取名ssh2</p>
-</li>
-<li><p>导入jar包，由于ssh2整合包过多，可以自行官网下载</p>
-</li>
-<li><p>导入相关配置文件<br>Spring核心文件：applicationcontent.xml放在web-inf下<br>web工程核心文件：web.xml也放在web-inf下<br>structs2核心文件：structs.xml放在src目录下<br>里面暂时什么都不配置</p>
-</li>
-<li><p>数据库<br>为了方便，设置三个字段，id（int）、name（varchar）、age（int），其中id为主键，且是自增长的</p>
-</li>
-<li><p>配置核心文件初始化<br>Web.xml配置</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;web-app version="2.5" </div><div class="line">	xmlns="http://java.sun.com/xml/ns/javaee" </div><div class="line">	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" </div><div class="line">	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee </div><div class="line">	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"&gt;</div><div class="line">	&lt;filter&gt;</div><div class="line">		&lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">	//启动structs2框架	&lt;filter-class&gt;org.apache.struts2.dispatcher.FilterDispatcher&lt;/filter-class&gt;</div><div class="line">	&lt;/filter&gt;</div><div class="line">//允许后缀名为.action或者.jsp的请求通过</div><div class="line">	&lt;filter-mapping&gt;</div><div class="line">		&lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">		&lt;url-pattern&gt;*.action&lt;/url-pattern&gt;</div><div class="line">	&lt;/filter-mapping&gt;</div><div class="line">	&lt;filter-mapping&gt;</div><div class="line">		&lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">		&lt;url-pattern&gt;*.jsp&lt;/url-pattern&gt;</div><div class="line">	&lt;/filter-mapping&gt;</div><div class="line">//启动spring监听，即开启spring框架</div><div class="line">	&lt;listener&gt;</div><div class="line">		&lt;listener-class&gt;</div><div class="line">			org.springframework.web.context.ContextLoaderListener</div><div class="line">		&lt;/listener-class&gt;</div><div class="line">	&lt;/listener&gt;</div><div class="line">&lt;/web-app&gt;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>Applicationcontent.xml文件配置（目前没有实现任何功能，给出原始配置）</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;beans</div><div class="line">xmlns="http://www.springframework.org/schema/beans"</div><div class="line">xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"</div><div class="line">xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"&gt;</div><div class="line">	&lt;!-- 定义数据源 ，即连接数据库所需的配置--&gt;</div><div class="line">	&lt;bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"&gt;</div><div class="line">		&lt;property name="driverClassName"&gt;</div><div class="line">			&lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="url"&gt;</div><div class="line">			&lt;value&gt;jdbc:mysql://localhost:mysql端口/数据库名&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="username"&gt;</div><div class="line">			&lt;value&gt;你的用户名&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="password"&gt;</div><div class="line">			&lt;value&gt;你的密码&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 定义SessionFactory --&gt;</div><div class="line">	&lt;bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"&gt;</div><div class="line">		&lt;property name="dataSource"&gt;</div><div class="line">			&lt;ref bean="dataSource"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="hibernateProperties"&gt;</div><div class="line">			&lt;props&gt;</div><div class="line">//hibernate的方言，决定用哪个数据库</div><div class="line">				&lt;prop key="hibernate.dialect"&gt;</div><div class="line">					org.hibernate.dialect.MySQLDialect</div><div class="line">				&lt;/prop&gt;</div><div class="line">            //是否启动显示sql语句</div><div class="line">				&lt;prop key="hibernate.show_sql"&gt;false&lt;/prop&gt;</div><div class="line">			&lt;/props&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">//声明hibernate的映射文件，目前没有，后续步骤在此处加上</div><div class="line">		&lt;property name="mappingResources"&gt;</div><div class="line">			&lt;list&gt;</div><div class="line">				&lt;value&gt;&lt;/value&gt;</div><div class="line">			&lt;/list&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line">	</div><div class="line">	&lt;!-- 定义HibernateTemplate，相当于纯hibernate的session --&gt;</div><div class="line">	&lt;bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate"&gt;</div><div class="line">		&lt;property name="sessionFactory"&gt;</div><div class="line">			&lt;ref bean="sessionFactory"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line">	省略具体的业务代码注入配置</div><div class="line"></div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure>
-<p>Structs.xml文件配置</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line">&lt;!DOCTYPE struts PUBLIC</div><div class="line">    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"</div><div class="line">    "http://struts.apache.org/dtds/struts-2.0.dtd"&gt;</div><div class="line">&lt;struts&gt;</div><div class="line"></div><div class="line">//防止乱码</div><div class="line">&lt;constant name="struts.i18n.encoding" value="utf-8"/&gt;</div><div class="line">&lt;/struts&gt;</div><div class="line">目前该文件里面什么功能都没配置，只是个声明</div></pre></td></tr></table></figure>
-<ol>
-<li>编写业务代码<br>按照mvc思想，先从持久层开始，即编写hibernate的orm对象user.java</li>
-</ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class User &#123;</div><div class="line"></div><div class="line">	private int age;</div><div class="line">	private int id;</div><div class="line">	private String name;</div><div class="line">此处省略set。Get方法&#125;</div></pre></td></tr></table></figure>
-<p>映射文件User.hbm.xml</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC </div><div class="line">"-//Hibernate/Hibernate Mapping DTD 3.0//EN"</div><div class="line">"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;</div><div class="line">&lt;hibernate-mapping package="com.zwl.pojo"&gt;</div><div class="line">&lt;class name="User" &gt;</div><div class="line">&lt;id name="id"&gt;</div><div class="line">&lt;generator class="increment"&gt;&lt;/generator&gt;</div><div class="line">&lt;/id&gt;</div><div class="line">&lt;property name="name"&gt;&lt;/property&gt;</div><div class="line">&lt;property name="age"&gt;&lt;/property&gt;</div><div class="line">&lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div></pre></td></tr></table></figure>
-<p>注意这里普通属性有时为了方便，只要声明一个name，其他属性hibernate会自动识别并补充</p>
-<p>接下来要在spring中声明该映射文件</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;property name=<span class="string">"mappingResources"</span>&gt;</div><div class="line">			&lt;list&gt;</div><div class="line">				&lt;value&gt;com/zwl/pojo/User<span class="selector-class">.hbm</span><span class="selector-class">.xml</span>&lt;/value&gt;</div><div class="line">			&lt;/list&gt;</div><div class="line">		&lt;/property&gt;</div></pre></td></tr></table></figure>
-<p>至此，持久层完成</p>
-<p>接下来是dao层</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">public interface dengludao &#123;</div><div class="line">//登录功能</div><div class="line">public User denglu(User u);</div><div class="line">&#125;</div><div class="line"></div><div class="line">Dao层的实现类</div><div class="line">import org.springframework.orm.hibernate3.support.HibernateDaoSupport;</div><div class="line"></div><div class="line">import com.zwl.pojo.User;</div><div class="line"></div><div class="line">public class dengludaoimpl extends HibernateDaoSupport implements dengludao&#123;</div><div class="line">	//这里用了spring提供的操作hibernate的模板方法</div><div class="line">	@Override</div><div class="line">	public User denglu(User u) &#123;</div><div class="line">    //find里可以写sql语句</div><div class="line">		List&lt;User&gt; list=this.getHibernateTemplate().find("select user from User as user where user.id=?",u.getId());</div><div class="line">		if(list.size()==0)&#123;</div><div class="line">			return null;&#125;</div><div class="line">					else&#123;</div><div class="line">						return (User) list.get(0);</div><div class="line">					&#125;</div><div class="line">	&#125;&#125;</div><div class="line">	</div><div class="line">接下来要在spring中注入到组件</div><div class="line">&lt;!-- 配置DAO组件 --&gt;</div><div class="line">	&lt;bean id="dengludao" class="com.zwl.dao.dengludaoimpl"&gt;</div><div class="line">		&lt;property name="hibernateTemplate"&gt;</div><div class="line">			&lt;ref bean="hibernateTemplate"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div></pre></td></tr></table></figure>
-<p>接下来是业务层：<br> 首先是接口</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">public interface dengluservice &#123;</div><div class="line">public boolean isdenglu(User u);</div><div class="line">&#125;</div><div class="line">然后是实现类</div><div class="line">public class dengluserviceimpl implements dengluservice&#123;</div><div class="line"> //引用dao层组建</div><div class="line">	private dengludao denglu;</div><div class="line">	</div><div class="line">	public dengludao getDenglu() &#123;</div><div class="line">		return denglu;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setDenglu(dengludao denglu) &#123;</div><div class="line">		this.denglu = denglu;</div><div class="line">	&#125;</div><div class="line">	@Override</div><div class="line">	public boolean isdenglu(User u) &#123;</div><div class="line">		if(denglu.denglu(u)!=null)</div><div class="line">		return true;</div><div class="line">		else&#123;</div><div class="line">		return false;</div><div class="line">		&#125;</div><div class="line">	&#125;&#125;</div><div class="line">接下来就要在spring中注入业务层组件</div><div class="line">&lt;!-- 配置业务逻辑组件 --&gt;</div><div class="line">	&lt;bean id="dengluservice" class="com.zwl.dao.dengluserviceimpl"&gt;</div><div class="line">		&lt;property name="denglu"&gt;</div><div class="line">			&lt;ref bean="dengludao"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div></pre></td></tr></table></figure>
-<ol>
-<li>表现层<br>首先是两个页面<br>Index.Jsp主要提交表单</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"userdenglu.action"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">   id:&lt;<span class="selector-tag">input</span> name=<span class="string">"id"</span> type=<span class="string">"text"</span>&gt;</div><div class="line">   &lt;br/&gt;</div><div class="line">   &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">   &lt;/form&gt;</div></pre></td></tr></table></figure>
-<p>Success.jsp<br>主要就是一句success提示</p>
-<ol>
-<li>控制层</li>
-</ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class userdenglu extends ActionSupport&#123;</div><div class="line"></div><div class="line">	private dengluservice dengluservic;</div><div class="line">	private int id;</div><div class="line">省略set与get方法。。</div><div class="line">	@Override</div><div class="line">	public String execute() throws Exception &#123;</div><div class="line">		User u=new User();</div><div class="line">		u.setId(id);</div><div class="line">//如果id存在，返回成功</div><div class="line">		if(dengluservic.isdenglu(u))&#123;</div><div class="line">			return SUCCESS;</div><div class="line">		&#125;</div><div class="line">		return ERROR;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<p>接下来需要在spring中注入action</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 配置userdengluAction --&gt;</div><div class="line">	&lt;bean id=<span class="string">"userdenglu"</span> class=<span class="string">"com.zwl.action.userdenglu"</span>&gt;</div><div class="line">		&lt;property name=<span class="string">"dengluservic"</span>&gt;</div><div class="line">			&lt;ref bean=<span class="string">"dengluservice"</span>/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div></pre></td></tr></table></figure>
-<p>同时在structs.xml中配置跳转</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;action name=<span class="string">"userdenglu"</span> class=<span class="string">"userdenglu"</span>&gt;</div><div class="line">			&lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">			&lt;result name=<span class="string">"error"</span>&gt;/error.jsp&lt;/result&gt;</div><div class="line">		&lt;/action&gt;</div></pre></td></tr></table></figure>
-<p>最后通过在浏览器输入到index.jsp，然后输入id，数据库中可以预先插入数据，最后跳转，如果成功则跳到success.jsp，否则产生错误</p>
-<p><strong>至此：ssh2框架环境搭建成功，最后提醒的是，这只是一个框架环境，我们可以在此基础上按照mvc思想，可以进行我们想要功能的开发</strong></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前我们都是通过xml方式显示配置，会发现配置起来特别麻烦。当使用注解时，有时只需在相关类中做相关的声明，就能完成同样的工作。</p>
+<p>不多说：先来一个注解开发例子</p>
+<p>步骤一：首先创建一个web工程</p>
+<p>步骤二：添加jar包</p>
+<p>步骤三：配置web.xml<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5"&gt;</div><div class="line">  </div><div class="line">  &lt;filter&gt;</div><div class="line">  &lt;filter-name&gt;characterEncoding&lt;/filter-name&gt;</div><div class="line">  &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;</div><div class="line">  &lt;init-param&gt;</div><div class="line">  &lt;param-name&gt;encoding&lt;/param-name&gt;</div><div class="line">  &lt;param-value&gt;UTF-8&lt;/param-value&gt;</div><div class="line">  &lt;/init-param&gt;</div><div class="line">  &lt;/filter&gt;</div><div class="line">  </div><div class="line">  &lt;filter-mapping&gt;</div><div class="line">  &lt;filter-name&gt;characterEncoding&lt;/filter-name&gt;</div><div class="line">  &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</div><div class="line">  &lt;/filter-mapping&gt;</div><div class="line">  </div><div class="line">  &lt;servlet&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;</div><div class="line">  &lt;!-- 默认加载方式</div><div class="line">  	   默认加载必须规范：</div><div class="line">  	   * 文件命名：servlet-name-servlet.xml====springmvc-servlet.xml</div><div class="line">  	   * 路径规范：必须在WEB-INF目录下面</div><div class="line">   --&gt;</div><div class="line"> &lt;/servlet&gt;</div><div class="line">  </div><div class="line">  &lt;servlet-mapping&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;url-pattern&gt;*.do&lt;/url-pattern&gt;</div><div class="line">  &lt;/servlet-mapping&gt;</div><div class="line"></div><div class="line">&lt;/web-app&gt;</div></pre></td></tr></table></figure></p>
+<p>步骤四：配置springmvc-servlet.xml文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;beans xmlns="http://www.springframework.org/schema/beans"</div><div class="line">	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"</div><div class="line">	xmlns:context="http://www.springframework.org/schema/context"</div><div class="line">	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"</div><div class="line">	xsi:schemaLocation="http://www.springframework.org/schema/beans </div><div class="line">		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/mvc </div><div class="line">		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/context </div><div class="line">		http://www.springframework.org/schema/context/spring-context-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/aop </div><div class="line">		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/tx </div><div class="line">		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd"&gt;</div><div class="line">		</div><div class="line">		&lt;!--  扫描基本的父包，这样子类包被自动扫到执行 --&gt;</div><div class="line">		&lt;context:component-scan base-package="com.zwl"&gt;&lt;/context:component-scan&gt;</div><div class="line">		</div><div class="line">	&lt;!-- 配置注解处理器映射器 </div><div class="line">			功能：寻找执行类Controller</div><div class="line">		--&gt;</div><div class="line"></div><div class="line">		 &lt;bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"&gt;&lt;/bean&gt;</div><div class="line">		&lt;!-- 配置注解处理器适配器 </div><div class="line">			功能：调用controller方法，执行controller</div><div class="line">		--&gt;</div><div class="line"></div><div class="line">		&lt;bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"&gt;</div><div class="line">		&lt;/bean&gt;</div><div class="line">		&lt;!-- 配置sprigmvc视图解析器：解析逻辑试图 </div><div class="line">			 后台返回逻辑试图：index</div><div class="line">			视图解析器解析出真正物理视图：前缀+逻辑试图+后缀====/WEB-INF/jsps/index.jsp</div><div class="line">		--&gt;</div><div class="line">		&lt;bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"&gt;</div><div class="line">		&lt;property name="prefix" value="/"&gt;&lt;/property&gt;</div><div class="line">		&lt;property name="suffix" value=".jsp"&gt;&lt;/property&gt;		</div><div class="line">		&lt;/bean&gt;</div><div class="line">		&lt;/beans&gt;</div></pre></td></tr></table></figure></p>
+<p>这里简要说明一下，以上是注解最基本的配置，有扫描配置，两个基本配置和一个视图配置</p>
+<p>步骤五：自定义controller类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">package com.zwl.control;</div><div class="line"></div><div class="line">import org.springframework.stereotype.Controller;</div><div class="line">import org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"></div><div class="line">@Controller  //相当于&lt;bean class="Usercontrol"/&gt;并且声明这是一个controller</div><div class="line">public class Usercontrol &#123;</div><div class="line"></div><div class="line">	@RequestMapping("hello") //相当于需要访问的路径hello.do</div><div class="line">	public String say()&#123;</div><div class="line">		return "index" ;  //放回到逻辑视图index.jsp</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这是一个最简化的注解配置<br>对应index.jsp<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"> &lt;body&gt;</div><div class="line">hello 盲僧</div><div class="line">  &lt;/body&gt;</div></pre></td></tr></table></figure></p>
+<p>测试：浏览器中输入<a href="http://localhost:100/springmvc2/hello.do" target="_blank" rel="external">http://localhost:100/springmvc2/hello.do</a></p>
+<p>对应输出结果</p>
+<blockquote>
+<p>hello 盲僧</p>
+</blockquote>
+<h4 id="RequestMapping"><a href="#RequestMapping" class="headerlink" title="RequestMapping"></a>RequestMapping</h4><p>它有三种方式，分别为</p>
+<blockquote>
+<p>requestMapping(“hello”)<br>requestMapping(“/hello.do”)<br>requestMapping(value=”/hello.do”)</p>
+</blockquote>
+<p>都能达到同样的效果，都是需要访问的路径<br>如果在类前面添加此属性，则相当于映射路径在加一层<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@Controller <span class="comment">//&lt;bean class="Usercontrol"/&gt;</span></div><div class="line">@RequestMapping(<span class="string">"/test"</span>)</div><div class="line">public class Usercontrol &#123;&#125;</div></pre></td></tr></table></figure></p>
+<p>即<a href="http://localhost:100/springmvc2/test/hello.do" target="_blank" rel="external">http://localhost:100/springmvc2/test/hello.do</a></p>
+<p>另外，注意下里面还有个method配置，即按什么模式接受表单</p>
+<blockquote>
+<p>@RequestMapping(value=”/hello.do”,method=RequestMethod.GET)</p>
+</blockquote>
+<p>或者</p>
+<blockquote>
+<p>@RequestMapping(value=”/hello.do”,method=RequestMethod.POST)</p>
+</blockquote>
+<p>默认是两个都可以的</p>
+<blockquote>
+<p>requestMapping(value=”/hello.do”,method={RequestMethod.POST, RequestMethod.GET})</p>
+</blockquote>
+<h4 id="封装参数"><a href="#封装参数" class="headerlink" title="封装参数"></a>封装参数</h4><p>分析接受参数类型：<br>基本类型，int，String等等基本类型。<br>Pojo类型<br>包装类型<br>Springmvc参数封装：基于方法进行封装。</p>
+<p>一：基本类型<br> 封装int型参数<br>页面<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">  &lt;body&gt;</div><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/ test/recieve.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">id：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"id"</span> id=<span class="string">"id"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div><div class="line">  &lt;/body&gt;</div></pre></td></tr></table></figure></p>
+<p>接受参数方法<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("recieve")</div><div class="line">	public String recieve(Integer id)&#123;</div><div class="line">		System.out.println(id);</div><div class="line">  return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>注意这里的Integer id必须要与页面中的name=”id”一致才能正确接受参数</p>
+<p>测试：在浏览器中输入<a href="http://localhost:100/springmvc2/index.jsp" target="_blank" rel="external">http://localhost:100/springmvc2/index.jsp</a></p>
+<p>然后输入id，后台即可接收到参数</p>
+<p>接受字符转类型<br>页面：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/ test/recievestr.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">id：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"name"</span> id=<span class="string">"name"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
+<p>接收参数方法：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("recievestr")</div><div class="line">	public String recievestr(String name)&#123;</div><div class="line">		System.out.println(name);</div><div class="line">		  return "login";&#125;</div></pre></td></tr></table></figure></p>
+<p>接受数组：<br>分析：批量：checkbox复选框。Value必须有值<br>页面：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/test/recievearray.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">ID：&lt;<span class="selector-tag">input</span> type=<span class="string">"checkbox"</span> name=<span class="string">"ids"</span> value=<span class="string">"1"</span> id=<span class="string">"ids"</span>&gt;</div><div class="line">ID：&lt;<span class="selector-tag">input</span> type=<span class="string">"checkbox"</span> name=<span class="string">"ids"</span> value=<span class="string">"2"</span> id=<span class="string">"ids"</span>&gt;</div><div class="line">ID：&lt;<span class="selector-tag">input</span> type=<span class="string">"checkbox"</span> name=<span class="string">"ids"</span> value=<span class="string">"3"</span> id=<span class="string">"ids"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
+<p>接受参数的方法<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("recievearray")</div><div class="line">	public String recievearray(Integer []ids)&#123;</div><div class="line">		System.out.println(ids);</div><div class="line">		 return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>接受pojo类<br>页面：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/test/recieveUser.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">姓名：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"username"</span> id=<span class="string">"username"</span>&gt;</div><div class="line">生日：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"birthday"</span> id=<span class="string">"birthday"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
+<p>Pojo类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class User &#123;</div><div class="line">	</div><div class="line">	private String username;</div><div class="line">	private Date birthday;</div><div class="line"></div><div class="line">此处省略set。Get方法&#125;</div></pre></td></tr></table></figure></p>
+<p>接受参数的方法：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("recieveUser")</div><div class="line">	public String recievearray(User user)&#123;</div><div class="line">		System.out.println(user.getUsername());</div><div class="line">		 return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>接受包装类型参数<br> 包装pojo类</p>
+ <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class Usercus &#123;</div><div class="line">	private User user;</div><div class="line">此处省略set。Get方法。&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">&lt;form action="$&#123;pageContext.request.contextPath &#125;/test/usercus.do" method="post"&gt;</div><div class="line">姓名：&lt;input type="text" name="user.username" id="username"&gt;</div><div class="line">生日：&lt;input type="text" name="user.birthday" id="birthday"&gt;</div><div class="line">&lt;input type="submit" value="提交"&gt;</div><div class="line">&lt;/form&gt;</div><div class="line"></div><div class="line">接受参数的方法：</div><div class="line">@RequestMapping("usercus")</div><div class="line">	public String usercus(Usercus user)&#123;</div><div class="line">		System.out.println(user.getUser().getUsername());</div><div class="line">		 return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>接受集合类型参数<br> 接受list集合<br>首先在包装类中加入如下代码<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">private List&lt;User&gt; userlist;</div><div class="line">此处省略set，get方法</div><div class="line"></div><div class="line">然后是页面</div><div class="line">&lt;form action="$&#123;pageContext.request.contextPath &#125;/test/recievelist.do" method="post"&gt;</div><div class="line">姓名：&lt;input type="text" name="userList[0].username" id="username"&gt;</div><div class="line">地址：&lt;input type="text" name="userList[0].address" id="address"&gt;</div><div class="line"></div><div class="line">姓名：&lt;input type="text" name="userList[1].username" id="username"&gt;</div><div class="line">地址：&lt;input type="text" name="userList[1].address" id="address"&gt;</div><div class="line">&lt;input type="submit" value="提交"&gt;</div><div class="line"></div><div class="line">&lt;/form&gt;</div><div class="line"></div><div class="line">接受参数方法：</div><div class="line">@RequestMapping("recievelist")</div><div class="line">	public String recievelist(Usercus userlist)</div><div class="line">	&#123;</div><div class="line">		System.out.println(userlist.getUserlist().get(0).getUsername());</div><div class="line">		 return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -698,8 +711,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/20/execl/" rel="next" title="基于java的execl导入数据库和取数据至页面">
-                <i class="fa fa-chevron-left"></i> 基于java的execl导入数据库和取数据至页面
+              <a href="/2017/03/31/springmvc2/" rel="next" title="spring mvc之二:处理器">
+                <i class="fa fa-chevron-left"></i> spring mvc之二:处理器
               </a>
             
           </div>
@@ -707,10 +720,6 @@ var _hmt = _hmt || [];
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/21/ssm/" rel="prev" title="ssm三大框架整合">
-                ssm三大框架整合 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -897,7 +906,7 @@ var _hmt = _hmt || [];
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ssh"><span class="nav-text">ssh</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RequestMapping"><span class="nav-text">RequestMapping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#封装参数"><span class="nav-text">封装参数</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

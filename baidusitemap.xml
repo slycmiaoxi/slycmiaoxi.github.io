@@ -3,6 +3,106 @@
 
     
   <url>
+    <loc>http://www.myzwl.win/2017/03/31/springmvc3/</loc>
+    <lastmod>2017-03-31T15:27:24.000Z</lastmod>
+    <data>
+        <display>
+        <title>spring mvc之三:注解开发</title>
+        <pubTime>2017-03-31T11:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/31/springmvc2/</loc>
+    <lastmod>2017-03-31T13:05:30.000Z</lastmod>
+    <data>
+        <display>
+        <title>spring mvc之二:处理器</title>
+        <pubTime>2017-03-31T10:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/31/springmvc1/</loc>
+    <lastmod>2017-03-31T11:44:10.000Z</lastmod>
+    <data>
+        <display>
+        <title>spring mvc之一:hello world</title>
+        <pubTime>2017-03-31T09:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/30/spring2/</loc>
+    <lastmod>2017-03-31T10:44:06.000Z</lastmod>
+    <data>
+        <display>
+        <title>spring之装配bean</title>
+        <pubTime>2017-03-30T09:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/30/spring1/</loc>
+    <lastmod>2017-03-31T05:04:30.000Z</lastmod>
+    <data>
+        <display>
+        <title>spring之hello world</title>
+        <pubTime>2017-03-30T08:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.myzwl.win/2017/03/29/dyproxy3/</loc>
     <lastmod>2017-03-29T15:06:50.000Z</lastmod>
     <data>
@@ -83,12 +183,12 @@
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/03/27/abstractfactory/</loc>
+    <loc>http://www.myzwl.win/2017/03/28/observer/</loc>
     <lastmod>2017-03-29T05:31:36.000Z</lastmod>
     <data>
         <display>
-        <title>抽象工厂设计模式</title>
-        <pubTime>2017-03-27T08:48:51.000Z</pubTime>
+        <title>观察者设计模式</title>
+        <pubTime>2017-03-28T08:48:51.000Z</pubTime>
         
         <tag>设计模式 </tag>
          
@@ -103,12 +203,12 @@
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/03/28/observer/</loc>
+    <loc>http://www.myzwl.win/2017/03/27/abstractfactory/</loc>
     <lastmod>2017-03-29T05:31:36.000Z</lastmod>
     <data>
         <display>
-        <title>观察者设计模式</title>
-        <pubTime>2017-03-28T08:48:51.000Z</pubTime>
+        <title>抽象工厂设计模式</title>
+        <pubTime>2017-03-27T08:48:51.000Z</pubTime>
         
         <tag>设计模式 </tag>
          

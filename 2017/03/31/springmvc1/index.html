@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java, hexo" />
+  <meta name="keywords" content="五大框架," />
 
 
 
@@ -105,16 +105,21 @@
 
 
 
-<meta name="description" content="try your best">
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="http://www.myzwl.win/tags/index.html">
+<meta name="description" content="前言MVC模式是Model-View-Control的简写，而spring mvc主要负责c层，主要为封装web请求为一个数据对象、调用业务逻辑层来处理数据对象、返回处理数据结果及相应的视图给用户
+简要概述spring mvc：   SpringC层框架的核心是DispatcherServlet，它的作用是将请求分发给不同的后端处理器，springC层框架使用了后端控制器、映射处理器和视图解析器来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring mvc之一:hello world">
+<meta property="og:url" content="http://www.myzwl.win/2017/03/31/springmvc1/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="try your best">
-<meta property="og:updated_time" content="2017-03-18T13:07:50.000Z">
+<meta property="og:description" content="前言MVC模式是Model-View-Control的简写，而spring mvc主要负责c层，主要为封装web请求为一个数据对象、调用业务逻辑层来处理数据对象、返回处理数据结果及相应的视图给用户
+简要概述spring mvc：   SpringC层框架的核心是DispatcherServlet，它的作用是将请求分发给不同的后端处理器，springC层框架使用了后端控制器、映射处理器和视图解析器来">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs2/16.gif">
+<meta property="og:updated_time" content="2017-03-31T11:44:10.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tags">
-<meta name="twitter:description" content="try your best">
+<meta name="twitter:title" content="spring mvc之一:hello world">
+<meta name="twitter:description" content="前言MVC模式是Model-View-Control的简写，而spring mvc主要负责c层，主要为封装web请求为一个数据对象、调用业务逻辑层来处理数据对象、返回处理数据结果及相应的视图给用户
+简要概述spring mvc：   SpringC层框架的核心是DispatcherServlet，它的作用是将请求分发给不同的后端处理器，springC层框架使用了后端控制器、映射处理器和视图解析器来">
+<meta name="twitter:image" content="http://www.myzwl.win/images/imgs2/16.gif">
 
 
 
@@ -142,19 +147,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/tags/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/03/31/springmvc1/"/>
 
 
 
 
 
-  <title>
-  
-
-  
-    tags | 秒西
-  
-</title>
+  <title> spring mvc之一:hello world | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -200,7 +199,7 @@ var _hmt = _hmt || [];
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -491,25 +490,243 @@ var _hmt = _hmt || [];
             
 
   <div id="posts" class="posts-expand">
-  <header class="post-header">
+    
 
-	<h1 class="post-title" itemprop="name headline">tags</h1>
+  
 
+  
+  
+  
 
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/31/springmvc1/">
 
-</header>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
 
     
-    
-      <div class="tag-cloud">
-        <div class="tag-cloud-title">
-            目前共计 8 个标签
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                spring mvc之一:hello world
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-31T17:48:51+08:00">
+                2017-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习总结/" itemprop="url" rel="index">
+                    <span itemprop="name">学习总结</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
         </div>
-        <div class="tag-cloud-tags">
-          <a href="/source/tags/java工具包/" style="font-size: 21px; color: #6f6f6f">java工具包</a> <a href="/source/tags/java集合/" style="font-size: 12px; color: #ccc">java集合</a> <a href="/source/tags/jquery/" style="font-size: 12px; color: #ccc">jquery</a> <a href="/source/tags/五大框架/" style="font-size: 25.5px; color: #404040">五大框架</a> <a href="/source/tags/学习笔记/" style="font-size: 16.5px; color: #9d9d9d">学习笔记</a> <a href="/source/tags/设计模式/" style="font-size: 30px; color: #111">设计模式</a> <a href="/source/tags/踩坑-hexo/" style="font-size: 12px; color: #ccc">踩坑 , hexo</a> <a href="/source/tags/踩坑-window/" style="font-size: 21px; color: #6f6f6f">踩坑 , window</a>
-        </div>
-      </div>
+      </header>
     
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>MVC模式是Model-View-Control的简写，而spring mvc主要负责c层，主要为封装web请求为一个数据对象、调用业务逻辑层来处理数据对象、返回处理数据结果及相应的视图给用户</p>
+<p>简要概述spring mvc：<br>   SpringC层框架的核心是DispatcherServlet，它的作用是将请求分发给不同的后端处理器，springC层框架使用了后端控制器、映射处理器和视图解析器来共同完成c层的主要任务，真正的把业务层处理的数据结果和相应的视图拼成一个对象，即ModelAndView对象</p>
+<p>下面以hello world为入门程序搭建环境<br>步骤一：创建一个web工程</p>
+<p>步骤二：导入相关jar包<br><img src="/images/imgs2/16.gif" alt="Alt text"></p>
+<p>步骤三：编写web.xml配置文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5"&gt;</div><div class="line"></div><div class="line">  &lt;servlet&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">&lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet</div><div class="line">&lt;/servlet-class&gt;</div><div class="line"> &lt;/servlet&gt;</div><div class="line">  </div><div class="line">  &lt;servlet-mapping&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;url-pattern&gt;*.do&lt;/url-pattern&gt;</div><div class="line">  &lt;/servlet-mapping&gt;</div><div class="line">&lt;/web-app&gt;</div></pre></td></tr></table></figure></p>
+<p>简要说明一下：dispatcherservlet就是一个servlet，也是对请求进行转发的核心servlet。在这里即所有的.do的请求将首先被dispatcherservlet处理，而它要做的工作就是对请求进行分发（即把请求转发给具体的controller），可以简单的认为，他就是一个总控处理器，除此之外，它还能使用spring的其他功能<br>同时注意一下上面的servlet-name<br>默认加载方式<br>         默认加载必须规范：</p>
+<pre><code>* 文件命名：servlet-name-servlet.xml====springmvc-servlet.xml
+* 路径规范：必须在WEB-INF目录下面
+</code></pre><p> 步骤四：配置springmvc-servlet.xml<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;beans xmlns="http://www.springframework.org/schema/beans"</div><div class="line">	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"</div><div class="line">	xmlns:context="http://www.springframework.org/schema/context"</div><div class="line">	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"</div><div class="line">	xsi:schemaLocation="http://www.springframework.org/schema/beans </div><div class="line">		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/mvc </div><div class="line">		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/context </div><div class="line">		http://www.springframework.org/schema/context/spring-context-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/aop </div><div class="line">		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/tx </div><div class="line">		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd"&gt;</div><div class="line">		</div><div class="line">		</div><div class="line">		&lt;!-- 配置处理器映射器,springmvc默认的处理器映射器</div><div class="line">		BeanNameUrlHandlerMapping：根据bean(自定义Controler)的name属性的url去寻找hanler(Action:Controller)</div><div class="line">		 --&gt;</div><div class="line">		&lt;bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"&gt;&lt;/bean&gt;</div><div class="line">	 	</div><div class="line">		&lt;!-- 配置处理器适配器执行Controlelr ,springmvc默认的</div><div class="line">		SimpleControllerHandlerAdapter:执行Controller</div><div class="line">		--&gt;</div><div class="line">		&lt;bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"&gt;&lt;/bean&gt;</div><div class="line">		</div><div class="line">		&lt;!-- 配置自定义Controler --&gt;</div><div class="line">		&lt;bean id="mycontrol" name="/hello.do" class="com.zwl.control.mycontrol"&gt;&lt;/bean&gt;</div><div class="line">		</div><div class="line">	</div><div class="line">		&lt;!-- 配置sprigmvc视图解析器：解析逻辑试图 </div><div class="line">			 后台返回逻辑试图：index</div><div class="line">			视图解析器解析出真正物理视图：前缀+逻辑试图+后缀--&gt;</div><div class="line"></div><div class="line">		&lt;bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"&gt;</div><div class="line">		&lt;property name="prefix" value="/"&gt;&lt;/property&gt;</div><div class="line">		&lt;property name="suffix" value=".jsp"&gt;&lt;/property&gt;		</div><div class="line">		&lt;/bean&gt;</div><div class="line">		&lt;/beans&gt;</div></pre></td></tr></table></figure></p>
+<p>步骤五：自定义controller<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">package com.zwl.control;</div><div class="line"></div><div class="line">import javax.servlet.http.HttpServletRequest;</div><div class="line">import javax.servlet.http.HttpServletResponse;</div><div class="line"></div><div class="line">import org.springframework.web.servlet.ModelAndView;</div><div class="line">import org.springframework.web.servlet.mvc.Controller;</div><div class="line"></div><div class="line">public class mycontrol implements Controller &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public ModelAndView handleRequest(HttpServletRequest arg0,</div><div class="line">			HttpServletResponse arg1) throws Exception &#123;</div><div class="line">		//接受请求，参数，验证参数</div><div class="line">		//封装参数，调用业务方法</div><div class="line">		//返回视图</div><div class="line">		ModelAndView mv=new ModelAndView();</div><div class="line">		</div><div class="line">		//设置页面回显数据</div><div class="line">		mv.addObject("hello","hello world");</div><div class="line">		//指定跳转的视图</div><div class="line">		//返回物理视图</div><div class="line">        mv.setViewName("index");	</div><div class="line">		return mv;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>步骤六：定义视图页面<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">   $&#123;hello&#125;</div><div class="line">  &lt;/body&gt;</div></pre></td></tr></table></figure></p>
+<p>测试：在浏览器中输入<a href="http://localhost:100/springmvc1/hello.do" target="_blank" rel="external">http://localhost:100/springmvc1/hello.do</a></p>
+<p>结果：</p>
+<blockquote>
+<p>hello world </p>
+</blockquote>
+<p>简要分析入门程序的过程<br>1 启动服务器，根据web.xml的配置加载前端控制器dispatcherservlet。在加载时，会完成一系列的初始化动作。</p>
+<p>2 根据servlet的映射请求（上面的.do），并参照spingmvc-servlet.xml文件，把具体的请求分发给特定的后端处理器，如上面的mycontrol</p>
+<p>3 后端控制器调用相应的逻辑层代码，完成处理并返回视图对象ModelAndView给前端处理器</p>
+<p>4 前端处理器根据后端控制器返回的ModelAndView对象，返回一个相应的页面给客户端</p>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>纯属娱乐！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/五大框架/" rel="tag"># 五大框架</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/30/spring2/" rel="next" title="spring之装配bean">
+                <i class="fa fa-chevron-left"></i> spring之装配bean
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/31/springmvc2/" rel="prev" title="spring mvc之二:处理器">
+                spring mvc之二:处理器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
   </div>
 
           
@@ -521,6 +738,12 @@ var _hmt = _hmt || [];
 
 
           
+     <div class="comments" id="comments">
+       
+            <div id="uyan_frame"></div>
+       
+     </div>
+   
 
         </div>
         
@@ -540,8 +763,17 @@ var _hmt = _hmt || [];
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -633,6 +865,22 @@ var _hmt = _hmt || [];
 		
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -758,6 +1006,10 @@ var _hmt = _hmt || [];
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
@@ -791,6 +1043,10 @@ var _hmt = _hmt || [];
     
 
 
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2127192"></script>
+      <!-- UY END -->
     
   
 
