@@ -5,17 +5,235 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-03-31T15:27:24.000Z</updated>
+  <updated>2017-04-02T15:32:34.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>mybatis 之四:mybatis整合spring</title>
+    <link href="http://www.myzwl.win/2017/04/02/mybatis4/"/>
+    <id>http://www.myzwl.win/2017/04/02/mybatis4/</id>
+    <published>2017-04-02T07:48:51.000Z</published>
+    <updated>2017-04-02T15:32:34.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>整合思路：<br>    1、数据源信息交给spring管理<br>2、sqlsessionfactory交给spring进行单例管理<br>3、由spring来管理mapper代理的代理类</p>
+<p>下面以根据用户id查询用户信息案例来搭建工程<br>步骤一：建立java工程</p>
+<p>步骤二：添加整合包（这里需要的jar包过多）<br>Mysql的驱动包<br>Mybatis的核心包和依赖包<br>Mybatis和spring的整合包<br>Spring的包<br>dbcp数据库连接池包<br>等等</p>
+<p>步骤三：在src目录下建立sqlmapconfig.xml配置文件，里面暂时只有一个dtd文件声明<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line">&lt;!DOCTYPE configuration</div><div class="line">PUBLIC "-//mybatis.org//DTD Config 3.0//EN"</div><div class="line">"http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;</div><div class="line">&lt;configuration&gt;</div><div class="line"></div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure></p>
+<p>步骤四：在src目录下建立applicationcontext.xml配置文件<br>里面目前只配置一些重要连接数据库的信息，后面步骤将加入重要信息<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">&lt;beans xmlns="http://www.springframework.org/schema/beans"</div><div class="line">	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"</div><div class="line">	xmlns:context="http://www.springframework.org/schema/context"</div><div class="line">	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"</div><div class="line">	xsi:schemaLocation="http://www.springframework.org/schema/beans </div><div class="line">		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/mvc </div><div class="line">		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/context </div><div class="line">		http://www.springframework.org/schema/context/spring-context-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/aop </div><div class="line">		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/tx </div><div class="line">		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd "&gt;</div><div class="line"></div><div class="line">	</div><div class="line"></div><div class="line">	&lt;!-- 创建数据源 --&gt;</div><div class="line">	&lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"&gt;</div><div class="line">		&lt;property name="driverClassName" value="com.mysql.jdbc.Driver" /&gt;</div><div class="line">		&lt;property name="url" value="jdbc:mysql://localhost:9806/sshe" /&gt;</div><div class="line">		&lt;property name="username" value="root" /&gt;</div><div class="line">		&lt;property name="password" value="root" /&gt;</div><div class="line">		&lt;property name="maxActive" value="10" /&gt;</div><div class="line">		&lt;property name="maxIdle" value="5" /&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line"></div><div class="line">	&lt;!-- SqlSessionFactory --&gt;</div><div class="line">	&lt;bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"&gt;</div><div class="line">		&lt;!-- 指定mybatis的全局配置文件的路径 --&gt;</div><div class="line">		&lt;property name="configLocation" value="SqlMapConfig.xml"&gt;&lt;/property&gt;</div><div class="line">		&lt;!-- 数据源 --&gt;</div><div class="line">		&lt;property name="dataSource" ref="dataSource"&gt;&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure></p>
+<p>步骤五：创建pojo类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class User &#123;</div><div class="line">private int age;</div><div class="line">private int id;</div><div class="line">private String name;</div><div class="line">此处省略set与get方法。。</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>步骤六：创建mapper代理<br>首先是UserMapper.xml<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line">&lt;!DOCTYPE mapper    </div><div class="line">PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    </div><div class="line">"http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line">&lt;mapper namespace="com.zwl.mapper.UserMapper"&gt;</div><div class="line">	&lt;!-- 根据用户ID查询用户信息 --&gt;</div><div class="line">	&lt;select id="findUserById" parameterType="int" resultType="com.zwl.pojo.User"&gt;</div><div class="line">		SELECT</div><div class="line">		* FROM user WHERE id =#&#123;id&#125;</div><div class="line">	&lt;/select&gt;</div><div class="line">&lt;/mapper&gt;</div></pre></td></tr></table></figure></p>
+<p>接下来是mapper接口<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface UserMapper &#123;</div><div class="line">	public User findUserById(int id) throws Exception;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后在sqlmapconfig.xml文件中声明代理文件<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">	&lt;!-- 加载映射文件 --&gt;</div><div class="line">	&lt;mappers&gt;</div><div class="line">		&lt;mapper resource=<span class="string">"com/zwl/mapper/UserMapper.xml"</span> /&gt;</div><div class="line">	&lt;/mappers&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure></p>
+<p>步骤七：spring中注入<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=<span class="string">"UserMapper"</span> class=<span class="string">"org.mybatis.spring.mapper.MapperFactoryBean"</span>&gt;</div><div class="line">		&lt;!-- 设置代理类的接口 --&gt;</div><div class="line">		&lt;property name=<span class="string">"mapperInterface"</span> value=<span class="string">"com.zwl.mapper.UserMapper"</span>&gt;&lt;/property&gt;</div><div class="line">		&lt;!-- 依赖注入SqlSessionFactory --&gt;</div><div class="line">		&lt;property name=<span class="string">"sqlSessionFactory"</span> ref=<span class="string">"sqlSessionFactory"</span>&gt;&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<p>步骤八：测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">public class test &#123;</div><div class="line">	private ApplicationContext ctx;</div><div class="line"></div><div class="line">//在测试之前自动加载</div><div class="line">	@Before</div><div class="line">	public void setUp() throws Exception &#123;</div><div class="line">		ctx = new ClassPathXmlApplicationContext(</div><div class="line">				"applicationContext.xml");</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Test</div><div class="line">	public void testFindUserById() throws Exception &#123;</div><div class="line">		</div><div class="line">		UserMapper dao = (UserMapper) ctx.getBean("userMapper");</div><div class="line">		</div><div class="line">		User user = dao.findUserById(1);</div><div class="line">		</div><div class="line">		System.out.println(user.getName());</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>测试结果：取出数据库中的helloworld<br>至此mybatis整合spring完成</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;整合思路：&lt;br&gt;    1、数据源信息交给spring管理&lt;br&gt;2、sqlsessionfactory交给spring进行单例管理&lt;br
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mybatis 之三:映射文件</title>
+    <link href="http://www.myzwl.win/2017/04/02/mybatis3/"/>
+    <id>http://www.myzwl.win/2017/04/02/mybatis3/</id>
+    <published>2017-04-02T03:48:51.000Z</published>
+    <updated>2017-04-02T15:32:34.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>基本上我们对数据库的操作都在映射文件中编写，通过mapper代理方式简化配置，同时依据不同的参数和返回类型完成相关需求</p>
+<h5 id="一：parameterType输入参数"><a href="#一：parameterType输入参数" class="headerlink" title="一：parameterType输入参数"></a>一：parameterType输入参数</h5><p>简单类型：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="int"</div><div class="line">		resultType="com.zwl.pojo.User"&gt;</div><div class="line">		SELECT * FROM user WHERE id =#&#123;id&#125;</div><div class="line">	&lt;/select&gt;</div></pre></td></tr></table></figure></p>
+<p>参数是基本类型，在之前已演示</p>
+<p>Pojo类型<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;insert id=<span class="string">"insertuser"</span> parameterType=<span class="string">"com.zwl.pojo.User"</span>&gt;</div><div class="line">&lt;selectKey keyProperty=<span class="string">"id"</span> resultType=<span class="string">"int"</span> <span class="attribute">order</span>=<span class="string">"AFTER"</span>&gt;</div><div class="line">select LAST_INSERT_ID()</div><div class="line">&lt;/selectKey&gt;</div><div class="line">insert into user values(#&#123;id&#125;,#&#123;name&#125;,#&#123;age&#125;)</div><div class="line">&lt;/insert&gt;</div></pre></td></tr></table></figure></p>
+<p>即参数类型是一个对象，如之前的添加操作</p>
+<p>包装pojo类型<br>即在类中包含另一个对象，如<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public class Uservo &#123;</div><div class="line">private User user;</div><div class="line">此处省略set。。get方法</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>配置文件中<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="com.zwl.pojo.Uservo"</div><div class="line">		resultType="com.zwl.pojo.User"&gt;</div><div class="line">		SELECT * FROM user WHERE id =#&#123;user.id&#125;</div><div class="line">	&lt;/select&gt;</div></pre></td></tr></table></figure></p>
+<p>参数是包装类，注意参数是包装类的属性</p>
+<p>Map<br>  同传递pojo对象一样，map的key相当于pojo的属性<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="hashmap"</div><div class="line">		resultType="com.zwl.pojo.User"&gt;</div><div class="line">		SELECT * FROM user WHERE id =#&#123;id&#125; and name=#&#123;name&#125;</div><div class="line">	&lt;/select&gt;</div></pre></td></tr></table></figure></p>
+<p>显然，参数是hashmap，其中#{id}与#{name}都是hashmap的key</p>
+<p>接口文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface UserMapper &#123;</div><div class="line">	public User findUserById(HashMap&lt;String, Object&gt; id) throws Exception;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>测试类：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">UserMapper mapper=sqlSession.getMapper(UserMapper.class);</div><div class="line">				</div><div class="line">				HashMap&lt;String, Object&gt; hm=new HashMap&lt;&gt;();</div><div class="line">				hm.put("id", 1);</div><div class="line">				hm.put("name","helloworld");</div><div class="line">				</div><div class="line">				User u=mapper.findUserById(hm);</div><div class="line">				System.out.println(u.getAge());</div><div class="line">				sqlSession.close();</div></pre></td></tr></table></figure></p>
+<h4 id="输出映射"><a href="#输出映射" class="headerlink" title="输出映射"></a>输出映射</h4><p>Resulttype：<br>    使用要求：<br>  使用resultType进行结果映射时，需要查询出的列名和映射的对象的属性名一致，才能映射成功。<br>如果查询的列名和对象的属性名全部不一致，那么映射的对象为空。<br>如果查询的列名和对象的属性名有一个一致，那么映射的对象不为空，但是只有映射正确那一个属性才有值。</p>
+<p>简单类型：resultType=”int”<br>Pojo对象：resultType=”com.zwl.pojo.User”</p>
+<p>如之前的案例<br>Resultmap<br>使用resultMap进行结果映射时，不需要查询的列名和映射的属性名必须一致。但是需要声明一个resultMap，来对列名和属性名进行映射<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;resultMap type=<span class="string">"com.zwl.pojo.User"</span> id=<span class="string">"Userresult"</span>&gt;</div><div class="line">	&lt;id column=<span class="string">"id_"</span> property=<span class="string">"id"</span>/&gt;</div><div class="line">	&lt;result column=<span class="string">"name_"</span> property=<span class="string">"name"</span>/&gt;</div><div class="line">	&lt;result column=<span class="string">"age_"</span> property=<span class="string">"age"</span>/&gt;</div><div class="line">	&lt;/resultMap&gt;</div></pre></td></tr></table></figure></p>
+<p>其中id为查询结果中唯一列映射，result标签为映射结果中的普通列</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;select id=<span class="string">"findUserById"</span> parameterType=<span class="string">"int"</span></div><div class="line">		resultMap=<span class="string">"Userresult"</span> &gt;</div><div class="line">		SELECT id id_,name name_,age age_ FROM user WHERE id =#&#123;id&#125; </div><div class="line">	&lt;/select&gt;</div></pre></td></tr></table></figure>
+<p>其中resultmap必须与声明中的id保持一致，这样才能引用</p>
+<p>接口：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface UserMapper &#123;</div><div class="line">	public User findUserById(int id) throws Exception;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>测试代码：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">User u=mapper.findUserById(1);</div><div class="line">				System.out.println(u.getAge());</div><div class="line">				sqlSession.close();</div></pre></td></tr></table></figure>
+<p>mybatis与hibernate的区别及各自应用场景<br>Mybatis技术特点：<br>1、    通过直接编写SQL语句，可以直接对SQL进行性能的优化；<br>2、    学习门槛低，学习成本低。只要有SQL基础，就可以学习mybatis，而且很容易上手；<br>3、    由于直接编写SQL语句，所以灵活多变，代码维护性更好。<br>4、    不能支持数据库无关性，即数据库发生变更，要写多套代码进行支持，移植性不好。</p>
+<p>Hibernate技术特点：<br>1、    标准的orm框架，程序员不需要编写SQL语句。<br>2、    具有良好的数据库无关性，即数据库发生变化的话，代码无需再次编写。<br>3、    学习门槛高，需要对数据关系模型有良好的基础，而且在设置OR映射的时候，需要考虑好性能和对象模型的权衡。<br>4、    程序员不能自主的去进行SQL性能优化。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;基本上我们对数据库的操作都在映射文件中编写，通过mapper代理方式简化配置，同时依据不同的参数和返回类型完成相关需求&lt;/p&gt;
+&lt;h5 id
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mybatis 之二:开发dao的两种方式</title>
+    <link href="http://www.myzwl.win/2017/04/01/mybatis2/"/>
+    <id>http://www.myzwl.win/2017/04/01/mybatis2/</id>
+    <published>2017-04-01T13:48:51.000Z</published>
+    <updated>2017-04-02T15:32:34.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Dao层的开发，在mybatis中可以通过原始dao（一个接口和接口实现类），而在mybatis中可以更方便的通过mapper代理模式，当然需要满足一定的规范性原则</p>
+<p>不多说，以一个增加user信息为例</p>
+<p>一：首先在映射文件中写一个增加用户配置信息<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 添加用户 --&gt;</div><div class="line">	&lt;!-- selectKey：查询主键，在标签内需要输入查询主键的sql --&gt;</div><div class="line">	&lt;!-- <span class="attribute">order</span>：指定查询主键的sql和insert语句的执行顺序，相当于insert语句来说 --&gt;</div><div class="line">	&lt;!-- LAST_INSERT_ID：该函数是mysql的函数，获取自增主键的ID，它必须配合insert语句一起使用 --&gt;</div><div class="line">	&lt;insert id=<span class="string">"insertuser"</span> parameterType=<span class="string">"com.zwl.pojo.User"</span>&gt;</div><div class="line">	&lt;selectKey keyProperty=<span class="string">"id"</span> resultType=<span class="string">"int"</span> <span class="attribute">order</span>=<span class="string">"AFTER"</span>&gt;select LAST_INSERT_ID()&lt;/selectKey&gt;</div><div class="line">	insert into user values(#&#123;id&#125;,#&#123;name&#125;,#&#123;age&#125;)</div><div class="line">	&lt;/insert&gt;</div></pre></td></tr></table></figure></p>
+<p>注意：这里的插入中原表中主键有自增长，所以需要先获得主键，在增加，这是一个插入语句</p>
+<p>二：dao接口及其实现类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">public interface userdao &#123;</div><div class="line">//添加user</div><div class="line">	public void insertusers(User user) throws Exception;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Dao接口实现类</div><div class="line">public class userdaoimpl implements userdao &#123;</div><div class="line"></div><div class="line">	private SqlSessionFactory sqlSessionFactory;</div><div class="line">	</div><div class="line">//通过构造函数注入sqlSessionFactory</div><div class="line">	public userdaoimpl(SqlSessionFactory sqlSessionFactory)&#123;</div><div class="line">		this.sqlSessionFactory=sqlSessionFactory;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void insertusers(User user) throws Exception &#123;</div><div class="line">//通过线程安全方式获得sqlsession，实现增删该查操作</div><div class="line">		SqlSession sqlsession=sqlSessionFactory.openSession();</div><div class="line">//注意这里的test是映射文件中的namespace，insertuser是id用于标识</div><div class="line">		sqlsession.insert("test.insertuser", user);</div><div class="line">//添加操作需要提交事务</div><div class="line">		sqlsession.commit();</div><div class="line">		sqlsession.close();</div><div class="line"></div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>编写测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">//读取配置文件</div><div class="line">				//全局配置文件的路径</div><div class="line">				String resource = "SqlMapConfig.xml";</div><div class="line">				InputStream inputStream = Resources.getResourceAsStream(resource);</div><div class="line">				</div><div class="line">				//创建SqlSessionFactory</div><div class="line">				SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);</div><div class="line"></div><div class="line">              //创建user</div><div class="line">	            User u=new User();</div><div class="line">				u.setName("java");</div><div class="line">				u.setAge(18);</div><div class="line">				</div><div class="line">//调用dao层方法，实现添加功能</div><div class="line">				userdao dao=new userdaoimpl(sqlSessionFactory);</div><div class="line">				dao.insertusers(u);</div></pre></td></tr></table></figure></p>
+<p>这种原始dao方式，我们很熟悉，也很好理解，到时当方法多的时候，就会存在大量多余的重复编码问题</p>
+<p>Mapper代理的开发模式<br>即开发mapper接口（相当于dao接口）<br>Mapper代理使用的是jdk的代理策略</p>
+<p>还有一点是mapper代理最重要的，就是必须满足mapper代理的开发规范<br>1 mapper接口的全限定名要和mapper映射文件的namespace值一致<br>2 mapper接口的方法名称要和mapper映射文件的statement的id一致。<br>3 mapper接口的方法参数类型要和mapper映射文件的statement的parameterType的值一致，而且它的参数是一个。<br>4 mapper接口的方法返回值类型要和mapper映射文件的statement的resultType的值一致。</p>
+<p>下面以入门程序的通过id查询user为例<br>首先是修改映射文件，改名为UserMapper.xml<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line">&lt;!DOCTYPE mapper    </div><div class="line">PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    </div><div class="line">"http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line">&lt;!-- namespace：命名空间，对statement的信息进行分类管理 --&gt;</div><div class="line">&lt;!-- 注意：在mapper代理时，它具有特殊及重要的作用 --&gt;</div><div class="line">&lt;mapper namespace="com.zwl.mapper.UserMapper"&gt;</div><div class="line">	&lt;!-- 根据用户ID查询用户信息 --&gt;</div><div class="line">	&lt;!-- select：表示一个MappedStatement对象 --&gt;</div><div class="line">	&lt;!-- id：statement的唯一标示 --&gt;</div><div class="line">	&lt;!-- #&#123;&#125;：表示一个占位符？ --&gt;</div><div class="line">	&lt;!-- #&#123;id&#125;：里面的id表示输入参数的参数名称，如果该参数是简单类型，那么#&#123;&#125;里面的参数名称可以任意 --&gt;</div><div class="line">	&lt;!-- parameterType：输入参数的java类型 --&gt;</div><div class="line">	&lt;!-- resultType：输出结果的所映射的java类型（单条结果所对应的java类型） --&gt;</div><div class="line">	</div><div class="line"></div><div class="line">	&lt;select id="findUserById" parameterType="int"</div><div class="line">		resultType="com.zwl.pojo.User" &gt;</div><div class="line">		select * from user where id=#&#123;id&#125;</div><div class="line">	&lt;/select&gt;</div><div class="line">&lt;/mapper&gt;</div></pre></td></tr></table></figure></p>
+<p>上述的namespace需要和mapper接口的全限定名一致<br>然后是mapper接口开发（UserMapper.java）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">package com.zwl.mapper;</div><div class="line"></div><div class="line">import com.zwl.pojo.User;</div><div class="line"></div><div class="line">public interface UserMapper &#123;</div><div class="line">	public User findUserById(int id) throws Exception;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来是在配置文件中声明映射文件<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;mappers&gt;</div><div class="line">		&lt;mapper resource=<span class="string">"com/zwl/mapper/UserMapper.xml"</span> /&gt;</div><div class="line">	&lt;/mappers&gt;</div></pre></td></tr></table></figure></p>
+<p>测试类：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">String resource = "SqlMapConfig.xml";</div><div class="line">				InputStream inputStream = Resources.getResourceAsStream(resource);</div><div class="line">				</div><div class="line">				//创建SqlSessionFactory</div><div class="line">				SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);</div><div class="line">				</div><div class="line">			//创建SqlSession</div><div class="line">				SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">				</div><div class="line">//通过mybatis的sqlsession来创建代理对象</div><div class="line">				UserMapper mapper=sqlSession.getMapper(UserMapper.class);</div><div class="line">				</div><div class="line">				User u=mapper.findUserById(1);</div><div class="line">				System.out.println(u.getName());</div><div class="line">				sqlSession.close();</div></pre></td></tr></table></figure></p>
+<p>最后的测试结果是取出数据库中id为1的helloworld</p>
+<p>至此mapper代理开发dao完成，这里只给了一个简单的例子，总的来说，只要满足规范，就可以简化配置</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;Dao层的开发，在mybatis中可以通过原始dao（一个接口和接口实现类），而在mybatis中可以更方便的通过mapper代理模式，当然
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mybatis 之一:hello world</title>
+    <link href="http://www.myzwl.win/2017/04/01/mybatis1/"/>
+    <id>http://www.myzwl.win/2017/04/01/mybatis1/</id>
+    <published>2017-04-01T12:48:51.000Z</published>
+    <updated>2017-04-02T15:32:34.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Mybatis就是一个封装了jdbc的持久层框架，它和hibernate都属于orm框架，但是具体说，hibernate是一个完全的orm框架，而mybatis是一个不完全的orm框架，mybatis只关注sql本身，而不需要关注如连接的创建，statement的创建等操作。Mybatis会将输入参数、输出结果进行映射。</p>
+<p>不多说，先来一个入门程序，意在先从整体了解<br>步骤一：创建一个java工程</p>
+<p>步骤二：导入jar包，首先创建一个lib文件夹，在将包导入<br><img src="/images/imgs2/17.gif" alt="Alt text"></p>
+<p>步骤三：数据库中的表user<br><img src="/images/imgs2/18.gif" alt="Alt text"></p>
+<p>步骤四：创建pojo类，与数据库字段对应<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">package com.zwl.pojo;</div><div class="line"></div><div class="line">public class User &#123;</div><div class="line">	private int age;</div><div class="line">	private int id;</div><div class="line">	private String name;</div><div class="line">	public int getAge() &#123;</div><div class="line">		return age;</div><div class="line">	&#125;</div><div class="line">	public int getId() &#123;</div><div class="line">		return id;</div><div class="line">	&#125;</div><div class="line">	public String getName() &#123;</div><div class="line">		return name;</div><div class="line">	&#125;</div><div class="line">	public void setAge(int age) &#123;</div><div class="line">		this.age = age;</div><div class="line">	&#125;</div><div class="line">	public void setId(int id) &#123;</div><div class="line">		this.id = id;</div><div class="line">	&#125;</div><div class="line">	public void setName(String name) &#123;</div><div class="line">		this.name = name;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>步骤五：创建全局配置文件（mybatis核心配置文件SqlMapConfig.xml，放在src目录下）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line">&lt;!DOCTYPE configuration</div><div class="line">PUBLIC "-//mybatis.org//DTD Config 3.0//EN"</div><div class="line">"http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;</div><div class="line">&lt;configuration&gt;</div><div class="line"></div><div class="line">	&lt;!-- 配置mybatis的环境信息，与spring整合，该信息由spring来管理 --&gt;</div><div class="line">	&lt;environments default="development"&gt;</div><div class="line">		&lt;environment id="development"&gt;</div><div class="line">			&lt;!-- 配置JDBC事务控制，由mybatis进行管理 --&gt;</div><div class="line">			&lt;transactionManager type="JDBC"&gt;&lt;/transactionManager&gt;</div><div class="line">			&lt;!-- 配置数据源，采用mybatis连接池 --&gt;</div><div class="line">			&lt;dataSource type="POOLED"&gt;</div><div class="line">				&lt;property name="driver" value="com.mysql.jdbc.Driver" /&gt;</div><div class="line">				&lt;property name="url" value="jdbc:mysql://localhost:9806/sshe" /&gt;</div><div class="line">				&lt;property name="username" value="root" /&gt;</div><div class="line">				&lt;property name="password" value="root" /&gt;</div><div class="line">			&lt;/dataSource&gt;</div><div class="line">		&lt;/environment&gt;</div><div class="line">	&lt;/environments&gt;</div><div class="line"></div><div class="line">	&lt;mappers&gt;</div><div class="line">		还没有映射文件 </div><div class="line">	&lt;/mappers&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure></p>
+<p>简要说明一下，类似于hibernate核心配置文件，连接数据库，这里暂时还没有映射文件，后面步骤在加上</p>
+<p>步骤六：映射文件（User.xml）这里是通过id查询返回对象<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line">&lt;!DOCTYPE mapper    </div><div class="line">PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    </div><div class="line">"http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line">&lt;!-- namespace：命名空间，对statement的信息进行分类管理 --&gt;</div><div class="line">&lt;!-- 注意：在mapper代理时，它具有特殊及重要的作用 --&gt;</div><div class="line">&lt;mapper namespace="test"&gt;</div><div class="line">	&lt;!-- 根据用户ID查询用户信息 --&gt;</div><div class="line">	&lt;!-- select：表示一个MappedStatement对象 --&gt;</div><div class="line">	&lt;!-- id：statement的唯一标示 --&gt;</div><div class="line">	&lt;!-- #&#123;&#125;：表示一个占位符？ --&gt;</div><div class="line">	&lt;!-- #&#123;id&#125;：里面的id表示输入参数的参数名称，如果该参数是简单类型，那么#&#123;&#125;里面的参数名称可以任意 --&gt;</div><div class="line">	&lt;!-- parameterType：输入参数的java类型 --&gt;</div><div class="line">	&lt;!-- resultType：输出结果的所映射的java类型（单条结果所对应的java类型） --&gt;</div><div class="line">	&lt;select id="findUserById" parameterType="int"</div><div class="line">		resultType="com.zwl.pojo.User"&gt;</div><div class="line">		SELECT * FROM user WHERE id =#&#123;id&#125;</div><div class="line">	&lt;/select&gt;</div><div class="line">&lt;/mapper&gt;</div></pre></td></tr></table></figure></p>
+<p>步骤七：在全局配置文件中声明映射文件（User.xml）<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;mappers&gt;</div><div class="line">		&lt;mapper resource=<span class="string">"com/zwl/pojo/User.xml"</span> /&gt;</div><div class="line">	&lt;/mappers&gt;</div></pre></td></tr></table></figure></p>
+<p>步骤八：测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">package com.zwl.test;</div><div class="line"></div><div class="line">import java.io.InputStream;</div><div class="line"></div><div class="line">import org.apache.ibatis.io.Resources;</div><div class="line">import org.apache.ibatis.session.SqlSession;</div><div class="line">import org.apache.ibatis.session.SqlSessionFactory;</div><div class="line">import org.apache.ibatis.session.SqlSessionFactoryBuilder;</div><div class="line">import org.junit.Test;</div><div class="line"></div><div class="line">import com.zwl.pojo.User;</div><div class="line"></div><div class="line">public class test &#123;</div><div class="line">	@Test</div><div class="line">	public void findUserByIdtest() throws Exception&#123;</div><div class="line">		        //读取配置文件</div><div class="line">				//全局配置文件的路径</div><div class="line">				String resource = "SqlMapConfig.xml";</div><div class="line">				InputStream inputStream = Resources.getResourceAsStream(resource);</div><div class="line">				</div><div class="line">				//创建SqlSessionFactory</div><div class="line">				SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);</div><div class="line">				</div><div class="line">				//创建SqlSession</div><div class="line">				SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">				</div><div class="line">				//调用SqlSession的增删改查方法</div><div class="line">				//第一个参数：表示statement的唯一标示</div><div class="line">				User u=sqlSession.selectOne("test.findUserById", 1);</div><div class="line">				System.out.println(u.getName());</div><div class="line">				sqlSession.close();</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>最后可将数据库中id为1的数据取出</p>
+<p>至此，入门程序算是完成了，通过上面步骤发现，这里的不完全orm，还是得最后我们自己写sql，这样我们就可以面对复杂表关系时，自己优化了</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;Mybatis就是一个封装了jdbc的持久层框架，它和hibernate都属于orm框架，但是具体说，hibernate是一个完全的orm框
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>spring mvc之四:数据回显与json</title>
+    <link href="http://www.myzwl.win/2017/04/01/springmvc4/"/>
+    <id>http://www.myzwl.win/2017/04/01/springmvc4/</id>
+    <published>2017-04-01T11:48:51.000Z</published>
+    <updated>2017-04-02T15:32:34.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>比较struts2与spring mvc<br>实现机制：<br>Struts2是基于过滤器实现的。<br>Springmvc基于servlet实现。Servlet比过滤器快。</p>
+<p>运行速度：<br>Struts2是多列<br>请求来了以后，struts2创建多少个对象：<br>ActionContext，valuestack，UserAction，ActionSuport，ModelDriven<br>Springmvc是单列</p>
+<p>参数封装来分析：<br>Struts基于属性进行封装。<br>Springmvc基于方法封装。</p>
+<p>页面回显：<br> 查询所有<br>构造一组list数据</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("userlist")</div><div class="line">   //model	相当于application域对象</div><div class="line">	public String userlist(Model modal)&#123;</div><div class="line">		List&lt;User&gt; list=new ArrayList&lt;&gt;();</div><div class="line">		User u1=new User();</div><div class="line">		u1.setId(1);</div><div class="line">		u1.setSex("1");</div><div class="line">		u1.setAddress("lol");</div><div class="line">		u1.setUsername("1");</div><div class="line">		u1.setBirthday(new Date());</div><div class="line">		</div><div class="line">		User u2=new User();</div><div class="line">		u2.setId(1);</div><div class="line">		u2.setSex("1");</div><div class="line">		u2.setAddress("lol");</div><div class="line">		u2.setUsername("1");</div><div class="line">		u2.setBirthday(new Date());</div><div class="line">		</div><div class="line">		list.add(u1);</div><div class="line">		list.add(u2);</div><div class="line">		</div><div class="line">		modal.addAttribute("userlist", list);</div><div class="line">		</div><div class="line">		return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>页面回显（利用jstl标签回显）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%&gt;//声明此标签</div><div class="line"></div><div class="line"></div><div class="line">&lt;body&gt;</div><div class="line">&lt;table border="1" style="color: blue"&gt;</div><div class="line">&lt;tr&gt;</div><div class="line">&lt;td&gt;姓名&lt;/td&gt;</div><div class="line">&lt;td&gt;生日&lt;/td&gt;</div><div class="line">&lt;td&gt;性别&lt;/td&gt;</div><div class="line">&lt;td&gt;地址&lt;/td&gt;</div><div class="line">&lt;td&gt;操作&lt;/td&gt;</div><div class="line">&lt;/tr&gt;</div><div class="line">&lt;c:forEach items="$&#123;userlist &#125;" var="user"&gt;</div><div class="line">&lt;tr&gt;</div><div class="line">&lt;td&gt;$&#123;user.username &#125;&lt;/td&gt;</div><div class="line">&lt;td&gt;$&#123;user.birthday &#125;&lt;/td&gt;</div><div class="line">&lt;td&gt;$&#123;user.sex &#125;&lt;/td&gt;</div><div class="line">&lt;td&gt;$&#123;user.address &#125;&lt;/td&gt;</div><div class="line">&lt;td&gt;</div><div class="line">&lt;a href="$&#123;pageContext.request.contextPath &#125;/test/update?id=$&#123;user.id &#125;"&gt;delete&lt;/a&gt;</div><div class="line">&lt;/td&gt;</div><div class="line">&lt;/tr&gt;</div><div class="line"></div><div class="line">&lt;/c:forEach&gt;</div><div class="line"></div><div class="line">&lt;/table&gt;</div><div class="line"></div><div class="line">  &lt;/body&gt;</div></pre></td></tr></table></figure></p>
+<p>注意此处有个delete</p>
+<blockquote>
+<p><a href="${pageContext.request.contextPath }/test/update?id=${user.id }">delete</a></p>
+</blockquote>
+<p>利用？的方法，无疑将值显示的传过去，很不安全</p>
+<p>测试：在浏览器中输入<a href="http://localhost:100/springmvc2/test/userlist.do" target="_blank" rel="external">http://localhost:100/springmvc2/test/userlist.do</a></p>
+<p>可以取出集合中的数据，同时delete中有显示id=参数传过去了</p>
+<h4 id="URL模版映射"><a href="#URL模版映射" class="headerlink" title="URL模版映射"></a>URL模版映射</h4><p>url模版映射是restfull软件架构<br>Web.xml拦截方式：在rest目录下所有请求都被拦截，servlet可以拦截目录<br>配置如下：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;servlet-mapping&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;url-pattern&gt;/rest<span class="comment">/*&lt;/url-pattern&gt;</span></div><div class="line">  &lt;/servlet-mapping&gt;</div></pre></td></tr></table></figure>
+<p>（）:匹配接受页面Url路径参数<br>@Pathariable：（）里面参数注入后面参数里面</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("update/&#123;id&#125;")</div><div class="line">	public String update(@PathVariable Integer id)&#123;</div><div class="line">		System.out.println(id);</div><div class="line">		</div><div class="line">		return "redirect:/test/userlist.do";</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>页面修改：</p>
+<blockquote>
+<p><a href="${pageContext.request.contextPath }/rest/test/update/${user.id }">delete</a></p>
+</blockquote>
+<p>测试：同样输入相同地址，会发现href代参直接变成/参数</p>
+<h4 id="转发和重定向"><a href="#转发和重定向" class="headerlink" title="转发和重定向"></a>转发和重定向</h4><p>转发<br>关键字：forward<br>本类进行转发：<br>本类方法与方法之间进行forward<br>转发方式：</p>
+<blockquote>
+<p>return “forward : /test/userlist.do”;</p>
+</blockquote>
+<p>跨类进行转发：<br>转发方式：return ”forward：/items/userlist.do“；<br>其中items是类前面的路径声明</p>
+<p>重定向<br>关键字：redirect<br>本类进行重定向：<br>本类方法与方法之间进行redirect<br>重定向方式：</p>
+<blockquote>
+<p>return “redirect:/test/userlist.do”;</p>
+</blockquote>
+<p>跨类进行重定向：<br>转发方式：return ”redirect：/items/userlist.do“；</p>
+<h4 id="responseBody和-RequestBody"><a href="#responseBody和-RequestBody" class="headerlink" title="@responseBody和@RequestBody"></a>@responseBody和@RequestBody</h4><p>@responseBody把后台pojo转换json对象，返回到页面。<br>@RequestBody接受前台json数据，把json数据自动封装javaBean。</p>
+<p>下面以一个实例说明<br>这里ajax传递json数据用jquery来模拟</p>
+<p>步骤一：导入jar包（jackson-core-asl-1.9.11.jar和jackson-mapper-asl-1.9.11.jar）<br>加入jquery<br>在springmvc.xml文件中声明对json数据的支持<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;bean class=<span class="string">"org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"</span>&gt;</div><div class="line">		&lt;property name=<span class="string">"messageConverters"</span>&gt;</div><div class="line">		&lt;bean class=<span class="string">"org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"</span>&gt;&lt;/bean&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<p>页面传递ajax格式<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">&lt;script type="text/javascript" src="js/jquery.js"&gt;&lt;/script&gt;</div><div class="line">&lt;script type="text/javascript"&gt;</div><div class="line">function requestjson()&#123;</div><div class="line">	//模拟了一个json格式数据</div><div class="line">			 var jsonobj=JSON.stringify(&#123;"username":"11","sex":"man","address":"ok"&#125;); </div><div class="line">			$.ajax(&#123;</div><div class="line">				type:'POST',</div><div class="line">				url:'&lt;%=path%&gt;/test/requestjson.do',</div><div class="line">	//申明传递的是json格式</div><div class="line">				 contentType:'application/json;charset=utf-8', </div><div class="line">	//传递的数据</div><div class="line">				data:jsonobj,</div><div class="line">	//如果成功，返回数据</div><div class="line">				success:function(data)&#123;</div><div class="line">					</div><div class="line">					alert(data.username);</div><div class="line">				&#125;</div><div class="line">			&#125;)</div><div class="line">			</div><div class="line">		&#125;</div><div class="line"></div><div class="line">	</div><div class="line">	&lt;/script&gt;</div><div class="line"></div><div class="line">	 &lt;body&gt;</div><div class="line">  &lt;form action=""&gt;</div><div class="line">   &lt;input type="text" name="username1" onclick="requestjson();"/&gt;</div><div class="line">   &lt;/form&gt;</div><div class="line">  &lt;/body&gt;</div></pre></td></tr></table></figure></p>
+<p>后台代码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("requestjson")</div><div class="line">	public @ResponseBody User requestjson(@RequestBody User user)&#123;</div><div class="line">		System.out.println(user.getSex());</div><div class="line">		</div><div class="line">		return user;</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>此处声明了接受的参数和返回的都是json数据格式</p>
+<p>测试：在浏览器输入<a href="http://localhost:100/springmvc2/index.jsp" target="_blank" rel="external">http://localhost:100/springmvc2/index.jsp</a><br>通过点击文本，后台会打印参数，同时返回一个user对象给前台，并显示出来</p>
+<p>pojo，后台返回json<br>前台请求数据构造：key=value&amp;key=value.<br>首先是页面<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">				type:'POST',</div><div class="line">				url:'&lt;%=path%&gt;/user/requestjson1.do',</div><div class="line">				data:'username=lol&amp;address=zwl',</div><div class="line">				success:function(data)&#123;</div><div class="line">					</div><div class="line">					alert(data.username);</div><div class="line">				&#125;</div><div class="line">			&#125;)</div></pre></td></tr></table></figure></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">后台代码：</div><div class="line">@RequestMapping("requestjson1")</div><div class="line">	public @ResponseBody User requestjson1(User user)&#123;</div><div class="line">		System.out.println(user.getAddress());</div><div class="line">		</div><div class="line">		return user;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>最后在springmvc中配置的前两个设配器，我们可以通过一个注解声明代替</p>
+<blockquote>
+<p><mvc:annotation-driven></mvc:annotation-driven></p>
+</blockquote>
+<p>不仅如此，它还自动包括了json数据格式声明等等<br>即默认创建注解处理器映射器，注解处理器适配器。提供json格式支持。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;比较struts2与spring mvc&lt;br&gt;实现机制：&lt;br&gt;Struts2是基于过滤器实现的。&lt;br&gt;Springmvc基于servl
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>spring mvc之三:注解开发</title>
     <link href="http://www.myzwl.win/2017/03/31/springmvc3/"/>
     <id>http://www.myzwl.win/2017/03/31/springmvc3/</id>
     <published>2017-03-31T11:48:51.000Z</published>
-    <updated>2017-03-31T15:27:24.000Z</updated>
+    <updated>2017-04-02T15:32:34.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前我们都是通过xml方式显示配置，会发现配置起来特别麻烦。当使用注解时，有时只需在相关类中做相关的声明，就能完成同样的工作。</p>
 <p>不多说：先来一个注解开发例子</p>
@@ -76,8 +294,6 @@
     
       <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
     
-    
-      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
     
   </entry>
   
@@ -188,7 +404,7 @@
     <link href="http://www.myzwl.win/2017/03/30/spring2/"/>
     <id>http://www.myzwl.win/2017/03/30/spring2/</id>
     <published>2017-03-30T09:48:51.000Z</published>
-    <updated>2017-03-31T10:44:06.000Z</updated>
+    <updated>2017-04-02T15:32:34.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在spring中，对象无需自己负责查找或创建与其关联的其他对象。相反，容器负责把需要相互协作的对象引用赋予各个对象，例如一个消费系统需要信誉证件，但它不需要自己创建，它只负责自己两手空空，而容器就赋予它一个信用卡认证组件。<br>  通常，我们将创建应用对象间相互协作关系的行为称为装配。这也是依赖注入的本质。</p>
 <h4 id="一：声明bean"><a href="#一：声明bean" class="headerlink" title="一：声明bean"></a>一：声明bean</h4><p>  首先我们假想一个选秀场景，该bean为一个表演接口<br>  public interface Performe {<br>    public void perform();<br>}<br>很显然我们需要一些参赛者，而这些参赛者就需要spring帮我们创建了</p>
@@ -728,360 +944,6 @@
     
     
       <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>jquery之ajax</title>
-    <link href="http://www.myzwl.win/2017/03/23/jqajax/"/>
-    <id>http://www.myzwl.win/2017/03/23/jqajax/</id>
-    <published>2017-03-23T13:48:51.000Z</published>
-    <updated>2017-03-23T04:15:22.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>ajax ：异步请求，浏览器地址栏不改变，进行局部刷新</p>
-<p>首先先来看一下ajax在浏览器与服务器之间的传输过程</p>
-<p><img src="/images/imgs2/3.gif" alt="Alt text"></p>
-<h4 id="ajax"><a href="#ajax" class="headerlink" title="ajax"></a>ajax</h4><p>jquery中有多种ajax请求，根据应用场景不同，选择的ajax不同</p>
-<p><img src="/images/imgs2/4.gif" alt="Alt text"></p>
-<ol>
-<li><p>$.ajax(…) 最底层ajax请求，编写最复杂，完成功能最全的</p>
-</li>
-<li><p>load() 、$.get() 、$.post() </p>
-</li>
-<li><p>$.getJSON() 可以完成js“跨域”请求<br>域名：域名+端口+项目，js默认不能跨域请求</p>
-</li>
-</ol>
-<ol>
-<li>$.getScript()  动态加载js文件。</li>
-</ol>
-<h4 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h4><p><img src="/images/imgs2/5.gif" alt="Alt text"></p>
-<h4 id="json解析"><a href="#json解析" class="headerlink" title="json解析"></a>json解析</h4><p><img src="/images/imgs2/6.gif" alt="Alt text"></p>
-<p>下面将对上面部分进行模拟<br>首先是有一个按钮</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"button"</span> value=<span class="string">"发送ajax"</span> /&gt;</div></pre></td></tr></table></figure>
-<p>然后在js中操作</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">   // 请求路径，我这里是请求到一个servlet</div><div class="line">var url = "getajaxname";</div><div class="line">// 请求参数，采用json</div><div class="line">var params = &#123;"username":"盲僧", "password":"我的最爱"&#125;;</div></pre></td></tr></table></figure>
-<p>接下来就是利用不同形式的ajax发送请求<br>1 load()函数 ，必须使用jquery对象</p>
-<pre><code>* * 格式：load(url, [data], [callback])
-*         参数1：url ，请求路径
-*         参数2：data，请求参数
-*         参数3：callback，回调函数
-* * 如果没有请求参数，发送的GET请求
-* * 如果有请求参数，发送的POST请求。请求没有中文乱码
-* * 回调函数的参数
-*         参数1：data，响应数据。load()永远获得字符串，如果需要使用，必须手动转换json对象。
-*         
-</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$(this).load(url,params,function(data)&#123;</div><div class="line">		//转换json对象</div><div class="line">		var jsonData = eval("("+data+")");</div><div class="line">		alert(jsonData.value);</div><div class="line">	&#125;);</div></pre></td></tr></table></figure>
-<p>后台servlet，这里利用gson.jar包回送json数据</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public void doPost(HttpServletRequest request, HttpServletResponse response)</div><div class="line">			throws ServletException, IOException &#123;</div><div class="line"></div><div class="line">		response.setContentType("text/html,charset=utf-8");</div><div class="line">		PrintWriter out = response.getWriter();</div><div class="line">   String name= request.getParameter("username");</div><div class="line">      String age= request.getParameter("password");</div><div class="line">      System.out.println(name);</div><div class="line">      System.out.println(age);</div><div class="line">      /*out.println("ajax ok");*/</div><div class="line">      JsonObject json=new JsonObject();</div><div class="line">      json.addProperty("value", "ok");</div><div class="line">      response.getWriter().write(json.toString());</div><div class="line">		out.flush();</div><div class="line">		out.close();</div><div class="line"></div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<p>我们可以通过火狐里的firebug进行测试和观察</p>
-<p>2 $.get() 全局函数，发送get请求</p>
-<pre><code>* * 格式：jQuery.get(url, [data], [callback], [type])
-*         * 参数4：type ，返回内容格式，xml, html, script, json, text, _default。
-* * GET请求不适合发送中文数据，存放请求的中文乱码。
-*         必须手动解码   new String(username.getBytes(&quot;ISO-8859-1&quot;) ,&quot;UTF-8&quot;)
-* * 响应数据，如果使用  application/json;charset=UTF-8 ，jQuery自动将数据转换json对象。
-* * 响应数据，如果使用  text/html;charset=UTF-8 ，回调函数获得字符串数据，需要手动转换。
-*         使用“参数4”，设置&quot;json&quot;，jQuery将字符串 转换成 json对象
-</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.get(url,params,function(data)&#123;</div><div class="line">		alert(data.value);</div><div class="line">	&#125;,"json");</div></pre></td></tr></table></figure>
-<p>将servlet中post中代码copy到get中，但是后台接受的是乱码</p>
-<p>3 $.post() 全局函数，发送post请求</p>
-<pre><code>* * 格式：jQuery.post(url, [data], [callback], [type])
-</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.post(url,params,function(data)&#123;</div><div class="line">		alert(data.value);</div><div class="line">	&#125;,"json")</div></pre></td></tr></table></figure>
-<p>4 $.ajax() 底层功能最强大的</p>
-<pre><code>* * 格式：jQuery.ajax([settings])
-*         参数settings：设置所有的参数
-*             url:发送请求的地址
-*             data:发送到服务器的数据,请求参数
-*             type:请求方式 (&quot;POST&quot; 或 &quot;GET&quot;)， 
-*             success:成功的回调函数，success(data, textStatus, jqXHR)
-*             error:请求失败时调用此函数
-*             dataType:预期服务器返回的数据类型
-*                 &quot;xml&quot;: 返回 XML 文档，可用 jQuery 处理。
-*                 &quot;html&quot;: 返回纯文本 HTML 信息；包含的script标签会在插入dom时执行。
-*                 &quot;script&quot;: 返回纯文本 JavaScript 代码。不会自动缓存结果。除非设置了&quot;cache&quot;参数。&apos;&apos;&apos;注意：&apos;&apos;&apos;在远程请求时(不在同一个域下)，所有POST请求都将转为GET请求。(因为将使用DOM的script标签来加载)
-*                 &quot;json&quot;: 返回 JSON 数据 。
-*                 &quot;jsonp&quot;: JSONP 格式。使用 JSONP 形式调用函数时，如 &quot;myurl?callback=?&quot; jQuery 将自动替换 ? 为正确的函数名，以执行回调函数。
-*                 &quot;text&quot;: 返回纯文本字符串
-*/
-</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">	"url":url,</div><div class="line">	"data":params,</div><div class="line">	"type":"POST",</div><div class="line">	"success":function(data)&#123;</div><div class="line">		alert(data.value);</div><div class="line">	&#125;,</div><div class="line">	"error":function()&#123;</div><div class="line">		alert("服务器繁忙，请稍后重试");</div><div class="line">	&#125;,</div><div class="line">	"dataType":"json"</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>一般情况下，我都会选择使用.ajax前后台交互，因为它功能相对较多，其次我们也可以选择适合我们的属性用。</p>
-<p>当然后面的ajax，平时也没用到过，所以就不介绍了，当然api是最好的资料，google是最好的老师。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;ajax ：异步请求，浏览器地址栏不改变，进行局部刷新&lt;/p&gt;
-&lt;p&gt;首先先来看一下ajax在浏览器与服务器之间的传输过程&lt;/p&gt;
-&lt;p&gt;&lt;
-    
-    </summary>
-    
-    
-      <category term="jquery" scheme="http://www.myzwl.win/source/tags/jquery/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>初识原生态ajax</title>
-    <link href="http://www.myzwl.win/2017/03/22/ajax/"/>
-    <id>http://www.myzwl.win/2017/03/22/ajax/</id>
-    <published>2017-03-22T13:48:51.000Z</published>
-    <updated>2017-03-22T13:57:36.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>1 Ajax是一种网页开发技术，（Asynchronous Javascript+XML）异步JavaScript和xml，<br>2 Ajax是异步交互，局部刷新<br>3 Ajax是减少服务器压力<br>4 Ajax能提高用户体验</p>
-<h4 id="Ajax交互与传统交互比较"><a href="#Ajax交互与传统交互比较" class="headerlink" title="Ajax交互与传统交互比较"></a>Ajax交互与传统交互比较</h4><p>传统交互：网页整体刷新（同步），服务器压力大，用户体验不好<br> Ajax交互：局部刷新，服务器压力小，用户体验好</p>
-<p>不妨先来一个实例，先从整体把握，在细节看<br>首先是jsp页面：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;div style="text-align: center;"&gt;</div><div class="line">    &lt;div&gt;</div><div class="line">    &lt;input type="button" value="ajax异步交互" onclick="loadname()"/&gt;&amp;nbsp;&amp;nbsp;&lt;input type="text" name="name" id="name"/&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-<p>有个按钮事件，用于验证ajax</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;script type="text/javascript"&gt;</div><div class="line">	function loadname()&#123;</div><div class="line">		var xmlHttp;</div><div class="line">		if(window.XMLHttpRequest)&#123;</div><div class="line">			xmlHttp=new XMLHttpRequest();</div><div class="line">		&#125;</div><div class="line">		else&#123;</div><div class="line">			xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");</div><div class="line">		&#125;</div><div class="line">		xmlHttp.open("post", "getajaxname?name=666&amp;age=16", true);</div><div class="line">		xmlHttp.send();	</div><div class="line">	&#125;</div><div class="line">	&lt;/script&gt;</div></pre></td></tr></table></figure>
-<p>这段作用是利用ajax异步向后台传了两个参数name=666与age=16，路径是getajaxname为一个servlet路径，通过post方式</p>
-<p>后台servlet</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public void doPost(HttpServletRequest request, HttpServletResponse response)</div><div class="line">			throws ServletException, IOException &#123;</div><div class="line"></div><div class="line">		response.setContentType("text/html,charset=utf-8");</div><div class="line">		PrintWriter out = response.getWriter();</div><div class="line">      String name= request.getParameter("name");</div><div class="line">      String age= request.getParameter("age");</div><div class="line">      System.out.println(name);</div><div class="line">      System.out.println(age);</div><div class="line">		out.flush();</div><div class="line">		out.close();</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<p>这里接受前台传来的参数并打印出来</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Web.xml文件</div><div class="line">&lt;servlet&gt;</div><div class="line">    &lt;servlet-name&gt;getajaxname&lt;/servlet-name&gt;</div><div class="line">    &lt;<span class="attribute">display</span>-name&gt;This is the display name of my J2EE component&lt;/display-name&gt;</div><div class="line">    &lt;description&gt;This is the description of my J2EE component&lt;/description&gt;</div><div class="line">    &lt;servlet-class&gt;com<span class="selector-class">.zwl</span><span class="selector-class">.servlet</span><span class="selector-class">.getajaxname</span>&lt;/servlet-class&gt;</div><div class="line">  &lt;/servlet&gt;</div><div class="line"></div><div class="line">  &lt;servlet-mapping&gt;</div><div class="line">    &lt;servlet-name&gt;getajaxname&lt;/servlet-name&gt;</div><div class="line">    &lt;url-pattern&gt;/getajaxname&lt;/url-pattern&gt;</div><div class="line">  &lt;/servlet-mapping&gt;</div></pre></td></tr></table></figure>
-<p>主要是映射一个servlet</p>
-<p>至此入门程序算是完成，下面将对上述部分进行分析</p>
-<h4 id="创建XMLHttpRequest对象"><a href="#创建XMLHttpRequest对象" class="headerlink" title="创建XMLHttpRequest对象"></a>创建XMLHttpRequest对象</h4><p>所有现代浏览器均支持XMLHttpRequest 对象（IE5 和IE6 使用ActiveXObject）<br>XMLHttpRequest 用于在后台与服务器交换数据。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。<br>创建语法：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var xmlHttp;</div><div class="line">		if(window.XMLHttpRequest)&#123;</div><div class="line">			xmlHttp=new XMLHttpRequest();</div><div class="line">		&#125;</div><div class="line">		else&#123;</div><div class="line">			xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");</div><div class="line">		&#125;</div></pre></td></tr></table></figure>
-<h4 id="XMLHttpRequest-对象请求后台"><a href="#XMLHttpRequest-对象请求后台" class="headerlink" title="XMLHttpRequest 对象请求后台"></a>XMLHttpRequest 对象请求后台</h4><p>open(method,url,async)<br>规定请求的类型、URL 以及是否异步处理请求。<br>method：请求的类型；GET 或POST<br>url：文件在服务器上的位置<br>async：true（异步）或false（同步）</p>
-<p>send(string)<br>将请求发送到服务器。<br>string：仅用于POST 请求</p>
-<p>语法：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">xmlHttp.open("post", "getajaxname?name=666&amp;age=16", true);</div><div class="line">xmlHttp.send();</div></pre></td></tr></table></figure>
-<p>有时候需要将参数封装在一个函数中<br>首先得声明setRequestHeader(header,value)</p>
-<p>向请求添加HTTP 头。<br>header: 规定头的名称<br>value: 规定头的值<br>创建语法：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");</div></pre></td></tr></table></figure>
-<p>将入门程序部分代码修改如下：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">xmlHttp.open("post", "getajaxname", true);</div><div class="line">	xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");</div><div class="line">		xmlHttp.send("name=666&amp;age=16");</div></pre></td></tr></table></figure>
-<h4 id="XMLHttpRequest-对象响应服务器"><a href="#XMLHttpRequest-对象响应服务器" class="headerlink" title="XMLHttpRequest 对象响应服务器"></a>XMLHttpRequest 对象响应服务器</h4><p>现在在前面的代码基础上添加几行代码</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">alert("readystate:"+xmlHttp.readyState+" status:"+xmlHttp.status);</div><div class="line">		xmlHttp.onreadystatechange=function()&#123;</div><div class="line">			alert("readystate:"+xmlHttp.readyState+" status:"+xmlHttp.status);</div><div class="line">		&#125;;</div><div class="line">		</div><div class="line">		xmlHttp.open("post", "getajaxname", true);</div><div class="line">		xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");</div><div class="line">		xmlHttp.send("name=666&amp;age=16");</div></pre></td></tr></table></figure>
-<p>先分析一下onreadystatechange 事件<br>当请求被发送到服务器时，我们需要执行一些基于响应的任务。<br>每当readyState 改变时，就会触发onreadystatechange 事件。<br>readyState 属性存有XMLHttpRequest 的状态信息。</p>
-<p>下面是XMLHttpRequest 对象的三个重要的属性：<br>onreadystatechange存储函数（或函数名）<br>每当readyState 属性改变时，就会调用该函数。</p>
-<p>readyState<br>存有XMLHttpRequest 的状态。从0 到4 发生变化。<br>0: 请求未初始化<br>1: 服务器连接已建立<br>2: 请求已接收<br>3: 请求处理中<br>4: 请求已完成，且响应已就绪</p>
-<p>status<br>200: “OK”<br>404: 未找到页面</p>
-<p>执行上面程序就会发现相应值的变化</p>
-<p>接下来在后台加入返回的信息<br>public void doPost(HttpServletRequest request, HttpServletResponse response)<br>            throws ServletException, IOException {</p>
-<pre><code>    response.setContentType(&quot;text/html,charset=utf-8&quot;);
-    PrintWriter out = response.getWriter();
-//向前台返回一个信息
-  out.println(&quot;ajax ok&quot;);
-    out.flush();
-    out.close();
-}
-</code></pre><p>页面：根据前面的状态码，进行接收参数</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if(xmlHttp.readyState==4 &amp;&amp; xmlHttp.status==200)&#123;</div><div class="line">				document.getElementById("name").value=xmlHttp.responseText;</div><div class="line">			&#125;</div></pre></td></tr></table></figure>
-<p>responseText 获得字符串形式的响应数据</p>
-<p>最后会发现表单被自动填充</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;1 Ajax是一种网页开发技术，（Asynchronous Javascript+XML）异步JavaScript和xml，&lt;br&gt;2 Aj
-    
-    </summary>
-    
-    
-      <category term="学习笔记" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>初识git</title>
-    <link href="http://www.myzwl.win/2017/03/22/git/"/>
-    <id>http://www.myzwl.win/2017/03/22/git/</id>
-    <published>2017-03-22T12:48:51.000Z</published>
-    <updated>2017-03-22T11:33:32.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="git"><a href="#git" class="headerlink" title="git"></a>git</h2><p>git是linux之父Linus的第二个伟大的作品，它是分布式版本控制系统，即每个人可以通过clone将工作建立在本地库中</p>
-<p>对比之前我们是通过hexo d的提交给远程仓库的master branch，当然我们也可以git提交或者clone到本地。</p>
-<p><strong>远程仓库代码clone到本地</strong></p>
-<ol>
-<li>首先需要生成公钥与仓库连接<br>首先添加用户名<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --global user<span class="selector-class">.name</span> <span class="string">"yourname"</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>其次添加e-mail</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --global user<span class="selector-class">.email</span> <span class="string">"youreamil"</span></div></pre></td></tr></table></figure>
-<p>默认在administrator目录下生成.ssh并在下生成两个文件id_rsa和id_rsa.pub秘钥，</p>
-<p>生成公钥</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -C <span class="string">"youremail"</span></div></pre></td></tr></table></figure>
-<p>这时候我们可以在.ssh文件下用 ls -al显示所有文件（因为.ssh是隐藏的，我是新建了一个.ssh）</p>
-<p>2 配置公钥<br>在setting中的ssh and GPG keys中新建ssh key将id_rsa.pub中的内容辅助进去<br>最后用ssh -T git@github.com检查公钥是否配置成功</p>
-<p>3 初始化.git<br>在本地新建任意一个文件，在该路径下，<br>初始化为本地仓库<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git init</div></pre></td></tr></table></figure></p>
-<p>提交文件到缓存区</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git add filename（.表示所有文件）</div></pre></td></tr></table></figure>
-<p>查看状态</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git status</div></pre></td></tr></table></figure>
-<p>本地提交，即完成提交至远程仓库的准备</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git commit -m <span class="string">"words"</span></div></pre></td></tr></table></figure>
-<p>查看commit记录</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git log</div></pre></td></tr></table></figure>
-<p>远程最新的代码更新到本地</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git pull origin master</div></pre></td></tr></table></figure>
-<p>本地代码推到远程仓库，实现本地与远程仓库的同步</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push origin master</div></pre></td></tr></table></figure>
-<p>这里我是先将我的一个仓库先clone到本地</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone 仓库地址</div></pre></td></tr></table></figure>
-<p>然后在该仓库目录下执行add和commit，最后在push提交到远程仓库，如果没有远程仓库，可先关联</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git remote add origin 仓库</div></pre></td></tr></table></figure>
-<p>再push</p>
-<p>3.其他常用命令<br>查看当前项目有哪些远程仓库可以执行</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git remote -v</div></pre></td></tr></table></figure>
-<p>建立分支<br>查看分支（branch）</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch</div></pre></td></tr></table></figure>
-<p>默认都是master，并且master提交<br>新建分支</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch name</div></pre></td></tr></table></figure>
-<p>切换分支`</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout name</div></pre></td></tr></table></figure>
-<p>删除分支</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch -d name</div></pre></td></tr></table></figure>
-<p>如果我们想要传送另一个分支到远程仓库<br>只需在push中</p>
-<p>git push origin branch master</p>
-<p>当然git的命令太多了，只总结了学习过程中实验到的</p>
-<p>接下来如果将别人代码clone到本地，一般先fork，在利用clone</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;git&quot;&gt;&lt;a href=&quot;#git&quot; class=&quot;headerlink&quot; title=&quot;git&quot;&gt;&lt;/a&gt;git&lt;/h2&gt;&lt;p&gt;git是linux之父Linus的第二个伟大的作品，它是分布式版本控制系统，即每个人可以通过clone将工作建立在本地库中&lt;/p&gt;
-
-    
-    </summary>
-    
-    
-      <category term="学习笔记" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ssm三大框架整合</title>
-    <link href="http://www.myzwl.win/2017/03/21/ssm/"/>
-    <id>http://www.myzwl.win/2017/03/21/ssm/</id>
-    <published>2017-03-21T12:48:51.000Z</published>
-    <updated>2017-03-21T14:29:22.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p> ssm三大框架整合主要指的是spring mvc+mybatis+spring，利用mvc分层思想实现解耦，其中spring mvc负责业务控制和跳转，mybatis负责持久层，spring管理各层，下面将以一个通过id查询用户信息功能搭建整合环境</p>
-<ol>
-<li><p>建立一个web工程</p>
-</li>
-<li><p>导入ssm整合的相关jar包，包括spring(包含springmvc)，mybatis，mybatis-spring整合。数据库驱动，jstl，c3p0管理数据源，log4j.由于整合包过多，可以自行到网上下载</p>
-</li>
-<li><p>配置核心文件初始化<br>Web.xml配置</p>
-</li>
-</ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5"&gt;</div><div class="line">  &lt;display-name&gt;springmvc19_day01_01&lt;/display-name&gt;</div><div class="line">  </div><div class="line">  //配置中文乱码过滤器</div><div class="line">  &lt;filter&gt;</div><div class="line">  &lt;filter-name&gt;characterEncoding&lt;/filter-name&gt;</div><div class="line">  &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;</div><div class="line">  &lt;init-param&gt;</div><div class="line">  &lt;param-name&gt;encoding&lt;/param-name&gt;</div><div class="line">  &lt;param-value&gt;UTF-8&lt;/param-value&gt;</div><div class="line">  &lt;/init-param&gt;</div><div class="line">  &lt;/filter&gt;</div><div class="line">  </div><div class="line">  &lt;filter-mapping&gt;</div><div class="line">  &lt;filter-name&gt;characterEncoding&lt;/filter-name&gt;</div><div class="line">  &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</div><div class="line">  &lt;/filter-mapping&gt;</div><div class="line">  </div><div class="line">  //启用spring监听</div><div class="line">  &lt;listener&gt;</div><div class="line">		&lt;listener-class&gt;</div><div class="line">			org.springframework.web.context.ContextLoaderListener</div><div class="line">		&lt;/listener-class&gt;</div><div class="line">	&lt;/listener&gt;</div><div class="line">  </div><div class="line">  //启动spring mvc</div><div class="line">  &lt;servlet&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;</div><div class="line">  &lt;!-- 默认加载方式</div><div class="line">  	   默认加载必须规范：</div><div class="line">  	   * 文件命名：servlet-name-servlet.xml====springmvc-servlet.xml</div><div class="line">  	   * 路径规范：必须在WEB-INF目录下面</div><div class="line">   --&gt;</div><div class="line"> &lt;/servlet&gt;</div><div class="line">  </div><div class="line">  //spring mvc 过滤文件</div><div class="line">  &lt;servlet-mapping&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;url-pattern&gt;*.do&lt;/url-pattern&gt;</div><div class="line">  &lt;/servlet-mapping&gt;</div><div class="line">  </div><div class="line">  //rest格式拦截，主要用在提交带参数问题</div><div class="line">   &lt;servlet-mapping&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;url-pattern&gt;/rest/*&lt;/url-pattern&gt;</div><div class="line">  &lt;/servlet-mapping&gt;</div><div class="line">  </div><div class="line">&lt;/web-app&gt;</div></pre></td></tr></table></figure>
-<ol>
-<li>加载springmvc-servlet.xml文件</li>
-</ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;beans xmlns="http://www.springframework.org/schema/beans"</div><div class="line">	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"</div><div class="line">	xmlns:context="http://www.springframework.org/schema/context"</div><div class="line">	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"</div><div class="line">	xsi:schemaLocation="http://www.springframework.org/schema/beans </div><div class="line">		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/mvc </div><div class="line">		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/context </div><div class="line">		http://www.springframework.org/schema/context/spring-context-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/aop </div><div class="line">		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/tx </div><div class="line">		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd"&gt;</div><div class="line">		//自动扫面根路径以下的所有包，就不要显示配置bean了</div><div class="line">		&lt;context:component-scan base-package="com.zwl"&gt;&lt;/context:component-scan&gt;</div><div class="line">		</div><div class="line">		//默认创建注解处理器映射器，注解处理器适配器。提供json格式支持。</div><div class="line">		 &lt;mvc:annotation-driven&gt;&lt;/mvc:annotation-driven&gt; </div><div class="line">		 </div><div class="line">&lt;!-- 配置sprigmvc视图解析器：解析逻辑视图 </div><div class="line">			 后台返回逻辑试图：index</div><div class="line">			视图解析器解析出真正物理视图：前缀+逻辑试图+后缀====/WEB-INF/jsps/index.jsp</div><div class="line">		--&gt;</div><div class="line"></div><div class="line">		&lt;bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"&gt;</div><div class="line">		&lt;property name="prefix" value="/"&gt;&lt;/property&gt;</div><div class="line">		&lt;property name="suffix" value=".jsp"&gt;&lt;/property&gt;		</div><div class="line">		&lt;/bean&gt;</div><div class="line">		&lt;/beans&gt;</div></pre></td></tr></table></figure>
-<ol>
-<li>加载spring配置文件</li>
-</ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;beans xmlns="http://www.springframework.org/schema/beans"</div><div class="line">	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"</div><div class="line">	xmlns:context="http://www.springframework.org/schema/context"</div><div class="line">	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"</div><div class="line">	xsi:schemaLocation="http://www.springframework.org/schema/beans </div><div class="line">		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/mvc </div><div class="line">		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/context </div><div class="line">		http://www.springframework.org/schema/context/spring-context-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/aop </div><div class="line">		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/tx </div><div class="line">		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd"&gt;</div><div class="line">		//自动扫面根路径以下的所有包，就不要显示配置bean了</div><div class="line">		&lt;context:component-scan base-package="com.zwl"&gt;&lt;/context:component-scan&gt;</div><div class="line">		</div><div class="line">	&lt;!-- 第一步：配置数据源 --&gt;</div><div class="line">	&lt;bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"&gt;</div><div class="line">		&lt;property name="jdbcUrl" value="jdbc:mysql://localhost:mysql端口/你的项目"&gt;&lt;/property&gt;</div><div class="line">		&lt;property name="driverClass" value="com.mysql.jdbc.Driver"&gt;&lt;/property&gt;</div><div class="line">		&lt;property name="user" value="你的用户名"&gt;&lt;/property&gt;</div><div class="line">		&lt;property name="password" value="你的密码"&gt;&lt;/property&gt;</div><div class="line"></div><div class="line">	&lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 第二步：创建sqlSessionFactory。生产sqlSession，即产生会话 --&gt;</div><div class="line">	&lt;bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"&gt;</div><div class="line">	&lt;property name="dataSource" ref="dataSource"&gt;&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 配置mybatis接口代理开发</div><div class="line">		* 接口类名和映射文件必须同名</div><div class="line">		*　接口类和映射文件必须在同一个目录　下</div><div class="line">		* 映射文件namespace名字必须是接口的全类路径名</div><div class="line">		*　接口的方法名必须和映射Statement的ｉｄ一致</div><div class="line">	 --&gt;</div><div class="line">	 &lt;bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"&gt;</div><div class="line">	 &lt;property name="basePackage" value="com.zwl.dao"&gt;&lt;/property&gt;</div><div class="line">	 &lt;property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"&gt;&lt;/property&gt;</div><div class="line">	 &lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 第三步：事务 --&gt;</div><div class="line">	&lt;bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"&gt;</div><div class="line">	&lt;property name="dataSource" ref="dataSource"&gt;&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 配置通知 --&gt;</div><div class="line">	&lt;tx:advice id="txAdvice" transaction-manager="transactionManager"&gt;</div><div class="line">	&lt;tx:attributes&gt;</div><div class="line">	&lt;tx:method name="save*" propagation="REQUIRED" /&gt;</div><div class="line">	&lt;tx:method name="update*" propagation="REQUIRED" /&gt;</div><div class="line">	&lt;tx:method name="delete*" propagation="REQUIRED" /&gt;</div><div class="line">	&lt;tx:method name="insert*" propagation="REQUIRED" /&gt;</div><div class="line">	&lt;tx:method name="*" propagation="REQUIRED" /&gt;	</div><div class="line">	&lt;/tx:attributes&gt;</div><div class="line">	&lt;/tx:advice&gt;</div><div class="line"></div><div class="line">&lt;!-- 配置拦截service --&gt;</div><div class="line">	&lt;aop:config&gt;</div><div class="line">	&lt;aop:advisor advice-ref="txAdvice" pointcut="execution(* com.zwl.service.*.*(..))"/&gt;</div><div class="line">	&lt;/aop:config&gt;</div><div class="line">	</div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure>
-<p>以上三个包都必须在web-inf下</p>
-<ol>
-<li>编写接口代码<br>首先是pojo类</li>
-</ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public class User &#123;</div><div class="line">	 private String name;       //用户名</div><div class="line">	private String pwd;        //密码</div><div class="line">	private int uid;           //用户id</div><div class="line">此处省略set、get方法。&#125;</div></pre></td></tr></table></figure>
-<p>然后利用mapper代理模式开发dao层<br>首先是Usermapper.xml</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line">&lt;!DOCTYPE mapper    </div><div class="line">PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    </div><div class="line">"http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line">&lt;mapper namespace="com.zwl.dao.Usermapper"&gt;</div><div class="line">	&lt;!-- 根据用户ID查询用户信息 --&gt;</div><div class="line">	&lt;select id="findUserById" parameterType="int" resultType="com.zwl.pojo.User"&gt;</div><div class="line">		SELECT</div><div class="line">		* FROM users WHERE uid =#&#123;uid&#125;</div><div class="line">	&lt;/select&gt;</div><div class="line">&lt;/mapper&gt;</div></pre></td></tr></table></figure>
-<p>然后是接口</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface Usermapper &#123;</div><div class="line">	public User findUserById(int id) throws Exception;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ol>
-<li>编写service层<br>这里用到spring注解依赖注入</li>
-</ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public interface Userservice &#123;</div><div class="line"></div><div class="line">	public User finduserbyid(Integer id) throws Exception;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>实现类：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//声明业务层为注解，为控制层依赖注入服务</div><div class="line">@Service</div><div class="line">public class Userserviceimpl implements Userservice &#123;</div><div class="line"> </div><div class="line">//通过注解注入dao层组件</div><div class="line">	@Resource</div><div class="line">	private Usermapper usermapper;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public User finduserbyid(Integer id) throws Exception &#123;</div><div class="line">		User user=usermapper.findUserById(id);</div><div class="line">		return user;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ol>
-<li>控制层</li>
-</ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">//注解自动在spring中注入该bean</div><div class="line">@Controller</div><div class="line">//请求路径，放在开头，请求url，controller前必须加入该映射路径</div><div class="line">@RequestMapping("/user")</div><div class="line">public class Usercontrol &#123;</div><div class="line">  //自动注入bean</div><div class="line">	@Resource</div><div class="line">	private Userservice userservice;</div><div class="line"></div><div class="line">//请求路径，放在方法前，为请求url，到时根据这个找到类里相应方法</div><div class="line">	@RequestMapping("toadd")</div><div class="line">	public String toadd()&#123;</div><div class="line">//返回视图，在配置文件中已经配置了前缀和后缀，所以返回到index.jsp</div><div class="line">		return "index";</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@RequestMapping("uid")</div><div class="line">	//这里的参数id必须和前台提交的参数name相同，才能接收到</div><div class="line">	public void finduserbyid(Integer id)</div><div class="line">	&#123;</div><div class="line">		try &#123;</div><div class="line">			User u=userservice.finduserbyid(id);</div><div class="line">			System.out.println(u.getName());</div><div class="line">		&#125; catch (Exception e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<ol>
-<li>页面<br>index.jsp</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/user/uid.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">id：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"id"</span> id=<span class="string">"id"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure>
-<ol>
-<li>数据库<br>里面字段必须为uid，name和password，和pojo类相对应，并且里面有数据</li>
-</ol>
-<p>最后我们可以在浏览器输入http：//localhost:端口/项目名/user/toadd.do到index.jsp页面，最后通过输入id，后台输出用户信息</p>
-<p>至此ssm整合完成，会发现它比ssh2更方便，特别是注解开发</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt; ssm三大框架整合主要指的是spring mvc+mybatis+spring，利用mvc分层思想实现解耦，其中spring mvc负责业
-    
-    </summary>
-    
-    
-      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ssh三大框架整合</title>
-    <link href="http://www.myzwl.win/2017/03/21/ssh/"/>
-    <id>http://www.myzwl.win/2017/03/21/ssh/</id>
-    <published>2017-03-21T11:48:51.000Z</published>
-    <updated>2017-03-21T12:43:08.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>ssh三大框架整合主要指的是structs2+hibernate+spring，利用mvc分层思想实现解耦，其中structs2负责业务控制和跳转，hibernate负责持久层，spring管理各层</strong></p>
-<h4 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h4><p>下面将以一个简单的登录功能搭建整合环境</p>
-<ol>
-<li><p>首先建立一个web工程，取名ssh2</p>
-</li>
-<li><p>导入jar包，由于ssh2整合包过多，可以自行官网下载</p>
-</li>
-<li><p>导入相关配置文件<br>Spring核心文件：applicationcontent.xml放在web-inf下<br>web工程核心文件：web.xml也放在web-inf下<br>structs2核心文件：structs.xml放在src目录下<br>里面暂时什么都不配置</p>
-</li>
-<li><p>数据库<br>为了方便，设置三个字段，id（int）、name（varchar）、age（int），其中id为主键，且是自增长的</p>
-</li>
-<li><p>配置核心文件初始化<br>Web.xml配置</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;web-app version="2.5" </div><div class="line">	xmlns="http://java.sun.com/xml/ns/javaee" </div><div class="line">	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" </div><div class="line">	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee </div><div class="line">	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"&gt;</div><div class="line">	&lt;filter&gt;</div><div class="line">		&lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">	//启动structs2框架	&lt;filter-class&gt;org.apache.struts2.dispatcher.FilterDispatcher&lt;/filter-class&gt;</div><div class="line">	&lt;/filter&gt;</div><div class="line">//允许后缀名为.action或者.jsp的请求通过</div><div class="line">	&lt;filter-mapping&gt;</div><div class="line">		&lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">		&lt;url-pattern&gt;*.action&lt;/url-pattern&gt;</div><div class="line">	&lt;/filter-mapping&gt;</div><div class="line">	&lt;filter-mapping&gt;</div><div class="line">		&lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">		&lt;url-pattern&gt;*.jsp&lt;/url-pattern&gt;</div><div class="line">	&lt;/filter-mapping&gt;</div><div class="line">//启动spring监听，即开启spring框架</div><div class="line">	&lt;listener&gt;</div><div class="line">		&lt;listener-class&gt;</div><div class="line">			org.springframework.web.context.ContextLoaderListener</div><div class="line">		&lt;/listener-class&gt;</div><div class="line">	&lt;/listener&gt;</div><div class="line">&lt;/web-app&gt;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>Applicationcontent.xml文件配置（目前没有实现任何功能，给出原始配置）</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;beans</div><div class="line">xmlns="http://www.springframework.org/schema/beans"</div><div class="line">xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"</div><div class="line">xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"&gt;</div><div class="line">	&lt;!-- 定义数据源 ，即连接数据库所需的配置--&gt;</div><div class="line">	&lt;bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"&gt;</div><div class="line">		&lt;property name="driverClassName"&gt;</div><div class="line">			&lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="url"&gt;</div><div class="line">			&lt;value&gt;jdbc:mysql://localhost:mysql端口/数据库名&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="username"&gt;</div><div class="line">			&lt;value&gt;你的用户名&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="password"&gt;</div><div class="line">			&lt;value&gt;你的密码&lt;/value&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 定义SessionFactory --&gt;</div><div class="line">	&lt;bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"&gt;</div><div class="line">		&lt;property name="dataSource"&gt;</div><div class="line">			&lt;ref bean="dataSource"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="hibernateProperties"&gt;</div><div class="line">			&lt;props&gt;</div><div class="line">//hibernate的方言，决定用哪个数据库</div><div class="line">				&lt;prop key="hibernate.dialect"&gt;</div><div class="line">					org.hibernate.dialect.MySQLDialect</div><div class="line">				&lt;/prop&gt;</div><div class="line">            //是否启动显示sql语句</div><div class="line">				&lt;prop key="hibernate.show_sql"&gt;false&lt;/prop&gt;</div><div class="line">			&lt;/props&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">//声明hibernate的映射文件，目前没有，后续步骤在此处加上</div><div class="line">		&lt;property name="mappingResources"&gt;</div><div class="line">			&lt;list&gt;</div><div class="line">				&lt;value&gt;&lt;/value&gt;</div><div class="line">			&lt;/list&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line">	</div><div class="line">	&lt;!-- 定义HibernateTemplate，相当于纯hibernate的session --&gt;</div><div class="line">	&lt;bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate"&gt;</div><div class="line">		&lt;property name="sessionFactory"&gt;</div><div class="line">			&lt;ref bean="sessionFactory"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div><div class="line">	省略具体的业务代码注入配置</div><div class="line"></div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure>
-<p>Structs.xml文件配置</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line">&lt;!DOCTYPE struts PUBLIC</div><div class="line">    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"</div><div class="line">    "http://struts.apache.org/dtds/struts-2.0.dtd"&gt;</div><div class="line">&lt;struts&gt;</div><div class="line"></div><div class="line">//防止乱码</div><div class="line">&lt;constant name="struts.i18n.encoding" value="utf-8"/&gt;</div><div class="line">&lt;/struts&gt;</div><div class="line">目前该文件里面什么功能都没配置，只是个声明</div></pre></td></tr></table></figure>
-<ol>
-<li>编写业务代码<br>按照mvc思想，先从持久层开始，即编写hibernate的orm对象user.java</li>
-</ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class User &#123;</div><div class="line"></div><div class="line">	private int age;</div><div class="line">	private int id;</div><div class="line">	private String name;</div><div class="line">此处省略set。Get方法&#125;</div></pre></td></tr></table></figure>
-<p>映射文件User.hbm.xml</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC </div><div class="line">"-//Hibernate/Hibernate Mapping DTD 3.0//EN"</div><div class="line">"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;</div><div class="line">&lt;hibernate-mapping package="com.zwl.pojo"&gt;</div><div class="line">&lt;class name="User" &gt;</div><div class="line">&lt;id name="id"&gt;</div><div class="line">&lt;generator class="increment"&gt;&lt;/generator&gt;</div><div class="line">&lt;/id&gt;</div><div class="line">&lt;property name="name"&gt;&lt;/property&gt;</div><div class="line">&lt;property name="age"&gt;&lt;/property&gt;</div><div class="line">&lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div></pre></td></tr></table></figure>
-<p>注意这里普通属性有时为了方便，只要声明一个name，其他属性hibernate会自动识别并补充</p>
-<p>接下来要在spring中声明该映射文件</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;property name=<span class="string">"mappingResources"</span>&gt;</div><div class="line">			&lt;list&gt;</div><div class="line">				&lt;value&gt;com/zwl/pojo/User<span class="selector-class">.hbm</span><span class="selector-class">.xml</span>&lt;/value&gt;</div><div class="line">			&lt;/list&gt;</div><div class="line">		&lt;/property&gt;</div></pre></td></tr></table></figure>
-<p>至此，持久层完成</p>
-<p>接下来是dao层</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">public interface dengludao &#123;</div><div class="line">//登录功能</div><div class="line">public User denglu(User u);</div><div class="line">&#125;</div><div class="line"></div><div class="line">Dao层的实现类</div><div class="line">import org.springframework.orm.hibernate3.support.HibernateDaoSupport;</div><div class="line"></div><div class="line">import com.zwl.pojo.User;</div><div class="line"></div><div class="line">public class dengludaoimpl extends HibernateDaoSupport implements dengludao&#123;</div><div class="line">	//这里用了spring提供的操作hibernate的模板方法</div><div class="line">	@Override</div><div class="line">	public User denglu(User u) &#123;</div><div class="line">    //find里可以写sql语句</div><div class="line">		List&lt;User&gt; list=this.getHibernateTemplate().find("select user from User as user where user.id=?",u.getId());</div><div class="line">		if(list.size()==0)&#123;</div><div class="line">			return null;&#125;</div><div class="line">					else&#123;</div><div class="line">						return (User) list.get(0);</div><div class="line">					&#125;</div><div class="line">	&#125;&#125;</div><div class="line">	</div><div class="line">接下来要在spring中注入到组件</div><div class="line">&lt;!-- 配置DAO组件 --&gt;</div><div class="line">	&lt;bean id="dengludao" class="com.zwl.dao.dengludaoimpl"&gt;</div><div class="line">		&lt;property name="hibernateTemplate"&gt;</div><div class="line">			&lt;ref bean="hibernateTemplate"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div></pre></td></tr></table></figure>
-<p>接下来是业务层：<br> 首先是接口</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">public interface dengluservice &#123;</div><div class="line">public boolean isdenglu(User u);</div><div class="line">&#125;</div><div class="line">然后是实现类</div><div class="line">public class dengluserviceimpl implements dengluservice&#123;</div><div class="line"> //引用dao层组建</div><div class="line">	private dengludao denglu;</div><div class="line">	</div><div class="line">	public dengludao getDenglu() &#123;</div><div class="line">		return denglu;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setDenglu(dengludao denglu) &#123;</div><div class="line">		this.denglu = denglu;</div><div class="line">	&#125;</div><div class="line">	@Override</div><div class="line">	public boolean isdenglu(User u) &#123;</div><div class="line">		if(denglu.denglu(u)!=null)</div><div class="line">		return true;</div><div class="line">		else&#123;</div><div class="line">		return false;</div><div class="line">		&#125;</div><div class="line">	&#125;&#125;</div><div class="line">接下来就要在spring中注入业务层组件</div><div class="line">&lt;!-- 配置业务逻辑组件 --&gt;</div><div class="line">	&lt;bean id="dengluservice" class="com.zwl.dao.dengluserviceimpl"&gt;</div><div class="line">		&lt;property name="denglu"&gt;</div><div class="line">			&lt;ref bean="dengludao"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div></pre></td></tr></table></figure>
-<ol>
-<li>表现层<br>首先是两个页面<br>Index.Jsp主要提交表单</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"userdenglu.action"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">   id:&lt;<span class="selector-tag">input</span> name=<span class="string">"id"</span> type=<span class="string">"text"</span>&gt;</div><div class="line">   &lt;br/&gt;</div><div class="line">   &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">   &lt;/form&gt;</div></pre></td></tr></table></figure>
-<p>Success.jsp<br>主要就是一句success提示</p>
-<ol>
-<li>控制层</li>
-</ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class userdenglu extends ActionSupport&#123;</div><div class="line"></div><div class="line">	private dengluservice dengluservic;</div><div class="line">	private int id;</div><div class="line">省略set与get方法。。</div><div class="line">	@Override</div><div class="line">	public String execute() throws Exception &#123;</div><div class="line">		User u=new User();</div><div class="line">		u.setId(id);</div><div class="line">//如果id存在，返回成功</div><div class="line">		if(dengluservic.isdenglu(u))&#123;</div><div class="line">			return SUCCESS;</div><div class="line">		&#125;</div><div class="line">		return ERROR;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<p>接下来需要在spring中注入action</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 配置userdengluAction --&gt;</div><div class="line">	&lt;bean id=<span class="string">"userdenglu"</span> class=<span class="string">"com.zwl.action.userdenglu"</span>&gt;</div><div class="line">		&lt;property name=<span class="string">"dengluservic"</span>&gt;</div><div class="line">			&lt;ref bean=<span class="string">"dengluservice"</span>/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/bean&gt;</div></pre></td></tr></table></figure>
-<p>同时在structs.xml中配置跳转</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;action name=<span class="string">"userdenglu"</span> class=<span class="string">"userdenglu"</span>&gt;</div><div class="line">			&lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">			&lt;result name=<span class="string">"error"</span>&gt;/error.jsp&lt;/result&gt;</div><div class="line">		&lt;/action&gt;</div></pre></td></tr></table></figure>
-<p>最后通过在浏览器输入到index.jsp，然后输入id，数据库中可以预先插入数据，最后跳转，如果成功则跳到success.jsp，否则产生错误</p>
-<p><strong>至此：ssh2框架环境搭建成功，最后提醒的是，这只是一个框架环境，我们可以在此基础上按照mvc思想，可以进行我们想要功能的开发</strong></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;ssh三大框架整合主要指的是structs2+hibernate+spring，利用mvc分层思想实现解耦，其中struct
-    
-    </summary>
-    
-    
-      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
     
   </entry>
   
