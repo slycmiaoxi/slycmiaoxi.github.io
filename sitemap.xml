@@ -2,7 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.myzwl.win/2017/04/01/mybatis2/</loc>
+    <loc>http://www.myzwl.win/2017/04/04/easyui1/</loc>
+    
+    <lastmod>2017-04-05T15:32:28.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.myzwl.win/2017/04/01/mybatis1/</loc>
+    
+    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.myzwl.win/2017/04/01/springmvc4/</loc>
+    
+    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.myzwl.win/2017/03/31/springmvc3/</loc>
     
     <lastmod>2017-04-02T15:32:34.000Z</lastmod>
     
@@ -10,13 +31,6 @@
   
   <url>
     <loc>http://www.myzwl.win/2017/04/02/mybatis3/</loc>
-    
-    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.myzwl.win/2017/04/01/mybatis1/</loc>
     
     <lastmod>2017-04-02T15:32:34.000Z</lastmod>
     
@@ -37,14 +51,7 @@
   </url>
   
   <url>
-    <loc>http://www.myzwl.win/2017/04/01/springmvc4/</loc>
-    
-    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.myzwl.win/2017/03/31/springmvc3/</loc>
+    <loc>http://www.myzwl.win/2017/04/01/mybatis2/</loc>
     
     <lastmod>2017-04-02T15:32:34.000Z</lastmod>
     
@@ -72,14 +79,14 @@
   </url>
   
   <url>
-    <loc>http://www.myzwl.win/2017/03/29/dyproxy2/</loc>
+    <loc>http://www.myzwl.win/2017/03/29/dyproxy3/</loc>
     
     <lastmod>2017-03-29T15:06:50.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.myzwl.win/2017/03/29/dyproxy3/</loc>
+    <loc>http://www.myzwl.win/2017/03/29/dyproxy2/</loc>
     
     <lastmod>2017-03-29T15:06:50.000Z</lastmod>
     

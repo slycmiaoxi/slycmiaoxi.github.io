@@ -1,0 +1,1219 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="五大框架," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言最近一直忙着做项目，已经好几天没写博客了。我认为提高自己的最好路径就是先把我知道的东西总结出来，再去从已知探索未知的东西，最后在总结下来。不多说，就用笔者最喜欢的struts2和easy ui来一个需求
+利用easy ui的datagrid做一个后台界面（目前只是分页显示数据），并从数据库取出，大概如下界面
+在此之前，先简单介绍一下easy ui的特点（和大部分ui基本一样）1.基于jquer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于struts2与easy ui的后台显示界面">
+<meta property="og:url" content="http://www.myzwl.win/2017/04/04/easyui1/index.html">
+<meta property="og:site_name" content="秒西">
+<meta property="og:description" content="前言最近一直忙着做项目，已经好几天没写博客了。我认为提高自己的最好路径就是先把我知道的东西总结出来，再去从已知探索未知的东西，最后在总结下来。不多说，就用笔者最喜欢的struts2和easy ui来一个需求
+利用easy ui的datagrid做一个后台界面（目前只是分页显示数据），并从数据库取出，大概如下界面
+在此之前，先简单介绍一下easy ui的特点（和大部分ui基本一样）1.基于jquer">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs2/19.gif">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs2/20.gif">
+<meta property="og:updated_time" content="2017-04-05T15:32:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于struts2与easy ui的后台显示界面">
+<meta name="twitter:description" content="前言最近一直忙着做项目，已经好几天没写博客了。我认为提高自己的最好路径就是先把我知道的东西总结出来，再去从已知探索未知的东西，最后在总结下来。不多说，就用笔者最喜欢的struts2和easy ui来一个需求
+利用easy ui的datagrid做一个后台界面（目前只是分页显示数据），并从数据库取出，大概如下界面
+在此之前，先简单介绍一下easy ui的特点（和大部分ui基本一样）1.基于jquer">
+<meta name="twitter:image" content="http://www.myzwl.win/images/imgs2/19.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":true,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.myzwl.win/2017/04/04/easyui1/"/>
+
+
+
+
+
+  <title> 基于struts2与easy ui的后台显示界面 | 秒西 </title>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"   background="imags/bg.jpg" style="opacity: 0.7;background-color: transparent;">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秒西</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+	
+	<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+    function c() {
+        var e = document.createElement("link");
+        e.setAttribute("type", "text/css");
+        e.setAttribute("rel", "stylesheet");
+        e.setAttribute("href", f);
+        e.setAttribute("class", l);
+        document.body.appendChild(e)
+    }
+
+    function h() {
+        var e = document.getElementsByClassName(l);
+        for (var t = 0; t < e.length; t++) {
+            document.body.removeChild(e[t])
+        }
+    }
+
+    function p() {
+        var e = document.createElement("div");
+        e.setAttribute("class", a);
+        document.body.appendChild(e);
+        setTimeout(function() {
+            document.body.removeChild(e)
+        }, 100)
+    }
+
+    function d(e) {
+        return {
+            height : e.offsetHeight,
+            width : e.offsetWidth
+        }
+    }
+
+    function v(i) {
+        var s = d(i);
+        return s.height > e && s.height < n && s.width > t && s.width < r
+    }
+
+    function m(e) {
+        var t = e;
+        var n = 0;
+        while (!!t) {
+            n += t.offsetTop;
+            t = t.offsetParent
+        }
+        return n
+    }
+
+    function g() {
+        var e = document.documentElement;
+        if (!!window.innerWidth) {
+            return window.innerHeight
+        } else if (e && !isNaN(e.clientHeight)) {
+            return e.clientHeight
+        }
+        return 0
+    }
+
+    function y() {
+        if (window.pageYOffset) {
+            return window.pageYOffset
+        }
+        return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+    }
+
+    function E(e) {
+        var t = m(e);
+        return t >= w && t <= b + w
+    }
+
+    function S() {
+        var e = document.createElement("audio");
+        e.setAttribute("class", l);
+        e.src = i;
+        e.loop = false;
+        e.addEventListener("canplay", function() {
+            setTimeout(function() {
+                x(k)
+            }, 500);
+            setTimeout(function() {
+                N();
+                p();
+                for (var e = 0; e < O.length; e++) {
+                    T(O[e])
+                }
+            }, 15500)
+        }, true);
+        e.addEventListener("ended", function() {
+            N();
+            h()
+        }, true);
+        e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+        document.body.appendChild(e);
+        e.play()
+    }
+
+    function x(e) {
+        e.className += " " + s + " " + o
+    }
+
+    function T(e) {
+        e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+    }
+
+    function N() {
+        var e = document.getElementsByClassName(s);
+        var t = new RegExp("\\b" + s + "\\b");
+        for (var n = 0; n < e.length; ) {
+            e[n].className = e[n].className.replace(t, "")
+        }
+    }
+
+    var e = 30;
+    var t = 30;
+    var n = 350;
+    var r = 350;
+    var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+    var s = "mw-harlem_shake_me";
+    var o = "im_first";
+    var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+    var a = "mw-strobe_light";
+    var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+    var l = "mw_added_css";
+    var b = g();
+    var w = y();
+    var C = document.getElementsByTagName("*");
+    var k = null;
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            if (E(A)) {
+                k = A;
+                break
+            }
+        }
+    }
+    if (A === null) {
+        console.warn("Could not find a node of the right size. Please try a different page.");
+        return
+    }
+    c();
+    S();
+    var O = [];
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            O.push(A)
+        }
+    }
+})()    '>让标题抖起来</a> </li>
+	
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/04/04/easyui1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                基于struts2与easy ui的后台显示界面
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-04T15:48:51+08:00">
+                2017-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/项目经验/" itemprop="url" rel="index">
+                    <span itemprop="name">项目经验</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近一直忙着做项目，已经好几天没写博客了。我认为提高自己的最好路径就是先把我知道的东西总结出来，再去从已知探索未知的东西，最后在总结下来。不多说，就用笔者最喜欢的struts2和easy ui来一个需求</p>
+<p>利用easy ui的datagrid做一个后台界面（目前只是分页显示数据），并从数据库取出，大概如下界面<br><img src="/images/imgs2/19.gif" alt="Alt text"></p>
+<p>在此之前，先简单介绍一下easy ui的特点（和大部分ui基本一样）<br>1.基于jquery 用户界面插件的集合；<br>2.为一些当前用于交互的js 应用提供必要的功能；<br>3.使用EasyUI 你不需要写很多的javascript 代码，通常只需要写HTML 标记来定义用<br>户界面即可；<br>4.支持HTML5；<br>5.开发产品时可节省时间和资源；<br>6.简单，但很强大；<br>7.支持扩展，可根据自己的需求扩展控件；<br>8.源代码加密</p>
+<p>总之，在后台界面上easy ui是一个很好的选择</p>
+<p>1.新建一个web工程</p>
+<p>2.添加ssh整合jar包、gson.jar、mysql驱动包、easy ui的官方文档（ui文件夹）<br>里面有五个文件必须引入（并且有顺序，否则无法引用）</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">   <span class="comment">//引入EasyUI 核心UI 文件CSS</span></div><div class="line">  &lt;link rel=<span class="string">"stylesheet"</span> type=<span class="string">"text/css"</span> href=<span class="string">"ui/themes/default/easyui.css"</span> &gt;</div><div class="line">   <span class="comment">//引入EasyUI 图标文件</span></div><div class="line">&lt;link rel=<span class="string">"stylesheet"</span> type=<span class="string">"text/css"</span> href=<span class="string">"ui/themes/icon.css"</span> &gt;</div><div class="line"><span class="comment">//引入jQuery 核心库</span></div><div class="line">&lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"ui/jquery-1.8.0.min.js"</span> &gt;&lt;/script&gt;</div><div class="line">   <span class="comment">//引入jQuery EasyUI 核心库</span></div><div class="line">&lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"ui/jquery.easyui.min.js"</span> &gt;&lt;/script&gt;</div><div class="line">   <span class="comment">//引入EasyUI 中文提示信息</span></div><div class="line">   &lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"ui/locale/easyui-lang-zh_CN.js"</span> &gt;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>3.新建一个页面（先贴出代码）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div></pre></td><td class="code"><pre><div class="line"> &lt;%@ page language="java" import="java.util.*" pageEncoding="utf-8"%&gt;</div><div class="line">&lt;%</div><div class="line">String path = request.getContextPath();</div><div class="line">String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";</div><div class="line">%&gt;</div><div class="line"></div><div class="line">&lt;!DOCTYPE HTML&gt;</div><div class="line">&lt;html&gt;</div><div class="line">  &lt;head&gt;</div><div class="line">    &lt;base href="&lt;%=basePath%&gt;"&gt;</div><div class="line">    </div><div class="line">    &lt;title&gt;index&lt;/title&gt;</div><div class="line">    //加载easy ui</div><div class="line">&lt;link rel="stylesheet" type="text/css" href="ui/themes/default/easyui.css" &gt;</div><div class="line">	&lt;link rel="stylesheet" type="text/css" href="ui/themes/icon.css" &gt;</div><div class="line">	&lt;script type="text/javascript" src="ui/jquery-1.8.0.min.js" &gt;&lt;/script&gt;</div><div class="line">	&lt;script type="text/javascript" src="ui/jquery.easyui.min.js" &gt;&lt;/script&gt;</div><div class="line">    &lt;script type="text/javascript" src="ui/locale/easyui-lang-zh_CN.js" &gt;</div><div class="line">	&lt;/script&gt;</div><div class="line">&lt;script type="text/javascript"&gt;</div><div class="line"></div><div class="line">//页面初始化之前执行函数</div><div class="line">	$(function() &#123;</div><div class="line">		</div><div class="line">	 //调用easy ui的datagrid组件，显示json数据，也可以通过html方式加载，这里使用js加载方式</div><div class="line">		$('#admin_yhgl_datagrid').datagrid(&#123;</div><div class="line">			   </div><div class="line">			    //远程加载的json格式数据</div><div class="line">				  url: '$&#123;pageContext.request.contextPath&#125;/booksort!showdatagrid.action',</div><div class="line">				//组件宽度</div><div class="line">                  width : 1200,</div><div class="line">				// 是否可伸缩 	</div><div class="line">			    fitColumns : true,</div><div class="line">		//js对象数组，从后台获得total（总记录）和ids（对象数据集合）然后显示出来	</div><div class="line">columns : [[</div><div class="line">&#123;</div><div class="line">	//字段，与后台字段数据对应</div><div class="line">field : 'id',</div><div class="line"> //标题</div><div class="line">title : '排名',</div><div class="line">//是否排序</div><div class="line">sortable:true,</div><div class="line">//宽度</div><div class="line">width:80,</div><div class="line">//是否居中</div><div class="line">align:'center',</div><div class="line">&#125;,</div><div class="line">&#123;</div><div class="line">field : 'barcode',</div><div class="line">title : '图书条形码',</div><div class="line">width:80,</div><div class="line">align:'center',</div><div class="line">&#125;,</div><div class="line">&#123;</div><div class="line">field : 'bookname',</div><div class="line">title : '图书名称',</div><div class="line">width:80,</div><div class="line">align:'center',</div><div class="line">&#125;,</div><div class="line"></div><div class="line">&#123;</div><div class="line">field : 'bookshelf',</div><div class="line">title : '书架',</div><div class="line">width:80,</div><div class="line">align:'center',</div><div class="line">&#125;,</div><div class="line"></div><div class="line">&#123;</div><div class="line">field : 'bookpublish',</div><div class="line">title : '出版社',</div><div class="line">width:80,</div><div class="line">align:'center',</div><div class="line">&#125;,</div><div class="line">&#123;</div><div class="line">field : 'bookauthor',</div><div class="line">title : '图书作者',</div><div class="line">width:80,</div><div class="line">align:'center',</div><div class="line">&#125;,</div><div class="line"></div><div class="line">&#123;</div><div class="line">field : 'bookprice',</div><div class="line">title : '定价',</div><div class="line">width:80,</div><div class="line">align:'center',</div><div class="line">&#125;,</div><div class="line"></div><div class="line">&#123;</div><div class="line">field : 'borrowtime',</div><div class="line">title : '借阅次数',</div><div class="line">width:80,</div><div class="line">align:'center',</div><div class="line">&#125;,</div><div class="line">]],</div><div class="line"></div><div class="line">//是否有分页插件</div><div class="line">pagination : true,</div><div class="line">//每页显示记录数</div><div class="line">pageSize : 5,</div><div class="line">//设置记录数多少的选项设置</div><div class="line">pageList : [5, 10, 15, 20],</div><div class="line">//排序的字段</div><div class="line">sortName : 'id',</div><div class="line">			</div><div class="line">		&#125;);</div><div class="line">		</div><div class="line">		</div><div class="line">		&#125;);</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;body&gt;</div><div class="line">//显示datagrid组件</div><div class="line">&lt;table id="admin_yhgl_datagrid"&gt;</div><div class="line">&lt;/table&gt;</div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure></p>
+<p>目前还没有写后台，所以暂无数据加载显示</p>
+<p>4 建表（为了方便直接截个图）<br><img src="/images/imgs2/20.gif" alt="Alt text"><br>然后随便加几个数据</p>
+<p>5.编写pojo与映射文件</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">public class Book &#123;</div><div class="line">private String barcode;</div><div class="line">private String bookauthor;</div><div class="line">private String bookname;</div><div class="line">private String bookprice;</div><div class="line">private String bookpublish;</div><div class="line">private String bookshelf;</div><div class="line">private String booktype;</div><div class="line">private int borrowtime;</div><div class="line">private int id;</div><div class="line"></div><div class="line">省略set与get方法&#125;</div><div class="line"></div><div class="line">//映射文件</div><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"</div><div class="line">"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;</div><div class="line">&lt;!-- </div><div class="line">    Mapping file autogenerated by MyEclipse Persistence Tools</div><div class="line">--&gt;</div><div class="line">&lt;hibernate-mapping package="com.pojo"&gt;</div><div class="line">    &lt;class name="Book" table="book" &gt;</div><div class="line">        &lt;id name="id" &gt;</div><div class="line">            &lt;generator class="increment"&gt;&lt;/generator&gt;</div><div class="line">        &lt;/id&gt;</div><div class="line">        &lt;property name="bookname"&gt;</div><div class="line">        &lt;/property&gt;</div><div class="line">        &lt;property name="bookauthor"&gt;</div><div class="line">        &lt;/property&gt;</div><div class="line">      &lt;property name="barcode"&gt;</div><div class="line">        &lt;/property&gt;</div><div class="line">        &lt;property name="bookprice"&gt;</div><div class="line">        &lt;/property&gt;</div><div class="line">        &lt;property name="bookpublish"&gt;</div><div class="line">        &lt;/property&gt;</div><div class="line">        &lt;property name="bookshelf"&gt;</div><div class="line">        &lt;/property&gt;</div><div class="line">        &lt;property name="booktype"&gt;</div><div class="line">        &lt;/property&gt;</div><div class="line">        &lt;property name="borrowtime"&gt;</div><div class="line">        &lt;/property&gt;</div><div class="line">    &lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div></pre></td></tr></table></figure>
+<p>6.dao层service层接口<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public interface Basedao&lt;T&gt; &#123;</div><div class="line"></div><div class="line">	</div><div class="line">	public List&lt;T&gt; find(String hql, int page, int rows);                             //分页时返回T对象集合</div><div class="line">	</div><div class="line">	</div><div class="line">	public Long count(String hql);                                                   //返回总记录数</div><div class="line">	</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">public interface Basedaoservice &lt;T&gt;&#123;</div><div class="line"></div><div class="line">//Book的包装类，主要增加easy ui所需要的一些属性</div><div class="line">	public DataGrid datagrid(Tbook book);</div><div class="line">	</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>7.编写工具类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">public class DataGrid &#123;</div><div class="line"></div><div class="line">	private Long total = 0l;                   //总记录</div><div class="line">	private List rows = new ArrayList();       //datagrid需要的json数据加载数据</div><div class="line">	省略set与get方法</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class Tbook &#123;</div><div class="line">       private String barcode;</div><div class="line">	private String bookauthor;</div><div class="line">	private String bookname;</div><div class="line">	private String bookprice;</div><div class="line">	private String bookpublish;</div><div class="line">	private String bookshelf;</div><div class="line">	private String booktype;</div><div class="line">	private int borrowtime;</div><div class="line">	private int id;</div><div class="line">	private String ids;          //前台被选中行的字符转</div><div class="line">	private String order;        //排序</div><div class="line">	private int page;            //多少页</div><div class="line">	private int rows;</div><div class="line">	private String sort;         //排序名</div><div class="line">。。。。。</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">public class Character &#123;</div><div class="line"></div><div class="line">	public static HttpServletResponse Tojson() throws Exception&#123;</div><div class="line">		HttpServletResponse response=ServletActionContext.getResponse();</div><div class="line">		HttpServletRequest request=ServletActionContext.getRequest();</div><div class="line">		request.setCharacterEncoding("utf-8");</div><div class="line">		response.setCharacterEncoding("UTF-8");</div><div class="line">		response.setContentType("application/json; charset=utf-8");          //返回json数据</div><div class="line">	        response.setHeader("Cache-Control", "no-cache");                 //不要缓存</div><div class="line">	        response.setHeader("Pragma", "no-cache");  </div><div class="line">		PrintWriter out = response.getWriter();</div><div class="line">		return response;</div><div class="line">	&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>8.实现类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line">public class Basedaoimpl&lt;T&gt; extends HibernateDaoSupport  implements Basedao&lt;T&gt; &#123;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">	@Override</div><div class="line">	public List&lt;T&gt; find(String hql, int page, int rows) &#123;</div><div class="line">	</div><div class="line">		Query q=this.getSession().createQuery(hql);</div><div class="line">		</div><div class="line">		return q.setFirstResult((page-1)*rows).setMaxResults(rows).list();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public Long count(String hql) &#123;</div><div class="line">		Query q=this.getSession().createQuery(hql);</div><div class="line">		return (Long) q.uniqueResult();</div><div class="line">	&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">public class Basedaoserviceimpl&lt;T&gt; implements Basedaoservice&lt;T&gt; &#123;</div><div class="line"></div><div class="line">	private Basedao&lt;T&gt; basedao;</div><div class="line">	</div><div class="line">	public Basedao&lt;T&gt; getBasedao() &#123;</div><div class="line">		return basedao;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setBasedao(Basedao&lt;T&gt; basedao) &#123;</div><div class="line">		this.basedao = basedao;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public DataGrid datagrid(Tbook book) &#123;</div><div class="line">	</div><div class="line">		DataGrid dg=new DataGrid();</div><div class="line">		//查询所有的book数据</div><div class="line">		 String hql="from Book b";</div><div class="line">      </div><div class="line">        //排序sql</div><div class="line">		 if(book.getSort()!=null)&#123;</div><div class="line">				hql += " order by " + book.getSort() + " " + book.getOrder();</div><div class="line">			&#125;</div><div class="line">		</div><div class="line">		//取出所有的book记录，放在集合汇总</div><div class="line">		 List&lt;Book&gt; l=(List&lt;Book&gt;) basedao.find(hql, book.getPage(), book.getRows());</div><div class="line">		 //查出所有记录数</div><div class="line">		 String totalHql = "select count(*) " + hql;</div><div class="line">	    </div><div class="line">	    //将book对象集合一次加进Tbook包装类集合</div><div class="line">		 List&lt;Tbook&gt; nl=new ArrayList&lt;Tbook&gt;();</div><div class="line">			if (l != null &amp;&amp; l.size() &gt; 0) &#123;</div><div class="line">				for(Book t:l)&#123;</div><div class="line">					Tbook u=new Tbook();</div><div class="line">					BeanUtils.copyProperties(t, u);</div><div class="line">					nl.add(u);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">				dg.setTotal(basedao.count(totalHql));</div><div class="line">				dg.setRows(nl);</div><div class="line">				return dg;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>9 action主题代码<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">public class booksort implements ModelDriven&lt;Tbook&gt; &#123;</div><div class="line"></div><div class="line">    //利用modaldriven包装Tbook</div><div class="line">	private Tbook book=new Tbook();</div><div class="line">	</div><div class="line">	private Basedaoservice&lt;Book&gt; basedaoservice;</div><div class="line">	</div><div class="line">	</div><div class="line">	public void showdatagrid() throws Exception&#123;</div><div class="line">		HttpServletResponse response=Character.Tojson();</div><div class="line">		Gson gson=new Gson();          //创建gson对象</div><div class="line">		response.getWriter().write(gson.toJson(basedaoservice.datagrid(book))); //将对象转为json数据</div><div class="line">	&#125;</div><div class="line">	</div><div class="line"></div><div class="line">	</div><div class="line">	public Basedaoservice&lt;Book&gt; getBasedaoservice() &#123;</div><div class="line">		return basedaoservice;</div><div class="line">	&#125;</div><div class="line"></div><div class="line"></div><div class="line">	public void setBasedaoservice(Basedaoservice&lt;Book&gt; basedaoservice) &#123;</div><div class="line">		this.basedaoservice = basedaoservice;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public Tbook getModel() &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		return book;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>10 spring配置和structs配置（参考之前的博客）这里就不配置了，基本都是套路</p>
+<p>至此就能加载数据了，当然easy ui在后台界面中的使用不仅方便而且强大，这也是笔者最喜欢使用easy ui的原因</p>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>纯属娱乐！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/五大框架/" rel="tag"># 五大框架</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/02/mybatis4/" rel="next" title="mybatis 之四:mybatis整合spring">
+                <i class="fa fa-chevron-left"></i> mybatis 之四:mybatis整合spring
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+     <div class="comments" id="comments">
+       
+            <div id="uyan_frame"></div>
+       
+     </div>
+   
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description">try your best</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/slycmiaoxi" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:1260747128@qq.com" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/images/zwl.png" target="_blank" title="Weixin">
+                  
+                    <i class="fa fa-fw fa-weixin"></i>
+                  
+                  Weixin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+      
+        
+
+
+		
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=86 height=100 src="http://music.163.com/outchain/player?type=0&id=120897804&auto=0&height=90&auto=1&height=86&autoPlay=true" style="width:0px;height:0px;"></iframe>
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+
+
+
+
+
+
+<br/>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2127192"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.min.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {          
+          jQuery("img").lazyload({
+            placeholder:"http://www.arao.me/loading.gif",
+              effect:"fadeIn"
+            });
+          });
+    </script>
+	<!-- 动态线条 -->
+	<script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+	
+
+
+
+</body>
+</html>
