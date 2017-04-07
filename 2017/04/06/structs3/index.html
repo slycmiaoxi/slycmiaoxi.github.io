@@ -105,19 +105,19 @@
 
 
 
-<meta name="description" content="前言 spring 是容器框架,用于配置bean,并维护bean之间关系的框架，而bean是java中的任何一种对象 javabean/service/action/数据源./dao, ioc(控制反转 inverse of control) di( dependency injection 依赖注入)，而spring的设计思想主要为单例和工厂模式，它能很好的解耦，简化开发，同时贯穿于各层。
- 不">
+<meta name="description" content="前言Structs2中的result是作为返回结果的，当一个action处理完之后返回字符串的结果码。框架可以根据这个返回的字符串，映射到指定的页面。Result元素可以分为两部分：一是结果映射，一部分是返回结果类型
+结果映射  Result有两个属性可以配置：name属性和type属性，其中name属性主要用来指定资源的逻辑名称，实际名称在标签内指定。Type属性就是result返回的类型，这两">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spring之hello world">
-<meta property="og:url" content="http://www.myzwl.win/2017/03/30/spring1/index.html">
+<meta property="og:title" content="struts2 之三:result返回结果">
+<meta property="og:url" content="http://www.myzwl.win/2017/04/06/structs3/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="前言 spring 是容器框架,用于配置bean,并维护bean之间关系的框架，而bean是java中的任何一种对象 javabean/service/action/数据源./dao, ioc(控制反转 inverse of control) di( dependency injection 依赖注入)，而spring的设计思想主要为单例和工厂模式，它能很好的解耦，简化开发，同时贯穿于各层。
- 不">
-<meta property="og:updated_time" content="2017-03-31T05:04:30.000Z">
+<meta property="og:description" content="前言Structs2中的result是作为返回结果的，当一个action处理完之后返回字符串的结果码。框架可以根据这个返回的字符串，映射到指定的页面。Result元素可以分为两部分：一是结果映射，一部分是返回结果类型
+结果映射  Result有两个属性可以配置：name属性和type属性，其中name属性主要用来指定资源的逻辑名称，实际名称在标签内指定。Type属性就是result返回的类型，这两">
+<meta property="og:updated_time" content="2017-04-07T04:53:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spring之hello world">
-<meta name="twitter:description" content="前言 spring 是容器框架,用于配置bean,并维护bean之间关系的框架，而bean是java中的任何一种对象 javabean/service/action/数据源./dao, ioc(控制反转 inverse of control) di( dependency injection 依赖注入)，而spring的设计思想主要为单例和工厂模式，它能很好的解耦，简化开发，同时贯穿于各层。
- 不">
+<meta name="twitter:title" content="struts2 之三:result返回结果">
+<meta name="twitter:description" content="前言Structs2中的result是作为返回结果的，当一个action处理完之后返回字符串的结果码。框架可以根据这个返回的字符串，映射到指定的页面。Result元素可以分为两部分：一是结果映射，一部分是返回结果类型
+结果映射  Result有两个属性可以配置：name属性和type属性，其中name属性主要用来指定资源的逻辑名称，实际名称在标签内指定。Type属性就是result返回的类型，这两">
 
 
 
@@ -145,13 +145,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/03/30/spring1/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/04/06/structs3/"/>
 
 
 
 
 
-  <title> spring之hello world | 秒西 </title>
+  <title> struts2 之三:result返回结果 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -497,7 +497,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/30/spring1/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/04/06/structs3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -518,7 +518,7 @@ var _hmt = _hmt || [];
             
             
               
-                spring之hello world
+                struts2 之三:result返回结果
               
             
           </h1>
@@ -533,8 +533,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-30T16:48:51+08:00">
-                2017-03-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-06T17:48:51+08:00">
+                2017-04-06
               </time>
             
 
@@ -601,21 +601,35 @@ var _hmt = _hmt || [];
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p> spring 是容器框架,用于配置bean,并维护bean之间关系的框架，而bean是java中的任何一种对象 javabean/service/action/数据源./dao, ioc(控制反转 inverse of control) di( dependency injection 依赖注入)，而spring的设计思想主要为单例和工厂模式，它能很好的解耦，简化开发，同时贯穿于各层。</p>
-<p> 不多说，先来一个入门案例，目的在先具体把握，最后在看细节</p>
-<p> 步骤一：创建一个web工程，同时引入两个jar包，一个是spring核心包（spring.jar）和日包（commons-logging.jar）及测试包junit；</p>
-<p> 步骤二：新建applicationContent.xml文件，该文件是spring的核心文件，先放在src目录下，里面暂时什么都不写</p>
-<p> 步骤三：编写helloworld类：</p>
- <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">package com.zwl.spring;</div><div class="line"></div><div class="line">public class Helloworld &#123;</div><div class="line">private String name;</div><div class="line"></div><div class="line">public String getName() &#123;</div><div class="line">	return name;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public void setName(String name) &#123;</div><div class="line">	this.name = name;</div><div class="line">&#125;</div><div class="line">	</div><div class="line">public void sayhello()&#123;</div><div class="line">	System.out.println("it is "+name);</div><div class="line">&#125;</div><div class="line"></div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里主要通过spring自动注入name为helloworld来演示</p>
-<p>步骤四：配置applicationContent.xml文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line">&lt;beans xmlns="http://www.springframework.org/schema/beans"</div><div class="line">		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"</div><div class="line">		xmlns:context="http://www.springframework.org/schema/context"</div><div class="line">		xmlns:tx="http://www.springframework.org/schema/tx"</div><div class="line">		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd</div><div class="line">				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd</div><div class="line">				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"&gt;</div><div class="line"></div><div class="line">&lt;!-- bean元素的作用是，当我们的spring框架加载时候，spring就会自动的创建一个bean对象，并放入内存 ,</div><div class="line">相当于Helloworld helloworld=new Helloworld();</div><div class="line">helloworld.setName("helloworld!"); </div><div class="line">id:用于唯一标识该bean，</div><div class="line">class:相应的bean所处的位置</div><div class="line">--&gt;</div><div class="line">&lt;bean id="helloworld" class="com.zwl.spring.Helloworld"&gt;</div><div class="line">&lt;property name="name"&gt;</div><div class="line">&lt;value&gt;hello world!&lt;/value&gt;</div><div class="line">&lt;/property&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure></p>
-<p>步骤五：编写工具类<br>因为spring也是初始化加载很耗内存，所以同样采取单例模式初始化<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">package com.zwl.utils;</div><div class="line"></div><div class="line">import org.springframework.context.ApplicationContext;</div><div class="line">import org.springframework.context.support.ClassPathXmlApplicationContext;</div><div class="line"></div><div class="line">public class ApplicaionContextUtil &#123;</div><div class="line">private static ApplicationContext ac=null;</div><div class="line">	</div><div class="line">	private ApplicaionContextUtil()&#123;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	static&#123;</div><div class="line">		//1.得到spring 的applicationContext对象(容器对象)</div><div class="line">		ac=new ClassPathXmlApplicationContext("applicationContext.xml");</div><div class="line">	&#125;</div><div class="line">	public static ApplicationContext getApplicationContext()&#123;</div><div class="line">		return ac;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>步骤六：编写测试类（用junit4）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">	public void test()&#123;</div><div class="line">//得到bean对象</div><div class="line">	 Helloworld hello=(Helloworld) ApplicaionContextUtil.getApplicationContext().getBean("helloworld");</div><div class="line">	 hello.sayhello();</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>测试结果：</p>
-<blockquote>
-<p>it is hello world ！</p>
-</blockquote>
-<p>至此helloworld程序完成，当然这只是一个初步的认识spring是什么，事实上spring的注入远不止如此简单，但至少有一点可以明确，通过spring，可以帮我们管理，特别是结合其他开源框架，达到解耦和高效的作用。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Structs2中的result是作为返回结果的，当一个action处理完之后返回字符串的结果码。框架可以根据这个返回的字符串，映射到指定的页面。Result元素可以分为两部分：一是结果映射，一部分是返回结果类型</p>
+<p>结果映射<br>  Result有两个属性可以配置：name属性和type属性，其中name属性主要用来指定资源的逻辑名称，实际名称在标签内指定。Type属性就是result返回的类型，这两个属性不是必须的。其中默认情况下，name为success，type为dispatch（转发）<br>另外，result标签还有一个子标签param，该标签可以为result指定实际资源位置，其中属性name为必填，而当type为dispatch时，param可以省略不写</p>
+<p>针对上面，不妨先模拟一个案例<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> &lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.helloworld"</span>&gt;</div><div class="line">  &lt;result type=<span class="string">"dispatcher"</span>&gt;</div><div class="line">&lt;param name=<span class="string">"location"</span>&gt;/success.jsp&lt;/param&gt;</div><div class="line">  &lt;/result&gt;</div><div class="line">  &lt;/action&gt;</div></pre></td></tr></table></figure></p>
+<p>这里的location是用于指示资源的位置，标签内的内容是参数的值</p>
+<p>对应我们习惯写的形式为<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.helloworld"</span>&gt;</div><div class="line">  &lt;result name=<span class="string">"success"</span>&gt;</div><div class="line">/success<span class="selector-class">.jsp</span></div><div class="line">  &lt;/result&gt;</div><div class="line">  &lt;/action&gt;</div></pre></td></tr></table></figure></p>
+<p>结果类型：<br> 常用的有四种，dispatch、redirect、redirectAction和chain，其中dispatch相当于转发，redirect相当于重定向，redirectAction也是重定向，但是它是重定向到某个action，而chain则是利用action的链式处理</p>
+<p>第一种：dispatch<br> 它是系统默认的结果类型，其有两个属性，localtion和parse，配置如下<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> &lt;result type=<span class="string">"dispatcher"</span>&gt;</div><div class="line">&lt;param name=<span class="string">"location"</span>&gt;/success.jsp&lt;/param&gt;</div><div class="line">&lt;param name=<span class="string">"parse"</span>&gt;true&lt;/param&gt;</div><div class="line">  &lt;/result&gt;</div></pre></td></tr></table></figure></p>
+<p>其中parse是一个布尔类型，当为true时，表示解析localtion参数中的OGNL表达式，默认是true</p>
+<p>第二种：redirect<br>  当使用该类型时，框架后台会使用response对象的sendRedirect方法进行重定向，下面先简单对比一下重定向与转发的区别：<br>一：重定向会发生两次请求，转发只会发生一次请求<br>      重定向的时候，浏览器的地址栏会发生变化，而转发的地址栏是无变化的<br>      重定向的实质是服务器告诉浏览器去另外的地方寻找资源，所以地址栏会发生变化，而转发则是在服务器内部发生的，所以地址栏不会发生变化<br>      由于重定向是两次请求，所以第二次请求的会话保存的信息是无效的，而转发的时候会话仍然有效，因为请求不变<br>      对于重定向中会话仍然有效的方法是在配置文件中使用OGNL表达式，将参数传递过去<br>对于以上内容，不妨一个实例来的具体点</p>
+<p>首先是上面的dispatch<br>如之前的hello world入门程序，最终观察地址栏和参数是可以接收到的</p>
+<p>当type为redirect时<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.helloworld"</span>&gt;</div><div class="line">  &lt;result type=<span class="string">"redirect"</span>&gt;</div><div class="line">/success<span class="selector-class">.jsp</span></div><div class="line">  &lt;/result&gt;</div><div class="line">  &lt;/action&gt;</div></pre></td></tr></table></figure></p>
+<p>观察地址栏是显示jsp的，但是参数是无法接收到的<br>那么如何解决了？<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> &lt;action name="helloworld" class="com.zwl.action.helloworld"&gt;</div><div class="line">  &lt;result name="success" type="redirect"&gt;</div><div class="line">/success.jsp?user=$&#123;use.msg&#125;</div><div class="line">  &lt;/result&gt;</div><div class="line">  &lt;/action&gt;</div></pre></td></tr></table></figure></p>
+<p>即带一个参数，注意此时的话，在success.jsp中值就不在值栈中了，因为不经过action，所以应该用如下方法取出<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">  &lt;s:property value=<span class="string">"#parameters.user"</span>/&gt;</div><div class="line">  &lt;/body&gt;</div></pre></td></tr></table></figure></p>
+<p>第三种：redirectAction，<br>其底层都是通过Response对象的sendRedirect方法进行重定向的，只不过它是重定向到某个action，所以如果一个action处理完之后还要交给另一个action据需处理，则使用该类型。<br>它的结果类型有两个参数，actionName（指定需要重定向的action）和namespace（指定action所在的命名空间，如果没有指定该参数，框架会从默认的namespace中去寻找）<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;package name=<span class="string">"default"</span> namespace=<span class="string">"/"</span> extends=<span class="string">"struts-default"</span>&gt;</div><div class="line">   &lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.helloworld"</span>&gt;</div><div class="line">   &lt;result type=<span class="string">"redirectAction"</span>&gt;</div><div class="line">   &lt;param name=<span class="string">"actionName"</span>&gt;helloworld1&lt;/param&gt;</div><div class="line">   &lt;param name=<span class="string">"namespace"</span>&gt;/&lt;/param&gt;</div><div class="line">   &lt;/result&gt;</div><div class="line">   &lt;/action&gt;</div></pre></td></tr></table></figure></p>
+<p>第四种：chain<br>一样，也是跳转到某个action<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;action name=<span class="string">"r3"</span>&gt;</div><div class="line">        &lt;result type=<span class="string">"chain"</span>&gt;r1&lt;/result&gt;</div><div class="line">        &lt;/action&gt;</div></pre></td></tr></table></figure></p>
+<p>接下来，进行简单对比<br>Redirect和redirectAciton都是客户端跳转，<br>而dispatch和chain都是服务器端跳转</p>
+<p>全局action：<br>当有多个action都需要返回某个页面的时候，就可以用到全局结果<br>即在同一个包下所有的action都共享该result，如下所示<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;global-results&gt;</div><div class="line">  &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">  &lt;/global-results&gt;</div><div class="line">  </div><div class="line">  &lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.helloworld"</span>&gt;</div><div class="line">  &lt;/action&gt;</div></pre></td></tr></table></figure></p>
+<p>仍然操作之前的步骤，结果仍能执行全局中的result</p>
+<p>Namespace<br>Namespace决定了action的访问路径，默认为“”，可以接收所有路径的action，如果没有找到相应的namespace时，则使用namespace为空的action<br>Namespace可以写为/，或者/xxx,或者/xxx/yyy，对应的action访问路径为/index.action、/xxx/index.action、或者/xxx/yyy/index.action.<br>Namespace最好也用模块来进行命名</p>
+<p><package>标签</package></p>
+<p><package>是用来解决重名的问题，例如当系统的前台和后台都有一个action名叫hello，这时就需要用package来区分。    前台<package name="front">后台<package name="back"><br>struts2中的package与java的package是相同的作用的</package></package></package></p>
+<p>访问Web元素<br>Action中的会话一般有三种request,session,application，但是他们都是map类型<br>一般情况下有四种方式可以获得</p>
+<p>方法一：ActionContext方式<br>一般在Action类的构造方法、或execute()方法中获取<br>如下案例：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">public class LoginAction1 extends ActionSupport&#123;</div><div class="line">  private Map request;</div><div class="line">  private Map session;</div><div class="line">  private Map application;</div><div class="line"></div><div class="line">  public LoginAction1() &#123;</div><div class="line">	  request=(Map) ActionContext.getContext().get("request");</div><div class="line">	  session=ActionContext.getContext().getSession();</div><div class="line">	  application=ActionContext.getContext().getApplication();</div><div class="line">  &#125;</div><div class="line">	</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public String execute() throws Exception &#123;</div><div class="line">	       request.put("r1", "r1");</div><div class="line">	       session.put("s1", "s1");</div><div class="line">	       application.put("a1", "a1");</div><div class="line"></div><div class="line">		return super.execute();</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>然后在页面中可以通过标签或者java片段取出<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;s:property value="#request.r1"/&gt; | &lt;%=request.getAttribute("r1") %&gt; &lt;br /&gt;</div><div class="line">    &lt;s:property value="#session.s1"/&gt; | &lt;%=session.getAttribute("s1") %&gt; &lt;br /&gt;</div><div class="line">&lt;s:property value="#application.a1"/&gt; | &lt;%=application.getAttribute("a1") %&gt; &lt;br/&gt;</div></pre></td></tr></table></figure></p>
+<p>方式二：Ioc(控制反转)—推荐使用<br>让Action类实现RequestAware、SessionAware、ApplicationAware接口，然后重写他们的set方法(setRequest、setSession、setApplication)，通过依赖注入、控制反转(原来自己控制，现在由别人来控制值。)</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">public class LoginAction2 extends ActionSupport implements RequestAware,SessionAware, ApplicationAware &#123;</div><div class="line">    private Map&lt;String, Object&gt; request;</div><div class="line">    private Map&lt;String, Object&gt; session;</div><div class="line">    private Map&lt;String, Object&gt; application;</div><div class="line">  public String execute() &#123;</div><div class="line">       request.put("r1", "r1");</div><div class="line">       session.put("s1", "s1");</div><div class="line">       application.put("a1", "a1");</div><div class="line">       return SUCCESS;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void setRequest(Map&lt;String, Object&gt; request) &#123;</div><div class="line">       this.request = request;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void setSession(Map&lt;String, Object&gt; session) &#123;</div><div class="line">       this.session = session;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void setApplication(Map&lt;String, Object&gt; application) &#123;</div><div class="line">       this.application = application;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>方式三：获取原类型<br>获取是的HttpServletRequest/HttpSession/ServletContext<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">private HttpServletRequest request;</div><div class="line">    private HttpSession session;</div><div class="line">    private ServletContext application;</div><div class="line">    public LoginAction3() &#123;</div><div class="line">       request = ServletActionContext.getRequest();</div><div class="line">       session = request.getSession();</div><div class="line">       application = session.getServletContext();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>一般情况下只用前三种，第四种就不说了</p>
 
       
     </div>
@@ -669,8 +683,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/29/dyproxy3/" rel="next" title="代理模式（四）之模仿spring Aop及真实jdk的动态代理">
-                <i class="fa fa-chevron-left"></i> 代理模式（四）之模仿spring Aop及真实jdk的动态代理
+              <a href="/2017/04/06/structs2/" rel="next" title="struts2 之二:action详解">
+                <i class="fa fa-chevron-left"></i> struts2 之二:action详解
               </a>
             
           </div>
@@ -678,10 +692,6 @@ var _hmt = _hmt || [];
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/30/spring2/" rel="prev" title="spring之装配bean">
-                spring之装配bean <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>

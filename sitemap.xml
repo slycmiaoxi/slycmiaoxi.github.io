@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.myzwl.win/2017/04/06/structs3/</loc>
+    
+    <lastmod>2017-04-07T04:53:44.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.myzwl.win/2017/04/06/structs2/</loc>
+    
+    <lastmod>2017-04-07T04:23:24.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.myzwl.win/2017/04/06/structs1/</loc>
+    
+    <lastmod>2017-04-07T04:00:46.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.myzwl.win/2017/04/04/easyui1/</loc>
     
     <lastmod>2017-04-05T15:32:28.000Z</lastmod>
@@ -9,21 +30,7 @@
   </url>
   
   <url>
-    <loc>http://www.myzwl.win/2017/04/01/mybatis1/</loc>
-    
-    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.myzwl.win/2017/04/01/springmvc4/</loc>
-    
-    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.myzwl.win/2017/03/31/springmvc3/</loc>
     
     <lastmod>2017-04-02T15:32:34.000Z</lastmod>
     
@@ -44,7 +51,7 @@
   </url>
   
   <url>
-    <loc>http://www.myzwl.win/2017/03/30/spring2/</loc>
+    <loc>http://www.myzwl.win/2017/04/01/mybatis1/</loc>
     
     <lastmod>2017-04-02T15:32:34.000Z</lastmod>
     
@@ -52,6 +59,20 @@
   
   <url>
     <loc>http://www.myzwl.win/2017/04/01/mybatis2/</loc>
+    
+    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.myzwl.win/2017/03/30/spring2/</loc>
+    
+    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.myzwl.win/2017/03/31/springmvc3/</loc>
     
     <lastmod>2017-04-02T15:32:34.000Z</lastmod>
     
