@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="五大框架," />
+  <meta name="keywords" content="java集合," />
 
 
 
@@ -105,21 +105,25 @@
 
 
 
-<meta name="description" content="前言对一个框架的直观认识，往往是从一个hello world程序开始的。Hibernate是一个完全的ORM（Object Relationship Mapping）对象映射框架。实现了JDBC轻量级的封装，使得在进行JDBC开发的时候可以直接使用面向对象的思维进行开发，说白了hibernate框架的作业就是在java对象和关系数据库中作了一个映射，使得程序员不用再使用各种SQL语句
-Hibern">
+<meta name="description" content="前言关于线程问题基本上贯穿学习的整个过程，像集合，servlet，structs，hibernate，spring等等，其都涉及到线程问题
+线程安全什么是线程安全？如果你的代码所在的进程中有多个线程在同时运行，而这些线程可能会同时运行这段代码。如果每次运行结果和单线程运行的结果是一样的，而且其他的变量的值也和预期的是一样的，就是线程安全的。
+线程安全问题都是由全局变量及静态变量引起的。
+若每个线程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hibernate之一:hello world">
-<meta property="og:url" content="http://www.myzwl.win/2017/04/01/hbm1/index.html">
+<meta property="og:title" content="初识线程安全与线程不安全">
+<meta property="og:url" content="http://www.myzwl.win/2017/04/06/thread1/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="前言对一个框架的直观认识，往往是从一个hello world程序开始的。Hibernate是一个完全的ORM（Object Relationship Mapping）对象映射框架。实现了JDBC轻量级的封装，使得在进行JDBC开发的时候可以直接使用面向对象的思维进行开发，说白了hibernate框架的作业就是在java对象和关系数据库中作了一个映射，使得程序员不用再使用各种SQL语句
-Hibern">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs2/25.gif">
-<meta property="og:updated_time" content="2017-04-08T04:03:40.000Z">
+<meta property="og:description" content="前言关于线程问题基本上贯穿学习的整个过程，像集合，servlet，structs，hibernate，spring等等，其都涉及到线程问题
+线程安全什么是线程安全？如果你的代码所在的进程中有多个线程在同时运行，而这些线程可能会同时运行这段代码。如果每次运行结果和单线程运行的结果是一样的，而且其他的变量的值也和预期的是一样的，就是线程安全的。
+线程安全问题都是由全局变量及静态变量引起的。
+若每个线程">
+<meta property="og:updated_time" content="2017-04-08T15:58:10.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hibernate之一:hello world">
-<meta name="twitter:description" content="前言对一个框架的直观认识，往往是从一个hello world程序开始的。Hibernate是一个完全的ORM（Object Relationship Mapping）对象映射框架。实现了JDBC轻量级的封装，使得在进行JDBC开发的时候可以直接使用面向对象的思维进行开发，说白了hibernate框架的作业就是在java对象和关系数据库中作了一个映射，使得程序员不用再使用各种SQL语句
-Hibern">
-<meta name="twitter:image" content="http://www.myzwl.win/images/imgs2/25.gif">
+<meta name="twitter:title" content="初识线程安全与线程不安全">
+<meta name="twitter:description" content="前言关于线程问题基本上贯穿学习的整个过程，像集合，servlet，structs，hibernate，spring等等，其都涉及到线程问题
+线程安全什么是线程安全？如果你的代码所在的进程中有多个线程在同时运行，而这些线程可能会同时运行这段代码。如果每次运行结果和单线程运行的结果是一样的，而且其他的变量的值也和预期的是一样的，就是线程安全的。
+线程安全问题都是由全局变量及静态变量引起的。
+若每个线程">
 
 
 
@@ -147,13 +151,13 @@ Hibern">
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/04/01/hbm1/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/04/06/thread1/"/>
 
 
 
 
 
-  <title> hibernate之一:hello world | 秒西 </title>
+  <title> 初识线程安全与线程不安全 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -499,7 +503,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/04/01/hbm1/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/04/06/thread1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -520,7 +524,7 @@ var _hmt = _hmt || [];
             
             
               
-                hibernate之一:hello world
+                初识线程安全与线程不安全
               
             
           </h1>
@@ -535,8 +539,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-01T15:48:51+08:00">
-                2017-04-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-06T21:48:51+08:00">
+                2017-04-06
               </time>
             
 
@@ -563,8 +567,8 @@ var _hmt = _hmt || [];
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习总结/" itemprop="url" rel="index">
-                    <span itemprop="name">学习总结</span>
+                  <a href="/categories/学习进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">学习进阶</span>
                   </a>
                 </span>
 
@@ -603,29 +607,25 @@ var _hmt = _hmt || [];
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>对一个框架的直观认识，往往是从一个hello world程序开始的。Hibernate是一个完全的ORM（Object Relationship Mapping）对象映射框架。实现了JDBC轻量级的封装，使得在进行JDBC开发的时候可以直接使用面向对象的思维进行开发，说白了hibernate框架的作业就是在java对象和关系数据库中作了一个映射，使得程序员不用再使用各种SQL语句</p>
-<p>Hibernate有如下几个特点：<br>  1：完成了对JDBC的封装，不用再与各种connection打交道<br> 2：是一个持久层框架，即对数据库进行持久化操作<br> 3：是一个ORM框架，不用再与各种sql打交道</p>
-<p>接下里就是hibernate入门程序，目的先有一个直观认识，不考虑其含义，只要把流程走一遍就完成了目的。这里用最简的方式完成入门程序</p>
-<p>步骤一：创建一个java 工程</p>
-<p>步骤二：建一个lib文件夹，并导入如下jar包，然后添加至项目中<br><img src="/images/imgs2/25.gif" alt="Alt text"></p>
-<p>步骤三：在src目录下创建一个hibernate.cfg.xml配置文件，并编写，同时添加mysql驱动包<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line">&lt;!DOCTYPE hibernate-configuration PUBLIC</div><div class="line">	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"</div><div class="line">	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"&gt;</div><div class="line">&lt;!-- 该文件用于配置连接数据的种类,用户名，密码,ul ,驱动.. 连接池,二级缓存 --&gt;</div><div class="line">&lt;hibernate-configuration&gt;</div><div class="line">	&lt;session-factory&gt;</div><div class="line">		&lt;property name="connection.driver_class"&gt;com.mysql.jdbc.Driver&lt;/property&gt;</div><div class="line">		&lt;property name="connection.url"&gt;jdbc:mysql://localhost:9806/sshe&lt;/property&gt;</div><div class="line">		&lt;property name="connection.username"&gt;root&lt;/property&gt;</div><div class="line">		&lt;property name="connection.password"&gt;yourpassword&lt;/property&gt;</div><div class="line">		&lt;!-- 配置显示hibernate生成的 sql ,特别说明，在开发阶段设为true利于调试，在使用项目则设为false--&gt;</div><div class="line">		&lt;property name="show_sql"&gt;true&lt;/property&gt;</div><div class="line">		&lt;!-- 配置数据库的方言/ --&gt;</div><div class="line">		&lt;property name="dialect"&gt;org.hibernate.dialect.MySQLDialect&lt;/property&gt;</div><div class="line">	&lt;/session-factory&gt;</div><div class="line">&lt;/hibernate-configuration&gt;</div></pre></td></tr></table></figure></p>
-<p>简单说明一下：上面的配置文件指明了一些必要的数据库连接属性，通过这些属性，hibernate可以连接上数据库，可以配置不同的数据库，其中配置数据库的方言指明所配置的是用哪种数据库</p>
-<p>步骤四：创建bean对象<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">package com.zwl.bean;</div><div class="line"></div><div class="line">public class User &#123;</div><div class="line"></div><div class="line">	private int age;</div><div class="line">	private int id;</div><div class="line">	private String name;</div><div class="line">。。。此处省略set与get方法</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>这里注意：利用hibernate框架时，鼓励我们为每张表设置主键，即为每个对象设置一个id，在映射时与表的id对应</p>
-<p>步骤五：创建数据库表，这个步骤也可以在步骤四之前进行。<br>主要为id（主键，自增长），name、age</p>
-<p>步骤六：编写表与对象的映射文件User.hbm.xml<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line">&lt;!--该文件要清楚地表述出 类 和 表 的对应关系--&gt;</div><div class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC</div><div class="line">	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"</div><div class="line">	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;</div><div class="line">&lt;!-- package : 表示该类在哪个包下 --&gt;</div><div class="line">&lt;hibernate-mapping package="com.zwl.bean"&gt;</div><div class="line">&lt;!-- name : 表示类名 table 表示 该类和哪个表映射 --&gt;</div><div class="line">	&lt;class name="User" table="user"&gt;</div><div class="line">		&lt;!-- id元素专门用于指定主键是如何生成,hibernate设计者认为，我们每一个表都应该有一个主键 --&gt;</div><div class="line">		&lt;!-- name:表示类的哪个属性是主键 --&gt;</div><div class="line">		&lt;id name="id" type="java.lang.Integer"&gt;</div><div class="line">		&lt;!-- 指定主键生成策略 --&gt;</div><div class="line">		&lt;generator class="increment"&gt;</div><div class="line">		&lt;/generator&gt;</div><div class="line">		&lt;/id&gt;</div><div class="line">		&lt;!-- property 里是普通属性 , column表示该属性映射到表中哪个字段 --&gt;</div><div class="line">		&lt;property name="name" type="java.lang.String"&gt;</div><div class="line">		&lt;column name="name" not-null="false"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="age" type="java.lang.Integer"&gt;</div><div class="line">		&lt;column name="age" not-null="false"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div></pre></td></tr></table></figure></p>
-<p>简单说明一下：上面已经简要说明了一些含义，这里先看做强加的概念，事实上这是比较完整的配置，当然这里并没有给出简化的配置。同时，该文件相当于在java对象和数据库表中作了一个映射，这样以后就可以通过操作java对象来间接操作表<br> 另外，该映射文件一般放在与相应的java对象同处一个文件夹下，并且命名满足规范XXX.hbm.xml，其中xxx就是java对象名，最后还要在hibernate核心配置文件中声明该映射，即加入如下代码：</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于线程问题基本上贯穿学习的整个过程，像集合，servlet，structs，hibernate，spring等等，其都涉及到线程问题</p>
+<h4 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h4><p>什么是线程安全？<br>如果你的代码所在的进程中有多个线程在同时运行，而这些线程可能会同时运行这段代码。如果每次运行结果和单线程运行的结果是一样的，而且其他的变量的值也和预期的是一样的，就是线程安全的。</p>
+<p>线程安全问题都是由全局变量及静态变量引起的。</p>
+<p>若每个线程中对全局变量、静态变量只有读操作，而无写操作，一般来说，这个全局变量是线程安全的；若有多个线程同时执行写操作，一般都需要考虑线程同步，否则就可能影响线程安全</p>
+<p>不妨来一个实例<br>首先是number类，里面有一个计数的全局和静态变量<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">package com.zwl.test;</div><div class="line"></div><div class="line">public class number &#123;</div><div class="line"></div><div class="line">	private int num;</div><div class="line">	private static int count;</div><div class="line">	</div><div class="line">	public void count()&#123;</div><div class="line">		for(int i=1;i&lt;=10;i++)&#123;</div><div class="line">			num+=i;</div><div class="line">		&#125;</div><div class="line">		System.out.println(Thread.currentThread().getName()+":"+num);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void countstatic()&#123;</div><div class="line">		for(int i=1;i&lt;=10;i++)&#123;</div><div class="line">			count+=i;</div><div class="line">		&#125;</div><div class="line">		System.out.println(Thread.currentThread().getName()+":"+count);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>显然我们希望每个线程都能输出的结果是55就是线程安全</p>
+<p>线面是测试类：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">package com.zwl.test;</div><div class="line"></div><div class="line">public class test &#123;</div><div class="line"></div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">	</div><div class="line">		Runnable runner=new Runnable() &#123;</div><div class="line">			number num=new number();</div><div class="line">			@Override</div><div class="line">			public void run() &#123;</div><div class="line">				num.count();</div><div class="line">				System.out.println("statis:");</div><div class="line">				num.countstatic();</div><div class="line">			&#125;</div><div class="line">		&#125;;</div><div class="line"></div><div class="line">		for(int i=0;i&lt;10;i++)&#123;</div><div class="line">			new Thread(runner).start();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里启动十个线程，依次通过run方法输出全局和静态变量的累加和，如果是线程安全的，则应该都是55</p>
+<p>结果如下所示</p>
 <blockquote>
- <mapping resource="com/zwl/bean/User.hbm.xml">
-
-</mapping></blockquote>
-<p> 步骤六：就是进行测试，实现插入数据的crud操作</p>
-<p> 首先写一个工具类：<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">package com.zwl.utils;</div><div class="line"></div><div class="line">import org.hibernate.SessionFactory;</div><div class="line">import org.hibernate.cfg.Configuration;</div><div class="line"></div><div class="line">public class HibernateUtils &#123;</div><div class="line">    private static final SessionFactory sessionFactory=BuildSessionFactory();</div><div class="line">    </div><div class="line">    private static SessionFactory BuildSessionFactory()&#123;</div><div class="line">    	try &#123;</div><div class="line">			return new Configuration().configure().buildSessionFactory();</div><div class="line">		&#125; catch (Exception e) &#123;</div><div class="line">			throw new ExceptionInInitializerError(e);</div><div class="line">		&#125;</div><div class="line">    &#125;</div><div class="line">	</div><div class="line">	public static SessionFactory getSessionFactory()&#123;</div><div class="line">		return sessionFactory;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>简单说明一下，这里采用单例模式，目的是为了不要每次都加载配置，不然太耗费内存</p>
-<p>接下来是测试类，首先是增加功能<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public class Usertest &#123;</div><div class="line"></div><div class="line">	SessionFactory sessionFactory=HibernateUtils.getSessionFactory();</div><div class="line">	Session session=sessionFactory.openSession();</div><div class="line">	Transaction t=session.beginTransaction();</div><div class="line"></div><div class="line">@Test</div><div class="line">public void save()&#123;</div><div class="line">	User u=new User();</div><div class="line">	u.setId(1);</div><div class="line">	u.setName("hello world");</div><div class="line">	u.setAge(21);</div><div class="line">	</div><div class="line">	session.save(u);</div><div class="line">	t.commit();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>接下来是查询（遍历）<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//查询</div><div class="line">	@Test</div><div class="line">	public void select()&#123;</div><div class="line">		List&lt;User&gt; list=session.createCriteria(User.class).list();</div><div class="line">		for(User user : list)&#123;</div><div class="line">			System.out.println(user.getName());</div><div class="line">		&#125;</div></pre></td></tr></table></figure></p>
-<p>最后是删除：<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//删除</div><div class="line">	@Test</div><div class="line">	public void delete()&#123;</div><div class="line">		User u=(User)session.get(User.class, 1);</div><div class="line">		session.delete(u);</div><div class="line">		t.commit();</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>修改这里就先不说了。<br>至此入门程序完成，意在了解hibernate的具体过程，有没有发现，到目前为止，我们都没有写sql语句，而都是对java对象进行操作，来操作表</p>
+<p>Thread-0:55<br>statis:<br>Thread-0:55<br>Thread-1:110<br>statis:<br>Thread-1:110<br>Thread-2:165<br>statis:<br>Thread-2:165<br>Thread-6:275<br>statis:<br>Thread-6:220<br>Thread-3:385<br>statis:<br>Thread-4:220<br>statis:<br>Thread-3:275<br>Thread-8:385<br>statis:<br>Thread-8:385<br>Thread-4:330<br>Thread-5:440<br>statis:<br>Thread-5:440<br>Thread-7:495<br>statis:<br>Thread-7:495<br>Thread-9:550<br>statis:<br>Thread-9:550</p>
+</blockquote>
+<p>发现不是线程安全的</p>
+<h4 id="线程不安全"><a href="#线程不安全" class="headerlink" title="线程不安全"></a>线程不安全</h4><p>线程不安全就是不提供数据访问保护，有可能出现多个线程先后更改数据造成所得到的数据是脏数据</p>
+<p>对于上面的线程不安全可以进行如下修改</p>
+<p>解决方法：将全局变量变成局部变量（静态变量暂时不讨论）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public void count()&#123;</div><div class="line">		int num = 0;</div><div class="line">		for(int i=1;i&lt;=10;i++)&#123;</div><div class="line">			num+=i;</div><div class="line">		&#125;</div><div class="line">		System.out.println(Thread.currentThread().getName()+":"+num);</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>最后所有的线程都输出了55</p>
+<p>或者将new 的number放到run里面，变成局部的<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">			public void run() &#123;</div><div class="line">				number num=new number();</div><div class="line">				num.count();</div><div class="line">				System.out.println("statis:");</div><div class="line">				num.countstatic();</div><div class="line">			&#125;</div><div class="line">		&#125;;</div></pre></td></tr></table></figure></p>
+<p>最后也能保证了线程安全了</p>
 
       
     </div>
@@ -666,7 +666,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/五大框架/" rel="tag"># 五大框架</a>
+            <a href="/source/tags/java集合/" rel="tag"># java集合</a>
           
         </div>
       
@@ -679,8 +679,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/31/structs6/" rel="next" title="struts2 之六:拦截器">
-                <i class="fa fa-chevron-left"></i> struts2 之六:拦截器
+              <a href="/2017/04/05/linkedlist/" rel="next" title="初识Linkedlist底层">
+                <i class="fa fa-chevron-left"></i> 初识Linkedlist底层
               </a>
             
           </div>
@@ -689,8 +689,8 @@ var _hmt = _hmt || [];
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/02/hbm2/" rel="prev" title="hibernate之二:核心类和接口">
-                hibernate之二:核心类和接口 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/07/thread2/" rel="prev" title="集合中的线程安全问题">
+                集合中的线程安全问题 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -878,7 +878,7 @@ var _hmt = _hmt || [];
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程安全"><span class="nav-text">线程安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程不安全"><span class="nav-text">线程不安全</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
