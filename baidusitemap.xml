@@ -3,71 +3,11 @@
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/04/06/structs3/</loc>
-    <lastmod>2017-04-07T04:53:44.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/04/04/hbm4/</loc>
+    <lastmod>2017-04-08T04:42:14.000Z</lastmod>
     <data>
         <display>
-        <title>struts2 之三:result返回结果</title>
-        <pubTime>2017-04-06T09:48:51.000Z</pubTime>
-        
-        <tag>五大框架 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/04/06/structs2/</loc>
-    <lastmod>2017-04-07T04:23:24.000Z</lastmod>
-    <data>
-        <display>
-        <title>struts2 之二:action详解</title>
-        <pubTime>2017-04-06T08:48:51.000Z</pubTime>
-        
-        <tag>五大框架 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/04/06/structs1/</loc>
-    <lastmod>2017-04-07T04:00:46.000Z</lastmod>
-    <data>
-        <display>
-        <title>struts2 之一:hello world</title>
-        <pubTime>2017-04-06T07:48:51.000Z</pubTime>
-        
-        <tag>五大框架 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/04/04/easyui1/</loc>
-    <lastmod>2017-04-05T15:32:28.000Z</lastmod>
-    <data>
-        <display>
-        <title>基于struts2与easy ui的后台显示界面</title>
+        <title>hibernate之四:反向工程</title>
         <pubTime>2017-04-04T07:48:51.000Z</pubTime>
         
         <tag>五大框架 </tag>
@@ -75,24 +15,6 @@
          
            
              
-              <breadCrumb title="项目经验" url="http://www.myzwl.win/categories/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/04/01/springmvc4/</loc>
-    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
-    <data>
-        <display>
-        <title>spring mvc之四:数据回显与json</title>
-        <pubTime>2017-04-01T11:48:51.000Z</pubTime>
-        
-         
-           
-             
               <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
           
         </display>
@@ -101,12 +23,12 @@
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/04/02/mybatis3/</loc>
-    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/04/03/hbm3/</loc>
+    <lastmod>2017-04-08T04:21:18.000Z</lastmod>
     <data>
         <display>
-        <title>mybatis 之三:映射文件</title>
-        <pubTime>2017-04-02T03:48:51.000Z</pubTime>
+        <title>hibernate之三:浅谈HQL和映射文件</title>
+        <pubTime>2017-04-03T07:48:51.000Z</pubTime>
         
         <tag>五大框架 </tag>
          
@@ -121,11 +43,11 @@
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/04/02/mybatis4/</loc>
-    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/04/02/hbm2/</loc>
+    <lastmod>2017-04-08T04:04:24.000Z</lastmod>
     <data>
         <display>
-        <title>mybatis 之四:mybatis整合spring</title>
+        <title>hibernate之二:核心类和接口</title>
         <pubTime>2017-04-02T07:48:51.000Z</pubTime>
         
         <tag>五大框架 </tag>
@@ -141,12 +63,12 @@
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/04/01/mybatis1/</loc>
-    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/04/01/hbm1/</loc>
+    <lastmod>2017-04-08T04:03:40.000Z</lastmod>
     <data>
         <display>
-        <title>mybatis 之一:hello world</title>
-        <pubTime>2017-04-01T12:48:51.000Z</pubTime>
+        <title>hibernate之一:hello world</title>
+        <pubTime>2017-04-01T07:48:51.000Z</pubTime>
         
         <tag>五大框架 </tag>
          
@@ -161,561 +83,821 @@
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/04/01/mybatis2/</loc>
-    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/02/24/nat123/</loc>
+    <lastmod>2017-04-07T10:39:48.000Z</lastmod>
+    <data>
+        <display>
+        <title>利用nat123搭建本地服务器</title>
+        <pubTime>2017-02-24T11:48:51.000Z</pubTime>
+        
+        <tag>踩坑 , window </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习踩坑" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E8%B8%A9%E5%9D%91/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/30/structs5/</loc>
+    <lastmod>2017-04-07T10:30:22.000Z</lastmod>
+    <data>
+        <display>
+        <title>struts2 之五:通用标签</title>
+        <pubTime>2017-03-30T12:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/29/structs4/</loc>
+    <lastmod>2017-04-07T10:30:22.000Z</lastmod>
+    <data>
+        <display>
+        <title>struts2 之四:OGNL表达式</title>
+        <pubTime>2017-03-29T11:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/31/structs6/</loc>
+    <lastmod>2017-04-07T10:30:18.000Z</lastmod>
+    <data>
+        <display>
+        <title>struts2 之六:拦截器</title>
+        <pubTime>2017-03-31T13:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/28/structs3/</loc>
+    <lastmod>2017-04-07T10:29:26.000Z</lastmod>
+    <data>
+        <display>
+        <title>struts2 之三:result返回结果</title>
+        <pubTime>2017-03-28T09:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/27/structs2/</loc>
+    <lastmod>2017-04-07T10:29:12.000Z</lastmod>
+    <data>
+        <display>
+        <title>struts2 之二:action详解</title>
+        <pubTime>2017-03-27T08:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/26/structs1/</loc>
+    <lastmod>2017-04-07T10:28:50.000Z</lastmod>
+    <data>
+        <display>
+        <title>struts2 之一:hello world</title>
+        <pubTime>2017-03-26T07:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/25/easyui1/</loc>
+    <lastmod>2017-04-07T10:28:26.000Z</lastmod>
+    <data>
+        <display>
+        <title>基于struts2与easy ui的后台显示界面</title>
+        <pubTime>2017-03-25T07:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="项目经验" url="http://www.myzwl.win/categories/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/24/mybatis4/</loc>
+    <lastmod>2017-04-07T10:28:06.000Z</lastmod>
+    <data>
+        <display>
+        <title>mybatis 之四:mybatis整合spring</title>
+        <pubTime>2017-03-24T07:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/23/mybatis3/</loc>
+    <lastmod>2017-04-07T10:27:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>mybatis 之三:映射文件</title>
+        <pubTime>2017-03-23T03:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/22/mybatis2/</loc>
+    <lastmod>2017-04-07T10:27:26.000Z</lastmod>
     <data>
         <display>
         <title>mybatis 之二:开发dao的两种方式</title>
-        <pubTime>2017-04-01T13:48:51.000Z</pubTime>
-        
-        <tag>五大框架 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/30/spring2/</loc>
-    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
-    <data>
-        <display>
-        <title>spring之装配bean</title>
-        <pubTime>2017-03-30T09:48:51.000Z</pubTime>
-        
-        <tag>五大框架 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/31/springmvc3/</loc>
-    <lastmod>2017-04-02T15:32:34.000Z</lastmod>
-    <data>
-        <display>
-        <title>spring mvc之三:注解开发</title>
-        <pubTime>2017-03-31T11:48:51.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/31/springmvc2/</loc>
-    <lastmod>2017-03-31T13:05:30.000Z</lastmod>
-    <data>
-        <display>
-        <title>spring mvc之二:处理器</title>
-        <pubTime>2017-03-31T10:48:51.000Z</pubTime>
-        
-        <tag>五大框架 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/31/springmvc1/</loc>
-    <lastmod>2017-03-31T11:44:10.000Z</lastmod>
-    <data>
-        <display>
-        <title>spring mvc之一:hello world</title>
-        <pubTime>2017-03-31T09:48:51.000Z</pubTime>
-        
-        <tag>五大框架 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/30/spring1/</loc>
-    <lastmod>2017-03-31T05:04:30.000Z</lastmod>
-    <data>
-        <display>
-        <title>spring之hello world</title>
-        <pubTime>2017-03-30T08:48:51.000Z</pubTime>
-        
-        <tag>五大框架 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/29/dyproxy3/</loc>
-    <lastmod>2017-03-29T15:06:50.000Z</lastmod>
-    <data>
-        <display>
-        <title>代理模式（四）之模仿spring Aop及真实jdk的动态代理</title>
-        <pubTime>2017-03-29T12:48:51.000Z</pubTime>
-        
-        <tag>设计模式 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/29/dyproxy2/</loc>
-    <lastmod>2017-03-29T15:06:50.000Z</lastmod>
-    <data>
-        <display>
-        <title>代理模式（三）之模仿jdk底层动态代理实现</title>
-        <pubTime>2017-03-29T10:48:51.000Z</pubTime>
-        
-        <tag>设计模式 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/29/dyproxy1/</loc>
-    <lastmod>2017-03-29T10:32:28.000Z</lastmod>
-    <data>
-        <display>
-        <title>代理模式（二）之初识动态代理</title>
-        <pubTime>2017-03-29T09:48:51.000Z</pubTime>
-        
-        <tag>设计模式 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/29/stproxy/</loc>
-    <lastmod>2017-03-29T06:21:08.000Z</lastmod>
-    <data>
-        <display>
-        <title>代理模式（一）之静态代理</title>
-        <pubTime>2017-03-29T08:48:51.000Z</pubTime>
-        
-        <tag>设计模式 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/28/observer/</loc>
-    <lastmod>2017-03-29T05:31:36.000Z</lastmod>
-    <data>
-        <display>
-        <title>观察者设计模式</title>
-        <pubTime>2017-03-28T08:48:51.000Z</pubTime>
-        
-        <tag>设计模式 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/27/abstractfactory/</loc>
-    <lastmod>2017-03-29T05:31:36.000Z</lastmod>
-    <data>
-        <display>
-        <title>抽象工厂设计模式</title>
-        <pubTime>2017-03-27T08:48:51.000Z</pubTime>
-        
-        <tag>设计模式 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/27/factory/</loc>
-    <lastmod>2017-03-29T05:31:34.000Z</lastmod>
-    <data>
-        <display>
-        <title>工厂方法设计模式</title>
-        <pubTime>2017-03-27T06:48:51.000Z</pubTime>
-        
-        <tag>设计模式 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/27/simplefactory/</loc>
-    <lastmod>2017-03-27T11:53:32.000Z</lastmod>
-    <data>
-        <display>
-        <title>简单工厂设计模式</title>
-        <pubTime>2017-03-27T04:48:51.000Z</pubTime>
-        
-        <tag>设计模式 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/26/filter/</loc>
-    <lastmod>2017-03-27T09:07:22.000Z</lastmod>
-    <data>
-        <display>
-        <title>职责链设计模式</title>
-        <pubTime>2017-03-26T14:48:51.000Z</pubTime>
-        
-        <tag>设计模式 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/26/iterator/</loc>
-    <lastmod>2017-03-27T07:18:30.000Z</lastmod>
-    <data>
-        <display>
-        <title>迭代器设计模式</title>
-        <pubTime>2017-03-26T13:48:51.000Z</pubTime>
-        
-        <tag>设计模式 </tag>
-         
-         
-           
-             
-              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/23/jqajax/</loc>
-    <lastmod>2017-03-23T04:15:22.000Z</lastmod>
-    <data>
-        <display>
-        <title>jquery之ajax</title>
-        <pubTime>2017-03-23T13:48:51.000Z</pubTime>
-        
-        <tag>jquery </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/22/ajax/</loc>
-    <lastmod>2017-03-22T13:57:36.000Z</lastmod>
-    <data>
-        <display>
-        <title>初识原生态ajax</title>
         <pubTime>2017-03-22T13:48:51.000Z</pubTime>
         
-        <tag>学习笔记 </tag>
+        <tag>五大框架 </tag>
          
          
            
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
         </display>
     </data>
     </url>
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/03/22/git/</loc>
-    <lastmod>2017-03-22T11:33:32.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/03/21/mybatis1/</loc>
+    <lastmod>2017-04-07T10:27:06.000Z</lastmod>
     <data>
         <display>
-        <title>初识git</title>
-        <pubTime>2017-03-22T12:48:51.000Z</pubTime>
-        
-        <tag>学习笔记 </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/21/ssm/</loc>
-    <lastmod>2017-03-21T14:29:22.000Z</lastmod>
-    <data>
-        <display>
-        <title>ssm三大框架整合</title>
+        <title>mybatis 之一:hello world</title>
         <pubTime>2017-03-21T12:48:51.000Z</pubTime>
         
         <tag>五大框架 </tag>
          
          
            
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
         </display>
     </data>
     </url>
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/03/21/ssh/</loc>
-    <lastmod>2017-03-21T12:43:08.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/03/20/springmvc4/</loc>
+    <lastmod>2017-04-07T10:26:34.000Z</lastmod>
     <data>
         <display>
-        <title>ssh三大框架整合</title>
-        <pubTime>2017-03-21T11:48:51.000Z</pubTime>
+        <title>spring mvc之四:数据回显与json</title>
+        <pubTime>2017-03-20T11:48:51.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/18/springmvc2/</loc>
+    <lastmod>2017-04-07T10:26:34.000Z</lastmod>
+    <data>
+        <display>
+        <title>spring mvc之二:处理器</title>
+        <pubTime>2017-03-18T10:48:51.000Z</pubTime>
         
         <tag>五大框架 </tag>
          
          
            
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
         </display>
     </data>
     </url>
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/03/20/execl/</loc>
-    <lastmod>2017-03-20T15:31:10.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/03/19/springmvc3/</loc>
+    <lastmod>2017-04-07T10:26:34.000Z</lastmod>
     <data>
         <display>
-        <title>基于java的execl导入数据库和取数据至页面</title>
-        <pubTime>2017-03-20T11:48:51.000Z</pubTime>
-        
-        <tag>java工具包 </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/19/arraylist/</loc>
-    <lastmod>2017-03-19T14:23:40.000Z</lastmod>
-    <data>
-        <display>
-        <title>初识Arraylist底层</title>
-        <pubTime>2017-03-19T13:48:51.000Z</pubTime>
-        
-        <tag>java集合 </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.myzwl.win/2017/03/19/md5/</loc>
-    <lastmod>2017-03-19T13:54:46.000Z</lastmod>
-    <data>
-        <display>
-        <title>基于servlet的验证码和md5加密</title>
+        <title>spring mvc之三:注解开发</title>
         <pubTime>2017-03-19T11:48:51.000Z</pubTime>
         
-        <tag>java工具包 </tag>
-         
          
            
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
         </display>
     </data>
     </url>
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/03/18/erweima/</loc>
-    <lastmod>2017-03-19T13:04:08.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/03/17/springmvc1/</loc>
+    <lastmod>2017-04-07T10:26:34.000Z</lastmod>
     <data>
         <display>
-        <title>基于struts2的二维码</title>
-        <pubTime>2017-03-18T11:48:51.000Z</pubTime>
+        <title>spring mvc之一:hello world</title>
+        <pubTime>2017-03-17T09:48:51.000Z</pubTime>
         
-        <tag>java工具包 </tag>
+        <tag>五大框架 </tag>
          
          
            
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
         </display>
     </data>
     </url>
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/03/17/nat123/</loc>
-    <lastmod>2017-03-19T05:11:24.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/03/16/spring2/</loc>
+    <lastmod>2017-04-07T10:26:12.000Z</lastmod>
     <data>
         <display>
-        <title>利用nat123搭建本地服务器</title>
-        <pubTime>2017-03-17T11:48:51.000Z</pubTime>
+        <title>spring之装配bean</title>
+        <pubTime>2017-03-16T09:48:51.000Z</pubTime>
         
-        <tag>踩坑 , window </tag>
+        <tag>五大框架 </tag>
          
          
            
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
         </display>
     </data>
     </url>
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/03/17/danli/</loc>
-    <lastmod>2017-03-19T04:58:30.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/03/15/spring1/</loc>
+    <lastmod>2017-04-07T10:24:14.000Z</lastmod>
     <data>
         <display>
-        <title>单例设计模式</title>
-        <pubTime>2017-03-17T12:48:51.000Z</pubTime>
+        <title>spring之hello world</title>
+        <pubTime>2017-03-15T08:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/14/dyproxy3/</loc>
+    <lastmod>2017-04-07T10:23:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>代理模式（四）之模仿spring Aop及真实jdk的动态代理</title>
+        <pubTime>2017-03-14T12:48:51.000Z</pubTime>
         
         <tag>设计模式 </tag>
          
          
            
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
         </display>
     </data>
     </url>
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/03/17/fenqu/</loc>
-    <lastmod>2017-03-18T13:20:18.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/03/13/dyproxy2/</loc>
+    <lastmod>2017-04-07T10:23:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>代理模式（三）之模仿jdk底层动态代理实现</title>
+        <pubTime>2017-03-13T10:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/11/stproxy/</loc>
+    <lastmod>2017-04-07T10:23:28.000Z</lastmod>
+    <data>
+        <display>
+        <title>代理模式（一）之静态代理</title>
+        <pubTime>2017-03-11T08:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/12/dyproxy1/</loc>
+    <lastmod>2017-04-07T10:23:28.000Z</lastmod>
+    <data>
+        <display>
+        <title>代理模式（二）之初识动态代理</title>
+        <pubTime>2017-03-12T09:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/10/abstractfactory/</loc>
+    <lastmod>2017-04-07T10:22:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>抽象工厂设计模式</title>
+        <pubTime>2017-03-10T08:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/10/observer/</loc>
+    <lastmod>2017-04-07T10:22:14.000Z</lastmod>
+    <data>
+        <display>
+        <title>观察者设计模式</title>
+        <pubTime>2017-03-10T08:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/09/factory/</loc>
+    <lastmod>2017-04-07T10:22:00.000Z</lastmod>
+    <data>
+        <display>
+        <title>工厂方法设计模式</title>
+        <pubTime>2017-03-09T06:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/08/simplefactory/</loc>
+    <lastmod>2017-04-07T10:21:42.000Z</lastmod>
+    <data>
+        <display>
+        <title>简单工厂设计模式</title>
+        <pubTime>2017-03-08T04:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/07/filter/</loc>
+    <lastmod>2017-04-07T10:21:26.000Z</lastmod>
+    <data>
+        <display>
+        <title>职责链设计模式</title>
+        <pubTime>2017-03-07T14:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/06/iterator/</loc>
+    <lastmod>2017-04-07T10:21:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>迭代器设计模式</title>
+        <pubTime>2017-03-06T13:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/05/jqajax/</loc>
+    <lastmod>2017-04-07T10:20:48.000Z</lastmod>
+    <data>
+        <display>
+        <title>jquery之ajax</title>
+        <pubTime>2017-03-05T13:48:51.000Z</pubTime>
+        
+        <tag>ajax </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/04/ajax/</loc>
+    <lastmod>2017-04-07T10:20:48.000Z</lastmod>
+    <data>
+        <display>
+        <title>初识原生态ajax</title>
+        <pubTime>2017-03-04T13:48:51.000Z</pubTime>
+        
+        <tag>ajax </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/03/git/</loc>
+    <lastmod>2017-04-07T10:18:46.000Z</lastmod>
+    <data>
+        <display>
+        <title>初识git</title>
+        <pubTime>2017-03-03T12:48:51.000Z</pubTime>
+        
+        <tag>github </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/02/ssm/</loc>
+    <lastmod>2017-04-07T10:17:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>ssm三大框架整合</title>
+        <pubTime>2017-03-02T12:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/03/01/ssh/</loc>
+    <lastmod>2017-04-07T10:17:24.000Z</lastmod>
+    <data>
+        <display>
+        <title>ssh三大框架整合</title>
+        <pubTime>2017-03-01T11:48:51.000Z</pubTime>
+        
+        <tag>五大框架 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/02/28/execl/</loc>
+    <lastmod>2017-04-07T10:16:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>基于java的execl导入数据库和取数据至页面</title>
+        <pubTime>2017-02-28T11:48:51.000Z</pubTime>
+        
+        <tag>java工具包 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习踩坑" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E8%B8%A9%E5%9D%91/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/02/27/arraylist/</loc>
+    <lastmod>2017-04-07T10:16:16.000Z</lastmod>
+    <data>
+        <display>
+        <title>初识Arraylist底层</title>
+        <pubTime>2017-02-27T13:48:51.000Z</pubTime>
+        
+        <tag>java集合 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/02/26/md5/</loc>
+    <lastmod>2017-04-07T10:15:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>基于servlet的验证码和md5加密</title>
+        <pubTime>2017-02-26T11:48:51.000Z</pubTime>
+        
+        <tag>java工具包 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习踩坑" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E8%B8%A9%E5%9D%91/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/02/25/erweima/</loc>
+    <lastmod>2017-04-07T10:15:06.000Z</lastmod>
+    <data>
+        <display>
+        <title>基于struts2的二维码</title>
+        <pubTime>2017-02-25T11:48:51.000Z</pubTime>
+        
+        <tag>java工具包 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习踩坑" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E8%B8%A9%E5%9D%91/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/02/23/danli/</loc>
+    <lastmod>2017-04-07T10:13:50.000Z</lastmod>
+    <data>
+        <display>
+        <title>单例设计模式</title>
+        <pubTime>2017-02-23T12:48:51.000Z</pubTime>
+        
+        <tag>设计模式 </tag>
+         
+         
+           
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.myzwl.win/2017/02/22/fenqu/</loc>
+    <lastmod>2017-04-07T10:13:00.000Z</lastmod>
     <data>
         <display>
         <title>window分区导致双系统无引导界面</title>
-        <pubTime>2017-03-17T06:09:42.000Z</pubTime>
+        <pubTime>2017-02-22T06:09:42.000Z</pubTime>
         
         <tag>踩坑 , window </tag>
          
          
            
+             
+              <breadCrumb title="学习踩坑" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E8%B8%A9%E5%9D%91/"/>
+          
         </display>
     </data>
     </url>
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/03/16/dajianserver/</loc>
-    <lastmod>2017-03-18T13:20:16.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/02/21/dajianserver/</loc>
+    <lastmod>2017-04-07T10:12:12.000Z</lastmod>
     <data>
         <display>
         <title>阿里云服务器上搭建javaweb站点</title>
-        <pubTime>2017-03-16T09:48:51.000Z</pubTime>
+        <pubTime>2017-02-21T09:48:51.000Z</pubTime>
         
         <tag>踩坑 , window </tag>
          
          
            
+             
+              <breadCrumb title="学习踩坑" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E8%B8%A9%E5%9D%91/"/>
+          
         </display>
     </data>
     </url>
 
     
   <url>
-    <loc>http://www.myzwl.win/2017/03/12/hexo1/</loc>
-    <lastmod>2017-03-18T13:11:52.000Z</lastmod>
+    <loc>http://www.myzwl.win/2017/02/20/hexo1/</loc>
+    <lastmod>2017-04-07T10:10:56.000Z</lastmod>
     <data>
         <display>
         <title>初步搭建hexo博客</title>
-        <pubTime>2017-03-12T09:48:51.000Z</pubTime>
+        <pubTime>2017-02-20T09:48:51.000Z</pubTime>
         
-        <tag>踩坑 , hexo </tag>
+        <tag>github </tag>
          
          
            
+             
+              <breadCrumb title="学习总结" url="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+          
         </display>
     </data>
     </url>
 
+    
+    
     
 </urlset>

@@ -5,17 +5,383 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-04-07T04:53:44.000Z</updated>
+  <updated>2017-04-08T04:42:14.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>hibernate之四:反向工程</title>
+    <link href="http://www.myzwl.win/2017/04/04/hbm4/"/>
+    <id>http://www.myzwl.win/2017/04/04/hbm4/</id>
+    <published>2017-04-04T07:48:51.000Z</published>
+    <updated>2017-04-08T04:42:14.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在运用持久层框架时，先前我们都是先通过建立对象—映射文件—数据库的方法，倘若数据库中的表非常多和复杂时，我们可以改变下开发顺序，即从数据库自动生成映射文件和对象，这样涉及表之间的关系，级联或者主外键约束就自动生成，更方便。一般我们用hibernate的反向工程达到此目的。</p>
+<p>不多说，先模拟一个案例。<br>首先建立三张表user，picture，addr表，分别如下<br>User表<br><img src="/images/imgs3/1.gif" alt="Alt text"></p>
+<p>Picture表<br><img src="/images/imgs3/2.gif" alt="Alt text"></p>
+<p>外键<br><img src="/images/imgs3/3.gif" alt="Alt text"></p>
+<p>这里的uid是外键对应user表的主键，并且只有当user的id删除时，对应uid相应的记录删除</p>
+<p>Addr表<br><img src="/images/imgs3/4.gif" alt="Alt text"></p>
+<p>外键<br><img src="/images/imgs3/5.gif" alt="Alt text"></p>
+<p>通过myeclipse 提供 数据库浏览器连接到我们的mysql数据库<br><img src="/images/imgs3/6.gif" alt="Alt text"></p>
+<p>然后点击右键，选择new，出现如下界面<br><img src="/images/imgs3/7.gif" alt="Alt text"></p>
+<p>首先选择数据库，然后填写相关配置信息，其中Driver name随便取，添加jar包，然后点击test Driver，如股票成功，则表示与数据库连接成功，此外，可以选择保存密码，不然，后续操作一次，就要输入密码<br>直接点击finish，</p>
+<p>接下来在MyEclipse中创建一个web工程，通过工具自身引入hibernate，具体步骤如下<br><img src="/images/imgs3/8.gif" alt="Alt text"></p>
+<p><img src="/images/imgs3/9.gif" alt="Alt text"></p>
+<p>选择之前配置好的sshe</p>
+<p><img src="/images/imgs3/10.gif" alt="Alt text"></p>
+<p>直接点结束，这样hibernate就引入了。</p>
+<p>下面我们使用myeclipse提供的逆向工程，自动的创建对象类和对象关系映射文件<br>选中要反向的表<br><img src="/images/imgs3/11.gif" alt="Alt text"></p>
+<p>注意我们可以事先在项目中新建一个包，用来存放映射对象和文件<br><img src="/images/imgs3/12.gif" alt="Alt text"></p>
+<p>最后点击finish，则自动生成了。<br><img src="/images/imgs3/13.gif" alt="Alt text"></p>
+<p>最后值得注意的是，这里只是模拟了三张表，有一对多和多对一关系，主外键及级联，这样就省得我们自己去配置了，因为hibernate的关系配置真的很麻烦！！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在运用持久层框架时，先前我们都是先通过建立对象—映射文件—数据库的方法，倘若数据库中的表非常多和复杂时，我们可以改变下开发顺序，即从数据库自
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hibernate之三:浅谈HQL和映射文件</title>
+    <link href="http://www.myzwl.win/2017/04/03/hbm3/"/>
+    <id>http://www.myzwl.win/2017/04/03/hbm3/</id>
+    <published>2017-04-03T07:48:51.000Z</published>
+    <updated>2017-04-08T04:21:18.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>当我们想要精确的查找某一个数据库中的信息时，最理想的方法就是通过sql语句查询，一般hibernate中可以通过query接口来写语句进行查询，这个语句可以使sql，hql，当然推荐的是hql，事实上我认为hql和sql基本差不多</p>
+<p>一：Query接口<br>    Query接口类型的对象可以对数据库操作,它可以使用Hql和原生SQL(native Sql)对数据库操作.官方推荐使用Hql语句<br>先来看一个例子</p>
+<p>测试代码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">	public void selectone()&#123;</div><div class="line">	User u=(User)session.createQuery(" from User where id=1").uniqueResult();</div><div class="line">	System.out.println(u.getName());&#125;</div></pre></td></tr></table></figure></p>
+<p>分析：这里用了uniqueResult()方法 ，如果我们检索一个对象，明确知道最多只有一个对象，则建议使用该方法:</p>
+<p>如果是取出集合对象，则使用如下方法：<br>测试代码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public void selectone()&#123;		</div><div class="line">List&lt;User&gt; list=session.createQuery("from User").list();</div><div class="line">     for(User user : list)&#123;</div><div class="line">	System.out.println(user.getName());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>由此我们可以发现，使用list可以取出集合对象，同时方法里面写想要的hql语句</p>
+<p>二：HQL简单语法<br>  HQL是面向对象的查询语言，与SQL不同，HQL中的对象名是区分大小写的；HQL中查的是对象而不是表，并且支持多态；HQL主要通过Query来操作，Query的创建方式：</p>
+<blockquote>
+<p>Query q = session.createQuery(hql);</p>
+</blockquote>
+<p>1：between.. and..<br>  测试代码：</p>
+<blockquote>
+<p>List<user> list=session.createQuery(“from User where id between 0 and 2”).list();</user></p>
+</blockquote>
+<p>2：in /not in</p>
+<blockquote>
+<p>List<user> list=session.createQuery(“from User where id in (1,2)”).list();</user></p>
+</blockquote>
+<p>其他如group by，having，聚集函数等都类似于sql语句，换汤不换药。</p>
+<p>参数绑定：<br> 先看例子：</p>
+ <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">org.hibernate.Query query= session.createQuery("from User where id between ? and ?");</div><div class="line">	      query.setInteger(0, 1);</div><div class="line">	      query.setInteger(1,2);</div><div class="line">	      List&lt;User&gt; list=query.list();</div><div class="line">	      for(User user : list)&#123;</div><div class="line">	  		System.out.println(user.getName());</div><div class="line">	  	&#125;</div></pre></td></tr></table></figure>
+<p>主要通过set与？的形式来注入参数，注意这里第一个？对应set的序号为0<br>使用绑定参数的好处:<br>1.可读性好.<br>2.性能提高.<br>3.防止sql注入</p>
+<p>HQL语句远不止这些，这里只简单介绍了其中一些，</p>
+<p>三：映射文件的配置<br> 映射文件的内容繁多，这里只简单介绍其中一些常见属性。大体说来，映射文件主要对class的映射，还包括属性，属性又分为主键，普通属性和集合属性，甚至还有复合属性，每种属性都需要进行不同的配置。</p>
+<p> 先从入门程序中的例子说起：</p>
+<blockquote>
+<p> <hibernate-mapping package="com.zwl.bean"></hibernate-mapping></p>
+<class name="User" table="user">
+
+</class></blockquote>
+<p>其中：package : 表示该类在哪个包下，name : 表示类名 table 表示 该类和哪个表映射<br>同时在class内部可以配置各种属性</p>
+<p>主键：<br> 主键就是持久化类中标识属性，用于唯一标识该对象，主要通过<id>进行设置，有三个常用属性：name，column，type。<br>  Name  ：表示类的哪个属性是主键   必须指定<br>Column：指定在数据库中主键对应的列明  不必须指定<br>  Type：与数据库中对应字段类型一致  不必须指定<br>例外：主键需指定主键生产策略，即generator，一般用于自增长，针对不同数据库，关键词不一样，由于是mysql，所以自增长选择increment<br>以上的代码表示：</id></p>
+ <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;id name=<span class="string">"id"</span> type=<span class="string">"java.lang.Integer"</span>&gt;</div><div class="line">		&lt;generator class=<span class="string">"increment"</span>&gt;</div><div class="line">		&lt;/generator&gt;</div><div class="line">		&lt;/id&gt;</div></pre></td></tr></table></figure>
+<p>普通属性：<br>  使用<property>标签，该标签必须指定name属性，用于标记持久化类的属性名称。一般有如下常见属性：<br> Type，column，not-null（是否允许为空），lazy（是否支持延迟加载，默认为false不支持），<br>代码如下：</property></p>
+ <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;property name=<span class="string">"name"</span> type=<span class="string">"java.lang.String"</span>&gt;</div><div class="line">		&lt;column name=<span class="string">"name"</span> not-null=<span class="string">"false"</span>/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name=<span class="string">"age"</span> type=<span class="string">"java.lang.Integer"</span>&gt;</div><div class="line">		&lt;column name=<span class="string">"age"</span> not-null=<span class="string">"false"</span>/&gt;</div><div class="line">		&lt;/property&gt;</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;当我们想要精确的查找某一个数据库中的信息时，最理想的方法就是通过sql语句查询，一般hibernate中可以通过query接口来写语句进行查
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hibernate之二:核心类和接口</title>
+    <link href="http://www.myzwl.win/2017/04/02/hbm2/"/>
+    <id>http://www.myzwl.win/2017/04/02/hbm2/</id>
+    <published>2017-04-02T07:48:51.000Z</published>
+    <updated>2017-04-08T04:04:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>当我们对数据进行持久化操作时，必然涉及到hibernate的一些核心类，而这些类是我们在增删改查之前必然要引用和加载的<br>先看总览图：<br><img src="/images/imgs2/26.gif" alt="Alt text"></p>
+<p>一般情况下，是由下向上看。</p>
+<p>一 ：hibernate.cfg.xml文件<br>①该文件主要用于指定各个参数,是hibernate核心文件<br>    ②默认放在src目录下，也可以放在别的目录下。<br>    ③指定连接数据库的驱动、用户名、密码、url、连接池..<br>    ④指定对象关系映射文件的位置.<br>    ⑤也可使用hibernate.properties文件来替代该文件.(推荐使用<br>hibernate.cfg.xml)。<br>  如：入门程序代码：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;hibernate-configuration&gt;</div><div class="line">	&lt;session-factory&gt;</div><div class="line">		&lt;property name=<span class="string">"connection.driver_class"</span>&gt;com<span class="selector-class">.mysql</span><span class="selector-class">.jdbc</span><span class="selector-class">.Driver</span>&lt;/property&gt;</div><div class="line">		&lt;property name=<span class="string">"connection.url"</span>&gt;jdbc:mysql:<span class="comment">//localhost:9806/sshe&lt;/property&gt;</span></div><div class="line">		&lt;property name=<span class="string">"connection.username"</span>&gt;root&lt;/property&gt;</div><div class="line">		&lt;property name=<span class="string">"connection.password"</span>&gt;&lt;/property&gt;</div><div class="line">		&lt;!-- 配置显示hibernate生成的 sql ,特别说明，在开发阶段设为true利于调试，在使用项目则设为false--&gt;</div><div class="line">		&lt;property name=<span class="string">"show_sql"</span>&gt;true&lt;/property&gt;</div><div class="line">		&lt;!-- 配置数据库的方言/ --&gt;</div><div class="line">		&lt;property name=<span class="string">"dialect"</span>&gt;org<span class="selector-class">.hibernate</span><span class="selector-class">.dialect</span><span class="selector-class">.MySQL5InnoDBDialect</span>&lt;/property&gt;</div><div class="line">		 &lt;!-- 配置管理的对象映射文件 --&gt;</div><div class="line">		&lt;mapping resource=<span class="string">"com/zwl/bean/User.hbm.xml"</span>/&gt;</div><div class="line">	&lt;/session-factory&gt;</div><div class="line">&lt;/hibernate-configuration&gt;</div></pre></td></tr></table></figure></p>
+<p>二：对象关系映射文件(*.hbm.xml)</p>
+<p>  ①该文件主要作用是建立表和类的映射关系，是不可或缺的重要文件.<br>  ②一般放在其映射的类同一个目录下,但不是必须的。<br>  ③命名方式一般是 类名.hbm.xml,但不是必须的。<br>  ④示意图:<br><img src="/images/imgs2/27.gif" alt="Alt text"></p>
+<p>如：入门程序代码：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;!-- package : 表示该类在哪个包下 --&gt;</div><div class="line">&lt;hibernate-mapping package=<span class="string">"com.zwl.bean"</span>&gt;</div><div class="line">&lt;!-- name : 表示类名 <span class="selector-tag">table</span> 表示 该类和哪个表映射 --&gt;</div><div class="line">	&lt;class name=<span class="string">"User"</span> table=<span class="string">"user"</span>&gt;</div><div class="line">		&lt;!-- id元素专门用于指定主键是如何生成,hibernate设计者认为，我们每一个表都应该有一个主键 --&gt;</div><div class="line">		&lt;!-- name:表示类的哪个属性是主键 --&gt;</div><div class="line">		&lt;id name=<span class="string">"id"</span> type=<span class="string">"java.lang.Integer"</span>&gt;</div><div class="line">		&lt;!-- 指定主键生成策略 --&gt;</div><div class="line">		&lt;generator class=<span class="string">"increment"</span>&gt;</div><div class="line">		&lt;/generator&gt;</div><div class="line">		&lt;/id&gt;</div><div class="line">		&lt;!-- property 里是普通属性 , column表示该属性映射到表中哪个字段 --&gt;</div><div class="line">		&lt;property name=<span class="string">"name"</span> type=<span class="string">"java.lang.String"</span>&gt;</div><div class="line">		&lt;column name=<span class="string">"name"</span> not-null=<span class="string">"false"</span>/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name=<span class="string">"age"</span> type=<span class="string">"java.lang.Integer"</span>&gt;</div><div class="line">		&lt;column name=<span class="string">"age"</span> not-null=<span class="string">"false"</span>/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div></pre></td></tr></table></figure></p>
+<p>三：Configuration 类<br>它的用处是:</p>
+<ol>
+<li>读取hibernate.cfg.xml</li>
+<li>管理对象关系映射文件 <mapping resource="””"></mapping></li>
+<li>加载hibernate 的驱动,url ,用户..</li>
+<li>管理hibernate配置信息</li>
+</ol>
+<p>创建的代码：</p>
+<blockquote>
+<p>Configuration cf=new Configuration().configure();</p>
+</blockquote>
+<p>四：SessionFactory （会话工厂）<br>这是典型的工厂设计模式，其是用来生产session实例的，注意由于该工厂启动耗费内存，所以应该只被初始化一次，并且应该是线程安全的，所以应该用单例模式设计</p>
+<p>归纳一下特点：<br>1 缓存sql语句和某些数据</p>
+<p>2.在应用程序初始化的时候创建,是一个重量级的类(吃内存),一般<br>用单例模式保证一个应用中只需要一个 SessionFactory实例.</p>
+<p>3.如果某个应用访问多个数据库，则要创建多个会话工厂实例,一般<br>是一个数据库一个会话工厂实例.</p>
+<p>4.通过SessionFactory接口可以获得Session(会话)实例</p>
+<p>创建的代码：</p>
+<blockquote>
+<p>SessionFactory sf=cf.buildSessionFactory();</p>
+</blockquote>
+<p>五：Session<br> 1.Session一个实例代表与数据库的一次操作<br>(当然一次操作可以是crud组合)</p>
+<p> 2.Session实例通过SessionFactory获取，用完<br>需要关闭。</p>
+<p> 3.Session是线程不同步的(不安全),因此要保证<br>在同一线程中使用,可以用getCurrentSessiong()。</p>
+<p> 4.Session可以看做是持久化管理器,它是与持久<br>化操作相关的接口</p>
+<p>如图所示：<br><img src="/images/imgs2/28.gif" alt="Alt text"></p>
+<p>另外：有两种方式获得session<br>1：通过openSession()获取session<br>openSession() 是获取一个新的session<br>2 getCurrentSession ()<br>  getCurrentSession () 获取和当前线程绑定的session,换言之，在同一个线程中，我们获取的session是同一session,这样可以利于事务控制</p>
+<p>创建的代码：</p>
+<blockquote>
+<p>Session s=sf.getCurrentSession();<br>//或者是: Session s=sf.openSession();</p>
+</blockquote>
+<p>如何选择<br>原则:<br>1.如果需要在同一线程中，保证使用同一个Session则，使用getCurrentSession()<br>2.如果在一个线程中，需要使用不同的Session,则使用opentSession()<br>通过 getCurrentSession() 获取的session在事务提交后，会自动关闭，通过openSession()获取的session则必须手动关闭<br>如果是通过getCurrentSession() 获取 sesssion ,进行查询需要事务提交</p>
+<p>Session(会话)接口的几个重要方法<br>Session一般以对象的形式来操作<br>    1保存一个对象(记录)—save方法<br>    2删除一个对象(记录)—delete方法<br>    3查询一个对象(记录)—get/load方法<br>    4修改一个对象(记录)—update方法</p>
+<p>如：入门程序中的代码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Sava方法：User u=new User();</div><div class="line">	   u.setId(1);</div><div class="line">	  u.setName("hello world");</div><div class="line">	  u.setAge(21);</div><div class="line">	 session.save(u);</div><div class="line">	 t.commit();</div><div class="line"></div><div class="line"></div><div class="line">Delete方法：User u=(User)session.get(User.class, 1);</div><div class="line">		    session.delete(u);</div><div class="line">		    t.commit();</div></pre></td></tr></table></figure>
+<p>一般情况下，我们从数据库中获取对象，可以通过session.get（或者session.load（）），那么他们有什么区别了？<br>1、get()方法直接返回实体类,如果查不到数据则返回null。load()会<br>    返回一个实体代理对象（当前这个对象可以自动转化为实体对象），<br>    但当代理对象被调用时，如果没有数据不存在，就会抛出个<br>    org.hibernate.ObjectNotFoundException异常</p>
+<p>这里：可以将get看做单例中的饿汉式，而load相当于懒汉式</p>
+<ol>
+<li><p>load先到缓存(session缓存/二级缓存)中去查，如果没有则返回一个<br>代理对象（不马上到DB中去找），等后面使用这个代理对象操作的时<br>候，才到DB中查询,这就是我们常说的 load在默认情况下支持延迟加<br>载（lazy）</p>
+</li>
+<li><p>get先到缓存(session缓存/二级缓存)中去查，如果没有就到DB中去<br> 查（即马上发出sql）。总之，如果你确定DB中有这个对象就用<br> load(),不确定就用get()（这样效率高）</p>
+</li>
+</ol>
+<p>这里有一点注意：默认lazy加载时不启用，所以如果要启用，则需要在映射文件中配置</p>
+<blockquote>
+ <class name="User" table="user" lazy="true">
+
+</class></blockquote>
+<p>六：Transaction(事务)接口<br>    事务简单的说,就是一组对数据库的操作集合,它们要么全部成功,要<br>么全部失败.这个可以保证数据的一致性,事务具有原子性。</p>
+<p>创建的代码：</p>
+<blockquote>
+<p>Transaction ts=s.beginTransaction();<br> …<br>ts.commit();s.close()； </p>
+</blockquote>
+<p>注意：如果数据库的数据发生变化，一定需要数据提交</p>
+<p>七：Criteria接口<br>如入门程序的查询：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">List&lt;User&gt; list=session.createCriteria(User.class).list();</div><div class="line">		for(User user : list)&#123;</div><div class="line">			System.out.println(user.getName());</div><div class="line">		&#125;</div></pre></td></tr></table></figure></p>
+<p>即通过面向对象的操作，返回该对象所有的集合</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;当我们对数据进行持久化操作时，必然涉及到hibernate的一些核心类，而这些类是我们在增删改查之前必然要引用和加载的&lt;br&gt;先看总览图：&lt;
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hibernate之一:hello world</title>
+    <link href="http://www.myzwl.win/2017/04/01/hbm1/"/>
+    <id>http://www.myzwl.win/2017/04/01/hbm1/</id>
+    <published>2017-04-01T07:48:51.000Z</published>
+    <updated>2017-04-08T04:03:40.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>对一个框架的直观认识，往往是从一个hello world程序开始的。Hibernate是一个完全的ORM（Object Relationship Mapping）对象映射框架。实现了JDBC轻量级的封装，使得在进行JDBC开发的时候可以直接使用面向对象的思维进行开发，说白了hibernate框架的作业就是在java对象和关系数据库中作了一个映射，使得程序员不用再使用各种SQL语句</p>
+<p>Hibernate有如下几个特点：<br>  1：完成了对JDBC的封装，不用再与各种connection打交道<br> 2：是一个持久层框架，即对数据库进行持久化操作<br> 3：是一个ORM框架，不用再与各种sql打交道</p>
+<p>接下里就是hibernate入门程序，目的先有一个直观认识，不考虑其含义，只要把流程走一遍就完成了目的。这里用最简的方式完成入门程序</p>
+<p>步骤一：创建一个java 工程</p>
+<p>步骤二：建一个lib文件夹，并导入如下jar包，然后添加至项目中<br><img src="/images/imgs2/25.gif" alt="Alt text"></p>
+<p>步骤三：在src目录下创建一个hibernate.cfg.xml配置文件，并编写，同时添加mysql驱动包<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line">&lt;!DOCTYPE hibernate-configuration PUBLIC</div><div class="line">	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"</div><div class="line">	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"&gt;</div><div class="line">&lt;!-- 该文件用于配置连接数据的种类,用户名，密码,ul ,驱动.. 连接池,二级缓存 --&gt;</div><div class="line">&lt;hibernate-configuration&gt;</div><div class="line">	&lt;session-factory&gt;</div><div class="line">		&lt;property name="connection.driver_class"&gt;com.mysql.jdbc.Driver&lt;/property&gt;</div><div class="line">		&lt;property name="connection.url"&gt;jdbc:mysql://localhost:9806/sshe&lt;/property&gt;</div><div class="line">		&lt;property name="connection.username"&gt;root&lt;/property&gt;</div><div class="line">		&lt;property name="connection.password"&gt;yourpassword&lt;/property&gt;</div><div class="line">		&lt;!-- 配置显示hibernate生成的 sql ,特别说明，在开发阶段设为true利于调试，在使用项目则设为false--&gt;</div><div class="line">		&lt;property name="show_sql"&gt;true&lt;/property&gt;</div><div class="line">		&lt;!-- 配置数据库的方言/ --&gt;</div><div class="line">		&lt;property name="dialect"&gt;org.hibernate.dialect.MySQLDialect&lt;/property&gt;</div><div class="line">	&lt;/session-factory&gt;</div><div class="line">&lt;/hibernate-configuration&gt;</div></pre></td></tr></table></figure></p>
+<p>简单说明一下：上面的配置文件指明了一些必要的数据库连接属性，通过这些属性，hibernate可以连接上数据库，可以配置不同的数据库，其中配置数据库的方言指明所配置的是用哪种数据库</p>
+<p>步骤四：创建bean对象<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">package com.zwl.bean;</div><div class="line"></div><div class="line">public class User &#123;</div><div class="line"></div><div class="line">	private int age;</div><div class="line">	private int id;</div><div class="line">	private String name;</div><div class="line">。。。此处省略set与get方法</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里注意：利用hibernate框架时，鼓励我们为每张表设置主键，即为每个对象设置一个id，在映射时与表的id对应</p>
+<p>步骤五：创建数据库表，这个步骤也可以在步骤四之前进行。<br>主要为id（主键，自增长），name、age</p>
+<p>步骤六：编写表与对象的映射文件User.hbm.xml<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line">&lt;!--该文件要清楚地表述出 类 和 表 的对应关系--&gt;</div><div class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC</div><div class="line">	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"</div><div class="line">	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;</div><div class="line">&lt;!-- package : 表示该类在哪个包下 --&gt;</div><div class="line">&lt;hibernate-mapping package="com.zwl.bean"&gt;</div><div class="line">&lt;!-- name : 表示类名 table 表示 该类和哪个表映射 --&gt;</div><div class="line">	&lt;class name="User" table="user"&gt;</div><div class="line">		&lt;!-- id元素专门用于指定主键是如何生成,hibernate设计者认为，我们每一个表都应该有一个主键 --&gt;</div><div class="line">		&lt;!-- name:表示类的哪个属性是主键 --&gt;</div><div class="line">		&lt;id name="id" type="java.lang.Integer"&gt;</div><div class="line">		&lt;!-- 指定主键生成策略 --&gt;</div><div class="line">		&lt;generator class="increment"&gt;</div><div class="line">		&lt;/generator&gt;</div><div class="line">		&lt;/id&gt;</div><div class="line">		&lt;!-- property 里是普通属性 , column表示该属性映射到表中哪个字段 --&gt;</div><div class="line">		&lt;property name="name" type="java.lang.String"&gt;</div><div class="line">		&lt;column name="name" not-null="false"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name="age" type="java.lang.Integer"&gt;</div><div class="line">		&lt;column name="age" not-null="false"/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">	&lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div></pre></td></tr></table></figure></p>
+<p>简单说明一下：上面已经简要说明了一些含义，这里先看做强加的概念，事实上这是比较完整的配置，当然这里并没有给出简化的配置。同时，该文件相当于在java对象和数据库表中作了一个映射，这样以后就可以通过操作java对象来间接操作表<br> 另外，该映射文件一般放在与相应的java对象同处一个文件夹下，并且命名满足规范XXX.hbm.xml，其中xxx就是java对象名，最后还要在hibernate核心配置文件中声明该映射，即加入如下代码：</p>
+<blockquote>
+ <mapping resource="com/zwl/bean/User.hbm.xml">
+
+</mapping></blockquote>
+<p> 步骤六：就是进行测试，实现插入数据的crud操作</p>
+<p> 首先写一个工具类：<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">package com.zwl.utils;</div><div class="line"></div><div class="line">import org.hibernate.SessionFactory;</div><div class="line">import org.hibernate.cfg.Configuration;</div><div class="line"></div><div class="line">public class HibernateUtils &#123;</div><div class="line">    private static final SessionFactory sessionFactory=BuildSessionFactory();</div><div class="line">    </div><div class="line">    private static SessionFactory BuildSessionFactory()&#123;</div><div class="line">    	try &#123;</div><div class="line">			return new Configuration().configure().buildSessionFactory();</div><div class="line">		&#125; catch (Exception e) &#123;</div><div class="line">			throw new ExceptionInInitializerError(e);</div><div class="line">		&#125;</div><div class="line">    &#125;</div><div class="line">	</div><div class="line">	public static SessionFactory getSessionFactory()&#123;</div><div class="line">		return sessionFactory;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>简单说明一下，这里采用单例模式，目的是为了不要每次都加载配置，不然太耗费内存</p>
+<p>接下来是测试类，首先是增加功能<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public class Usertest &#123;</div><div class="line"></div><div class="line">	SessionFactory sessionFactory=HibernateUtils.getSessionFactory();</div><div class="line">	Session session=sessionFactory.openSession();</div><div class="line">	Transaction t=session.beginTransaction();</div><div class="line"></div><div class="line">@Test</div><div class="line">public void save()&#123;</div><div class="line">	User u=new User();</div><div class="line">	u.setId(1);</div><div class="line">	u.setName("hello world");</div><div class="line">	u.setAge(21);</div><div class="line">	</div><div class="line">	session.save(u);</div><div class="line">	t.commit();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接下来是查询（遍历）<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//查询</div><div class="line">	@Test</div><div class="line">	public void select()&#123;</div><div class="line">		List&lt;User&gt; list=session.createCriteria(User.class).list();</div><div class="line">		for(User user : list)&#123;</div><div class="line">			System.out.println(user.getName());</div><div class="line">		&#125;</div></pre></td></tr></table></figure></p>
+<p>最后是删除：<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//删除</div><div class="line">	@Test</div><div class="line">	public void delete()&#123;</div><div class="line">		User u=(User)session.get(User.class, 1);</div><div class="line">		session.delete(u);</div><div class="line">		t.commit();</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>修改这里就先不说了。<br>至此入门程序完成，意在了解hibernate的具体过程，有没有发现，到目前为止，我们都没有写sql语句，而都是对java对象进行操作，来操作表</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;对一个框架的直观认识，往往是从一个hello world程序开始的。Hibernate是一个完全的ORM（Object Relationsh
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>struts2 之六:拦截器</title>
+    <link href="http://www.myzwl.win/2017/03/31/structs6/"/>
+    <id>http://www.myzwl.win/2017/03/31/structs6/</id>
+    <published>2017-03-31T13:48:51.000Z</published>
+    <updated>2017-04-07T10:30:18.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>拦截器是structs2框架的核心功能，理解并使用拦截器有助于更灵活使用structs2.它像一个可插播的组件，围绕action和result进行，可以在方法调用之前、之后使用。通过structs2的工作流程，可以发现调用一个action之前之后有许多的拦截器，这些拦截器都通过后才可以执行具体的action。对与每一个拦截器来说，可以直接返回，从而终止余下的拦截器</p>
+<p>以下，是structs工作原理图<br><img src="/images/imgs2/24.gif" alt="Alt text"></p>
+<p>从图中可以看出，从一个具体的请求到action需要经过多个拦截器，action处理完成后，后续的拦截器会据需执行，最终到浏览器中。大概其工作流程如下</p>
+<p>上述的servlet filters图示与实际有点不一样，其他一样（图不是现在版本）</p>
+<p>一 首先请求发送给StrutsPrepareAndExecuteFilter（web.xml配置那个）</p>
+<p>二：StrutsPrepareAndExecuteFilter判断该请求是否是一个structs2请求，如果是则进入第3步</p>
+<p>三：如果是structs2请求，则把请求交给ActionProxy，是action代理类，ActionProxy创建一个Actioninvocation实例，并进行初始化</p>
+<p>在执行具体的action之前，actionProxy会设计相关拦截器的调用<br>Action调用结束后，会根据structs.xml文件中action的result配置对象得到对应的返回结果。调用execute方法之后，执行后面的拦截器，把结果返回给浏览器</p>
+<p>从整个请求处理过程来看，拦截器是处理的关键</p>
+<p>下面将通过实现Interceptor接口来写一个简单的拦截器，<br>该接口有三个方法，init（），destroy（），intercept（），init（）在拦截器实例创建之后，intercept方法之前调用，主要用于初始化拦截器所需要的资源，destroy主要销毁初始化分配的资源，intercept方法则是在action之前调用，可以通过invocation对象获取action状态，从而根据状态的不同进行需要的拦截操作<br> 如下为一个简单的模拟案例</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">import com.opensymphony.xwork2.ActionInvocation;</div><div class="line">import com.opensymphony.xwork2.interceptor.Interceptor;</div><div class="line"></div><div class="line">public class lanji implements Interceptor &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void destroy() &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void init() &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public String intercept(ActionInvocation invocation) throws Exception &#123;</div><div class="line">		long start=System.currentTimeMillis();</div><div class="line">		String result=invocation.invoke();//没有拦截，正常执行</div><div class="line">		long end=System.currentTimeMillis();</div><div class="line">		System.out.println(end-start);</div><div class="line">		return result;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后就需要在配置文件中配置<br>首先申明该拦截器<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;interceptors&gt;</div><div class="line">		&lt;interceptor name=<span class="string">"lanji"</span> class=<span class="string">"com.zwl.pojo.lanji"</span>&gt;&lt;/interceptor&gt;</div><div class="line">		&lt;/interceptors&gt;</div><div class="line">在action中引用</div><div class="line">&lt;action name=<span class="string">"ognlaction"</span> class=<span class="string">"com.zwl.action.ognlaction"</span>&gt;</div><div class="line">  &lt;interceptor-ref name=<span class="string">"lanji"</span>&gt;&lt;/interceptor-ref&gt;</div><div class="line">			 &lt;interceptor-ref name=<span class="string">"defaultStack"</span>&gt;&lt;/interceptor-ref&gt;</div><div class="line">  &lt;/action&gt;</div></pre></td></tr></table></figure></p>
+<p>注意必须要带上默认拦截器</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;拦截器是structs2框架的核心功能，理解并使用拦截器有助于更灵活使用structs2.它像一个可插播的组件，围绕action和resul
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>struts2 之五:通用标签</title>
+    <link href="http://www.myzwl.win/2017/03/30/structs5/"/>
+    <id>http://www.myzwl.win/2017/03/30/structs5/</id>
+    <published>2017-03-30T12:48:51.000Z</published>
+    <updated>2017-04-07T10:30:22.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p> Struts2框架为我们提供了许多标签，这些标签从总体上可以分为两类：通用标签和ui标签。而较常使用的是通用标签，通用标签又分为两类，数据标签和控制标签。数据标签用于访问值栈中的数据。控制标签用于控制呈现页面时数据执行流程。</p>
+<p> 不过使用structs2标签，需要在jsp首部加入如下代码</p>
+<blockquote>
+<p> &lt;%@ taglib uri=”/struts-tags” prefix=”s” %&gt;</p>
+</blockquote>
+<p>数据标签<br> 主要用于访问actioncontext和值栈中的数据</p>
+<p>一：property标签</p>
+<blockquote>
+<p>格式：<s:property value="””default=””" escape="”true|false”/"></s:property></p>
+</blockquote>
+<p>如果value中的内容为object，则Struts2都会把它解析成ognl表达式<br>     如果里面需要表示为字符串，则需要将内容用单引号括起来</p>
+<p>1、  利用ognl表达式取值(例如：取值堆栈中的username值)<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;s:property value=<span class="string">"username"</span>/&gt;</div></pre></td></tr></table></figure></p>
+<p>2、  取值为字符串<br>需要将内容用单引号括起来<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;s:property value=<span class="string">"’username’"</span>/&gt;</div></pre></td></tr></table></figure></p>
+<p>3、  设置默认值-default<br>如果一个对象值取不到，则可以使用default设置一个默认值。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;s:property value=<span class="string">"admin"</span> default=”管理员”/&gt;</div></pre></td></tr></table></figure></p>
+<p>4、  设定HTML-escape<br>是否设置返回值为HTML原代码样式<br>true：解析返回值的html代码　false:原封不动返回值<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;s:property value=<span class="string">"'&lt;hr/&gt;'"</span> escape=<span class="string">"false"</span>/&gt;</div></pre></td></tr></table></figure></p>
+<p>二、 set标签<br>注：var　用于设定变量名<br>     value 变量值(可以是ognl表达式)，也可以是字符串<br>         scope 就是的作用范围 request session page application action(默认)</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;li&gt;set 设定adminName值（默认为request 和 ActionContext）: &lt;s:set var=<span class="string">"adminName"</span>value=<span class="string">"username"</span> /&gt;&lt;/li&gt;</div><div class="line">      </div><div class="line">&lt;li&gt;set 从request取值: &lt;s:property value=<span class="string">"#request.adminName"</span> /&gt;&lt;/li&gt;</div><div class="line">&lt;li&gt;set 从ActionContext取值: &lt;s:property value=<span class="string">"#adminName"</span> /&gt;&lt;/li&gt;</div><div class="line"></div><div class="line"></div><div class="line">&lt;li&gt;set 设定var，范围为ActionContext: &lt;s:set var=<span class="string">"adminPassword"</span> value=<span class="string">"password"</span>scope=<span class="string">"session"</span>/&gt;&lt;/li&gt;</div><div class="line">&lt;li&gt;set 使用#取值: &lt;s:property value=<span class="string">"#adminPassword"</span>/&gt; &lt;/li&gt;</div><div class="line">&lt;li&gt;set 从相应范围取值: &lt;s:property value=<span class="string">"#session.adminPassword"</span>/&gt; &lt;/li&gt;</div></pre></td></tr></table></figure>
+<p>控制标签<br> 一： If  elseif  else<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">age = &lt;s:property value=<span class="string">"#parameters.age[0]"</span> /&gt; &lt;br /&gt;</div><div class="line">     &lt;s:set var=<span class="string">"age"</span> value=<span class="string">"#parameters.age[0]"</span> /&gt;</div><div class="line">     &lt;s:<span class="keyword">if</span> test=<span class="string">"#age &lt; 0"</span>&gt;wrong age!&lt;/s:<span class="keyword">if</span>&gt;</div><div class="line">     &lt;s:elseif test=<span class="string">"#parameters.age[0] &lt; 20"</span>&gt;too young!&lt;/s:elseif&gt;</div><div class="line">     &lt;s:<span class="keyword">else</span>&gt;yeah!&lt;/s:<span class="keyword">else</span>&gt;&lt;br /&gt;</div></pre></td></tr></table></figure></p>
+<p>二：Iterator标签<br>一般格式如下<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> &lt;s:iterator value=<span class="string">"值"</span> var=<span class="string">"x"</span>&gt;</div><div class="line">&lt;s:property value=<span class="string">"#x.username"</span> /&gt;</div></pre></td></tr></table></figure></p>
+<p>这个格式将集合里的内容取出<br>该属性一般有三个属性，id，status，value<br>其中value属性指定迭代的集合，status属性可以获得迭代中一个状态信息（比如索引值，是否是奇偶数等）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;s:iterator value="&#123;'aaa', 'bbb', 'ccc'&#125;" status="status"&gt;</div><div class="line">          &lt;s:property/&gt; |</div><div class="line">          遍历过的元素总数：&lt;s:property value="#status.count"/&gt; |</div><div class="line">          遍历过的元素索引：&lt;s:property value="#status.index"/&gt; |</div><div class="line">          当前是偶数？：&lt;s:property value="#status.even"/&gt; |</div><div class="line">          当前是奇数？：&lt;s:property value="#status.odd"/&gt; |</div><div class="line">          是第一个元素吗？：&lt;s:property value="#status.first"/&gt; |</div><div class="line">          是最后一个元素吗？：&lt;s:property value="#status.last"/&gt;</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt; Struts2框架为我们提供了许多标签，这些标签从总体上可以分为两类：通用标签和ui标签。而较常使用的是通用标签，通用标签又分为两类，数据
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>struts2 之四:OGNL表达式</title>
+    <link href="http://www.myzwl.win/2017/03/29/structs4/"/>
+    <id>http://www.myzwl.win/2017/03/29/structs4/</id>
+    <published>2017-03-29T11:48:51.000Z</published>
+    <updated>2017-04-07T10:30:22.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>OGNL表达式的全称是 Object Graph Navigation Language，即 对象图导航语言，使用OGNL表达式可以使用简单的语法设置以及读取java对象的值</p>
+<p>一般， <s:property value="””">　注意：  value里的内容称为ognl表达式，由于其功能强大，涉及东西太多，只做部分总结</s:property></p>
+<p>下面就先模拟一个案例，首先需要几个模拟的对象类<br>首先是Dog类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">private String name;</div><div class="line">   </div><div class="line">	public Dog(String name)&#123;</div><div class="line">		this.name=name;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public Dog()&#123;&#125;</div><div class="line">此处省略set。。get方法</div></pre></td></tr></table></figure></p>
+<p>然后是Cat类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">private Dog friend;</div><div class="line">	</div><div class="line">	public String miaomiao()</div><div class="line">	&#123;</div><div class="line">		return "miaomiao";</div><div class="line">	&#125;</div><div class="line">此处省略set。。get方法</div></pre></td></tr></table></figure></p>
+<p>接着是user类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">private String msg;</div><div class="line"></div><div class="line">public user()&#123;&#125;</div><div class="line"></div><div class="line">public user(String msg)&#123;</div><div class="line">	this.msg=msg;</div><div class="line">&#125;</div><div class="line">此处省略set。。get方法</div></pre></td></tr></table></figure></p>
+<p>在配置文件中，仍然不变</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;package name=<span class="string">"default"</span> namespace=<span class="string">"/"</span> extends=<span class="string">"struts-default"</span>&gt;</div><div class="line">  &lt;global-results&gt;</div><div class="line">  &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">  &lt;/global-results&gt;</div><div class="line">  </div><div class="line">  &lt;action name=<span class="string">"ognlaction"</span> class=<span class="string">"com.zwl.action.ognlaction"</span>&gt;</div><div class="line">  &lt;/action&gt;</div></pre></td></tr></table></figure>
+<p>下面是action，思路是在action中一点一点加入模拟代码，在相应的jsp中将值回显出来<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class ognlaction extends ActionSupport&#123;</div><div class="line">  private String username;</div><div class="line">	public String execute() throws Exception &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		return super.execute();</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>下面所以属性的set与get方法都将省略。。<br>首先是验证普通属性，对应jsp页面为</p>
+<p>1：<li>访问值栈中的action的普通属性:</li></p>
+<blockquote>
+<p>username = <s:property value="username"> </s:property></p>
+</blockquote>
+<p>2：访问值栈中对象的普通属性(get set方法)：</p>
+<blockquote>
+<p>首先action增加 private user use;<br>对应jsp为：<s:property value="use.msg"></s:property></p>
+</blockquote>
+<p>3访问值栈中对象中的成员对象的普通属性(get set方法)</p>
+<blockquote>
+<p>首先action增加：private Cat cat;<br>对应jsp为：<s:property value="cat.friend.name"></s:property></p>
+</blockquote>
+<p>4访问值栈中对象的普通方法<br><s:property value="cat.miaomiao()"></s:property></p>
+<p>5访问值栈中action的普通方法<br>首先action增加：public String m() {<br>             return “hello”;}<br>对应jsp为：<s:property value="m()"></s:property></p>
+<p>6 OGNL表达式语言访问静态方法，需要在Struts2.xml配置文件如下：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;constant name=<span class="string">"struts.ognl.allowStaticMethodAccess"</span> value=<span class="string">"true"</span>&gt;&lt;/constant&gt;</div></pre></td></tr></table></figure>
+<p>首先增加一个pojo类：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class s &#123;</div><div class="line">	 public static String STR = "STATIC STRING";  </div><div class="line">	  public static String s() &#123;</div><div class="line">	     return "static method";  &#125;&#125;</div></pre></td></tr></table></figure>
+<p>对应jsp：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;li&gt;访问静态方法：&lt;s:property value=<span class="string">"@com.zwl.pojo.s@s()"</span>/&gt;&lt;/li&gt;</div><div class="line">       &lt;li&gt;访问静态属性：&lt;s:property value=<span class="string">"@com.zwl.pojo.s@STR"</span>/&gt;&lt;/li&gt;</div><div class="line">       &lt;li&gt;访问Math类的静态方法：&lt;s:property value=<span class="string">"@@max(2,3)"</span> /&gt;&lt;/li&gt;</div></pre></td></tr></table></figure></p>
+<p>注意使用@符号访问</p>
+<p>7访问List中元素某个属性的集合中的特定值：<br>首先action增加<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">private List&lt;user&gt; users=new ArrayList&lt;&gt;();</div><div class="line">public ognlaction()&#123;</div><div class="line">		users.add(new user("1"));</div><div class="line">		users.add(new user("2"));</div><div class="line">		users.add(new user("3"));</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>对应jsp为：<s:property value="users[0].msg"></s:property></p>
+<p>8：访问Set中某个元素<br>首先action增加：</p>
+<blockquote>
+<p>private Set<dog> dogs = new HashSet<dog>();</dog></dog></p>
+</blockquote>
+<p>对应jsp为：<s:property value="dogs[1]"></s:property></p>
+<p>9：访问Map中某个元素<br>首先action增加：</p>
+<blockquote>
+<p>private Map<string, dog=""> dogMap = new HashMap<string, dog="">();<br>  <li>访问Map中某个元素:<s:property value="dogMap['dog101']"></s:property></li><br>               <li>访问Map中所有的key:<s:property value="dogMap.keys"></s:property></li><br>       <li>访问Map中所有的value:<s:property value="dogMap.values"></s:property></li></string,></string,></p>
+</blockquote>
+<p>  10：调试：   <s:debug></s:debug><br>主要用来查看值栈。而值栈主要来存放对象的，类似于正常的栈，</p>
+<p>以下为部分结果截图：<br><img src="/images/imgs2/23.gif" alt="Alt text"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;OGNL表达式的全称是 Object Graph Navigation Language，即 对象图导航语言，使用OGNL表达式可以使用简单
+    
+    </summary>
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
     <title>struts2 之三:result返回结果</title>
-    <link href="http://www.myzwl.win/2017/04/06/structs3/"/>
-    <id>http://www.myzwl.win/2017/04/06/structs3/</id>
-    <published>2017-04-06T09:48:51.000Z</published>
-    <updated>2017-04-07T04:53:44.000Z</updated>
+    <link href="http://www.myzwl.win/2017/03/28/structs3/"/>
+    <id>http://www.myzwl.win/2017/03/28/structs3/</id>
+    <published>2017-03-28T09:48:51.000Z</published>
+    <updated>2017-04-07T10:29:26.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Structs2中的result是作为返回结果的，当一个action处理完之后返回字符串的结果码。框架可以根据这个返回的字符串，映射到指定的页面。Result元素可以分为两部分：一是结果映射，一部分是返回结果类型</p>
 <p>结果映射<br>  Result有两个属性可以配置：name属性和type属性，其中name属性主要用来指定资源的逻辑名称，实际名称在标签内指定。Type属性就是result返回的类型，这两个属性不是必须的。其中默认情况下，name为success，type为dispatch（转发）<br>另外，result标签还有一个子标签param，该标签可以为result指定实际资源位置，其中属性name为必填，而当type为dispatch时，param可以省略不写</p>
@@ -63,10 +429,10 @@
   
   <entry>
     <title>struts2 之二:action详解</title>
-    <link href="http://www.myzwl.win/2017/04/06/structs2/"/>
-    <id>http://www.myzwl.win/2017/04/06/structs2/</id>
-    <published>2017-04-06T08:48:51.000Z</published>
-    <updated>2017-04-07T04:23:24.000Z</updated>
+    <link href="http://www.myzwl.win/2017/03/27/structs2/"/>
+    <id>http://www.myzwl.win/2017/03/27/structs2/</id>
+    <published>2017-03-27T08:48:51.000Z</published>
+    <updated>2017-04-07T10:29:12.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在structs2中，action是其核心功能，而使用structs2框架，主要都是围绕action进行，我们编写的action通常需要实现com.opensymphony.xwork2.Action接口，需要实现的方法时execute方法，但是在实际开发中，编写的action也可以不必实现action接口，而是直接创建一个普通的java类，并添加execute方法就可以，如入门程序的案例，还有一种方式就是继承ActionSupport类，其已经实现了action的execute方法，以上方式，后两者比较常用</p>
 <p>接下来将在入门程序的基础上，来介绍action属性</p>
@@ -114,10 +480,10 @@
   
   <entry>
     <title>struts2 之一:hello world</title>
-    <link href="http://www.myzwl.win/2017/04/06/structs1/"/>
-    <id>http://www.myzwl.win/2017/04/06/structs1/</id>
-    <published>2017-04-06T07:48:51.000Z</published>
-    <updated>2017-04-07T04:00:46.000Z</updated>
+    <link href="http://www.myzwl.win/2017/03/26/structs1/"/>
+    <id>http://www.myzwl.win/2017/03/26/structs1/</id>
+    <published>2017-03-26T07:48:51.000Z</published>
+    <updated>2017-04-07T10:28:50.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Struts2框架是Apache基金组织下的一个开源框架，是基于MVC模式设计的web应用开发框架。它利用并扩展了java servlet API，鼓励开发者采用MVC架构。</p>
 <p>当然本次不介绍strucs2的相关知识，只做一个快速入门案例，及环境搭建和将整个程序走一遍，最后完成hello world程序，也就是先有一个具体印象。</p>
@@ -153,10 +519,10 @@
   
   <entry>
     <title>基于struts2与easy ui的后台显示界面</title>
-    <link href="http://www.myzwl.win/2017/04/04/easyui1/"/>
-    <id>http://www.myzwl.win/2017/04/04/easyui1/</id>
-    <published>2017-04-04T07:48:51.000Z</published>
-    <updated>2017-04-05T15:32:28.000Z</updated>
+    <link href="http://www.myzwl.win/2017/03/25/easyui1/"/>
+    <id>http://www.myzwl.win/2017/03/25/easyui1/</id>
+    <published>2017-03-25T07:48:51.000Z</published>
+    <updated>2017-04-07T10:28:26.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近一直忙着做项目，已经好几天没写博客了。我认为提高自己的最好路径就是先把我知道的东西总结出来，再去从已知探索未知的东西，最后在总结下来。不多说，就用笔者最喜欢的struts2和easy ui来一个需求</p>
 <p>利用easy ui的datagrid做一个后台界面（目前只是分页显示数据），并从数据库取出，大概如下界面<br><img src="/images/imgs2/19.gif" alt="Alt text"></p>
@@ -193,10 +559,10 @@
   
   <entry>
     <title>mybatis 之四:mybatis整合spring</title>
-    <link href="http://www.myzwl.win/2017/04/02/mybatis4/"/>
-    <id>http://www.myzwl.win/2017/04/02/mybatis4/</id>
-    <published>2017-04-02T07:48:51.000Z</published>
-    <updated>2017-04-02T15:32:34.000Z</updated>
+    <link href="http://www.myzwl.win/2017/03/24/mybatis4/"/>
+    <id>http://www.myzwl.win/2017/03/24/mybatis4/</id>
+    <published>2017-03-24T07:48:51.000Z</published>
+    <updated>2017-04-07T10:28:06.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>整合思路：<br>    1、数据源信息交给spring管理<br>2、sqlsessionfactory交给spring进行单例管理<br>3、由spring来管理mapper代理的代理类</p>
 <p>下面以根据用户id查询用户信息案例来搭建工程<br>步骤一：建立java工程</p>
@@ -227,10 +593,10 @@
   
   <entry>
     <title>mybatis 之三:映射文件</title>
-    <link href="http://www.myzwl.win/2017/04/02/mybatis3/"/>
-    <id>http://www.myzwl.win/2017/04/02/mybatis3/</id>
-    <published>2017-04-02T03:48:51.000Z</published>
-    <updated>2017-04-02T15:32:34.000Z</updated>
+    <link href="http://www.myzwl.win/2017/03/23/mybatis3/"/>
+    <id>http://www.myzwl.win/2017/03/23/mybatis3/</id>
+    <published>2017-03-23T03:48:51.000Z</published>
+    <updated>2017-04-07T10:27:52.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>基本上我们对数据库的操作都在映射文件中编写，通过mapper代理方式简化配置，同时依据不同的参数和返回类型完成相关需求</p>
 <h5 id="一：parameterType输入参数"><a href="#一：parameterType输入参数" class="headerlink" title="一：parameterType输入参数"></a>一：parameterType输入参数</h5><p>简单类型：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="int"</div><div class="line">		resultType="com.zwl.pojo.User"&gt;</div><div class="line">		SELECT * FROM user WHERE id =#&#123;id&#125;</div><div class="line">	&lt;/select&gt;</div></pre></td></tr></table></figure></p>
@@ -273,10 +639,10 @@
   
   <entry>
     <title>mybatis 之二:开发dao的两种方式</title>
-    <link href="http://www.myzwl.win/2017/04/01/mybatis2/"/>
-    <id>http://www.myzwl.win/2017/04/01/mybatis2/</id>
-    <published>2017-04-01T13:48:51.000Z</published>
-    <updated>2017-04-02T15:32:34.000Z</updated>
+    <link href="http://www.myzwl.win/2017/03/22/mybatis2/"/>
+    <id>http://www.myzwl.win/2017/03/22/mybatis2/</id>
+    <published>2017-03-22T13:48:51.000Z</published>
+    <updated>2017-04-07T10:27:26.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Dao层的开发，在mybatis中可以通过原始dao（一个接口和接口实现类），而在mybatis中可以更方便的通过mapper代理模式，当然需要满足一定的规范性原则</p>
 <p>不多说，以一个增加user信息为例</p>
@@ -311,10 +677,10 @@
   
   <entry>
     <title>mybatis 之一:hello world</title>
-    <link href="http://www.myzwl.win/2017/04/01/mybatis1/"/>
-    <id>http://www.myzwl.win/2017/04/01/mybatis1/</id>
-    <published>2017-04-01T12:48:51.000Z</published>
-    <updated>2017-04-02T15:32:34.000Z</updated>
+    <link href="http://www.myzwl.win/2017/03/21/mybatis1/"/>
+    <id>http://www.myzwl.win/2017/03/21/mybatis1/</id>
+    <published>2017-03-21T12:48:51.000Z</published>
+    <updated>2017-04-07T10:27:06.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Mybatis就是一个封装了jdbc的持久层框架，它和hibernate都属于orm框架，但是具体说，hibernate是一个完全的orm框架，而mybatis是一个不完全的orm框架，mybatis只关注sql本身，而不需要关注如连接的创建，statement的创建等操作。Mybatis会将输入参数、输出结果进行映射。</p>
 <p>不多说，先来一个入门程序，意在先从整体了解<br>步骤一：创建一个java工程</p>
@@ -345,10 +711,10 @@
   
   <entry>
     <title>spring mvc之四:数据回显与json</title>
-    <link href="http://www.myzwl.win/2017/04/01/springmvc4/"/>
-    <id>http://www.myzwl.win/2017/04/01/springmvc4/</id>
-    <published>2017-04-01T11:48:51.000Z</published>
-    <updated>2017-04-02T15:32:34.000Z</updated>
+    <link href="http://www.myzwl.win/2017/03/20/springmvc4/"/>
+    <id>http://www.myzwl.win/2017/03/20/springmvc4/</id>
+    <published>2017-03-20T11:48:51.000Z</published>
+    <updated>2017-04-07T10:26:34.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>比较struts2与spring mvc<br>实现机制：<br>Struts2是基于过滤器实现的。<br>Springmvc基于servlet实现。Servlet比过滤器快。</p>
 <p>运行速度：<br>Struts2是多列<br>请求来了以后，struts2创建多少个对象：<br>ActionContext，valuestack，UserAction，ActionSuport，ModelDriven<br>Springmvc是单列</p>
@@ -411,10 +777,10 @@
   
   <entry>
     <title>spring mvc之三:注解开发</title>
-    <link href="http://www.myzwl.win/2017/03/31/springmvc3/"/>
-    <id>http://www.myzwl.win/2017/03/31/springmvc3/</id>
-    <published>2017-03-31T11:48:51.000Z</published>
-    <updated>2017-04-02T15:32:34.000Z</updated>
+    <link href="http://www.myzwl.win/2017/03/19/springmvc3/"/>
+    <id>http://www.myzwl.win/2017/03/19/springmvc3/</id>
+    <published>2017-03-19T11:48:51.000Z</published>
+    <updated>2017-04-07T10:26:34.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前我们都是通过xml方式显示配置，会发现配置起来特别麻烦。当使用注解时，有时只需在相关类中做相关的声明，就能完成同样的工作。</p>
 <p>不多说：先来一个注解开发例子</p>
@@ -480,10 +846,10 @@
   
   <entry>
     <title>spring mvc之二:处理器</title>
-    <link href="http://www.myzwl.win/2017/03/31/springmvc2/"/>
-    <id>http://www.myzwl.win/2017/03/31/springmvc2/</id>
-    <published>2017-03-31T10:48:51.000Z</published>
-    <updated>2017-03-31T13:05:30.000Z</updated>
+    <link href="http://www.myzwl.win/2017/03/18/springmvc2/"/>
+    <id>http://www.myzwl.win/2017/03/18/springmvc2/</id>
+    <published>2017-03-18T10:48:51.000Z</published>
+    <updated>2017-04-07T10:26:34.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在spring mvc中，使用映射处理器可以把web请求映射到正确的处理器上，spring内置了很多映射器，而且我们也可以自定义处理器，映射处理器都能把请求传递到处理器执行链接上，并且处理器执行链接必须包含能处理该请求的处理器，而且处理器链接也能包含一系列拦截器<br>  接下来就是一些常见的处理映射器</p>
 <h4 id="BeanNameUrlHandlerMapping"><a href="#BeanNameUrlHandlerMapping" class="headerlink" title="BeanNameUrlHandlerMapping"></a>BeanNameUrlHandlerMapping</h4><p> 功能：寻找Controller<br>        根据url请求去匹配bean的name属性url，从而获取Controller<br>      这里注意：这是默认的映射器，也就是说我们不配置这个，也能自动执行这个<br>     如：入门程序中的案例：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 配置自定义Controler --&gt;</div><div class="line">		&lt;bean id=<span class="string">"mycontrol"</span> name=<span class="string">"/hello.do"</span> class=<span class="string">"com.zwl.control.mycontrol"</span>&gt;&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
@@ -540,10 +906,10 @@
   
   <entry>
     <title>spring mvc之一:hello world</title>
-    <link href="http://www.myzwl.win/2017/03/31/springmvc1/"/>
-    <id>http://www.myzwl.win/2017/03/31/springmvc1/</id>
-    <published>2017-03-31T09:48:51.000Z</published>
-    <updated>2017-03-31T11:44:10.000Z</updated>
+    <link href="http://www.myzwl.win/2017/03/17/springmvc1/"/>
+    <id>http://www.myzwl.win/2017/03/17/springmvc1/</id>
+    <published>2017-03-17T09:48:51.000Z</published>
+    <updated>2017-04-07T10:26:34.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>MVC模式是Model-View-Control的简写，而spring mvc主要负责c层，主要为封装web请求为一个数据对象、调用业务逻辑层来处理数据对象、返回处理数据结果及相应的视图给用户</p>
 <p>简要概述spring mvc：<br>   SpringC层框架的核心是DispatcherServlet，它的作用是将请求分发给不同的后端处理器，springC层框架使用了后端控制器、映射处理器和视图解析器来共同完成c层的主要任务，真正的把业务层处理的数据结果和相应的视图拼成一个对象，即ModelAndView对象</p>
@@ -582,10 +948,10 @@
   
   <entry>
     <title>spring之装配bean</title>
-    <link href="http://www.myzwl.win/2017/03/30/spring2/"/>
-    <id>http://www.myzwl.win/2017/03/30/spring2/</id>
-    <published>2017-03-30T09:48:51.000Z</published>
-    <updated>2017-04-02T15:32:34.000Z</updated>
+    <link href="http://www.myzwl.win/2017/03/16/spring2/"/>
+    <id>http://www.myzwl.win/2017/03/16/spring2/</id>
+    <published>2017-03-16T09:48:51.000Z</published>
+    <updated>2017-04-07T10:26:12.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在spring中，对象无需自己负责查找或创建与其关联的其他对象。相反，容器负责把需要相互协作的对象引用赋予各个对象，例如一个消费系统需要信誉证件，但它不需要自己创建，它只负责自己两手空空，而容器就赋予它一个信用卡认证组件。<br>  通常，我们将创建应用对象间相互协作关系的行为称为装配。这也是依赖注入的本质。</p>
 <h4 id="一：声明bean"><a href="#一：声明bean" class="headerlink" title="一：声明bean"></a>一：声明bean</h4><p>  首先我们假想一个选秀场景，该bean为一个表演接口<br>  public interface Performe {<br>    public void perform();<br>}<br>很显然我们需要一些参赛者，而这些参赛者就需要spring帮我们创建了</p>
@@ -655,306 +1021,6 @@
     
     
       <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>spring之hello world</title>
-    <link href="http://www.myzwl.win/2017/03/30/spring1/"/>
-    <id>http://www.myzwl.win/2017/03/30/spring1/</id>
-    <published>2017-03-30T08:48:51.000Z</published>
-    <updated>2017-03-31T05:04:30.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p> spring 是容器框架,用于配置bean,并维护bean之间关系的框架，而bean是java中的任何一种对象 javabean/service/action/数据源./dao, ioc(控制反转 inverse of control) di( dependency injection 依赖注入)，而spring的设计思想主要为单例和工厂模式，它能很好的解耦，简化开发，同时贯穿于各层。</p>
-<p> 不多说，先来一个入门案例，目的在先具体把握，最后在看细节</p>
-<p> 步骤一：创建一个web工程，同时引入两个jar包，一个是spring核心包（spring.jar）和日包（commons-logging.jar）及测试包junit；</p>
-<p> 步骤二：新建applicationContent.xml文件，该文件是spring的核心文件，先放在src目录下，里面暂时什么都不写</p>
-<p> 步骤三：编写helloworld类：</p>
- <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">package com.zwl.spring;</div><div class="line"></div><div class="line">public class Helloworld &#123;</div><div class="line">private String name;</div><div class="line"></div><div class="line">public String getName() &#123;</div><div class="line">	return name;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public void setName(String name) &#123;</div><div class="line">	this.name = name;</div><div class="line">&#125;</div><div class="line">	</div><div class="line">public void sayhello()&#123;</div><div class="line">	System.out.println("it is "+name);</div><div class="line">&#125;</div><div class="line"></div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里主要通过spring自动注入name为helloworld来演示</p>
-<p>步骤四：配置applicationContent.xml文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line">&lt;beans xmlns="http://www.springframework.org/schema/beans"</div><div class="line">		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"</div><div class="line">		xmlns:context="http://www.springframework.org/schema/context"</div><div class="line">		xmlns:tx="http://www.springframework.org/schema/tx"</div><div class="line">		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd</div><div class="line">				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd</div><div class="line">				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"&gt;</div><div class="line"></div><div class="line">&lt;!-- bean元素的作用是，当我们的spring框架加载时候，spring就会自动的创建一个bean对象，并放入内存 ,</div><div class="line">相当于Helloworld helloworld=new Helloworld();</div><div class="line">helloworld.setName("helloworld!"); </div><div class="line">id:用于唯一标识该bean，</div><div class="line">class:相应的bean所处的位置</div><div class="line">--&gt;</div><div class="line">&lt;bean id="helloworld" class="com.zwl.spring.Helloworld"&gt;</div><div class="line">&lt;property name="name"&gt;</div><div class="line">&lt;value&gt;hello world!&lt;/value&gt;</div><div class="line">&lt;/property&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure></p>
-<p>步骤五：编写工具类<br>因为spring也是初始化加载很耗内存，所以同样采取单例模式初始化<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">package com.zwl.utils;</div><div class="line"></div><div class="line">import org.springframework.context.ApplicationContext;</div><div class="line">import org.springframework.context.support.ClassPathXmlApplicationContext;</div><div class="line"></div><div class="line">public class ApplicaionContextUtil &#123;</div><div class="line">private static ApplicationContext ac=null;</div><div class="line">	</div><div class="line">	private ApplicaionContextUtil()&#123;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	static&#123;</div><div class="line">		//1.得到spring 的applicationContext对象(容器对象)</div><div class="line">		ac=new ClassPathXmlApplicationContext("applicationContext.xml");</div><div class="line">	&#125;</div><div class="line">	public static ApplicationContext getApplicationContext()&#123;</div><div class="line">		return ac;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>步骤六：编写测试类（用junit4）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">	public void test()&#123;</div><div class="line">//得到bean对象</div><div class="line">	 Helloworld hello=(Helloworld) ApplicaionContextUtil.getApplicationContext().getBean("helloworld");</div><div class="line">	 hello.sayhello();</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>测试结果：</p>
-<blockquote>
-<p>it is hello world ！</p>
-</blockquote>
-<p>至此helloworld程序完成，当然这只是一个初步的认识spring是什么，事实上spring的注入远不止如此简单，但至少有一点可以明确，通过spring，可以帮我们管理，特别是结合其他开源框架，达到解耦和高效的作用。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt; spring 是容器框架,用于配置bean,并维护bean之间关系的框架，而bean是java中的任何一种对象 javabean/serv
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>代理模式（四）之模仿spring Aop及真实jdk的动态代理</title>
-    <link href="http://www.myzwl.win/2017/03/29/dyproxy3/"/>
-    <id>http://www.myzwl.win/2017/03/29/dyproxy3/</id>
-    <published>2017-03-29T12:48:51.000Z</published>
-    <updated>2017-03-29T15:06:50.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>代理模式，尤其是动态代理，他从思想上改变了我们对编程的认识，可以想象一个切面我们在其中添加任何控制如事务、日志、权限等，而这也是面向切面编程的核心，更是spring Aop的核心，而设计才是实用的，框架和配置都是虚的，尤其当抛开jdk底层代码设计，才发现其中的来龙去脉和乐趣。</p>
-<p>总之，动态代理设计模式的思想太强大了。接下来将用之前模拟的jdk动态代码和jdk本身自带的动态来模拟一个案例</p>
-<p>大概物理情景是，添加一个打野信息接口和打野代理，利用InvocationHandler实现代理对具体打野的代理</p>
-<p>首先是一个打野接口</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">package com.zwl.pr;</div><div class="line"></div><div class="line">public interface JungleInfo &#123;</div><div class="line"></div><div class="line">	public void addJungle();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>打野接口实现类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">package com.zwl.pr;</div><div class="line"></div><div class="line">public class JungleInfoimpl implements JungleInfo &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void addJungle() &#123;</div><div class="line">		System.out.println("Js is ganking");</div><div class="line">		System.out.println("Leesin is ganking");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>打野代理<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">package com.zwl.pr;</div><div class="line"></div><div class="line">import java.lang.reflect.Method;</div><div class="line"></div><div class="line">public class JungleHandler implements InvocationHandler &#123;</div><div class="line"></div><div class="line">private Object target;</div><div class="line">	</div><div class="line">	public JungleHandler(Object target) &#123;</div><div class="line">		super();</div><div class="line">		this.target = target;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void invoke(Object o, Method m) &#123;</div><div class="line">		//控制之前的业务逻辑</div><div class="line">		System.out.println("JungleHandler is starting");</div><div class="line">		try &#123;</div><div class="line">			m.invoke(target);</div><div class="line">		&#125; catch (Exception e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		//控制之后的业务逻辑</div><div class="line">		System.out.println("JungleHandler is ending");</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>为了方便这里只是打印了一个语句<br>测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">      //被代理对象</div><div class="line">      JungleInfo jun=new JungleInfoimpl();</div><div class="line">      //代理类</div><div class="line">InvocationHandler invo=new JungleHandler(jun);</div><div class="line">JungleInfo jung=(JungleInfo) Proxy.newProxyInstance(JungleInfo.class, invo);</div><div class="line">jung.addJungle();</div></pre></td></tr></table></figure></p>
-<p>输出结果：</p>
-<blockquote>
-<p>class com.zwl.pr.LeeSinTimeProxy<br>JungleHandler is starting<br>Js is ganking<br>Leesin is ganking<br>JungleHandler is ending</p>
-</blockquote>
-<p>至此我们发现如果我们想在这个切面中再加一个控制，好办，再写一个handle类，代理其它handle类，达到切面控制效果。<br>当然，以后只要实现InvocationHandler接口就能达到效果，而proxy底层都不需要知道</p>
-<h3 id="jdk的动态代理"><a href="#jdk的动态代理" class="headerlink" title="jdk的动态代理"></a>jdk的动态代理</h3><p>同样是上面的例子，知识代理handler需要改变</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">     package com.zwl.pr;</div><div class="line"></div><div class="line">import java.lang.reflect.InvocationHandler;</div><div class="line">import java.lang.reflect.Method;</div><div class="line"></div><div class="line">public class JungleHandlers implements InvocationHandler &#123;</div><div class="line"></div><div class="line">	</div><div class="line">private Object target;</div><div class="line">	</div><div class="line">	public JungleHandlers(Object target) &#123;</div><div class="line">		super();</div><div class="line">		this.target = target;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public Object invoke(Object proxy, Method method, Object[] args)</div><div class="line">			throws Throwable &#123;</div><div class="line">		System.out.println("Jdk is starting");</div><div class="line">		method.invoke(target, args);</div><div class="line">		System.out.println("Jdk is ending");</div><div class="line">		return null;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>其中Object proxy是指代理类，Method method是指被代理的方法，Object[] args为该方法的参数数组</p>
-<p>接下来是测试类</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">      JungleInfo jun=new JungleInfoimpl();</div><div class="line">JungleHandlers invo=new JungleHandlers(jun);</div><div class="line">JungleInfo jung=(JungleInfo) Proxy.newProxyInstance(JungleInfo.class.getClassLoader(),new Class&lt;?&gt;[]&#123;JungleInfo.class&#125;,  invo);</div><div class="line">jung.addJungle();</div></pre></td></tr></table></figure>
-<p>其中jung将返回一个代理类的实例JungleInfo.class.getClassLoader()是类装载器，第二个参数是任何真实类拥有的全部接口的数组，第三个参数就是真实的handles</p>
-<p>测试结果：</p>
-<blockquote>
-<p>Jdk is starting<br>Js is ganking<br>Leesin is ganking<br>Jdk is ending</p>
-</blockquote>
-<p>至此，我们利用动态代理，就可以在不修改原来代码的基础上，就可以在原来代码的基础上做操作，而这恰恰就是AOP编程的核心</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;代理模式，尤其是动态代理，他从思想上改变了我们对编程的认识，可以想象一个切面我们在其中添加任何控制如事务、日志、权限等，而这也是面向切面编程
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-      <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>代理模式（三）之模仿jdk底层动态代理实现</title>
-    <link href="http://www.myzwl.win/2017/03/29/dyproxy2/"/>
-    <id>http://www.myzwl.win/2017/03/29/dyproxy2/</id>
-    <published>2017-03-29T10:48:51.000Z</published>
-    <updated>2017-03-29T15:06:50.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在前面的基础上在做进一步的改进，前面我们是动态写死了方法，即自己指定了方法名，当然我们可以利用反射帮我们完成函数名的动态指定</p>
-<p>首先是一个反射例子<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//拿到相应的类</div><div class="line">Method[]  methods=com.zwl.pr.Jungle.class.getMethods();</div><div class="line">		for(Method method: methods)&#123;</div><div class="line">		//循环输出该类的函数名，如public void ss();最后只输出ss</div><div class="line">			System.out.println(method.getName());</div><div class="line">		&#125;</div></pre></td></tr></table></figure></p>
-<p>有了这个原理就可以对之前的proxy进行改造</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line">public static Object newProxyInstance(Class interfac) throws Exception&#123;</div><div class="line">      </div><div class="line">      //动态拿到方法的代码</div><div class="line">		String methodStr = "";</div><div class="line">		String rt = "\r\n";</div><div class="line">		</div><div class="line">		//将指定的动态接口类名拿到</div><div class="line">		Method[] methods = interfac.getMethods();</div><div class="line"></div><div class="line">		//循环添加方法</div><div class="line">		for(Method m : methods) &#123;</div><div class="line">			methodStr += "@Override" + rt + </div><div class="line">						 "public void " + m.getName() + "() &#123;" + rt +</div><div class="line">						 	"   long start = System.currentTimeMillis();" + rt +</div><div class="line">							"   leesin." + m.getName() + "();" + rt +</div><div class="line">							"   long end = System.currentTimeMillis();" + rt +</div><div class="line">							"   System.out.println(\"time:\" + (end-start));" + rt +</div><div class="line">						 "&#125;";</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		String str=</div><div class="line">				"package com.zwl.pr;" + rt +</div><div class="line"></div><div class="line">				"public class LeeSinTimeProxy implements "+interfac.getName()+ "&#123;" + rt +</div><div class="line"></div><div class="line">					</div><div class="line">					"Jungle leesin;" + rt +</div><div class="line">					</div><div class="line">					</div><div class="line">					"public LeeSinTimeProxy(Jungle leesin) &#123;" + rt +</div><div class="line">						"super();" + rt +</div><div class="line">						"this.leesin = leesin;" + rt +</div><div class="line">					"&#125;" + rt +</div><div class="line"></div><div class="line">          //这里循环动态输出方法</div><div class="line">					methodStr +</div><div class="line"></div><div class="line">				"&#125;" ;</div><div class="line">		</div><div class="line">		//System.out.println(System.getProperty("user.dir"));</div><div class="line"></div><div class="line">		//这里将动态生成的代理文件放到指定文件夹中，避免与bin里的.class文件冲突</div><div class="line">		String filename=</div><div class="line">				"E:/src/com/zwl/pr/LeeSinTimeProxy.java";</div><div class="line">		File f=new File(filename);</div><div class="line">		FileWriter fw=new FileWriter(f);</div><div class="line">		fw.write(str);</div><div class="line">		fw.flush();</div><div class="line">		fw.close();</div><div class="line"></div><div class="line">		   //compile</div><div class="line">				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();</div><div class="line">				StandardJavaFileManager fileMgr = compiler.getStandardFileManager(null, null, null);</div><div class="line">				Iterable units = fileMgr.getJavaFileObjects(filename);</div><div class="line">				CompilationTask t = compiler.getTask(null, fileMgr, null, null, null, units);</div><div class="line">				t.call();</div><div class="line">				fileMgr.close();</div><div class="line">				</div><div class="line">				//load into memory and create an instance</div><div class="line">				//更改到指定文件夹</div><div class="line">				URL[] urls = new URL[] &#123;new URL("file:/" + "E:/src/")&#125;;</div><div class="line">				URLClassLoader ul = new URLClassLoader(urls);</div><div class="line">				Class c = ul.loadClass("com.zwl.pr.LeeSinTimeProxy");</div><div class="line">				System.out.println(c);</div><div class="line">				</div><div class="line">				Constructor ctr = c.getConstructor(Jungle.class);</div><div class="line">				</div><div class="line">				//返回任意一个类</div><div class="line">				Object jungle=ctr.newInstance(new LeeSin());</div><div class="line">				</div><div class="line">		</div><div class="line">		return jungle;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<pre><code>注意这里和之前做了几处修改
-1.利用反射动态生成方法
-2.更改编译后生成文件的目录
-3.返回类型为object
-4具体在代码里有注释
-
-测试类：
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Jungle jungle=(Jungle) Proxy.newProxyInstance(Jungle.class);</div><div class="line">		jungle.gank();</div></pre></td></tr></table></figure>
-</code></pre><p>输出结果</p>
-<blockquote>
-<p>class com.zwl.pr.LeeSinTimeProxy<br>LeeSin is ganking…<br>gank time:1336<br>time:1336</p>
-</blockquote>
-<p>这里很明显发现方法都是固定的，如果想要方法都是动态生成的，则要进行进一步修改<br>首先增加一个<br>InvocationHandler动态生成类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface InvocationHandler &#123;</div><div class="line">	public void invoke(Object o, Method m);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>然后是具体的针对所有接口的时间处理类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">public class TimeHandler implements InvocationHandler &#123;</div><div class="line"></div><div class="line">   //代理类</div><div class="line">	private Object target;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">	public TimeHandler(Object target) &#123;</div><div class="line">		super();</div><div class="line">		this.target = target;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void invoke(Object o, Method m) &#123;</div><div class="line">		long start = System.currentTimeMillis();</div><div class="line">		try &#123;</div><div class="line">			//指定代理类的动态方法</div><div class="line">			m.invoke(target);</div><div class="line">		&#125; catch (Exception e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		long end = System.currentTimeMillis();</div><div class="line">		System.out.println("time:" + (end-start));</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>然后proxy里也要进行相应修改</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">//参数分别为被代理对象与代理对象</div><div class="line">public static Object newProxyInstance(Class interfac,InvocationHandler h) throws Exception&#123;</div><div class="line">		String methodStr = "";</div><div class="line">		String rt = "\r\n";</div><div class="line">		</div><div class="line">		Method[] methods = interfac.getMethods();</div><div class="line">		</div><div class="line">	//动态生成方法，其中this是指代理对象本身，而md是指方法名，这里的h是构造函数传的代理对象</div><div class="line">		for(Method m : methods) &#123;</div><div class="line">			methodStr += "@Override" + rt + </div><div class="line">						 "public void " + m.getName() + "() &#123;" + rt +</div><div class="line">						 "    try &#123;" + rt +</div><div class="line">						 "    Method md = " + interfac.getName() + ".class.getMethod(\"" + m.getName() + "\");" + rt +</div><div class="line">						 "    h.invoke(this, md);" + rt +</div><div class="line">						 "    &#125;catch(Exception e) &#123;e.printStackTrace();&#125;" + rt +</div><div class="line">						</div><div class="line">						 "&#125;";</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		</div><div class="line">		String str=</div><div class="line">				"package com.zwl.pr;" + rt +</div><div class="line">               "import java.lang.reflect.Method;" + rt +</div><div class="line">				"public class LeeSinTimeProxy implements "+interfac.getName()+ "&#123;" + rt +</div><div class="line"></div><div class="line">					</div><div class="line">					"com.zwl.pr.InvocationHandler h;" + rt +</div><div class="line">					</div><div class="line">					</div><div class="line">					"public LeeSinTimeProxy(InvocationHandler h) &#123;" + rt +</div><div class="line">						"super();" + rt +</div><div class="line">						"this.h = h;" + rt +</div><div class="line">					"&#125;" + rt +</div><div class="line"></div><div class="line"></div><div class="line">					methodStr +</div><div class="line"></div><div class="line">				"&#125;" ;</div><div class="line">		</div><div class="line">		//System.out.println(System.getProperty("user.dir"));</div><div class="line">		String filename=</div><div class="line">				"E:/src/com/zwl/pr/LeeSinTimeProxy.java";</div><div class="line">		File f=new File(filename);</div><div class="line">		FileWriter fw=new FileWriter(f);</div><div class="line">		fw.write(str);</div><div class="line">		fw.flush();</div><div class="line">		fw.close();</div><div class="line"></div><div class="line">		   //compile</div><div class="line">				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();</div><div class="line">				StandardJavaFileManager fileMgr = compiler.getStandardFileManager(null, null, null);</div><div class="line">				Iterable units = fileMgr.getJavaFileObjects(filename);</div><div class="line">				CompilationTask t = compiler.getTask(null, fileMgr, null, null, null, units);</div><div class="line">				t.call();</div><div class="line">				fileMgr.close();</div><div class="line">				</div><div class="line">				//load into memory and create an instance</div><div class="line">				URL[] urls = new URL[] &#123;new URL("file:/" + "E:/src/")&#125;;</div><div class="line">				URLClassLoader ul = new URLClassLoader(urls);</div><div class="line">				Class c = ul.loadClass("com.zwl.pr.LeeSinTimeProxy");</div><div class="line">				System.out.println(c);</div><div class="line">				</div><div class="line">				//返回代理类</div><div class="line">				Constructor ctr = c.getConstructor(InvocationHandler.class);</div><div class="line">				</div><div class="line">				Object jungle=ctr.newInstance(h);</div><div class="line">				</div><div class="line">		</div><div class="line">		return jungle;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<p>测试类：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//被代理对象</div><div class="line">LeeSin leesin=new LeeSin();</div><div class="line">//代理对象</div><div class="line">		InvocationHandler ivo=new TimeHandler(leesin);</div><div class="line">		Jungle jungle=(Jungle) Proxy.newProxyInstance(Jungle.class,ivo);</div><div class="line">		jungle.gank();</div></pre></td></tr></table></figure>
-<p>对应生成的java文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">package com.zwl.pr;</div><div class="line">import java.lang.reflect.Method;</div><div class="line">public class LeeSinTimeProxy implements com.zwl.pr.Jungle&#123;</div><div class="line">com.zwl.pr.InvocationHandler h;</div><div class="line">public LeeSinTimeProxy(InvocationHandler h) &#123;</div><div class="line">super();</div><div class="line">this.h = h;</div><div class="line">&#125;</div><div class="line">@Override</div><div class="line">public void gank() &#123;</div><div class="line">    try &#123;</div><div class="line">    Method md = com.zwl.pr.Jungle.class.getMethod("gank");</div><div class="line">    h.invoke(this, md);</div><div class="line">    &#125;catch(Exception e) &#123;e.printStackTrace();&#125;</div><div class="line">&#125;&#125;</div></pre></td></tr></table></figure></p>
-<p>对应的测试结果 </p>
-<blockquote>
-<p>class com.zwl.pr.LeeSinTimeProxy<br>LeeSin is ganking…<br>gank time:2642<br>time:2642</p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在前面的基础上在做进一步的改进，前面我们是动态写死了方法，即自己指定了方法名，当然我们可以利用反射帮我们完成函数名的动态指定&lt;/p&gt;
-&lt;p&gt;
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-      <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>代理模式（二）之初识动态代理</title>
-    <link href="http://www.myzwl.win/2017/03/29/dyproxy1/"/>
-    <id>http://www.myzwl.win/2017/03/29/dyproxy1/</id>
-    <published>2017-03-29T09:48:51.000Z</published>
-    <updated>2017-03-29T10:32:28.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前我们通过静态代理可以在编译期创建一个代理对象，如果要求我们必须在运行时创建一个代理，如时间代理，如何做了？<br>也就是说，需要写一个代理（proxy），然后我们只需要传入相关接口，它就可以主动生成代理对象</p>
-<p>再一次使用之前的情景，即有一个打野对象接口和具体打野盲僧，然后编写一个针对打野的动态代理（proxy），只要传入（打野接口对象），就可以动态自动生成该java文件，并且载入内存并不jvm编译</p>
-<p>下面就是其代码实现</p>
-<p>Jungle（打野接口）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public interface Jungle &#123;</div><div class="line">  //打野gank方法</div><div class="line">	public void gank();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>LeeSin（盲僧）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class LeeSin implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gank() &#123;</div><div class="line">		//gank开始时间</div><div class="line">		long starts=System.currentTimeMillis();</div><div class="line">		System.out.println("LeeSin is ganking...");</div><div class="line">		</div><div class="line">		try &#123;</div><div class="line">			//gank进行中</div><div class="line">			Thread.sleep(new Random().nextInt(10000));</div><div class="line">		&#125; catch (InterruptedException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		//gank结束时间</div><div class="line">        long ends=System.currentTimeMillis();</div><div class="line">        System.out.println("gank time:"+(ends-starts));</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>如果想要动态生成一个事件代理（按常理应该新建一个代理类），按照动态思想，我们将该创建该类的所以涉及的代码赋给一个字符串<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">String str=</div><div class="line">		"package com.zwl.pr;" +</div><div class="line"></div><div class="line">		"public class LeeSinTimeProxy implements Jungle &#123;" +</div><div class="line"></div><div class="line">			</div><div class="line">			"Jungle leesin;" +</div><div class="line">			</div><div class="line">			</div><div class="line">			"public LeeSinTimeProxy(Jungle leesin) &#123;" +</div><div class="line">				"super();" +</div><div class="line">				"this.leesin = leesin;" +</div><div class="line">			"&#125;" +</div><div class="line"></div><div class="line"></div><div class="line">			"@Override" +</div><div class="line">			"public void gank() &#123;" +</div><div class="line">				"long starts=System.currentTimeMillis();" +</div><div class="line">				"leesin.gank();" +</div><div class="line">				 "long ends=System.currentTimeMillis();" +</div><div class="line">			      "  System.out.println(\"gank time:\"+(ends-starts));" +</div><div class="line"></div><div class="line">			"&#125;" +</div><div class="line"></div><div class="line">		"&#125;" ;</div></pre></td></tr></table></figure></p>
-<p>上面字符串就是创建该代理的代码，然后如果jvm能自动将其编译成.class并且载入内存，就是一个真的类了，按照这种思想，我们可以通过jvm提供的方法完成<br>为了方便先把上述动态创建时间代理放在测试中（也就是main函数中）<br>1.首先将代码格式修整一下，即加个换行，同时将字符写入时间代理文件中<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"> //换行，防止所有代码全部挤在一行</div><div class="line">String rt = "\r\n";</div><div class="line"></div><div class="line">//要动态生成的类的代码</div><div class="line">		String str=</div><div class="line">				"package com.zwl.pr;" + rt +</div><div class="line"></div><div class="line">				"public class LeeSinTimeProxy implements Jungle &#123;" + rt +</div><div class="line"></div><div class="line">					</div><div class="line">					"Jungle leesin;" + rt +</div><div class="line">					</div><div class="line">					</div><div class="line">					"public LeeSinTimeProxy(Jungle leesin) &#123;" + rt +</div><div class="line">						"super();" + rt +</div><div class="line">						"this.leesin = leesin;" + rt +</div><div class="line">					"&#125;" + rt +</div><div class="line"></div><div class="line"></div><div class="line">					"@Override" + rt +</div><div class="line">					"public void gank() &#123;" + rt +</div><div class="line">						"long starts=System.currentTimeMillis();" + rt +</div><div class="line">						"leesin.gank();" + rt +</div><div class="line">						 "long ends=System.currentTimeMillis();" + rt +</div><div class="line">					      "  System.out.println(\"gank time:\"+(ends-starts));" + rt +</div><div class="line"></div><div class="line">					"&#125;" + rt +</div><div class="line"></div><div class="line">				"&#125;" ;</div><div class="line">		//得到该项目的根路径</div><div class="line">		//System.out.println(System.getProperty("user.dir"));</div><div class="line"></div><div class="line">		//该时间代理文件的完整路径，不存在则创建（第一次自动动态创建）</div><div class="line">		String filename=System.getProperty("user.dir")+</div><div class="line">				"/src/com/zwl/pr/LeeSinTimeProxy.java";</div><div class="line">		//将字符写入该文件</div><div class="line">		File f=new File(filename);</div><div class="line">		FileWriter fw=new FileWriter(f);</div><div class="line">		fw.write(str);</div><div class="line">		fw.flush();</div><div class="line">		fw.close();</div></pre></td></tr></table></figure></p>
-<p>这里先一小段一小段的加，目前是已经在该包下生成一个LeeSinTimeProxy.java文件，并且里面有被写入的字符，但是纯粹只是一个文件，因为还没被编译和载入内存</p>
-<p>2.进行编译<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">            //compile</div><div class="line">            //得到java编译器，也就是javac了，至此我们可以最终将其编译，得到.class（二进制文件）</div><div class="line">JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();</div><div class="line">           //管理编译文件，默认为空就行</div><div class="line">StandardJavaFileManager fileMgr = compiler.getStandardFileManager(null, null, null);</div><div class="line">//所有编译的文件，目前就一个，当然可以传入多个</div><div class="line">Iterable units = fileMgr.getJavaFileObjects(filename);</div><div class="line">//编译任务管理，目前传入上面两个参数，其余默认为空就行</div><div class="line">CompilationTask t = compiler.getTask(null, fileMgr, null, null, null, units);</div><div class="line">//执行任务编译</div><div class="line">t.call();</div><div class="line">fileMgr.close();</div></pre></td></tr></table></figure></p>
-<p>至此，在包下也动态生成了一个.class文件，而平常我们编译时都会在path路径下，jdk主动生成.class，而此时我们自己指定了位置</p>
-<p>3.载入内存<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//指定载入内存的url</div><div class="line">URL[] urls = new URL[] &#123;new URL("file:/" + System.getProperty("user.dir")+"/src")&#125;;</div><div class="line">				URLClassLoader ul = new URLClassLoader(urls);</div><div class="line">//指定class文件载入</div><div class="line">				Class c = ul.loadClass("com.zwl.pr.LeeSinTimeProxy");</div><div class="line">				System.out.println(c);</div></pre></td></tr></table></figure></p>
-<p>4.利用反射取出实例</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//反射取出类</div><div class="line">Constructor ctr = c.getConstructor(Jungle.class);</div><div class="line">				</div><div class="line">		//操作该类相应方法，此处是动态返回类</div><div class="line">				Jungle jubgle= (Jungle) ctr.newInstance(new LeeSin());</div><div class="line">				//调用gank方法</div><div class="line">				jubgle.gank();</div></pre></td></tr></table></figure>
-<p>以下是结果：</p>
-<blockquote>
-<p>class com.zwl.pr.LeeSinTimeProxy<br>LeeSin is ganking…<br>gank time:7557<br>gank time:7563</p>
-</blockquote>
-<p>至此算是动态生成了时间代理，但是目前是很有局限性的，因为我们指定了一个特定接口，而不是泛指，当然通过这个例子，也算是初识了一把动态模式的魅力，当然它的最大魅力，在于制定任何接口，返回相应的代理类</p>
-<p>在这里我们先将测试的类中代码移至Proxy类中</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">public class Proxy &#123;</div><div class="line"> </div><div class="line"> //这里的interfac就是动态指定了任何接口代理，而且必须取它的名字，否则是执行其tostring方法</div><div class="line">	public static Object newProxyInstance(Class interfac) throws Exception&#123;</div><div class="line">		String rt = "\r\n";</div><div class="line">		String str=</div><div class="line">				"package com.zwl.pr;" + rt +</div><div class="line"></div><div class="line">				"public class LeeSinTimeProxy implements "+interfac.getName()+ "&#123;" + rt +</div><div class="line"></div><div class="line">					</div><div class="line">					"Jungle leesin;" + rt +</div><div class="line">					</div><div class="line">					</div><div class="line">					"public LeeSinTimeProxy(Jungle leesin) &#123;" + rt +</div><div class="line">						"super();" + rt +</div><div class="line">						"this.leesin = leesin;" + rt +</div><div class="line">					"&#125;" + rt +</div><div class="line"></div><div class="line"></div><div class="line">					"@Override" + rt +</div><div class="line">					"public void gank() &#123;" + rt +</div><div class="line">						"long starts=System.currentTimeMillis();" + rt +</div><div class="line">						"leesin.gank();" + rt +</div><div class="line">						 "long ends=System.currentTimeMillis();" + rt +</div><div class="line">					      "  System.out.println(\"gank time:\"+(ends-starts));" + rt +</div><div class="line"></div><div class="line">					"&#125;" + rt +</div><div class="line"></div><div class="line">				"&#125;" ;</div><div class="line">		</div><div class="line">		//System.out.println(System.getProperty("user.dir"));</div><div class="line">		String filename=System.getProperty("user.dir")+</div><div class="line">				"/src/com/zwl/pr/LeeSinTimeProxy.java";</div><div class="line">		File f=new File(filename);</div><div class="line">		FileWriter fw=new FileWriter(f);</div><div class="line">		fw.write(str);</div><div class="line">		fw.flush();</div><div class="line">		fw.close();</div><div class="line"></div><div class="line">		   //compile</div><div class="line">				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();</div><div class="line">				StandardJavaFileManager fileMgr = compiler.getStandardFileManager(null, null, null);</div><div class="line">				Iterable units = fileMgr.getJavaFileObjects(filename);</div><div class="line">				CompilationTask t = compiler.getTask(null, fileMgr, null, null, null, units);</div><div class="line">				t.call();</div><div class="line">				fileMgr.close();</div><div class="line">				</div><div class="line">				//load into memory and create an instance</div><div class="line">				URL[] urls = new URL[] &#123;new URL("file:/" + System.getProperty("user.dir")+"/src")&#125;;</div><div class="line">				URLClassLoader ul = new URLClassLoader(urls);</div><div class="line">				Class c = ul.loadClass("com.zwl.pr.LeeSinTimeProxy");</div><div class="line">				System.out.println(c);</div><div class="line">				</div><div class="line">				Constructor ctr = c.getConstructor(Jungle.class);</div><div class="line">				</div><div class="line">				Jungle jubgle= (Jungle) ctr.newInstance(new LeeSin());</div><div class="line">				jubgle.gank();</div><div class="line">		</div><div class="line">		return null;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>目前先不管错误，在做测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">      LeeSin leesin=new LeeSin();</div><div class="line">Jungle jungle=(Jungle) Proxy.newProxyInstance(Jungle.class);</div><div class="line">jungle.gank();</div></pre></td></tr></table></figure></p>
-<p>这里参数我们可以设置任何class接口，当然先不管错误，至少动态代理算是成功了。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;之前我们通过静态代理可以在编译期创建一个代理对象，如果要求我们必须在运行时创建一个代理，如时间代理，如何做了？&lt;br&gt;也就是说，需要写一个代
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-      <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>代理模式（一）之静态代理</title>
-    <link href="http://www.myzwl.win/2017/03/29/stproxy/"/>
-    <id>http://www.myzwl.win/2017/03/29/stproxy/</id>
-    <published>2017-03-29T08:48:51.000Z</published>
-    <updated>2017-03-29T06:21:08.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>代理模式从定义上说就是给某一个对象提供一个代理对象，并由代理对象控制对原对象的引用</p>
-<p>一般情况下，我们可以通过继承或者聚合来实现代理，当然继承会造成类爆炸，而聚合则更灵活<br>不多说，模拟一个静态代理的情景<br>假设打野是一个接口，有gank方法，记录打野行为，打野具体对象盲僧，实现其gank的时间并记录下来，然后后续打野盲僧1、盲僧2分别记录打野具体对象的gank时间和gank日志（目前打野对象为LeeSin）</p>
-<p>Jungle（打野接口）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public interface Jungle &#123;</div><div class="line">  //打野gank方法</div><div class="line">	public void gank();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>LeeSin（盲僧）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class LeeSin implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gank() &#123;</div><div class="line">		//gank开始时间</div><div class="line">		long starts=System.currentTimeMillis();</div><div class="line">		System.out.println("LeeSin is ganking...");</div><div class="line">		</div><div class="line">		try &#123;</div><div class="line">			//gank进行中</div><div class="line">			Thread.sleep(new Random().nextInt(10000));</div><div class="line">		&#125; catch (InterruptedException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		//gank结束时间</div><div class="line">        long ends=System.currentTimeMillis();</div><div class="line">        System.out.println("gank time:"+(ends-starts));</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>接下来就是使用代理对象，比如用一个代理记录打野gank方法的时间<br>不妨先用继承（与后面聚合比较会发现继承将造成类爆炸）</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">//时间代理，记录gank时间</div><div class="line">public class LeeSin1 extends LeeSin &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gank() &#123;</div><div class="line">		long starts=System.currentTimeMillis();</div><div class="line">		super.gank();</div><div class="line">		 long ends=System.currentTimeMillis();</div><div class="line">	        System.out.println("gank time:"+(ends-starts));</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如果这时再有一个log代理，记录gank日志<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class LeeSin2 extends LeeSin &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gank() &#123;</div><div class="line">		System.out.println("LeeSin starts ganking");</div><div class="line">		super.gank();</div><div class="line">		System.out.println("LeeSin ends ganking");		 </div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>如果这时说先记录日志在记录时间或者先记录时间在记录日志，这时就要写两个类<br>列出主体代码（另一个调换位置）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line">@Override</div><div class="line">public void gank() &#123;</div><div class="line">	System.out.println("LeeSin starts ganking");</div><div class="line">	long starts=System.currentTimeMillis();</div><div class="line">	super.gank();</div><div class="line">	 long ends=System.currentTimeMillis();</div><div class="line">        System.out.println("gank time:"+(ends-starts));</div><div class="line">        System.out.println("LeeSin ends ganking");	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>可能目前代理类较少，还没有缺陷，如果是100个甚至更多，只要稍微要求下顺序或者其他，就要增加一个类，显然造成类爆炸，所以继承代理不可取</p>
-<p>利用聚合代理（因为被代理类都是继承或者实现Jungle，所以可以用jungle代理，知识子类行为不同而已<br>打野时间代理类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class LeeSinTimeProxy implements Jungle &#123;</div><div class="line"></div><div class="line">	//代理对象</div><div class="line">	Jungle leesin;</div><div class="line">	</div><div class="line">	</div><div class="line">	public LeeSinTimeProxy(Jungle leesin) &#123;</div><div class="line">		super();</div><div class="line">		this.leesin = leesin;</div><div class="line">	&#125;</div><div class="line"></div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gank() &#123;</div><div class="line">		long starts=System.currentTimeMillis();</div><div class="line">		leesin.gank();</div><div class="line">		 long ends=System.currentTimeMillis();</div><div class="line">	        System.out.println("gank time:"+(ends-starts));</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>日志代理<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class LeeSinlogProxy implements Jungle &#123;</div><div class="line"></div><div class="line">	</div><div class="line">	Jungle leesin;</div><div class="line">	</div><div class="line">	</div><div class="line">	public LeeSinlogProxy(Jungle leesin) &#123;</div><div class="line">		super();</div><div class="line">		this.leesin = leesin;</div><div class="line">	&#125;</div><div class="line"></div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gank() &#123;</div><div class="line">		System.out.println("LeeSin starts ganking");</div><div class="line">		leesin.gank();</div><div class="line">		System.out.println("LeeSin ends ganking");</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line">		LeeSin leesin=new LeeSin();</div><div class="line">		</div><div class="line">		Jungle jungletime=new LeeSinTimeProxy(leesin);</div><div class="line">		Jungle junglelog=new LeeSinlogProxy(jungletime);</div><div class="line">		junglelog.gank();</div><div class="line"></div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>测试结果：</p>
-<blockquote>
-<p>LeeSin starts ganking<br>LeeSin is ganking…<br>gank time:1005<br>gank time:1005<br>LeeSin ends ganking</p>
-</blockquote>
-<p>注意这里是日志代理时间，时间代理盲僧，如果更改顺序，只需改变被代理对象即可<br><img src="/images/imgs2/15.gif" alt="Alt text"></p>
-<p>至此我们可以简单归纳一下静态代理<br>大概有抽象角色：如打野  ，代理角色（被聚合类的引用），以及真实角色</p>
-<p>最后不得不提的是静态代理虽然简单，但是有很多局限性，比如它是在编译期由我们主动创建的，也就说在程序运行前已经存在在.class文件中了，如果代理类一旦多的话，代理内容就无法复用，新增方法时，代理对象也要跟着增加方法。</p>
-<p>所以代理设计模式真正的魅力和强大之处而是动态代理！！</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;代理模式从定义上说就是给某一个对象提供一个代理对象，并由代理对象控制对原对象的引用&lt;/p&gt;
-&lt;p&gt;一般情况下，我们可以通过继承或者聚合来实现
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-      <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>观察者设计模式</title>
-    <link href="http://www.myzwl.win/2017/03/28/observer/"/>
-    <id>http://www.myzwl.win/2017/03/28/observer/</id>
-    <published>2017-03-28T08:48:51.000Z</published>
-    <updated>2017-03-29T05:31:36.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模型和“拉”模型，前者是被观察者将所有信息通知所有人，而后者则是被观察者不主动提供信息，观察者主动索要信息</p>
-<p>在这里还是以之前的例子为例</p>
-<p><img src="/images/imgs2/14.gif" alt="Alt text"></p>
-<p>这是一个推模型，也就是被观察者根据状态发生改变时将所有信息都主动通知观察者<br>其中：Jungle（打野）是被观察者，即如果有一些状态变化，如对方打野有动作则将通知observer（目前假定只有上路和adc）<br>observer：观察者，用来监听被观察者并且根据相应的变化做出变化<br>top：上单  adc：Adc LesSin：打野盲僧<br>以下是相关代码：</p>
-<p>Jungle（被观察者）</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public interface Jungle &#123;</div><div class="line">     </div><div class="line">     //增加观察者</div><div class="line">	public void addObserve(Observer obs);</div><div class="line">	 //删除观察者</div><div class="line">	public void deleteObserve(Observer obs);</div><div class="line">	 //通知观察者</div><div class="line">	public void notifyObserve(String msg);</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>observer（观察者）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public interface Observer &#123;</div><div class="line">   //收到通知后状态变化</div><div class="line">	public void notifybyJungle(String msg);</div><div class="line">&#125;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>LeeSin<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">public class LeeSin implements Jungle &#123;</div><div class="line">   //存放所有的观察者</div><div class="line">	List&lt;Observer&gt; list=new ArrayList&lt;Observer&gt;();</div><div class="line">	</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void addObserve(Observer obs) &#123;</div><div class="line">		list.add(obs);</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void deleteObserve(Observer obs) &#123;</div><div class="line">		list.remove(obs);</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void notifyObserve(String msg) &#123;</div><div class="line">		for(Observer obs : list)&#123;</div><div class="line">			obs.notifybyJungle(msg);</div><div class="line">		&#125;</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>top<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class top implements Observer &#123;</div><div class="line"> </div><div class="line"> //收到消息</div><div class="line">	public String newmsg;</div><div class="line">	</div><div class="line">	public String getNewmsg() &#123;</div><div class="line">		return newmsg;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setNewmsg(String newmsg) &#123;</div><div class="line">		this.newmsg = newmsg;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void notifybyJungle(String msg) &#123;</div><div class="line">		newmsg=msg;</div><div class="line">		System.out.println("上单收到:"+newmsg);</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>Adc<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">public class Adc implements Observer &#123;</div><div class="line"></div><div class="line">public String newmsg;</div><div class="line">	</div><div class="line">	public String getNewmsg() &#123;</div><div class="line">		return newmsg;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setNewmsg(String newmsg) &#123;</div><div class="line">		this.newmsg = newmsg;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void notifybyJungle(String msg) &#123;</div><div class="line">		newmsg=msg;</div><div class="line">		System.out.println("adc收到:"+newmsg);</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line">		Jungle jungle=new LeeSin();</div><div class="line">		</div><div class="line">		Observer obs1=new Adc();</div><div class="line">		</div><div class="line">		Observer obs2=new top();</div><div class="line">		</div><div class="line">		jungle.addObserve(obs1);</div><div class="line">		jungle.addObserve(obs2);</div><div class="line">		</div><div class="line">		jungle.notifyObserve("敌方打野正在打小龙");</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>下面是输出结果</p>
-<blockquote>
-<p>adc收到:敌方打野正在打小龙<br>上单收到:敌方打野正在打小龙</p>
-</blockquote>
-<p>如果我们使用拉模型，即观察者主动向被观察者索要信息，那么上面程序将做部分修改</p>
-<p>大体思路就是将Jungle（被观察者）的通知函数改为void即<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public interface Jungle &#123;</div><div class="line">     </div><div class="line">     //增加观察者</div><div class="line">	public void addObserve(Observer obs);</div><div class="line">	 //删除观察者</div><div class="line">	public void deleteObserve(Observer obs);</div><div class="line">	 //通知观察者</div><div class="line">	public void notifyObserve();</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>相应的observer将更改为<br>observer（观察者）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public interface Observer &#123;</div><div class="line">   //收到通知后状态变化</div><div class="line">	public void notifybyJungle(Jungle jungle);</div><div class="line">&#125;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>对于推与拉模型，如果目标角色过于复杂，则优先使用推模式，反之则使用拉模式</p>
-<p>观察者模式应用场景<br>1、对一个对象状态的更新，需要其他对象同步更新，而且其他对象的数量动态可变</p>
-<p>2、对象仅需要将自己的更新通知给其他对象而不需要知道其他对象的细节</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;观察者模式从定义上说就是一种一对多的依赖关系，即当一个对象的状态发生改变时，其它依赖此对象的对象会得到通知并且做出相应的改变。一般有“推”模
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-      <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>抽象工厂设计模式</title>
-    <link href="http://www.myzwl.win/2017/03/27/abstractfactory/"/>
-    <id>http://www.myzwl.win/2017/03/27/abstractfactory/</id>
-    <published>2017-03-27T08:48:51.000Z</published>
-    <updated>2017-03-29T05:31:36.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同等级划分。</p>
-<p>这里还是以之前的例子为例，假设有一个产生top（上单）的机器，另一个产生Jungle（打野）的机器，同时top可以有ad（物理上单）和ap(法术上单)，同样，Jungle可以有ad和ap打野，现在需要一个工厂，可以同时产生仅含ad的打野和上单，另一个产生仅含ap的打野和上单，当然可以按照自己的组合<br><img src="/images/imgs2/13.gif" alt="Alt text"><br>打野</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public interface Jungle &#123;</div><div class="line"></div><div class="line">	//gank能力强</div><div class="line">	public void gankenemy();</div><div class="line">	</div><div class="line">	//本身足够灵活</div><div class="line">	public void flexible();</div><div class="line">	</div><div class="line">	//打野不太伤</div><div class="line">	public void killbeast();</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>ad打野</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class AdJungle implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>ap打野<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class ApJungle implements Jungle &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>上单<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public interface Top &#123;</div><div class="line">	//gank能力强</div><div class="line">	public void gankenemy();</div><div class="line">	</div><div class="line">	//本身足够灵活</div><div class="line">	public void flexible();</div><div class="line">	</div><div class="line">	//打野不太伤</div><div class="line">	public void killbeast();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>ad上单<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class AdTop implements Top &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>ap上单<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class ApTop implements Top &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void gankenemy() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void flexible() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void killbeast() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>生产打野和上单的工厂<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public interface AbstractFactory &#123;</div><div class="line">public Top factorytop();</div><div class="line">public Jungle factoryjungle();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>生产ad打野和上单的工厂<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class AdFactory implements AbstractFactory &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public Top factorytop() &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		return new AdTop();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public Jungle factoryjungle() &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		return new AdJungle();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>生产ap打野和上单的工厂<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class ApFactory implements AbstractFactory &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public Top factorytop() &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		return new ApTop();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public Jungle factoryjungle() &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		return new ApJungle();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>通过上面例子，我们可以发现抽象工厂易于交换产品系列，通过按需改变具体工厂从而使用不同的产品配置，同时它也将创建实例的过程与客户端分类</p>
-<p>当然它的缺点就是和简单工厂一样，如果要从sql server切换到mysql，需要重新实例很多次</p>
-<p>最后对应工厂系列的设计模式，无论选择哪一个，最终的目的都是为了解耦！</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;抽象工厂方法通俗的讲就是为创建一组相关或相互依赖的对象提供一组接口，无需指定他们的具体类。因此，他们通常为创建一族产品对象，并且该产品由不同
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-      <category term="设计模式" scheme="http://www.myzwl.win/source/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     
   </entry>
   
