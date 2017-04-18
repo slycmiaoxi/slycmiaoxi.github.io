@@ -5,10 +5,96 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-04-08T15:58:22.000Z</updated>
+  <updated>2017-04-18T15:47:18.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>并发系列一之初识java线程</title>
+    <link href="http://www.myzwl.win/2017/04/10/thrd1/"/>
+    <id>http://www.myzwl.win/2017/04/10/thrd1/</id>
+    <published>2017-04-10T13:48:51.000Z</published>
+    <updated>2017-04-18T15:47:18.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>曾在论坛中看过这样一句话，如果连多线程都不懂，别说自己学过java，可见多线程的重要性！</p>
+<h4 id="何谓线程"><a href="#何谓线程" class="headerlink" title="何谓线程"></a>何谓线程</h4><p>简单来说，就像我们在执行一个程序时，他总按照顺序执行，如果从头到尾都没有分叉，也就是说总是一个流程，那么就可以看做单线程，并且程序执行的主体只有一个，所以，我们把正在执行程序的主体称为线程</p>
+<p>当然，平时我们说的最多的就是多线程，顾名思义就是由一个以上的线程所构成的程序，比如文件处理，io请求处理及网络客户端发出的请求等等都可以看做多线程</p>
+<h4 id="Thread类"><a href="#Thread类" class="headerlink" title="Thread类"></a>Thread类</h4><p>先看一个简单的例子<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">package com.zwl.utest1;</div><div class="line"></div><div class="line">import java.util.Date;</div><div class="line"></div><div class="line">public class Mythread extends Thread &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		for(int i=0;i&lt;700;i++)&#123;</div><div class="line">	System.out.print("hello!");</div><div class="line">	</div><div class="line">	&#125;&#125;&#125;</div></pre></td></tr></table></figure></p>
+<p>测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Mythread m=new Mythread();</div><div class="line">	  m.start();</div><div class="line">	  for(int i=0;i&lt;900;i++)&#123;</div><div class="line">	  System.out.print("lol!");</div><div class="line">	  &#125;</div></pre></td></tr></table></figure></p>
+<p>测试结果</p>
+<blockquote>
+<p>lol!lol!lol!lol!lol!lol!。。hello!hello!hello!hello!hello!。。lol!lol!lol!lol!lol!lol!</p>
+</blockquote>
+<p>然后在去认识上面程序，其中start方法会启动新的线程，然后再由这个新线程调用run方法，<br>当然也可以直接调用run方法</p>
+<p>那么两者有什么区别了？<br>调用start方法会出现字符串交错，也就是并发，而run方法，就是等run方法执行完，在执行其它，显然不会出现交错现象<br>当然数据量小的话，出现的结果很难有说服力，所以并发模拟尽量使用大数量</p>
+<h4 id="线程的启动"><a href="#线程的启动" class="headerlink" title="线程的启动"></a>线程的启动</h4><ol>
+<li>利用thread的子类的实例，启动线程<br>正如前面模拟的程序，不过下面测试用两个线程<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">new Mythread().start（）;</div><div class="line">new Mythread().start（）;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>显然两个线程操作两个对象，所以thread是线程安全的</p>
+<ol>
+<li>利用Runnable接口<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public class Mythread implements Runnable</div><div class="line">&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		for(int i=0;i&lt;700;i++)&#123;</div><div class="line">	System.out.print("hello!");</div><div class="line">	</div><div class="line">	&#125;&#125;&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">      Mythread m=new Mythread();</div><div class="line">new Thread(m).start();</div><div class="line">new Thread(m).start();</div></pre></td></tr></table></figure></p>
+<p>这里主要向Runnable接口实现的实例作为参数传递给Thread，再启动线程，这里就有一个问题，因为不同线程操作一个对象，所以会造成线程不安全的问题，也就是脏数据</p>
+<h4 id="线程的暂时停止"><a href="#线程的暂时停止" class="headerlink" title="线程的暂时停止"></a>线程的暂时停止</h4><p>利用Thread的sleep方法可暂时停止线程当前的操作，如<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">      public class Mythread implements Runnable</div><div class="line">&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		for(int i=0;i&lt;5;i++)&#123;</div><div class="line">	System.out.print("hello!");</div><div class="line">		try &#123;</div><div class="line">			Thread.sleep(1000);</div><div class="line">		&#125; catch (InterruptedException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">	</div><div class="line">	&#125;&#125;&#125;</div></pre></td></tr></table></figure></p>
+<p>这里的参数是ms，所以1000就是1s了</p>
+<h4 id="线程的共享互斥"><a href="#线程的共享互斥" class="headerlink" title="线程的共享互斥"></a>线程的共享互斥</h4><p>在程序里，多个线程可自由操作，就会造成一个线程还在执行，另一个线程就插进来执行，就会造成一些脏数据的产生<br>如：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">       private int count=1000;</div><div class="line">@Override</div><div class="line">public void run() &#123;</div><div class="line">	for(int i=0;i&lt;100;i++)&#123;</div><div class="line">		count--;</div><div class="line">		System.out.println("mythread"+(count));</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>测试类：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">     Mythread m=new Mythread();</div><div class="line">new Thread(m).start();</div><div class="line">new Thread(m).start();</div><div class="line">new Thread(m).start();</div></pre></td></tr></table></figure></p>
+<p>测试结果：（取部分）</p>
+<blockquote>
+<p>mythread999<br>mythread997<br>mythread996<br>mythread995<br>mythread994</p>
+</blockquote>
+<p>显然出现了脏数据<br>要想使数据正确，一种方法是加同步锁，即一个线程在执行该操作时，其余线程无锁，则必须等待，直到该线程执行结束或者被挂起，才释放锁，然后在门外等待的线程依次执行，加锁，重复上述步骤<br>显然，就不会出现多个线程操作同一个对象了</p>
+<p>java中通过声明synchronized关键字实现同步锁<br>如：</p>
+<blockquote>
+<p>public synchronized void run()</p>
+</blockquote>
+<p>则在执行run方法前加同步锁，控制线程，当然该关键字可以声明在任何方法前，包括静态方法<br>另外，它还有另外一种声明方式</p>
+<blockquote>
+<p>public  void run() {<br>        synchronized (xx.class) {<br>        }</p>
+</blockquote>
+<p>注意这里xx.class是操作该方法的那个类实现同步比如这里可以将</p>
+<blockquote>
+<p>synchronized (this) {}</p>
+</blockquote>
+<p>就是对本身这个类加锁控制了等同于上述的另一种写法</p>
+<h4 id="线程的协调"><a href="#线程的协调" class="headerlink" title="线程的协调"></a>线程的协调</h4><p>如果有一个线程正在执行同步锁，而其他线程则要等待，这是典型的线程互斥现象<br>假如当该空间有空余时则写入数据，无空闲时间则等待（等待）<br>当该空间有空闲时，则通知等待的线程（通知）</p>
+<p>这里是根据空间是否空闲为条件进行线程处理，java中通过wait（让线程等待），notify与notifyAll（启动等候中的线程）</p>
+<p>我们可以把线程处于等待的地方形象的看做wait set（线程的休息室）</p>
+<h4 id="wait-把线程放入休息室"><a href="#wait-把线程放入休息室" class="headerlink" title="wait-把线程放入休息室"></a>wait-把线程放入休息室</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">	private static int count=90;</div><div class="line">	</div><div class="line">public synchronized int s() throws InterruptedException&#123;</div><div class="line">	count--;</div><div class="line">	System.out.println("ok:"+count);</div><div class="line">	this.wait();</div><div class="line">	System.out.println("lockover");</div><div class="line">	return count;</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">	public  void run() &#123;	</div><div class="line">				try &#123;</div><div class="line">					s();</div><div class="line">				&#125; catch (InterruptedException e) &#123;</div><div class="line">					// TODO Auto-generated catch block</div><div class="line">					e.printStackTrace();</div><div class="line">				&#125;</div><div class="line">		&#125;</div></pre></td></tr></table></figure>
+<p>然后在测试中启动几个线程<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">     Count m=new Count();</div><div class="line">new Thread(m).start();</div><div class="line">new Thread(m).start();</div><div class="line">new Thread(m).start();</div></pre></td></tr></table></figure></p>
+<p>测试结果：</p>
+<blockquote>
+<p>ok:89<br>ok:88<br>ok:87</p>
+</blockquote>
+<p>一般为obj.wait（），而obj是某个对象的实例，也就是说该线程在obj的休息区<br>之后会自动释放锁，等待的线程开始执行</p>
+<p>当然也有obj.wait（1000）；也可以设置在休息区等待的秒数，然后继续执行</p>
+<p>测试结果：</p>
+<blockquote>
+<p>ok:89<br>ok:88<br>ok:87<br>lockover<br>lockover<br>lockover</p>
+</blockquote>
+<h4 id="notify方法-从休息区拿出线程"><a href="#notify方法-从休息区拿出线程" class="headerlink" title="notify方法-从休息区拿出线程"></a>notify方法-从休息区拿出线程</h4><p>一般为obj.notify（），即从obj的wait set里的线程中挑选一个，唤醒一个线程并退出该休息区<br>当然，这里有一个顺序，召唤该线程的那个线程执行完，释放锁后，那个在休息区的线程在执行</p>
+<p>obj.notifyAll（），即从线程区中拿出所有线程</p>
+<p>最后需要说一下的是wait、notify、notifyAll是Object的类方法，也就是所有类都能使用</p>
+<p>由此可看出多线程的确是一个复杂而且很重要的东西！！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;曾在论坛中看过这样一句话，如果连多线程都不懂，别说自己学过java，可见多线程的重要性！&lt;/p&gt;
+&lt;h4 id=&quot;何谓线程&quot;&gt;&lt;a href
+    
+    </summary>
+    
+      <category term="并发编程" scheme="http://www.myzwl.win/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="多线程" scheme="http://www.myzwl.win/source/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    
+  </entry>
   
   <entry>
     <title>集合中的线程安全问题</title>
@@ -913,75 +999,6 @@
     <summary type="html">
     
       &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;比较struts2与spring mvc&lt;br&gt;实现机制：&lt;br&gt;Struts2是基于过滤器实现的。&lt;br&gt;Springmvc基于servl
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>spring mvc之三:注解开发</title>
-    <link href="http://www.myzwl.win/2017/03/19/springmvc3/"/>
-    <id>http://www.myzwl.win/2017/03/19/springmvc3/</id>
-    <published>2017-03-19T11:48:51.000Z</published>
-    <updated>2017-04-07T10:26:34.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前我们都是通过xml方式显示配置，会发现配置起来特别麻烦。当使用注解时，有时只需在相关类中做相关的声明，就能完成同样的工作。</p>
-<p>不多说：先来一个注解开发例子</p>
-<p>步骤一：首先创建一个web工程</p>
-<p>步骤二：添加jar包</p>
-<p>步骤三：配置web.xml<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5"&gt;</div><div class="line">  </div><div class="line">  &lt;filter&gt;</div><div class="line">  &lt;filter-name&gt;characterEncoding&lt;/filter-name&gt;</div><div class="line">  &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;</div><div class="line">  &lt;init-param&gt;</div><div class="line">  &lt;param-name&gt;encoding&lt;/param-name&gt;</div><div class="line">  &lt;param-value&gt;UTF-8&lt;/param-value&gt;</div><div class="line">  &lt;/init-param&gt;</div><div class="line">  &lt;/filter&gt;</div><div class="line">  </div><div class="line">  &lt;filter-mapping&gt;</div><div class="line">  &lt;filter-name&gt;characterEncoding&lt;/filter-name&gt;</div><div class="line">  &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</div><div class="line">  &lt;/filter-mapping&gt;</div><div class="line">  </div><div class="line">  &lt;servlet&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;</div><div class="line">  &lt;!-- 默认加载方式</div><div class="line">  	   默认加载必须规范：</div><div class="line">  	   * 文件命名：servlet-name-servlet.xml====springmvc-servlet.xml</div><div class="line">  	   * 路径规范：必须在WEB-INF目录下面</div><div class="line">   --&gt;</div><div class="line"> &lt;/servlet&gt;</div><div class="line">  </div><div class="line">  &lt;servlet-mapping&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;url-pattern&gt;*.do&lt;/url-pattern&gt;</div><div class="line">  &lt;/servlet-mapping&gt;</div><div class="line"></div><div class="line">&lt;/web-app&gt;</div></pre></td></tr></table></figure></p>
-<p>步骤四：配置springmvc-servlet.xml文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;beans xmlns="http://www.springframework.org/schema/beans"</div><div class="line">	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"</div><div class="line">	xmlns:context="http://www.springframework.org/schema/context"</div><div class="line">	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"</div><div class="line">	xsi:schemaLocation="http://www.springframework.org/schema/beans </div><div class="line">		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/mvc </div><div class="line">		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/context </div><div class="line">		http://www.springframework.org/schema/context/spring-context-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/aop </div><div class="line">		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/tx </div><div class="line">		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd"&gt;</div><div class="line">		</div><div class="line">		&lt;!--  扫描基本的父包，这样子类包被自动扫到执行 --&gt;</div><div class="line">		&lt;context:component-scan base-package="com.zwl"&gt;&lt;/context:component-scan&gt;</div><div class="line">		</div><div class="line">	&lt;!-- 配置注解处理器映射器 </div><div class="line">			功能：寻找执行类Controller</div><div class="line">		--&gt;</div><div class="line"></div><div class="line">		 &lt;bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"&gt;&lt;/bean&gt;</div><div class="line">		&lt;!-- 配置注解处理器适配器 </div><div class="line">			功能：调用controller方法，执行controller</div><div class="line">		--&gt;</div><div class="line"></div><div class="line">		&lt;bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"&gt;</div><div class="line">		&lt;/bean&gt;</div><div class="line">		&lt;!-- 配置sprigmvc视图解析器：解析逻辑试图 </div><div class="line">			 后台返回逻辑试图：index</div><div class="line">			视图解析器解析出真正物理视图：前缀+逻辑试图+后缀====/WEB-INF/jsps/index.jsp</div><div class="line">		--&gt;</div><div class="line">		&lt;bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"&gt;</div><div class="line">		&lt;property name="prefix" value="/"&gt;&lt;/property&gt;</div><div class="line">		&lt;property name="suffix" value=".jsp"&gt;&lt;/property&gt;		</div><div class="line">		&lt;/bean&gt;</div><div class="line">		&lt;/beans&gt;</div></pre></td></tr></table></figure></p>
-<p>这里简要说明一下，以上是注解最基本的配置，有扫描配置，两个基本配置和一个视图配置</p>
-<p>步骤五：自定义controller类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">package com.zwl.control;</div><div class="line"></div><div class="line">import org.springframework.stereotype.Controller;</div><div class="line">import org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"></div><div class="line">@Controller  //相当于&lt;bean class="Usercontrol"/&gt;并且声明这是一个controller</div><div class="line">public class Usercontrol &#123;</div><div class="line"></div><div class="line">	@RequestMapping("hello") //相当于需要访问的路径hello.do</div><div class="line">	public String say()&#123;</div><div class="line">		return "index" ;  //放回到逻辑视图index.jsp</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>这是一个最简化的注解配置<br>对应index.jsp<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"> &lt;body&gt;</div><div class="line">hello 盲僧</div><div class="line">  &lt;/body&gt;</div></pre></td></tr></table></figure></p>
-<p>测试：浏览器中输入<a href="http://localhost:100/springmvc2/hello.do" target="_blank" rel="external">http://localhost:100/springmvc2/hello.do</a></p>
-<p>对应输出结果</p>
-<blockquote>
-<p>hello 盲僧</p>
-</blockquote>
-<h4 id="RequestMapping"><a href="#RequestMapping" class="headerlink" title="RequestMapping"></a>RequestMapping</h4><p>它有三种方式，分别为</p>
-<blockquote>
-<p>requestMapping(“hello”)<br>requestMapping(“/hello.do”)<br>requestMapping(value=”/hello.do”)</p>
-</blockquote>
-<p>都能达到同样的效果，都是需要访问的路径<br>如果在类前面添加此属性，则相当于映射路径在加一层<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@Controller <span class="comment">//&lt;bean class="Usercontrol"/&gt;</span></div><div class="line">@RequestMapping(<span class="string">"/test"</span>)</div><div class="line">public class Usercontrol &#123;&#125;</div></pre></td></tr></table></figure></p>
-<p>即<a href="http://localhost:100/springmvc2/test/hello.do" target="_blank" rel="external">http://localhost:100/springmvc2/test/hello.do</a></p>
-<p>另外，注意下里面还有个method配置，即按什么模式接受表单</p>
-<blockquote>
-<p>@RequestMapping(value=”/hello.do”,method=RequestMethod.GET)</p>
-</blockquote>
-<p>或者</p>
-<blockquote>
-<p>@RequestMapping(value=”/hello.do”,method=RequestMethod.POST)</p>
-</blockquote>
-<p>默认是两个都可以的</p>
-<blockquote>
-<p>requestMapping(value=”/hello.do”,method={RequestMethod.POST, RequestMethod.GET})</p>
-</blockquote>
-<h4 id="封装参数"><a href="#封装参数" class="headerlink" title="封装参数"></a>封装参数</h4><p>分析接受参数类型：<br>基本类型，int，String等等基本类型。<br>Pojo类型<br>包装类型<br>Springmvc参数封装：基于方法进行封装。</p>
-<p>一：基本类型<br> 封装int型参数<br>页面<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">  &lt;body&gt;</div><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/ test/recieve.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">id：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"id"</span> id=<span class="string">"id"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div><div class="line">  &lt;/body&gt;</div></pre></td></tr></table></figure></p>
-<p>接受参数方法<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("recieve")</div><div class="line">	public String recieve(Integer id)&#123;</div><div class="line">		System.out.println(id);</div><div class="line">  return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>注意这里的Integer id必须要与页面中的name=”id”一致才能正确接受参数</p>
-<p>测试：在浏览器中输入<a href="http://localhost:100/springmvc2/index.jsp" target="_blank" rel="external">http://localhost:100/springmvc2/index.jsp</a></p>
-<p>然后输入id，后台即可接收到参数</p>
-<p>接受字符转类型<br>页面：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/ test/recievestr.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">id：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"name"</span> id=<span class="string">"name"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>接收参数方法：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("recievestr")</div><div class="line">	public String recievestr(String name)&#123;</div><div class="line">		System.out.println(name);</div><div class="line">		  return "login";&#125;</div></pre></td></tr></table></figure></p>
-<p>接受数组：<br>分析：批量：checkbox复选框。Value必须有值<br>页面：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/test/recievearray.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">ID：&lt;<span class="selector-tag">input</span> type=<span class="string">"checkbox"</span> name=<span class="string">"ids"</span> value=<span class="string">"1"</span> id=<span class="string">"ids"</span>&gt;</div><div class="line">ID：&lt;<span class="selector-tag">input</span> type=<span class="string">"checkbox"</span> name=<span class="string">"ids"</span> value=<span class="string">"2"</span> id=<span class="string">"ids"</span>&gt;</div><div class="line">ID：&lt;<span class="selector-tag">input</span> type=<span class="string">"checkbox"</span> name=<span class="string">"ids"</span> value=<span class="string">"3"</span> id=<span class="string">"ids"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>接受参数的方法<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("recievearray")</div><div class="line">	public String recievearray(Integer []ids)&#123;</div><div class="line">		System.out.println(ids);</div><div class="line">		 return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>接受pojo类<br>页面：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/test/recieveUser.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">姓名：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"username"</span> id=<span class="string">"username"</span>&gt;</div><div class="line">生日：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"birthday"</span> id=<span class="string">"birthday"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>Pojo类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class User &#123;</div><div class="line">	</div><div class="line">	private String username;</div><div class="line">	private Date birthday;</div><div class="line"></div><div class="line">此处省略set。Get方法&#125;</div></pre></td></tr></table></figure></p>
-<p>接受参数的方法：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("recieveUser")</div><div class="line">	public String recievearray(User user)&#123;</div><div class="line">		System.out.println(user.getUsername());</div><div class="line">		 return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>接受包装类型参数<br> 包装pojo类</p>
- <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class Usercus &#123;</div><div class="line">	private User user;</div><div class="line">此处省略set。Get方法。&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">&lt;form action="$&#123;pageContext.request.contextPath &#125;/test/usercus.do" method="post"&gt;</div><div class="line">姓名：&lt;input type="text" name="user.username" id="username"&gt;</div><div class="line">生日：&lt;input type="text" name="user.birthday" id="birthday"&gt;</div><div class="line">&lt;input type="submit" value="提交"&gt;</div><div class="line">&lt;/form&gt;</div><div class="line"></div><div class="line">接受参数的方法：</div><div class="line">@RequestMapping("usercus")</div><div class="line">	public String usercus(Usercus user)&#123;</div><div class="line">		System.out.println(user.getUser().getUsername());</div><div class="line">		 return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<p>接受集合类型参数<br> 接受list集合<br>首先在包装类中加入如下代码<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">private List&lt;User&gt; userlist;</div><div class="line">此处省略set，get方法</div><div class="line"></div><div class="line">然后是页面</div><div class="line">&lt;form action="$&#123;pageContext.request.contextPath &#125;/test/recievelist.do" method="post"&gt;</div><div class="line">姓名：&lt;input type="text" name="userList[0].username" id="username"&gt;</div><div class="line">地址：&lt;input type="text" name="userList[0].address" id="address"&gt;</div><div class="line"></div><div class="line">姓名：&lt;input type="text" name="userList[1].username" id="username"&gt;</div><div class="line">地址：&lt;input type="text" name="userList[1].address" id="address"&gt;</div><div class="line">&lt;input type="submit" value="提交"&gt;</div><div class="line"></div><div class="line">&lt;/form&gt;</div><div class="line"></div><div class="line">接受参数方法：</div><div class="line">@RequestMapping("recievelist")</div><div class="line">	public String recievelist(Usercus userlist)</div><div class="line">	&#123;</div><div class="line">		System.out.println(userlist.getUserlist().get(0).getUsername());</div><div class="line">		 return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;之前我们都是通过xml方式显示配置，会发现配置起来特别麻烦。当使用注解时，有时只需在相关类中做相关的声明，就能完成同样的工作。&lt;/p&gt;
-&lt;p
     
     </summary>
     
