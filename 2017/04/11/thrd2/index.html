@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="五大框架," />
+  <meta name="keywords" content="多线程," />
 
 
 
@@ -105,16 +105,19 @@
 
 
 
-<meta name="description" content="前言在structs2中，action是其核心功能，而使用structs2框架，主要都是围绕action进行，我们编写的action通常需要实现com.opensymphony.xwork2.Action接口，需要实现的方法时execute方法，但是在实际开发中，编写的action也可以不必实现action接口，而是直接创建一个普通的java类，并添加execute方法就可以，如入门程序的案例，还">
+<meta name="description" content="前言Single Threaded Execution是指以一个线程执行，简单来说就是在多线程中限制同时只让一个线程运行
+线程不安全首先来模拟一个线程不安全的例子1234567891011121314151617181920212223242526272829303132package com.zwl.utest2;public class Gate &amp;#123;    //记录走过门的人数，默认">
 <meta property="og:type" content="article">
-<meta property="og:title" content="struts2 之二:action详解">
-<meta property="og:url" content="http://www.myzwl.win/2017/03/27/structs2/index.html">
+<meta property="og:title" content="并发系列之二Single Threaded Execution">
+<meta property="og:url" content="http://www.myzwl.win/2017/04/11/thrd2/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="前言在structs2中，action是其核心功能，而使用structs2框架，主要都是围绕action进行，我们编写的action通常需要实现com.opensymphony.xwork2.Action接口，需要实现的方法时execute方法，但是在实际开发中，编写的action也可以不必实现action接口，而是直接创建一个普通的java类，并添加execute方法就可以，如入门程序的案例，还">
-<meta property="og:updated_time" content="2017-04-07T10:29:12.000Z">
+<meta property="og:description" content="前言Single Threaded Execution是指以一个线程执行，简单来说就是在多线程中限制同时只让一个线程运行
+线程不安全首先来模拟一个线程不安全的例子1234567891011121314151617181920212223242526272829303132package com.zwl.utest2;public class Gate &amp;#123;    //记录走过门的人数，默认">
+<meta property="og:updated_time" content="2017-04-20T04:20:34.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="struts2 之二:action详解">
-<meta name="twitter:description" content="前言在structs2中，action是其核心功能，而使用structs2框架，主要都是围绕action进行，我们编写的action通常需要实现com.opensymphony.xwork2.Action接口，需要实现的方法时execute方法，但是在实际开发中，编写的action也可以不必实现action接口，而是直接创建一个普通的java类，并添加execute方法就可以，如入门程序的案例，还">
+<meta name="twitter:title" content="并发系列之二Single Threaded Execution">
+<meta name="twitter:description" content="前言Single Threaded Execution是指以一个线程执行，简单来说就是在多线程中限制同时只让一个线程运行
+线程不安全首先来模拟一个线程不安全的例子1234567891011121314151617181920212223242526272829303132package com.zwl.utest2;public class Gate &amp;#123;    //记录走过门的人数，默认">
 
 
 
@@ -142,13 +145,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/03/27/structs2/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/04/11/thrd2/"/>
 
 
 
 
 
-  <title> struts2 之二:action详解 | 秒西 </title>
+  <title> 并发系列之二Single Threaded Execution | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -494,7 +497,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/27/structs2/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/04/11/thrd2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -515,7 +518,7 @@ var _hmt = _hmt || [];
             
             
               
-                struts2 之二:action详解
+                并发系列之二Single Threaded Execution
               
             
           </h1>
@@ -530,8 +533,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-27T16:48:51+08:00">
-                2017-03-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-11T11:48:51+08:00">
+                2017-04-11
               </time>
             
 
@@ -558,8 +561,8 @@ var _hmt = _hmt || [];
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习总结/" itemprop="url" rel="index">
-                    <span itemprop="name">学习总结</span>
+                  <a href="/categories/并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">并发编程</span>
                   </a>
                 </span>
 
@@ -598,35 +601,44 @@ var _hmt = _hmt || [];
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在structs2中，action是其核心功能，而使用structs2框架，主要都是围绕action进行，我们编写的action通常需要实现com.opensymphony.xwork2.Action接口，需要实现的方法时execute方法，但是在实际开发中，编写的action也可以不必实现action接口，而是直接创建一个普通的java类，并添加execute方法就可以，如入门程序的案例，还有一种方式就是继承ActionSupport类，其已经实现了action的execute方法，以上方式，后两者比较常用</p>
-<p>接下来将在入门程序的基础上，来介绍action属性</p>
-<p> 一：action属性<br>  Action中有一个映射框架，主要讲url映射到对应的action，action的配置主要在struts.xml文件中编写，</p>
-<p>  以下是action的几个常见属性</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Single Threaded Execution是指以一个线程执行，简单来说就是在多线程中限制同时只让一个线程运行</p>
+<h4 id="线程不安全"><a href="#线程不安全" class="headerlink" title="线程不安全"></a>线程不安全</h4><p>首先来模拟一个线程不安全的例子<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">package com.zwl.utest2;</div><div class="line"></div><div class="line">public class Gate &#123;</div><div class="line"></div><div class="line">    //记录走过门的人数，默认为0</div><div class="line">	private int count=0;</div><div class="line">	//记录通过门的人的名字</div><div class="line">	private String name="nobody";</div><div class="line">	//记录通过门的人的地址</div><div class="line">	private String address="noplace";</div><div class="line">	</div><div class="line">	//穿越这道门使用的方法</div><div class="line">	public  void pass(String name,String address)&#123;</div><div class="line">		this.name=name;</div><div class="line">		this.address=address;</div><div class="line">		count++;</div><div class="line">		check();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//检查通过门的人的合法性，即人的名字和地址首字母是否相同</div><div class="line">	public void check()&#123;</div><div class="line">		if(name.charAt(0)!=address.charAt(0))&#123;</div><div class="line">			System.out.println("***broken***"+this.toString());</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//打印出人数、姓名、地址</div><div class="line">	public  String toString()&#123;</div><div class="line">		return "No."+count+":"+name+" ,"+address;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>目前上面的Gate类是线程不安全的<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">package com.zwl.utest2;</div><div class="line"></div><div class="line">//不断穿越门的行人</div><div class="line">public class UserThread extends Thread &#123;</div><div class="line">//用final限制门，姓名，地址不能重复</div><div class="line">private final Gate gate;</div><div class="line">private final String myaddress;</div><div class="line">private final String myname;</div><div class="line">public UserThread(Gate gate, String myname, String myaddress) &#123;</div><div class="line">	super();</div><div class="line">	this.gate = gate;</div><div class="line">	this.myname = myname;</div><div class="line">	this.myaddress = myaddress;</div><div class="line">&#125;</div><div class="line">//发生错误，即行人不合法，则处于死循环，并且执行toString方法</div><div class="line">@Override</div><div class="line">public void run() &#123;</div><div class="line">	System.out.println(myname+" BEGIN");</div><div class="line">while(true)&#123;</div><div class="line">	gate.pass(myname, myaddress);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">System.out.println("test begin:");</div><div class="line">	Gate gate=new Gate();</div><div class="line">	//构造三个行人</div><div class="line">	new UserThread(gate, "A1", "A2").start();</div><div class="line">	new UserThread(gate, "B1", "B2").start();</div><div class="line">	new UserThread(gate, "C1", "C2").start();</div></pre></td></tr></table></figure></p>
+<p>测试结果（截取部分）</p>
 <blockquote>
-<p>属性       是否必须       说明<br>Name       是           action的名字，用于匹配请求的url<br>Class        否           action实现类的完整类名<br>Method     否            调用action实现类中指定的方法</p>
+<p>test begin:<br>B1 BEGIN<br>A1 BEGIN<br><strong><em>broken</em></strong>No.1305356:A1 ,A2<br><strong><em>broken</em></strong>No.1347999:B1 ,B2<br><strong><em>broken</em></strong>No.1357011:A1 ,A2<br><strong><em>broken</em></strong>No.1370176:B1 ,B2<br><strong><em>broken</em></strong>No.1377075:B1 ,B2</p>
 </blockquote>
-<p>需要注意的是，action的name属性有规范，即不允许出现.或者/或者-，另外我们来看看如果只配置一个name属性，class怎么加载？<br>理论上是框架会调用actionsupport类中的execute方法，该方法的实现仅仅是返回一个success，但是实际上去掉之后，入门程序中跳转正确，但是数据取不到，至少说明的确跳转正确，</p>
-<p>下面对method属性进行说明<br>由之前我们知道通常action的作用是完成一个功能点，但是如果同时又crud方法，显然创建四个action就太麻烦了，这时候就可以使用method属性，至于怎么用，先看一个实例。<br>即对用户进行增删该查</p>
-<p>首先是useraction.java</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">import com.opensymphony.xwork2.ActionSupport;</div><div class="line"></div><div class="line">public class useraction extends ActionSupport&#123;</div><div class="line"></div><div class="line">	//查询</div><div class="line">	public String selectall()&#123;</div><div class="line">		return SUCCESS;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//更新</div><div class="line">	public String update()</div><div class="line">	&#123;</div><div class="line">		return SUCCESS;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//删除</div><div class="line">	public String delete()</div><div class="line">	&#123;</div><div class="line">		return SUCCESS;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//添加</div><div class="line">	public String add()&#123;</div><div class="line">		return SUCCESS;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里注意一下，在action中并不一定非要需要写execute方法，也可以自己指定需要的方法，但是必须要在Struts.xml中做相应的配置，如下<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;package name=<span class="string">"default"</span> namespace=<span class="string">"/"</span> extends=<span class="string">"struts-default"</span>&gt;</div><div class="line">       &lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"selectall"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div><div class="line">        &lt;action name=<span class="string">"helloworld1"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"update"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div><div class="line">        &lt;action name=<span class="string">"helloworld2"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"delete"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div><div class="line">        &lt;action name=<span class="string">"helloworld3"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"add"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div><div class="line">&lt;/package&gt;</div></pre></td></tr></table></figure></p>
-<p>然后在前台页面写需要调用的action<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> &lt;<span class="selector-tag">form</span> action=<span class="string">"helloworld.action"</span>&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"msg"</span>/&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>显然我们发现用此种方法思路清晰，但是太啰嗦，这就是有时需要动态调用action，简称DMI，<br>先看一个例子，<br>首先是useraction1.java<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">public class useraction1 extends ActionSupport&#123;</div><div class="line"></div><div class="line">	private String msg;</div><div class="line">	</div><div class="line">	public String getMsg() &#123;</div><div class="line">		return msg;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setMsg(String msg) &#123;</div><div class="line">		this.msg = msg;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">		//查询</div><div class="line">		public String selectall()&#123;</div><div class="line">			return "selectall";</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//更新</div><div class="line">		public String update()</div><div class="line">		&#123;</div><div class="line">			return "update";</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//删除</div><div class="line">		public String delete()</div><div class="line">		&#123;</div><div class="line">			return "delete";</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//添加</div><div class="line">		public String add()&#123;</div><div class="line">			return "add";</div><div class="line">		&#125;</div></pre></td></tr></table></figure></p>
-<p>这里我们可以通过自定义方法返回不同的值，然后通过result中name属性配置相应不同的值，来返回到不同的界面<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//这里是是否启用DMI方法，默认是关闭的</span></div><div class="line">&lt;constant name=<span class="string">"struts.enable.DynamicMethodInvocation"</span> value=<span class="string">"true"</span> /&gt; </div><div class="line"><span class="comment">//这里是否启用开发者模式，这样就不用每次重启服务器</span></div><div class="line">    &lt;constant name=<span class="string">"struts.devMode"</span> value=<span class="string">"true"</span> /&gt;</div><div class="line">    </div><div class="line">    &lt;package name=<span class="string">"default"</span> namespace=<span class="string">"/"</span> extends=<span class="string">"struts-default"</span>&gt;</div><div class="line">     &lt;action name=<span class="string">"useraction1"</span> class=<span class="string">"com.zwl.action.useraction1"</span>&gt;</div><div class="line">     &lt;result name=<span class="string">"selectall"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">     &lt;result name=<span class="string">"update"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">     &lt;result name=<span class="string">"delete"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">     &lt;result name=<span class="string">"add"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">     &lt;/action&gt;</div><div class="line">&lt;/package&gt;</div></pre></td></tr></table></figure></p>
-<p>好了，配置文件也配置好了，接下来就是在页面中调用DMI方法，一般的格式是actionname!xxx.action<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"useraction1!delete.action"</span>&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"msg"</span>/&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">  &lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>至此动态调用action已完成，接下来将是默认的action配置<br>默认的action<br>先看配置实例：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;package name=<span class="string">"default"</span> namespace=<span class="string">"/"</span> extends=<span class="string">"struts-default"</span>&gt;</div><div class="line">    &lt;default-action-ref name=<span class="string">"helloworld"</span>&gt;&lt;/default-action-ref&gt;</div><div class="line"></div><div class="line">   &lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"selectall"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div></pre></td></tr></table></figure></p>
-<p>在表单中跳转到一个不存在的action时，则执行设置的默认action，这里需要注意的是每个namespace下，只能有一个默认的action，否则不知道执行那个默认的action</p>
-<p>通配符映射<br> 使用通配符，可以将配置量降到最低，不过一定要实现约定好命名规范，即约定优于配置原则<br>在action配置中，<em>表示所有，可以匹配任意的字符，而{数字}表示第几个通配符，如
-</em>_<em>，{1}表示第一个</em>，{2}表示第二个*<br>接下来模拟一个案例，如下所示<br>首先是action<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public class useractionsave extends ActionSupport&#123;</div><div class="line">   </div><div class="line">	private String msg;</div><div class="line"></div><div class="line">	public String getMsg() &#123;</div><div class="line">		return msg;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setMsg(String msg) &#123;</div><div class="line">		this.msg = msg;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public String save()&#123;</div><div class="line">		return "save";</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>配置文件<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;action name=<span class="string">"useraction*"</span> class=<span class="string">"com.zwl.action.useraction&#123;1&#125;"</span> method=<span class="string">"&#123;1&#125;"</span>&gt;</div><div class="line">  &lt;result name=<span class="string">"save"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">  &lt;/action&gt;</div><div class="line"></div><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"useractionsave.action"</span>&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"msg"</span>/&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">  &lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>最后测试通过</p>
-<p>最后介绍一下action的属性接受参数<br>事实上action中有三种方法</p>
-<p>方法一：在Action添加成员属性接受参数<br>之前的案例都是采用这种方法的，就不多介绍了，不过值得注意的是，参数提交的名称必须和action的属性一致，并且要有set与get方法</p>
-<p>方法二： 域模型(Domain Model)<br>就是先创建一个对象，通过在action中操作其属性来传递参数，相应的先建立一个user对象<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">public class user &#123;</div><div class="line">private String msg;</div><div class="line"></div><div class="line">public String getMsg() &#123;</div><div class="line">	return msg;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public void setMsg(String msg) &#123;</div><div class="line">	this.msg = msg;</div><div class="line">&#125;</div><div class="line"></div><div class="line">然后是action</div><div class="line">	private user use;</div><div class="line">	</div><div class="line">	public user getUse() &#123;</div><div class="line">		return use;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setUse(user use) &#123;</div><div class="line">		this.use = use;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public String save()&#123;</div><div class="line">		return "save";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>这里需要注意的是前台参数传递，是action中引用对象的那个属性，其它都一样<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">  &lt;<span class="selector-tag">form</span> action=<span class="string">"useractionsave.action"</span>&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"use.msg"</span>/&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">  &lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>方法三： ModelDriven接收参数<br>使Action实现com.opensymphony.xwork2.ModelDriven<user>(在实现接口时需要使用泛型，否则使用时需要转型)中利用其getModel()方法返回对象模型，从而获得传入的参数。</user></p>
-<p>参数被传入至Action后，会被ModelDriven对象根据参数名自动赋值给User对象相应的属性而生成User对象，并且由getModel()返回。那么我们在Action中就可以利用这个对象了。<br>注意：传入的参数名需要与对象模型中的成员属性一致。</p>
-<p>这里在将上述案例中的action修改一下。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class useractionsave extends ActionSupport implements ModelDriven&lt;user&gt;&#123;</div><div class="line">public String save()&#123;</div><div class="line">		return "save";</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	private user use=new user();</div><div class="line">	</div><div class="line">public user getUse() &#123;</div><div class="line">		return use;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setUse(user use) &#123;</div><div class="line">		this.use = use;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public user getModel() &#123;</div><div class="line">	// TODO Auto-generated method stub</div><div class="line">	return use;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从结果来看，明显发生了错误，即出现了线程不安全，但是也有点不对劲</p>
+<h4 id="为什么会出错了"><a href="#为什么会出错了" class="headerlink" title="为什么会出错了"></a>为什么会出错了</h4><blockquote>
+<p>问题的出错地方就在Gate类中，因为其是线程不安全的，打个比方<br>    线程A1                  线程A2           this.name值            this.address值<br>   count++                  count++            之前的值                  之前的值<br> this.name=name                                  A1                     之前的值<br>                           this.name=name        A2                     之前的值<br>                           this.address=address  A2                       B2<br> this.address=address                            A1                       B2<br>  check（）                  check（）           A1                        B2</p>
+</blockquote>
+<p>  发生错误</p>
+<p>  以上只是发生错误的一种情况，事实上只有当数据量非常大时，极有可能发生错误，所以才会出现错误的结果，并且是在count达到大数量的时候出现的<br>  那么如何修改了？<br>  因为发生在Gate类的pass和toString方法中，所以只要把这个两个方法声明为同步就可以了</p>
+<blockquote>
+<p>public synchronized void pass(String name,String address){}<br>  public synchronized String toString(){}</p>
+</blockquote>
+<p>  对应的测试结果</p>
+<blockquote>
+<p>test begin:<br>A1 BEGIN<br>B1 BEGIN<br>C1 BEGIN</p>
+</blockquote>
+<h4 id="归纳single-Threaded"><a href="#归纳single-Threaded" class="headerlink" title="归纳single Threaded"></a>归纳single Threaded</h4><p>上面例子的解决方案就是该模式的一种应用，可以将其抽象为以下几个参与者<br>SharedResource（共享资源）参与者：可有多个线程访问的类，如Gate<br>SafeMethod：从多个线程同时调用也不会发生问题<br>UnsafeMethod：从多个线程同时调用会发生问题，需要防范的方法<br>所以必须将上述不安全的方法加以同步锁，当时如果通过其他方法改变不安全方法中数据也会发生错误，就像大门上锁，但是窗户开着一样，所以有时也是一个隐患的问题</p>
+<p>那么此种模式何时适用了？<br>多线程时、数据可被多个线程访问的时候、状态可能变化的时候、需要确保安全性的时候</p>
+<h4 id="生命线与死锁"><a href="#生命线与死锁" class="headerlink" title="生命线与死锁"></a>生命线与死锁</h4><p>使用该模式，可能会发生死锁的危险<br>而死锁是指：两个线程分别获取了锁定，互相等待另一个线程解除锁定的线程。发生死锁时，哪个线程都无法继续执行下去，所以程序会失去生命线<br>最经典的死锁问题就是汤勺与叉子模型，问题大概是这样的<br>假设A与B同吃一碗面，盘子旁有一支汤勺与一支叉子，而吃面必须同时需要汤勺和叉子<br>而现在叉子被其中一人假设是A拿走，而汤勺被B拿走，就会造成如下现象：<br>A和B一直等待对方放下叉子（或者汤勺），即一直处于等待，僵持阶段，从而程序无法继续运行，故称为死锁现象</p>
+<p>而只要上述模式达到下面的条件，就会出现死锁<br>1.具有多个SharedResource参与者<br>2.线程锁定一个SharedResource时，还没接触前就去锁定另一个SharedResource<br>3.获取SharedResource参与者的顺序不固定</p>
+<p>当然只要破坏上述三个条件之一就可以避免死锁的发生</p>
+<p>下面就开始模拟死锁<br>首先是表示餐具的类(这里只有叉子和汤勺)<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">package com.zwl.utest2;</div><div class="line"></div><div class="line">public class Tool &#123;</div><div class="line"></div><div class="line">	private final String name;</div><div class="line">	public Tool(String  name)&#123;</div><div class="line">		this.name=name;</div><div class="line">	&#125;</div><div class="line">	public String toString()&#123;</div><div class="line">		return "["+name+"]";</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>开始用餐的类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">package com.zwl.utest2;</div><div class="line"></div><div class="line">public class EaterThread extends Thread &#123;</div><div class="line">    </div><div class="line">    //用餐者名字</div><div class="line">	private String name;</div><div class="line">	//左手拿餐具</div><div class="line">	private final Tool lefthand;</div><div class="line">	//右手拿餐具</div><div class="line">	private final Tool righthand;</div><div class="line">	public EaterThread(String name, Tool lefthand, Tool righthand) &#123;</div><div class="line">		super();</div><div class="line">		this.name = name;</div><div class="line">		this.lefthand = lefthand;</div><div class="line">		this.righthand = righthand;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void run()&#123;</div><div class="line">	  //不断吃</div><div class="line">		while(true)&#123;</div><div class="line">			eat();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	public void eat()&#123;</div><div class="line">		 //锁定左手获取餐具</div><div class="line">		synchronized (lefthand) &#123;</div><div class="line">		 //左手拿餐具</div><div class="line">			System.out.println(name+"takes up"+lefthand+"left.");</div><div class="line">		 //锁定右手拿餐具</div><div class="line">			synchronized (righthand) &#123;</div><div class="line">		 //右手拿餐具</div><div class="line">				System.out.println(name+" takes up"+righthand+"right.");</div><div class="line">		 //开吃</div><div class="line">				System.out.println(name+" is eating");</div><div class="line">		 //右手放下餐具</div><div class="line">				System.out.println(name+" puts down"+righthand+"right.");</div><div class="line">			&#125;</div><div class="line">		 //解除右手锁定锁，并且左手放下餐具</div><div class="line">			System.out.println(name+"puts down"+lefthand+"left.");</div><div class="line">		&#125;</div><div class="line">		//解除左手餐具的锁定</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">   System.out.println("test begin:");</div><div class="line">Tool spoon=new Tool("Spoon");</div><div class="line">Tool fork=new Tool("Fork");</div><div class="line">new EaterThread("A", spoon, fork).start();</div><div class="line">new EaterThread("B", fork, spoon).start();</div></pre></td></tr></table></figure></p>
+<p>测试结果：</p>
+<blockquote>
+<p>test begin:<br>Atakes up[Spoon]left.<br>A takes up[Fork]right.<br>A is eating<br>A puts down[Fork]right.<br>Aputs down[Spoon]left.<br>Atakes up[Spoon]left.<br>A takes up[Fork]right.<br>A is eating<br>A puts down[Fork]right.<br>Aputs down[Spoon]left.<br>重复。。直到<br>Atakes up[Spoon]left.<br>Btakes up[Fork]left.<br>该处程序停止不动了，也就是a和b分别拿着汤勺和叉子，即处于死锁状态了。</p>
+</blockquote>
+<p>一种最简单的方法就是改变顺序，即以相同顺序拿餐具<br>即：</p>
+<blockquote>
+<p>Tool spoon=new Tool(“Spoon”);<br>    Tool fork=new Tool(“Fork”);<br>    new EaterThread(“A”, spoon, fork).start();<br>    new EaterThread(“B”, spoon,fork).start();</p>
+</blockquote>
+<p>最后程序就会一直进行下去，不过这样的话，前面的共享资源就不存在了！</p>
 
       
     </div>
@@ -667,7 +679,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/五大框架/" rel="tag"># 五大框架</a>
+            <a href="/source/tags/多线程/" rel="tag"># 多线程</a>
           
         </div>
       
@@ -680,8 +692,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/26/structs1/" rel="next" title="struts2 之一:hello world">
-                <i class="fa fa-chevron-left"></i> struts2 之一:hello world
+              <a href="/2017/04/10/thrd1/" rel="next" title="并发系列一之初识java线程">
+                <i class="fa fa-chevron-left"></i> 并发系列一之初识java线程
               </a>
             
           </div>
@@ -690,8 +702,8 @@ var _hmt = _hmt || [];
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/03/28/structs3/" rel="prev" title="struts2 之三:result返回结果">
-                struts2 之三:result返回结果 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/11/thrd3/" rel="prev" title="并发系列之三Immutable">
+                并发系列之三Immutable <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -879,7 +891,7 @@ var _hmt = _hmt || [];
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程不安全"><span class="nav-text">线程不安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么会出错了"><span class="nav-text">为什么会出错了</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#归纳single-Threaded"><span class="nav-text">归纳single Threaded</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生命线与死锁"><span class="nav-text">生命线与死锁</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
