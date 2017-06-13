@@ -582,6 +582,16 @@ var _hmt = _hmt || [];
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/03/10/observer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -683,8 +693,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/09/factory/" rel="next" title="工厂方法设计模式">
-                <i class="fa fa-chevron-left"></i> 工厂方法设计模式
+              <a href="/2017/03/10/abstractfactory/" rel="next" title="抽象工厂设计模式">
+                <i class="fa fa-chevron-left"></i> 抽象工厂设计模式
               </a>
             
           </div>
@@ -693,8 +703,8 @@ var _hmt = _hmt || [];
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/03/10/abstractfactory/" rel="prev" title="抽象工厂设计模式">
-                抽象工厂设计模式 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/11/stproxy/" rel="prev" title="代理模式（一）之静态代理">
+                代理模式（一）之静态代理 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -747,7 +757,7 @@ var _hmt = _hmt || [];
           
      <div class="comments" id="comments">
        
-            <div id="uyan_frame"></div>
+         <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
        
      </div>
    
@@ -795,7 +805,7 @@ var _hmt = _hmt || [];
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">53</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -806,7 +816,7 @@ var _hmt = _hmt || [];
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -817,7 +827,7 @@ var _hmt = _hmt || [];
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -836,15 +846,6 @@ var _hmt = _hmt || [];
                     <i class="fa fa-fw fa-github"></i>
                   
                   GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="mailto:1260747128@qq.com" target="_blank" title="Gmail">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  Gmail
                 </a>
               </span>
             
@@ -1041,27 +1042,23 @@ var _hmt = _hmt || [];
 
 
   
-
-
-
-
-
-  
     
-
-
-    
-      <!-- UY BEGIN -->
-      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2127192"></script>
-      <!-- UY END -->
-    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "874139175a2d4e1281085b0f0647e3e1",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
   
 
 
 
 
 
-  
+
 
 
 

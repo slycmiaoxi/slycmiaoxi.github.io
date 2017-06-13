@@ -5,10 +5,49 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-04-20T11:37:42.000Z</updated>
+  <updated>2017-06-13T11:50:32.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Shiro之通过数据库验证身份</title>
+    <link href="http://www.myzwl.win/2017/06/11/shiro1/"/>
+    <id>http://www.myzwl.win/2017/06/11/shiro1/</id>
+    <published>2017-06-11T05:48:51.000Z</published>
+    <updated>2017-06-13T11:50:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>参考百度上说的<a href="http://shiro.apache.org/download.html" target="_blank" rel="external">Apache Shiro</a>是一个强大易用的java安全框架，提供了认证、授权、加密和会话管理功能，可以为任何应用提供安全保障，而其主要为解决以下四个问题：<br>1、 认证-用户身份识别，常被称为用户登录<br>2、 授权-访问控制<br>3、 密码加密-保护或隐藏数据防止被偷窥<br>4、 会话管理-每用户相关的时间敏感的状态</p>
+<h4 id="身份认证流程"><a href="#身份认证流程" class="headerlink" title="身份认证流程"></a>身份认证流程</h4><p>以下是从其官网上截取的原理图<br><img src="/images/imgs3/14.gif" alt="Alt text"></p>
+<h4 id="Subject认证主体"><a href="#Subject认证主体" class="headerlink" title="Subject认证主体"></a>Subject认证主体</h4><p>其中认证主体包含两个信息:<br>Principals： 身份，可以是用户名，邮件，手机号码等等，用来标识一个登陆主体身份；<br>Credentials： 凭证，常见有密码，数字证书等等；</p>
+<h4 id="Realm-amp-JDBC-amp-Reaml"><a href="#Realm-amp-JDBC-amp-Reaml" class="headerlink" title="Realm&amp;JDBC&amp;Reaml"></a>Realm&amp;JDBC&amp;Reaml</h4><p>Realm：意思是域，Shiro从Reaml中获取验证数据；<br>Realm有很多种类，例如常见的jdbc realm</p>
+<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><p>1.在eclipse中新建一个maven工程，并且配置pom.xml<br>主要配置如下：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;dependencies&gt;</div><div class="line"></div><div class="line">  	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;org<span class="selector-class">.apache</span><span class="selector-class">.shiro</span>&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;shiro-core&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">1.2</span>.<span class="number">4</span>&lt;/version&gt;</div><div class="line">    &lt;/dependency&gt;</div><div class="line">    </div><div class="line">    &lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;org.slf4j&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">1.7</span>.<span class="number">12</span>&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line">	</div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;c3p0&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;c3p0&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">0.9</span>.<span class="number">1.2</span>&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line">	</div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;commons-logging&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;commons-logging&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">1.2</span>&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line">	</div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;mysql&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">5.1</span>.<span class="number">37</span>&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line"></div><div class="line">  &lt;/dependencies&gt;</div></pre></td></tr></table></figure></p>
+<p>主要有shiro的核心包、日志包，数据源及数据库连接包</p>
+<ol>
+<li>在resource包下新建jdbc_realm.ini用于配置从数据库中获取验证数据<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[main]   <span class="comment">//声明以下是代码片段</span></div><div class="line"><span class="comment">//相当于new了一个jdbcRealm类</span></div><div class="line">jdbcRealm=org<span class="selector-class">.apache</span><span class="selector-class">.shiro</span><span class="selector-class">.realm</span><span class="selector-class">.jdbc</span><span class="selector-class">.JdbcRealm</span></div><div class="line"><span class="comment">//声明一个数据源，这里用了c3p0</span></div><div class="line">dataSource=com<span class="selector-class">.mchange</span><span class="selector-class">.v2</span><span class="selector-class">.c3p0</span><span class="selector-class">.ComboPooledDataSource</span></div><div class="line"><span class="comment">//声明驱动</span></div><div class="line">dataSource.driverClass=com<span class="selector-class">.mysql</span><span class="selector-class">.jdbc</span><span class="selector-class">.Driver</span></div><div class="line"><span class="comment">//声明url，其中localhost可更改为ip地址</span></div><div class="line">dataSource.jdbcUrl=jdbc:mysql:<span class="comment">//localhost:9806/db_shiro</span></div><div class="line"><span class="comment">//配置数据库用户名、密码</span></div><div class="line">dataSource.user=root</div><div class="line">dataSource.password=root</div><div class="line"><span class="comment">//添加数据源</span></div><div class="line">jdbcRealm.dataSource=<span class="variable">$dataSource</span></div><div class="line"><span class="comment">//添加数据域</span></div><div class="line">securityManager.realms=<span class="variable">$jdbcRealm</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这里数据库中需要注意的是，数据库中的表名必须为users，并且字段必须为userName和password</p>
+<ol>
+<li>在src/main/java文件下新建一个HelloWorld类，目前数据这里手动构造一个<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">package com.zwl.shiro;</div><div class="line"></div><div class="line">import org.apache.shiro.SecurityUtils;</div><div class="line">import org.apache.shiro.authc.AuthenticationException;</div><div class="line">import org.apache.shiro.authc.UsernamePasswordToken;</div><div class="line">import org.apache.shiro.config.IniSecurityManagerFactory;</div><div class="line">import org.apache.shiro.mgt.SecurityManager;</div><div class="line">import org.apache.shiro.subject.Subject;</div><div class="line">import org.apache.shiro.util.Factory;</div><div class="line"></div><div class="line">public class HelloWorld &#123;</div><div class="line"></div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		//读取配置文件，初始化SecurityManager工厂</div><div class="line">	   Factory&lt;SecurityManager&gt; factory=new IniSecurityManagerFactory("classpath:jdbc_realm.ini");</div><div class="line">	    //获取SecurityManager实例</div><div class="line">	   SecurityManager securityManager=factory.getInstance();</div><div class="line">	   //把SecurityManager实例绑定到SecurityUtils</div><div class="line">	   SecurityUtils.setSecurityManager(securityManager);</div><div class="line">	   //得到当前执行的用户</div><div class="line">	   Subject currentUser=SecurityUtils.getSubject();</div><div class="line">	   //创建token令牌，用户名/密码</div><div class="line">	   UsernamePasswordToken token=new UsernamePasswordToken("admin", "123456");</div><div class="line">	   try &#123;</div><div class="line">		//身份认证</div><div class="line">		  currentUser.login(token);</div><div class="line">		  System.out.println("身份认证成功！");</div><div class="line">	&#125; catch (AuthenticationException e) &#123;</div><div class="line">		e.printStackTrace();</div><div class="line">		System.out.println("身份认证失败！");</div><div class="line">	&#125;</div><div class="line">	        // 退出</div><div class="line">			currentUser.logout();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这里通过更改token来模拟验证数据是否正确</p>
+<p>相关源代码，已放在<a href="https://github.com/slycmiaoxi/slycmx.github.io/tree/b" target="_blank" rel="external">github</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;参考百度上说的&lt;a href=&quot;http://shiro.apache.org/download.html&quot; target=&quot;_blank&quot;
+    
+    </summary>
+    
+      <category term="安全框架" scheme="http://www.myzwl.win/categories/%E5%AE%89%E5%85%A8%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Shiro" scheme="http://www.myzwl.win/source/tags/Shiro/"/>
+    
+  </entry>
   
   <entry>
     <title>并发系列之四Guarded Suspension</title>
@@ -943,52 +982,6 @@
     <summary type="html">
     
       &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;整合思路：&lt;br&gt;    1、数据源信息交给spring管理&lt;br&gt;2、sqlsessionfactory交给spring进行单例管理&lt;br
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>mybatis 之三:映射文件</title>
-    <link href="http://www.myzwl.win/2017/03/23/mybatis3/"/>
-    <id>http://www.myzwl.win/2017/03/23/mybatis3/</id>
-    <published>2017-03-23T03:48:51.000Z</published>
-    <updated>2017-04-07T10:27:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>基本上我们对数据库的操作都在映射文件中编写，通过mapper代理方式简化配置，同时依据不同的参数和返回类型完成相关需求</p>
-<h5 id="一：parameterType输入参数"><a href="#一：parameterType输入参数" class="headerlink" title="一：parameterType输入参数"></a>一：parameterType输入参数</h5><p>简单类型：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="int"</div><div class="line">		resultType="com.zwl.pojo.User"&gt;</div><div class="line">		SELECT * FROM user WHERE id =#&#123;id&#125;</div><div class="line">	&lt;/select&gt;</div></pre></td></tr></table></figure></p>
-<p>参数是基本类型，在之前已演示</p>
-<p>Pojo类型<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;insert id=<span class="string">"insertuser"</span> parameterType=<span class="string">"com.zwl.pojo.User"</span>&gt;</div><div class="line">&lt;selectKey keyProperty=<span class="string">"id"</span> resultType=<span class="string">"int"</span> <span class="attribute">order</span>=<span class="string">"AFTER"</span>&gt;</div><div class="line">select LAST_INSERT_ID()</div><div class="line">&lt;/selectKey&gt;</div><div class="line">insert into user values(#&#123;id&#125;,#&#123;name&#125;,#&#123;age&#125;)</div><div class="line">&lt;/insert&gt;</div></pre></td></tr></table></figure></p>
-<p>即参数类型是一个对象，如之前的添加操作</p>
-<p>包装pojo类型<br>即在类中包含另一个对象，如<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public class Uservo &#123;</div><div class="line">private User user;</div><div class="line">此处省略set。。get方法</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>配置文件中<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="com.zwl.pojo.Uservo"</div><div class="line">		resultType="com.zwl.pojo.User"&gt;</div><div class="line">		SELECT * FROM user WHERE id =#&#123;user.id&#125;</div><div class="line">	&lt;/select&gt;</div></pre></td></tr></table></figure></p>
-<p>参数是包装类，注意参数是包装类的属性</p>
-<p>Map<br>  同传递pojo对象一样，map的key相当于pojo的属性<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="hashmap"</div><div class="line">		resultType="com.zwl.pojo.User"&gt;</div><div class="line">		SELECT * FROM user WHERE id =#&#123;id&#125; and name=#&#123;name&#125;</div><div class="line">	&lt;/select&gt;</div></pre></td></tr></table></figure></p>
-<p>显然，参数是hashmap，其中#{id}与#{name}都是hashmap的key</p>
-<p>接口文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface UserMapper &#123;</div><div class="line">	public User findUserById(HashMap&lt;String, Object&gt; id) throws Exception;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>测试类：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">UserMapper mapper=sqlSession.getMapper(UserMapper.class);</div><div class="line">				</div><div class="line">				HashMap&lt;String, Object&gt; hm=new HashMap&lt;&gt;();</div><div class="line">				hm.put("id", 1);</div><div class="line">				hm.put("name","helloworld");</div><div class="line">				</div><div class="line">				User u=mapper.findUserById(hm);</div><div class="line">				System.out.println(u.getAge());</div><div class="line">				sqlSession.close();</div></pre></td></tr></table></figure></p>
-<h4 id="输出映射"><a href="#输出映射" class="headerlink" title="输出映射"></a>输出映射</h4><p>Resulttype：<br>    使用要求：<br>  使用resultType进行结果映射时，需要查询出的列名和映射的对象的属性名一致，才能映射成功。<br>如果查询的列名和对象的属性名全部不一致，那么映射的对象为空。<br>如果查询的列名和对象的属性名有一个一致，那么映射的对象不为空，但是只有映射正确那一个属性才有值。</p>
-<p>简单类型：resultType=”int”<br>Pojo对象：resultType=”com.zwl.pojo.User”</p>
-<p>如之前的案例<br>Resultmap<br>使用resultMap进行结果映射时，不需要查询的列名和映射的属性名必须一致。但是需要声明一个resultMap，来对列名和属性名进行映射<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;resultMap type=<span class="string">"com.zwl.pojo.User"</span> id=<span class="string">"Userresult"</span>&gt;</div><div class="line">	&lt;id column=<span class="string">"id_"</span> property=<span class="string">"id"</span>/&gt;</div><div class="line">	&lt;result column=<span class="string">"name_"</span> property=<span class="string">"name"</span>/&gt;</div><div class="line">	&lt;result column=<span class="string">"age_"</span> property=<span class="string">"age"</span>/&gt;</div><div class="line">	&lt;/resultMap&gt;</div></pre></td></tr></table></figure></p>
-<p>其中id为查询结果中唯一列映射，result标签为映射结果中的普通列</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;select id=<span class="string">"findUserById"</span> parameterType=<span class="string">"int"</span></div><div class="line">		resultMap=<span class="string">"Userresult"</span> &gt;</div><div class="line">		SELECT id id_,name name_,age age_ FROM user WHERE id =#&#123;id&#125; </div><div class="line">	&lt;/select&gt;</div></pre></td></tr></table></figure>
-<p>其中resultmap必须与声明中的id保持一致，这样才能引用</p>
-<p>接口：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface UserMapper &#123;</div><div class="line">	public User findUserById(int id) throws Exception;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>测试代码：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">User u=mapper.findUserById(1);</div><div class="line">				System.out.println(u.getAge());</div><div class="line">				sqlSession.close();</div></pre></td></tr></table></figure>
-<p>mybatis与hibernate的区别及各自应用场景<br>Mybatis技术特点：<br>1、    通过直接编写SQL语句，可以直接对SQL进行性能的优化；<br>2、    学习门槛低，学习成本低。只要有SQL基础，就可以学习mybatis，而且很容易上手；<br>3、    由于直接编写SQL语句，所以灵活多变，代码维护性更好。<br>4、    不能支持数据库无关性，即数据库发生变更，要写多套代码进行支持，移植性不好。</p>
-<p>Hibernate技术特点：<br>1、    标准的orm框架，程序员不需要编写SQL语句。<br>2、    具有良好的数据库无关性，即数据库发生变化的话，代码无需再次编写。<br>3、    学习门槛高，需要对数据关系模型有良好的基础，而且在设置OR映射的时候，需要考虑好性能和对象模型的权衡。<br>4、    程序员不能自主的去进行SQL性能优化。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;基本上我们对数据库的操作都在映射文件中编写，通过mapper代理方式简化配置，同时依据不同的参数和返回类型完成相关需求&lt;/p&gt;
-&lt;h5 id
     
     </summary>
     
