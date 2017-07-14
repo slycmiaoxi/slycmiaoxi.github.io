@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Shiro," />
+  <meta name="keywords" content="java与设计," />
 
 
 
@@ -105,24 +105,34 @@
 
 
 
-<meta name="description" content="前言参考百度上说的Apache Shiro是一个强大易用的java安全框架，提供了认证、授权、加密和会话管理功能，可以为任何应用提供安全保障，而其主要为解决以下四个问题：1、 认证-用户身份识别，常被称为用户登录2、 授权-访问控制3、 密码加密-保护或隐藏数据防止被偷窥4、 会话管理-每用户相关的时间敏感的状态
-身份认证流程以下是从其官网上截取的原理图
-Subject认证主体其中认证主体包含两个">
+<meta name="description" content="在编程语言中除了各种不同的设计模式外，它们也可以被抽出一些共性
+开闭原则：一个软件实体应当对开展开放，对修改关闭（玉帝招安美猴王）
+面向对象解释： 不予以更改的是抽象层，但是可以扩展的是实现层
+对可变性的封装原则： 找到一个系统的可变因素，将之封装起来
+继承应当是看做封装的方法，而不应该被认为是从一般对象方法到特殊对象的生成方法
+里氏代换原则： 任何基类可以出现的地方，子类一定可以出现
+两个类共同">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Shiro之通过数据库验证身份">
-<meta property="og:url" content="http://www.myzwl.win/2017/06/11/shiro1/index.html">
+<meta property="og:title" content="设计模式原则笔记">
+<meta property="og:url" content="http://www.myzwl.win/2017/05/11/jd1/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="前言参考百度上说的Apache Shiro是一个强大易用的java安全框架，提供了认证、授权、加密和会话管理功能，可以为任何应用提供安全保障，而其主要为解决以下四个问题：1、 认证-用户身份识别，常被称为用户登录2、 授权-访问控制3、 密码加密-保护或隐藏数据防止被偷窥4、 会话管理-每用户相关的时间敏感的状态
-身份认证流程以下是从其官网上截取的原理图
-Subject认证主体其中认证主体包含两个">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs3/14.gif">
-<meta property="og:updated_time" content="2017-06-13T11:50:32.000Z">
+<meta property="og:description" content="在编程语言中除了各种不同的设计模式外，它们也可以被抽出一些共性
+开闭原则：一个软件实体应当对开展开放，对修改关闭（玉帝招安美猴王）
+面向对象解释： 不予以更改的是抽象层，但是可以扩展的是实现层
+对可变性的封装原则： 找到一个系统的可变因素，将之封装起来
+继承应当是看做封装的方法，而不应该被认为是从一般对象方法到特殊对象的生成方法
+里氏代换原则： 任何基类可以出现的地方，子类一定可以出现
+两个类共同">
+<meta property="og:updated_time" content="2017-06-30T02:38:28.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Shiro之通过数据库验证身份">
-<meta name="twitter:description" content="前言参考百度上说的Apache Shiro是一个强大易用的java安全框架，提供了认证、授权、加密和会话管理功能，可以为任何应用提供安全保障，而其主要为解决以下四个问题：1、 认证-用户身份识别，常被称为用户登录2、 授权-访问控制3、 密码加密-保护或隐藏数据防止被偷窥4、 会话管理-每用户相关的时间敏感的状态
-身份认证流程以下是从其官网上截取的原理图
-Subject认证主体其中认证主体包含两个">
-<meta name="twitter:image" content="http://www.myzwl.win/images/imgs3/14.gif">
+<meta name="twitter:title" content="设计模式原则笔记">
+<meta name="twitter:description" content="在编程语言中除了各种不同的设计模式外，它们也可以被抽出一些共性
+开闭原则：一个软件实体应当对开展开放，对修改关闭（玉帝招安美猴王）
+面向对象解释： 不予以更改的是抽象层，但是可以扩展的是实现层
+对可变性的封装原则： 找到一个系统的可变因素，将之封装起来
+继承应当是看做封装的方法，而不应该被认为是从一般对象方法到特殊对象的生成方法
+里氏代换原则： 任何基类可以出现的地方，子类一定可以出现
+两个类共同">
 
 
 
@@ -150,13 +160,13 @@ Subject认证主体其中认证主体包含两个">
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/06/11/shiro1/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/05/11/jd1/"/>
 
 
 
 
 
-  <title> Shiro之通过数据库验证身份 | 秒西 </title>
+  <title> 设计模式原则笔记 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -502,7 +512,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/06/11/shiro1/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/05/11/jd1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -523,7 +533,7 @@ var _hmt = _hmt || [];
             
             
               
-                Shiro之通过数据库验证身份
+                设计模式原则笔记
               
             
           </h1>
@@ -538,8 +548,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-11T13:48:51+08:00">
-                2017-06-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-11T13:48:51+08:00">
+                2017-05-11
               </time>
             
 
@@ -566,8 +576,8 @@ var _hmt = _hmt || [];
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/安全框架/" itemprop="url" rel="index">
-                    <span itemprop="name">安全框架</span>
+                  <a href="/categories/java与设计/" itemprop="url" rel="index">
+                    <span itemprop="name">java与设计</span>
                   </a>
                 </span>
 
@@ -584,7 +594,7 @@ var _hmt = _hmt || [];
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a class="cloud-tie-join-count" href="/2017/06/11/shiro1/#comments" itemprop="discussionUrl">
+                <a class="cloud-tie-join-count" href="/2017/05/11/jd1/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count join-count" itemprop="commentCount"></span>
                 </a>
               </span>
@@ -616,23 +626,19 @@ var _hmt = _hmt || [];
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>参考百度上说的<a href="http://shiro.apache.org/download.html" target="_blank" rel="external">Apache Shiro</a>是一个强大易用的java安全框架，提供了认证、授权、加密和会话管理功能，可以为任何应用提供安全保障，而其主要为解决以下四个问题：<br>1、 认证-用户身份识别，常被称为用户登录<br>2、 授权-访问控制<br>3、 密码加密-保护或隐藏数据防止被偷窥<br>4、 会话管理-每用户相关的时间敏感的状态</p>
-<h4 id="身份认证流程"><a href="#身份认证流程" class="headerlink" title="身份认证流程"></a>身份认证流程</h4><p>以下是从其官网上截取的原理图<br><img src="/images/imgs3/14.gif" alt="Alt text"></p>
-<h4 id="Subject认证主体"><a href="#Subject认证主体" class="headerlink" title="Subject认证主体"></a>Subject认证主体</h4><p>其中认证主体包含两个信息:<br>Principals： 身份，可以是用户名，邮件，手机号码等等，用来标识一个登陆主体身份；<br>Credentials： 凭证，常见有密码，数字证书等等；</p>
-<h4 id="Realm-amp-JDBC-amp-Reaml"><a href="#Realm-amp-JDBC-amp-Reaml" class="headerlink" title="Realm&amp;JDBC&amp;Reaml"></a>Realm&amp;JDBC&amp;Reaml</h4><p>Realm：意思是域，Shiro从Reaml中获取验证数据；<br>Realm有很多种类，例如常见的jdbc realm</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><p>1.在eclipse中新建一个maven工程，并且配置pom.xml<br>主要配置如下：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;dependencies&gt;</div><div class="line"></div><div class="line">  	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;org<span class="selector-class">.apache</span><span class="selector-class">.shiro</span>&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;shiro-core&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">1.2</span>.<span class="number">4</span>&lt;/version&gt;</div><div class="line">    &lt;/dependency&gt;</div><div class="line">    </div><div class="line">    &lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;org.slf4j&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">1.7</span>.<span class="number">12</span>&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line">	</div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;c3p0&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;c3p0&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">0.9</span>.<span class="number">1.2</span>&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line">	</div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;commons-logging&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;commons-logging&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">1.2</span>&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line">	</div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;mysql&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">5.1</span>.<span class="number">37</span>&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line"></div><div class="line">  &lt;/dependencies&gt;</div></pre></td></tr></table></figure></p>
-<p>主要有shiro的核心包、日志包，数据源及数据库连接包</p>
-<ol>
-<li>在resource包下新建jdbc_realm.ini用于配置从数据库中获取验证数据<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[main]   <span class="comment">//声明以下是代码片段</span></div><div class="line"><span class="comment">//相当于new了一个jdbcRealm类</span></div><div class="line">jdbcRealm=org<span class="selector-class">.apache</span><span class="selector-class">.shiro</span><span class="selector-class">.realm</span><span class="selector-class">.jdbc</span><span class="selector-class">.JdbcRealm</span></div><div class="line"><span class="comment">//声明一个数据源，这里用了c3p0</span></div><div class="line">dataSource=com<span class="selector-class">.mchange</span><span class="selector-class">.v2</span><span class="selector-class">.c3p0</span><span class="selector-class">.ComboPooledDataSource</span></div><div class="line"><span class="comment">//声明驱动</span></div><div class="line">dataSource.driverClass=com<span class="selector-class">.mysql</span><span class="selector-class">.jdbc</span><span class="selector-class">.Driver</span></div><div class="line"><span class="comment">//声明url，其中localhost可更改为ip地址</span></div><div class="line">dataSource.jdbcUrl=jdbc:mysql:<span class="comment">//localhost:9806/db_shiro</span></div><div class="line"><span class="comment">//配置数据库用户名、密码</span></div><div class="line">dataSource.user=root</div><div class="line">dataSource.password=root</div><div class="line"><span class="comment">//添加数据源</span></div><div class="line">jdbcRealm.dataSource=<span class="variable">$dataSource</span></div><div class="line"><span class="comment">//添加数据域</span></div><div class="line">securityManager.realms=<span class="variable">$jdbcRealm</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这里数据库中需要注意的是，数据库中的表名必须为users，并且字段必须为userName和password</p>
-<ol>
-<li>在src/main/java文件下新建一个HelloWorld类，目前数据这里手动构造一个<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">package com.zwl.shiro;</div><div class="line"></div><div class="line">import org.apache.shiro.SecurityUtils;</div><div class="line">import org.apache.shiro.authc.AuthenticationException;</div><div class="line">import org.apache.shiro.authc.UsernamePasswordToken;</div><div class="line">import org.apache.shiro.config.IniSecurityManagerFactory;</div><div class="line">import org.apache.shiro.mgt.SecurityManager;</div><div class="line">import org.apache.shiro.subject.Subject;</div><div class="line">import org.apache.shiro.util.Factory;</div><div class="line"></div><div class="line">public class HelloWorld &#123;</div><div class="line"></div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		//读取配置文件，初始化SecurityManager工厂</div><div class="line">	   Factory&lt;SecurityManager&gt; factory=new IniSecurityManagerFactory("classpath:jdbc_realm.ini");</div><div class="line">	    //获取SecurityManager实例</div><div class="line">	   SecurityManager securityManager=factory.getInstance();</div><div class="line">	   //把SecurityManager实例绑定到SecurityUtils</div><div class="line">	   SecurityUtils.setSecurityManager(securityManager);</div><div class="line">	   //得到当前执行的用户</div><div class="line">	   Subject currentUser=SecurityUtils.getSubject();</div><div class="line">	   //创建token令牌，用户名/密码</div><div class="line">	   UsernamePasswordToken token=new UsernamePasswordToken("admin", "123456");</div><div class="line">	   try &#123;</div><div class="line">		//身份认证</div><div class="line">		  currentUser.login(token);</div><div class="line">		  System.out.println("身份认证成功！");</div><div class="line">	&#125; catch (AuthenticationException e) &#123;</div><div class="line">		e.printStackTrace();</div><div class="line">		System.out.println("身份认证失败！");</div><div class="line">	&#125;</div><div class="line">	        // 退出</div><div class="line">			currentUser.logout();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这里通过更改token来模拟验证数据是否正确</p>
-<p>相关源代码，已放在<a href="https://github.com/slycmiaoxi/slycmx.github.io/tree/b" target="_blank" rel="external">github</a></p>
+        <p>在编程语言中除了各种不同的设计模式外，它们也可以被抽出一些共性</p>
+<p>开闭原则：一个软件实体应当对开展开放，对修改关闭（玉帝招安美猴王）</p>
+<p>面向对象解释： 不予以更改的是抽象层，但是可以扩展的是实现层</p>
+<p>对可变性的封装原则： 找到一个系统的可变因素，将之封装起来</p>
+<p>继承应当是看做封装的方法，而不应该被认为是从一般对象方法到特殊对象的生成方法</p>
+<p>里氏代换原则： 任何基类可以出现的地方，子类一定可以出现</p>
+<p>两个类共同行为抽象到一个c类<br>B继承A改为聚合B（白马与黑马，正方形与长方形）</p>
+<p>依赖倒转原则： 要依赖于抽象，不要依赖于实现<br>抽象类仅提供一个类型的部分实现，可以同时有抽象方法和具体方法<br>具体类不是用来继承的<br>如果两个具体类存在继承关系，要引入第三个类作为他们的共同的接口<br>抽象类应该拥有尽可能多共同代码<br>抽象类应当拥有尽可能少的数据</p>
+<p>接口隔离原则： 应当为客户端提供尽可能小的单独的接口，而不要提供大的总接口</p>
+<p>角色的合理划分<br>定制服务<br>接口污染</p>
+<p>合成/聚合复用原则： 要尽量使用合成/聚合，而不是继承关系达到复用的目的<br>合成是值得聚合，聚合是引用的聚合<br>Is-A 代表一个类是另一个类的一种，Has-A代表一个类是另一个类的角色，而不是另一个类的特殊类（人与角色）</p>
+<p>迪米特法则： 一个软件实体应当尽可能少的与其他实体发生相互作用</p>
+<p>java接口： 一些方法特征的集合<br>没有接口会造成硬代码问题直接导致可插入性没有保证<br>java接口用来声明一个新的类型<br>单方法接口（如Runnable）<br>标识接口（serialzable）<br>常量接口</p>
 
       
     </div>
@@ -673,7 +679,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/Shiro/" rel="tag"># Shiro</a>
+            <a href="/source/tags/java与设计/" rel="tag"># java与设计</a>
           
         </div>
       
@@ -695,6 +701,10 @@ var _hmt = _hmt || [];
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/01/shiro_1/" rel="prev" title="初识shiro">
+                初识shiro <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -780,17 +790,8 @@ Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true)
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -805,7 +806,7 @@ Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-count">54</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -816,7 +817,7 @@ Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true)
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -827,7 +828,7 @@ Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true)
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -873,22 +874,6 @@ Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true)
 		
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#身份认证流程"><span class="nav-text">身份认证流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Subject认证主体"><span class="nav-text">Subject认证主体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Realm-amp-JDBC-amp-Reaml"><span class="nav-text">Realm&JDBC&Reaml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#码上有戏"><span class="nav-text">码上有戏</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
