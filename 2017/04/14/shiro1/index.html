@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="五大框架," />
+  <meta name="keywords" content="Shiro," />
 
 
 
@@ -105,16 +105,24 @@
 
 
 
-<meta name="description" content="前言在structs2中，action是其核心功能，而使用structs2框架，主要都是围绕action进行，我们编写的action通常需要实现com.opensymphony.xwork2.Action接口，需要实现的方法时execute方法，但是在实际开发中，编写的action也可以不必实现action接口，而是直接创建一个普通的java类，并添加execute方法就可以，如入门程序的案例，还">
+<meta name="description" content="前言参考百度上说的Apache Shiro是一个强大易用的java安全框架，提供了认证、授权、加密和会话管理功能，可以为任何应用提供安全保障，而其主要为解决以下四个问题：1、 认证-用户身份识别，常被称为用户登录2、 授权-访问控制3、 密码加密-保护或隐藏数据防止被偷窥4、 会话管理-每用户相关的时间敏感的状态
+身份认证流程以下是从其官网上截取的原理图
+Subject认证主体其中认证主体包含两个">
 <meta property="og:type" content="article">
-<meta property="og:title" content="struts2 之二:action详解">
-<meta property="og:url" content="http://www.myzwl.win/2017/03/27/structs2/index.html">
+<meta property="og:title" content="Shiro之通过数据库验证身份">
+<meta property="og:url" content="http://www.myzwl.win/2017/04/14/shiro1/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="前言在structs2中，action是其核心功能，而使用structs2框架，主要都是围绕action进行，我们编写的action通常需要实现com.opensymphony.xwork2.Action接口，需要实现的方法时execute方法，但是在实际开发中，编写的action也可以不必实现action接口，而是直接创建一个普通的java类，并添加execute方法就可以，如入门程序的案例，还">
-<meta property="og:updated_time" content="2017-04-07T10:29:12.000Z">
+<meta property="og:description" content="前言参考百度上说的Apache Shiro是一个强大易用的java安全框架，提供了认证、授权、加密和会话管理功能，可以为任何应用提供安全保障，而其主要为解决以下四个问题：1、 认证-用户身份识别，常被称为用户登录2、 授权-访问控制3、 密码加密-保护或隐藏数据防止被偷窥4、 会话管理-每用户相关的时间敏感的状态
+身份认证流程以下是从其官网上截取的原理图
+Subject认证主体其中认证主体包含两个">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs3/14.gif">
+<meta property="og:updated_time" content="2017-07-14T11:36:54.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="struts2 之二:action详解">
-<meta name="twitter:description" content="前言在structs2中，action是其核心功能，而使用structs2框架，主要都是围绕action进行，我们编写的action通常需要实现com.opensymphony.xwork2.Action接口，需要实现的方法时execute方法，但是在实际开发中，编写的action也可以不必实现action接口，而是直接创建一个普通的java类，并添加execute方法就可以，如入门程序的案例，还">
+<meta name="twitter:title" content="Shiro之通过数据库验证身份">
+<meta name="twitter:description" content="前言参考百度上说的Apache Shiro是一个强大易用的java安全框架，提供了认证、授权、加密和会话管理功能，可以为任何应用提供安全保障，而其主要为解决以下四个问题：1、 认证-用户身份识别，常被称为用户登录2、 授权-访问控制3、 密码加密-保护或隐藏数据防止被偷窥4、 会话管理-每用户相关的时间敏感的状态
+身份认证流程以下是从其官网上截取的原理图
+Subject认证主体其中认证主体包含两个">
+<meta name="twitter:image" content="http://www.myzwl.win/images/imgs3/14.gif">
 
 
 
@@ -142,13 +150,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/03/27/structs2/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/04/14/shiro1/"/>
 
 
 
 
 
-  <title> struts2 之二:action详解 | 秒西 </title>
+  <title> Shiro之通过数据库验证身份 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -494,7 +502,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/27/structs2/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/04/14/shiro1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -515,7 +523,7 @@ var _hmt = _hmt || [];
             
             
               
-                struts2 之二:action详解
+                Shiro之通过数据库验证身份
               
             
           </h1>
@@ -530,8 +538,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-27T16:48:51+08:00">
-                2017-03-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-14T13:48:51+08:00">
+                2017-04-14
               </time>
             
 
@@ -558,8 +566,8 @@ var _hmt = _hmt || [];
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习总结/" itemprop="url" rel="index">
-                    <span itemprop="name">学习总结</span>
+                  <a href="/categories/安全框架/" itemprop="url" rel="index">
+                    <span itemprop="name">安全框架</span>
                   </a>
                 </span>
 
@@ -576,7 +584,7 @@ var _hmt = _hmt || [];
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a class="cloud-tie-join-count" href="/2017/03/27/structs2/#comments" itemprop="discussionUrl">
+                <a class="cloud-tie-join-count" href="/2017/04/14/shiro1/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count join-count" itemprop="commentCount"></span>
                 </a>
               </span>
@@ -608,35 +616,23 @@ var _hmt = _hmt || [];
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在structs2中，action是其核心功能，而使用structs2框架，主要都是围绕action进行，我们编写的action通常需要实现com.opensymphony.xwork2.Action接口，需要实现的方法时execute方法，但是在实际开发中，编写的action也可以不必实现action接口，而是直接创建一个普通的java类，并添加execute方法就可以，如入门程序的案例，还有一种方式就是继承ActionSupport类，其已经实现了action的execute方法，以上方式，后两者比较常用</p>
-<p>接下来将在入门程序的基础上，来介绍action属性</p>
-<p> 一：action属性<br>  Action中有一个映射框架，主要讲url映射到对应的action，action的配置主要在struts.xml文件中编写，</p>
-<p>  以下是action的几个常见属性</p>
-<blockquote>
-<p>属性       是否必须       说明<br>Name       是           action的名字，用于匹配请求的url<br>Class        否           action实现类的完整类名<br>Method     否            调用action实现类中指定的方法</p>
-</blockquote>
-<p>需要注意的是，action的name属性有规范，即不允许出现.或者/或者-，另外我们来看看如果只配置一个name属性，class怎么加载？<br>理论上是框架会调用actionsupport类中的execute方法，该方法的实现仅仅是返回一个success，但是实际上去掉之后，入门程序中跳转正确，但是数据取不到，至少说明的确跳转正确，</p>
-<p>下面对method属性进行说明<br>由之前我们知道通常action的作用是完成一个功能点，但是如果同时又crud方法，显然创建四个action就太麻烦了，这时候就可以使用method属性，至于怎么用，先看一个实例。<br>即对用户进行增删该查</p>
-<p>首先是useraction.java</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">import com.opensymphony.xwork2.ActionSupport;</div><div class="line"></div><div class="line">public class useraction extends ActionSupport&#123;</div><div class="line"></div><div class="line">	//查询</div><div class="line">	public String selectall()&#123;</div><div class="line">		return SUCCESS;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//更新</div><div class="line">	public String update()</div><div class="line">	&#123;</div><div class="line">		return SUCCESS;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//删除</div><div class="line">	public String delete()</div><div class="line">	&#123;</div><div class="line">		return SUCCESS;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//添加</div><div class="line">	public String add()&#123;</div><div class="line">		return SUCCESS;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里注意一下，在action中并不一定非要需要写execute方法，也可以自己指定需要的方法，但是必须要在Struts.xml中做相应的配置，如下<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;package name=<span class="string">"default"</span> namespace=<span class="string">"/"</span> extends=<span class="string">"struts-default"</span>&gt;</div><div class="line">       &lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"selectall"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div><div class="line">        &lt;action name=<span class="string">"helloworld1"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"update"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div><div class="line">        &lt;action name=<span class="string">"helloworld2"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"delete"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div><div class="line">        &lt;action name=<span class="string">"helloworld3"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"add"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div><div class="line">&lt;/package&gt;</div></pre></td></tr></table></figure></p>
-<p>然后在前台页面写需要调用的action<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> &lt;<span class="selector-tag">form</span> action=<span class="string">"helloworld.action"</span>&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"msg"</span>/&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>显然我们发现用此种方法思路清晰，但是太啰嗦，这就是有时需要动态调用action，简称DMI，<br>先看一个例子，<br>首先是useraction1.java<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">public class useraction1 extends ActionSupport&#123;</div><div class="line"></div><div class="line">	private String msg;</div><div class="line">	</div><div class="line">	public String getMsg() &#123;</div><div class="line">		return msg;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setMsg(String msg) &#123;</div><div class="line">		this.msg = msg;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">		//查询</div><div class="line">		public String selectall()&#123;</div><div class="line">			return "selectall";</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//更新</div><div class="line">		public String update()</div><div class="line">		&#123;</div><div class="line">			return "update";</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//删除</div><div class="line">		public String delete()</div><div class="line">		&#123;</div><div class="line">			return "delete";</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//添加</div><div class="line">		public String add()&#123;</div><div class="line">			return "add";</div><div class="line">		&#125;</div></pre></td></tr></table></figure></p>
-<p>这里我们可以通过自定义方法返回不同的值，然后通过result中name属性配置相应不同的值，来返回到不同的界面<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//这里是是否启用DMI方法，默认是关闭的</span></div><div class="line">&lt;constant name=<span class="string">"struts.enable.DynamicMethodInvocation"</span> value=<span class="string">"true"</span> /&gt; </div><div class="line"><span class="comment">//这里是否启用开发者模式，这样就不用每次重启服务器</span></div><div class="line">    &lt;constant name=<span class="string">"struts.devMode"</span> value=<span class="string">"true"</span> /&gt;</div><div class="line">    </div><div class="line">    &lt;package name=<span class="string">"default"</span> namespace=<span class="string">"/"</span> extends=<span class="string">"struts-default"</span>&gt;</div><div class="line">     &lt;action name=<span class="string">"useraction1"</span> class=<span class="string">"com.zwl.action.useraction1"</span>&gt;</div><div class="line">     &lt;result name=<span class="string">"selectall"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">     &lt;result name=<span class="string">"update"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">     &lt;result name=<span class="string">"delete"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">     &lt;result name=<span class="string">"add"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">     &lt;/action&gt;</div><div class="line">&lt;/package&gt;</div></pre></td></tr></table></figure></p>
-<p>好了，配置文件也配置好了，接下来就是在页面中调用DMI方法，一般的格式是actionname!xxx.action<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"useraction1!delete.action"</span>&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"msg"</span>/&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">  &lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>至此动态调用action已完成，接下来将是默认的action配置<br>默认的action<br>先看配置实例：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;package name=<span class="string">"default"</span> namespace=<span class="string">"/"</span> extends=<span class="string">"struts-default"</span>&gt;</div><div class="line">    &lt;default-action-ref name=<span class="string">"helloworld"</span>&gt;&lt;/default-action-ref&gt;</div><div class="line"></div><div class="line">   &lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"selectall"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div></pre></td></tr></table></figure></p>
-<p>在表单中跳转到一个不存在的action时，则执行设置的默认action，这里需要注意的是每个namespace下，只能有一个默认的action，否则不知道执行那个默认的action</p>
-<p>通配符映射<br> 使用通配符，可以将配置量降到最低，不过一定要实现约定好命名规范，即约定优于配置原则<br>在action配置中，<em>表示所有，可以匹配任意的字符，而{数字}表示第几个通配符，如
-</em>_<em>，{1}表示第一个</em>，{2}表示第二个*<br>接下来模拟一个案例，如下所示<br>首先是action<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public class useractionsave extends ActionSupport&#123;</div><div class="line">   </div><div class="line">	private String msg;</div><div class="line"></div><div class="line">	public String getMsg() &#123;</div><div class="line">		return msg;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setMsg(String msg) &#123;</div><div class="line">		this.msg = msg;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public String save()&#123;</div><div class="line">		return "save";</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>配置文件<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;action name=<span class="string">"useraction*"</span> class=<span class="string">"com.zwl.action.useraction&#123;1&#125;"</span> method=<span class="string">"&#123;1&#125;"</span>&gt;</div><div class="line">  &lt;result name=<span class="string">"save"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">  &lt;/action&gt;</div><div class="line"></div><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"useractionsave.action"</span>&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"msg"</span>/&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">  &lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>最后测试通过</p>
-<p>最后介绍一下action的属性接受参数<br>事实上action中有三种方法</p>
-<p>方法一：在Action添加成员属性接受参数<br>之前的案例都是采用这种方法的，就不多介绍了，不过值得注意的是，参数提交的名称必须和action的属性一致，并且要有set与get方法</p>
-<p>方法二： 域模型(Domain Model)<br>就是先创建一个对象，通过在action中操作其属性来传递参数，相应的先建立一个user对象<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">public class user &#123;</div><div class="line">private String msg;</div><div class="line"></div><div class="line">public String getMsg() &#123;</div><div class="line">	return msg;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public void setMsg(String msg) &#123;</div><div class="line">	this.msg = msg;</div><div class="line">&#125;</div><div class="line"></div><div class="line">然后是action</div><div class="line">	private user use;</div><div class="line">	</div><div class="line">	public user getUse() &#123;</div><div class="line">		return use;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setUse(user use) &#123;</div><div class="line">		this.use = use;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public String save()&#123;</div><div class="line">		return "save";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>这里需要注意的是前台参数传递，是action中引用对象的那个属性，其它都一样<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">  &lt;<span class="selector-tag">form</span> action=<span class="string">"useractionsave.action"</span>&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"use.msg"</span>/&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">  &lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>方法三： ModelDriven接收参数<br>使Action实现com.opensymphony.xwork2.ModelDriven<user>(在实现接口时需要使用泛型，否则使用时需要转型)中利用其getModel()方法返回对象模型，从而获得传入的参数。</user></p>
-<p>参数被传入至Action后，会被ModelDriven对象根据参数名自动赋值给User对象相应的属性而生成User对象，并且由getModel()返回。那么我们在Action中就可以利用这个对象了。<br>注意：传入的参数名需要与对象模型中的成员属性一致。</p>
-<p>这里在将上述案例中的action修改一下。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class useractionsave extends ActionSupport implements ModelDriven&lt;user&gt;&#123;</div><div class="line">public String save()&#123;</div><div class="line">		return "save";</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	private user use=new user();</div><div class="line">	</div><div class="line">public user getUse() &#123;</div><div class="line">		return use;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setUse(user use) &#123;</div><div class="line">		this.use = use;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public user getModel() &#123;</div><div class="line">	// TODO Auto-generated method stub</div><div class="line">	return use;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>参考百度上说的<a href="http://shiro.apache.org/download.html" target="_blank" rel="external">Apache Shiro</a>是一个强大易用的java安全框架，提供了认证、授权、加密和会话管理功能，可以为任何应用提供安全保障，而其主要为解决以下四个问题：<br>1、 认证-用户身份识别，常被称为用户登录<br>2、 授权-访问控制<br>3、 密码加密-保护或隐藏数据防止被偷窥<br>4、 会话管理-每用户相关的时间敏感的状态</p>
+<h4 id="身份认证流程"><a href="#身份认证流程" class="headerlink" title="身份认证流程"></a>身份认证流程</h4><p>以下是从其官网上截取的原理图<br><img src="/images/imgs3/14.gif" alt="Alt text"></p>
+<h4 id="Subject认证主体"><a href="#Subject认证主体" class="headerlink" title="Subject认证主体"></a>Subject认证主体</h4><p>其中认证主体包含两个信息:<br>Principals： 身份，可以是用户名，邮件，手机号码等等，用来标识一个登陆主体身份；<br>Credentials： 凭证，常见有密码，数字证书等等；</p>
+<h4 id="Realm-amp-JDBC-amp-Reaml"><a href="#Realm-amp-JDBC-amp-Reaml" class="headerlink" title="Realm&amp;JDBC&amp;Reaml"></a>Realm&amp;JDBC&amp;Reaml</h4><p>Realm：意思是域，Shiro从Reaml中获取验证数据；<br>Realm有很多种类，例如常见的jdbc realm</p>
+<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><p>1.在eclipse中新建一个maven工程，并且配置pom.xml<br>主要配置如下：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;dependencies&gt;</div><div class="line"></div><div class="line">  	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;org<span class="selector-class">.apache</span><span class="selector-class">.shiro</span>&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;shiro-core&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">1.2</span>.<span class="number">4</span>&lt;/version&gt;</div><div class="line">    &lt;/dependency&gt;</div><div class="line">    </div><div class="line">    &lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;org.slf4j&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">1.7</span>.<span class="number">12</span>&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line">	</div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;c3p0&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;c3p0&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">0.9</span>.<span class="number">1.2</span>&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line">	</div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;commons-logging&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;commons-logging&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">1.2</span>&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line">	</div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;mysql&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;<span class="number">5.1</span>.<span class="number">37</span>&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line"></div><div class="line">  &lt;/dependencies&gt;</div></pre></td></tr></table></figure></p>
+<p>主要有shiro的核心包、日志包，数据源及数据库连接包</p>
+<ol>
+<li>在resource包下新建jdbc_realm.ini用于配置从数据库中获取验证数据<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[main]   <span class="comment">//声明以下是代码片段</span></div><div class="line"><span class="comment">//相当于new了一个jdbcRealm类</span></div><div class="line">jdbcRealm=org<span class="selector-class">.apache</span><span class="selector-class">.shiro</span><span class="selector-class">.realm</span><span class="selector-class">.jdbc</span><span class="selector-class">.JdbcRealm</span></div><div class="line"><span class="comment">//声明一个数据源，这里用了c3p0</span></div><div class="line">dataSource=com<span class="selector-class">.mchange</span><span class="selector-class">.v2</span><span class="selector-class">.c3p0</span><span class="selector-class">.ComboPooledDataSource</span></div><div class="line"><span class="comment">//声明驱动</span></div><div class="line">dataSource.driverClass=com<span class="selector-class">.mysql</span><span class="selector-class">.jdbc</span><span class="selector-class">.Driver</span></div><div class="line"><span class="comment">//声明url，其中localhost可更改为ip地址</span></div><div class="line">dataSource.jdbcUrl=jdbc:mysql:<span class="comment">//localhost:9806/db_shiro</span></div><div class="line"><span class="comment">//配置数据库用户名、密码</span></div><div class="line">dataSource.user=root</div><div class="line">dataSource.password=root</div><div class="line"><span class="comment">//添加数据源</span></div><div class="line">jdbcRealm.dataSource=<span class="variable">$dataSource</span></div><div class="line"><span class="comment">//添加数据域</span></div><div class="line">securityManager.realms=<span class="variable">$jdbcRealm</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这里数据库中需要注意的是，数据库中的表名必须为users，并且字段必须为userName和password</p>
+<ol>
+<li>在src/main/java文件下新建一个HelloWorld类，目前数据这里手动构造一个<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">package com.zwl.shiro;</div><div class="line"></div><div class="line">import org.apache.shiro.SecurityUtils;</div><div class="line">import org.apache.shiro.authc.AuthenticationException;</div><div class="line">import org.apache.shiro.authc.UsernamePasswordToken;</div><div class="line">import org.apache.shiro.config.IniSecurityManagerFactory;</div><div class="line">import org.apache.shiro.mgt.SecurityManager;</div><div class="line">import org.apache.shiro.subject.Subject;</div><div class="line">import org.apache.shiro.util.Factory;</div><div class="line"></div><div class="line">public class HelloWorld &#123;</div><div class="line"></div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		//读取配置文件，初始化SecurityManager工厂</div><div class="line">	   Factory&lt;SecurityManager&gt; factory=new IniSecurityManagerFactory("classpath:jdbc_realm.ini");</div><div class="line">	    //获取SecurityManager实例</div><div class="line">	   SecurityManager securityManager=factory.getInstance();</div><div class="line">	   //把SecurityManager实例绑定到SecurityUtils</div><div class="line">	   SecurityUtils.setSecurityManager(securityManager);</div><div class="line">	   //得到当前执行的用户</div><div class="line">	   Subject currentUser=SecurityUtils.getSubject();</div><div class="line">	   //创建token令牌，用户名/密码</div><div class="line">	   UsernamePasswordToken token=new UsernamePasswordToken("admin", "123456");</div><div class="line">	   try &#123;</div><div class="line">		//身份认证</div><div class="line">		  currentUser.login(token);</div><div class="line">		  System.out.println("身份认证成功！");</div><div class="line">	&#125; catch (AuthenticationException e) &#123;</div><div class="line">		e.printStackTrace();</div><div class="line">		System.out.println("身份认证失败！");</div><div class="line">	&#125;</div><div class="line">	        // 退出</div><div class="line">			currentUser.logout();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这里通过更改token来模拟验证数据是否正确</p>
+<p>相关源代码，已放在<a href="https://github.com/slycmiaoxi/slycmx.github.io/tree/b" target="_blank" rel="external">github</a></p>
 
       
     </div>
@@ -677,7 +673,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/五大框架/" rel="tag"># 五大框架</a>
+            <a href="/source/tags/Shiro/" rel="tag"># Shiro</a>
           
         </div>
       
@@ -690,8 +686,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/26/structs1/" rel="next" title="struts2 之一:hello world">
-                <i class="fa fa-chevron-left"></i> struts2 之一:hello world
+              <a href="/2017/04/13/thrd4/" rel="next" title="并发系列之四Guarded Suspension">
+                <i class="fa fa-chevron-left"></i> 并发系列之四Guarded Suspension
               </a>
             
           </div>
@@ -700,8 +696,8 @@ var _hmt = _hmt || [];
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/03/28/structs3/" rel="prev" title="struts2 之三:result返回结果">
-                struts2 之三:result返回结果 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/11/jd1/" rel="prev" title="设计模式原则笔记">
+                设计模式原则笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -891,7 +887,7 @@ Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true)
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#身份认证流程"><span class="nav-text">身份认证流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Subject认证主体"><span class="nav-text">Subject认证主体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Realm-amp-JDBC-amp-Reaml"><span class="nav-text">Realm&JDBC&Reaml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#码上有戏"><span class="nav-text">码上有戏</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
