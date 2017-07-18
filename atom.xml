@@ -5,10 +5,265 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-07-14T12:51:18.000Z</updated>
+  <updated>2017-07-16T01:05:18.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>shiro之会话管理</title>
+    <link href="http://www.myzwl.win/2017/07/05/shiro_5/"/>
+    <id>http://www.myzwl.win/2017/07/05/shiro_5/</id>
+    <published>2017-07-05T05:48:51.000Z</published>
+    <updated>2017-07-16T01:05:18.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>shiro提供了完整的会话功能，不依赖于底层容器，即直接使用shiro的会话管理可以直接替换掉web容器的会话管理</p>
+<h4 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h4><p>所谓会话，即用户访问应用时保持的连接关系，在多次交互中应用能够识别出当前访问的用户是谁，且可以在多次交互中保存一些数据。如访问一些网站时登录成功后，网站可以记住用户，且在退出之前都可以识别当前用户是谁。</p>
+<p><strong>获取会话</strong></p>
+<blockquote>
+<p>Subject subject = SecurityUtils.getSubject();<br>Session session = subject.getSession();  </p>
+</blockquote>
+<p><strong>获取当前会话的唯一标识</strong></p>
+<blockquote>
+<p>session.getId(); </p>
+</blockquote>
+<p><strong>获取当前Subject的主机地址</strong></p>
+<blockquote>
+<p>session.getHost();</p>
+</blockquote>
+<p><strong>获取/设置当前Session的过期时间</strong></p>
+<blockquote>
+<p>session.getTimeout();<br>session.setTimeout(毫秒); </p>
+</blockquote>
+<p><strong>获取会话的启动时间及最后访问时间</strong></p>
+<blockquote>
+<p>session.getStartTimestamp();<br>session.getLastAccessTime();</p>
+</blockquote>
+<p><strong>更新会话最后访问时间及销毁会话</strong></p>
+<blockquote>
+<p>session.touch();<br>session.stop();</p>
+</blockquote>
+<p>当Subject.logout()时会自动调用stop方法来销毁会话</p>
+<p><strong>设置/获取/删除会话属性</strong></p>
+<blockquote>
+<p>session.setAttribute(“key”, “WORD”);<br>session.getAttribute(“key”);<br>session.removeAttribute(“key”); </p>
+</blockquote>
+<h4 id="会话管理器"><a href="#会话管理器" class="headerlink" title="会话管理器"></a>会话管理器</h4><p>会话管理器管理着应用中所有subject的会话的创建、维护、删除、失效、验证等工作。它是shiro的核心，顶层组件SecurityManager直接继承了SessionManager，且提供了SessionsSecurityManager实现直接把会话管理委托给相应的SessionManager，DefaultSecurityManager及DefaultWebSecurityManager默认SecurityManager都继承了SessionsSecurityManager。</p>
+<p><strong>SecurityManager</strong></p>
+<blockquote>
+<p>Session start(SessionContext context); //启动会话<br>Session getSession(SessionKey key) throws SessionException; //根据会话Key获取会话 </p>
+</blockquote>
+<p><strong>WebSessionManager</strong></p>
+<blockquote>
+<p>boolean isServletContainerSessions();//是否使用Servlet容器的会话  </p>
+</blockquote>
+<p><strong>ValidatingSessionManager</strong></p>
+<blockquote>
+<p>void validateSessions();//验证所有会话是否过期 </p>
+</blockquote>
+<p><img src="/images/imgs4/5.gif" alt="Alt text"></p>
+<p>Shiro提供了三个默认实现：</p>
+<p>DefaultSessionManager：DefaultSecurityManager使用的默认实现，用于JavaSE环境；</p>
+<p>ServletContainerSessionManager：DefaultWebSecurityManager使用的默认实现，用于Web环境，其直接使用Servlet容器的会话；</p>
+<p>DefaultWebSessionManager：用于Web环境的实现，可以替代ServletContainerSessionManager，自己维护着会话，直接废弃了Servlet容器的会话管理。</p>
+<p><strong>全局会话时间</strong><br>在web.xml中设置(单位：分钟)</p>
+<blockquote>
+<p><session-config><br>  <session-timeout>30</session-timeout><br></session-config> </p>
+</blockquote>
+<h4 id="会话监听器"><a href="#会话监听器" class="headerlink" title="会话监听器"></a>会话监听器</h4><p>会话监听器用于监听会话创建、过期及停止事件：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">public class MySessionListener1 implements SessionListener &#123;  </div><div class="line">     @Override  </div><div class="line">     public void onStart(Session session) &#123;//会话创建时触发  </div><div class="line">         System.out.println("会话创建：" + session.getId());  </div><div class="line">     &#125;  </div><div class="line">     @Override  </div><div class="line">     public void onExpiration(Session session) &#123;//会话过期时触发  </div><div class="line">         System.out.println("会话过期：" + session.getId());  </div><div class="line">     &#125;  </div><div class="line">     @Override  </div><div class="line">     public void onStop(Session session) &#123;//退出/会话过期时触发  </div><div class="line">         System.out.println("会话停止：" + session.getId());  </div><div class="line">     &#125;    </div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>如果只想监听某一个事件，可以继承SessionListenerAdapter实现：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class MySessionListener2 extends SessionListenerAdapter &#123;  </div><div class="line">    @Override  </div><div class="line">    public void onStart(Session session) &#123;  </div><div class="line">        System.out.println("会话创建：" + session.getId());  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="会话存储-持久化"><a href="#会话存储-持久化" class="headerlink" title="会话存储/持久化"></a>会话存储/持久化</h4><p>Shiro提供SessionDAO用于会话的CRUD</p>
+<blockquote>
+<pre><code>//如DefaultSessionManager在创建完session后会调用该方法；如保存到关系数据库/文件系统/NoSQL数据库；即可以实现会话的持久化；返回会话ID；主要此处返回的ID.equals(session.getId())；  
+Serializable create(Session session);  
+//根据会话ID获取会话  
+Session readSession(Serializable sessionId) throws UnknownSessionException;  
+//更新会话；如更新会话最后访问时间/停止会话/设置超时时间/设置移除属性等会调用  
+void update(Session session) throws UnknownSessionException;  
+//删除会话；当会话过期/会话停止（如用户退出时）会调用  
+void delete(Session session);  
+//获取当前所有活跃用户，如果用户量多此方法影响性能  
+Collection&lt;Session&gt; getActiveSessions();   
+</code></pre></blockquote>
+<p><img src="/images/imgs4/6.gif" alt="Alt text"></p>
+<p>AbstractSessionDAO提供了SessionDAO的基础实现，如生成会话ID等；CachingSessionDAO提供了对开发者透明的会话缓存的功能，只需要设置相应的CacheManager即可；MemorySessionDAO直接在内存中进行会话维护；而EnterpriseCacheSessionDAO提供了缓存功能的会话维护，默认情况下使用MapCache实现，内部使用ConcurrentHashMap保存缓存的会话。</p>
+<pre><code>如果自定义实现SessionDAO，继承CachingSessionDAO即可
+</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">public class MySessionDAO extends CachingSessionDAO &#123;  </div><div class="line">    private JdbcTemplate jdbcTemplate = JdbcTemplateUtils.jdbcTemplate();  </div><div class="line">     protected Serializable doCreate(Session session) &#123;  </div><div class="line">        Serializable sessionId = generateSessionId(session);  </div><div class="line">        assignSessionId(session, sessionId);  </div><div class="line">        String sql = "insert into sessions(id, session) values(?,?)";  </div><div class="line">        jdbcTemplate.update(sql, sessionId, SerializableUtils.serialize(session));  </div><div class="line">        return session.getId();  </div><div class="line">    &#125;  </div><div class="line">protected void doUpdate(Session session) &#123;  </div><div class="line">    if(session instanceof ValidatingSession &amp;&amp; !((ValidatingSession)session).isValid()) &#123;  </div><div class="line">        return; //如果会话过期/停止 没必要再更新了  </div><div class="line">    &#125;  </div><div class="line">        String sql = "update sessions set session=? where id=?";  </div><div class="line">        jdbcTemplate.update(sql, SerializableUtils.serialize(session), session.getId());  </div><div class="line">    &#125;  </div><div class="line">    protected void doDelete(Session session) &#123;  </div><div class="line">        String sql = "delete from sessions where id=?";  </div><div class="line">        jdbcTemplate.update(sql, session.getId());  </div><div class="line">    &#125;  </div><div class="line">    protected Session doReadSession(Serializable sessionId) &#123;  </div><div class="line">        String sql = "select session from sessions where id=?";  </div><div class="line">        List&lt;String&gt; sessionStrList = jdbcTemplate.queryForList(sql, String.class, sessionId);  </div><div class="line">        if(sessionStrList.size() == 0) return null;  </div><div class="line">        return SerializableUtils.deserialize(sessionStrList.get(0));  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="会话验证"><a href="#会话验证" class="headerlink" title="会话验证"></a>会话验证</h4><p>Shiro提供了会话验证调度器，用于定期的验证会话是否已过期，如果过期将停止会话，Shiro提供了会话验证调度器SessionValidationScheduler来验证</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">//分页获取会话并验证  </div><div class="line">String sql = "select session from sessions limit ?,?";  </div><div class="line">int start = 0; //起始记录  </div><div class="line">int size = 20; //每页大小  </div><div class="line">List&lt;String&gt; sessionList = jdbcTemplate.queryForList(sql, String.class, start, size);  </div><div class="line">while(sessionList.size() &gt; 0) &#123;  </div><div class="line">  for(String sessionStr : sessionList) &#123;  </div><div class="line">    try &#123;  </div><div class="line">      Session session = SerializableUtils.deserialize(sessionStr);  </div><div class="line">      Method validateMethod =   </div><div class="line">        ReflectionUtils.findMethod(AbstractValidatingSessionManager.class,   </div><div class="line">            "validate", Session.class, SessionKey.class);  </div><div class="line">      validateMethod.setAccessible(true);  </div><div class="line">      ReflectionUtils.invokeMethod(validateMethod,   </div><div class="line">        sessionManager, session, new DefaultSessionKey(session.getId()));  </div><div class="line">    &#125; catch (Exception e) &#123;  </div><div class="line">        //ignore  </div><div class="line">    &#125;  </div><div class="line">  &#125;  </div><div class="line"> start = start + size;  </div><div class="line">  sessionList = jdbcTemplate.queryForList(sql, String.class, start, size);  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>sessionFactory</strong><br>sessionFactory是创建会话的工厂，根据相应的Subject上下文信息来创建会话；默认提供了SimpleSessionFactory用来创建SimpleSession会话。<br>自定义一个session</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class OnlineSession extends SimpleSession &#123;  </div><div class="line">    public static enum OnlineStatus &#123;  </div><div class="line">        on_line("在线"), hidden("隐身"), force_logout("强制退出");  </div><div class="line">        private final String info;  </div><div class="line">        private OnlineStatus(String info) &#123;  </div><div class="line">            this.info = info;  </div><div class="line">        &#125;  </div><div class="line">        public String getInfo() &#123;  </div><div class="line">            return info;  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">    private String userAgent; //用户浏览器类型  </div><div class="line">    private OnlineStatus status = OnlineStatus.on_line; //在线状态  </div><div class="line">    private String systemHost; //用户登录时系统IP   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>自定义SessionFactory<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public class OnlineSessionFactory implements SessionFactory &#123;  </div><div class="line">  </div><div class="line">    @Override  </div><div class="line">    public Session createSession(SessionContext initData) &#123;  </div><div class="line">        OnlineSession session = new OnlineSession();  </div><div class="line">        if (initData != null &amp;&amp; initData instanceof WebSessionContext) &#123;  </div><div class="line">            WebSessionContext sessionContext = (WebSessionContext) initData;  </div><div class="line">            HttpServletRequest request = (HttpServletRequest) sessionContext.getServletRequest();  </div><div class="line">            if (request != null) &#123;  </div><div class="line">                session.setHost(IpUtils.getIpAddr(request));  </div><div class="line">                session.setUserAgent(request.getHeader("User-Agent"));  </div><div class="line">                session.setSystemHost(request.getLocalAddr() + ":" + request.getLocalPort());  </div><div class="line">            &#125;  </div><div class="line">        &#125;  </div><div class="line">        return session;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;shiro提供了完整的会话功能，不依赖于底层容器，即直接使用shiro的会话管理可以直接替换掉web容器的会话管理&lt;/p&gt;
+&lt;h4 id=&quot;
+    
+    </summary>
+    
+      <category term="安全框架" scheme="http://www.myzwl.win/categories/%E5%AE%89%E5%85%A8%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Shiro" scheme="http://www.myzwl.win/source/tags/Shiro/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>shiro之jstl标签</title>
+    <link href="http://www.myzwl.win/2017/07/04/shiro_4/"/>
+    <id>http://www.myzwl.win/2017/07/04/shiro_4/</id>
+    <published>2017-07-04T05:48:51.000Z</published>
+    <updated>2017-07-15T12:33:26.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>shiro提供了JSTL标签用于在页面进行权限控制</p>
+<h4 id="导入标签库"><a href="#导入标签库" class="headerlink" title="导入标签库"></a>导入标签库</h4><blockquote>
+<p>&lt;%@taglib prefix=”shiro” uri=”<a href="http://shiro.apache.org/tags" target="_blank" rel="external">http://shiro.apache.org/tags</a>“ %&gt; </p>
+</blockquote>
+<h4 id="各类标签"><a href="#各类标签" class="headerlink" title="各类标签"></a>各类标签</h4><p><strong>guest标签</strong></p>
+<blockquote>
+<p><shiro:guest><br>欢迎游客访问，<br></shiro:guest></p>
+</blockquote>
+<p>用户没有身份验证时显示相应信息，即游客访问信息</p>
+<p><strong>user标签 </strong></p>
+<blockquote>
+<p>   <shiro:user><br>    欢迎[<shiro:principal>]登录<br>    </shiro:principal></shiro:user>   </p>
+</blockquote>
+<p>用户已经身份验证/记住我登录后显示相应的信息。</p>
+<p><strong>authenticated标签 </strong></p>
+<blockquote>
+<p> shiro:authenticated&gt;<br>     </p>
+</blockquote>
+<p> 用户已经身份验证通过，即Subject.login登录成功，不是记住我登录的。</p>
+<p><strong>notAuthenticated标签</strong></p>
+<blockquote>
+<p>  <shiro:notauthenticated><br>     </shiro:notauthenticated></p>
+</blockquote>
+<p> 用户已经身份验证通过，即没有调用Subject.login进行登录，包括记住我自动登录的也属于未进行身份验证</p>
+<p><strong>principal标签</strong></p>
+<blockquote>
+<shiro: principal="">
+
+</shiro:></blockquote>
+<p> 显示用户身份信息，默认调用Subject.getPrincipal()获取，即Primary Principal。</p>
+<p><strong>hasRole标签</strong></p>
+<blockquote>
+<p> <shiro:hasrole name="admin"><br>    用户[<shiro:principal>]拥有角色admin<br><br>    </shiro:principal></shiro:hasrole></p>
+</blockquote>
+<p> 如果当前Subject有角色将显示body体内容</p>
+<p><strong>hasAnyRoles标签</strong></p>
+<blockquote>
+<pre><code>&lt;shiro:hasAnyRoles name=&quot;admin,user&quot;&gt;    
+   &lt;/shiro:hasAnyRoles&gt;   
+</code></pre></blockquote>
+<p> 如果当前Subject有任意一个角色（或的关系）将显示body体内容</p>
+<p><strong>lacksRole标签</strong></p>
+<blockquote>
+<p>  <shiro:lacksrole name="abc"><br>     </shiro:lacksrole></p>
+</blockquote>
+<p> 如果当前Subject没有角色将显示body体内容</p>
+<p><strong>hasPermission标签</strong></p>
+<blockquote>
+<p><shiro:haspermission name="user:create"><br>    </shiro:haspermission></p>
+</blockquote>
+<p> 如果当前Subject有权限将显示body体内容。</p>
+<p><strong>lacksPermission标签</strong></p>
+<blockquote>
+<p> <shiro:lackspermission name="sss:create"><br>     </shiro:lackspermission> </p>
+</blockquote>
+<p> 如果当前Subject没有权限将显示body体内容。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;shiro提供了JSTL标签用于在页面进行权限控制&lt;/p&gt;
+&lt;h4 id=&quot;导入标签库&quot;&gt;&lt;a href=&quot;#导入标签库&quot; class=&quot;h
+    
+    </summary>
+    
+      <category term="安全框架" scheme="http://www.myzwl.win/categories/%E5%AE%89%E5%85%A8%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Shiro" scheme="http://www.myzwl.win/source/tags/Shiro/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>shiro之拦截器机制</title>
+    <link href="http://www.myzwl.win/2017/07/03/shiro_3/"/>
+    <id>http://www.myzwl.win/2017/07/03/shiro_3/</id>
+    <published>2017-07-03T05:48:51.000Z</published>
+    <updated>2017-07-15T11:44:20.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Shiro使用了与Servlet一样的Filter接口进行扩展，还有拦截器是基于java的反射机制，如利用动态代理实现，而平时说的过滤器是基于回调函数的实现，在实现原理上有着本质的区别<br><img src="/images/imgs4/2.gif" alt="Alt text"></p>
+<h4 id="拦截器介绍"><a href="#拦截器介绍" class="headerlink" title="拦截器介绍"></a>拦截器介绍</h4><p><strong>NameableFilter</strong><br>顾名思义，就是根据相应拦截器链组装拦截器的名字找到相应的拦截器实例</p>
+<p><strong>OncePerRequestFilter</strong><br>该拦截器用于控制一次请求只能走一次拦截器链，默认是开启拦截的</p>
+<p><strong>ShiroFilter</strong><br>是整个shiro的入口点，用于拦截需要安全控制的请求进行处理</p>
+<p><strong>AdviceFilter</strong><br>该拦截器非常类似于struct中拦截器，同时支持AOP拦截</p>
+<blockquote>
+<p>boolean preHandle(ServletRequest request, ServletResponse response) throws Exception<br>void postHandle(ServletRequest request, ServletResponse response) throws Exception<br>void afterCompletion(ServletRequest request, ServletResponse response, Exception exception) throws Exception;  </p>
+</blockquote>
+<p>preHandler：类似于AOP中的前置增强；在拦截器链执行之前执行；如果返回true则继续拦截器链；否则中断后续的拦截器链的执行直接返回；进行预处理（如基于表单的身份验证、授权）</p>
+<p>postHandle：类似于AOP中的后置返回增强；在拦截器链执行完成后执行；进行后处理（如记录执行时间之类的）；</p>
+<p>afterCompletion：类似于AOP中的后置最终增强；即不管有没有异常都会执行；可以进行清理资源（如解除Subject与线程的绑定之类的）；</p>
+<p><strong>PathMatchingFilter</strong><br>提供了基于Ant风格的请求路径匹配功能及拦截器参数解析的功能，如“roles[admin,user]”自动根据“，”分割解析到一个路径参数配置并绑定到相应的路径：</p>
+<blockquote>
+<p>boolean pathsMatch(String path, ServletRequest request)<br>boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception </p>
+</blockquote>
+<p>pathsMatch：该方法用于path与请求路径进行匹配的方法；如果匹配返回true；</p>
+<p>onPreHandle：在preHandle中，当pathsMatch匹配一个路径后，会调用opPreHandler方法并将路径绑定参数配置传给mappedValue；然后可以在这个方法中进行一些验证（如角色授权），如果验证失败可以返回false中断流程；默认返回true；也就是说子类可以只实现onPreHandle即可，无须实现preHandle。如果没有path与请求路径匹配，默认是通过的（即preHandle返回true）。</p>
+<p><strong>AccessControlFilter</strong><br>提供了访问控制的基础功能</p>
+<blockquote>
+<pre><code>abstract boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception;  
+boolean onAccessDenied(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception;  
+abstract boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception;   
+</code></pre></blockquote>
+<pre><code>isAccessAllowed：表示是否允许访问；mappedValue就是[urls]配置中拦截器参数部分，如果允许访问返回true，否则false；
+</code></pre><p>onAccessDenied：表示当访问拒绝时是否已经处理了；如果返回true表示需要继续处理；如果返回false表示该拦截器实例已经处理了，将直接返回即可。</p>
+<p>同时它还有一些扩展的功能</p>
+<blockquote>
+<p>void setLoginUrl(String loginUrl) //身份验证时使用，默认/login.jsp<br>String getLoginUrl()<br>Subject getSubject(ServletRequest request, ServletResponse response) //获取Subject实例<br>boolean isLoginRequest(ServletRequest request, ServletResponse response)//当前请求是否是登录请求<br>void saveRequestAndRedirectToLogin(ServletRequest request, ServletResponse response) throws IOException //将当前请求保存起来并重定向到登录页面<br>void saveRequest(ServletRequest request) //将请求保存起来，如登录成功后再重定向回该请求<br>void redirectToLogin(ServletRequest request, ServletResponse response) //重定向到登录页面 </p>
+</blockquote>
+<h4 id="拦截器链"><a href="#拦截器链" class="headerlink" title="拦截器链"></a>拦截器链</h4><p>在web容器中，先执行shiro的filter链，再执行servlet容器的filter链，同时shiro的ProxiedFilterChain对Servlet容器的FilterChain进行了代理</p>
+<blockquote>
+<p>FilterChain getChain(ServletRequest request, ServletResponse response, FilterChain originalChain);</p>
+</blockquote>
+<h4 id="自定义拦截器"><a href="#自定义拦截器" class="headerlink" title="自定义拦截器"></a>自定义拦截器</h4><p>通过自定义拦截器可以扩展一些功能，如动态url-角色/权限访问控制，根据Subject身份信息获取用户信息绑定到Request（即设置通用数据）、验证码验证、在线用户信息的保存等等</p>
+<p><strong>扩展OncePerRequestFilter</strong><br>OncePerRequestFilter保证一次请求只调用一次doFilterInternal<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public class MyOncePerRequestFilter extends OncePerRequestFilter&#123;</div><div class="line">	@Override</div><div class="line">	protected void doFilterInternal(ServletRequest request, ServletResponse response, FilterChain chain)</div><div class="line">			throws ServletException, IOException &#123;	</div><div class="line">		  System.out.println("once");</div><div class="line">		  chain.doFilter(request, response);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>对应的ini配置文件中</p>
+<blockquote>
+<p>[filters]<br>myFilter1=com.shiro.web.MyOncePerRequestFilter<br>[urls]<br>/**=myFilter1</p>
+</blockquote>
+<p>其中[filters]声明拦截器，[urls]执行拦截器</p>
+<p><strong>扩展AdviceFilter</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class MyAdviceFilter extends AdviceFilter&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception &#123;</div><div class="line">		System.out.println("pre");</div><div class="line">		return true;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	protected void postHandle(ServletRequest request, ServletResponse response) throws Exception &#123;</div><div class="line">	  System.out.println("postHandle");</div><div class="line">		super.postHandle(request, response);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void afterCompletion(ServletRequest request, ServletResponse response, Exception exception)</div><div class="line">			throws Exception &#123;</div><div class="line">		System.out.println("afterCompletion");</div><div class="line">		super.afterCompletion(request, response, exception);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>preHandle：进行请求的预处理，然后根据返回值决定是否继续处理（true：继续过滤器链）；可以通过它实现权限控制；</p>
+<p>postHandle：执行完拦截器链之后正常返回后执行；</p>
+<p>afterCompletion：不管最后有没有异常，afterCompletion都会执行，完成如清理资源功能。</p>
+<p><strong>扩展PathMatchingFilter</strong><br>提供了url模式过滤的功能<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public class MyPathMatchingFilter extends PathMatchingFilter&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue)</div><div class="line">			throws Exception &#123;</div><div class="line">		</div><div class="line">		   System.out.println("url matches,config is " + Arrays.toString((String[])mappedValue));  </div><div class="line">	       return true;  </div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>preHandle：会进行url模式与请求url进行匹配，如果匹配会调用onPreHandle；如果没有配置url模式/没有url模式匹配，默认直接返回true；</p>
+<p>onPreHandle：如果url模式与请求url匹配，那么会执行onPreHandle，并把该拦截器配置的参数传入。默认什么不处理直接返回true。</p>
+<p><strong>扩展AccessControlFilter</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class MyAccessControlFilter extends AccessControlFilter&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)</div><div class="line">			throws Exception &#123;</div><div class="line">		System.out.println("isAccessAllowed");  </div><div class="line">        return false;  </div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception &#123;</div><div class="line">		 System.out.println("访问拒绝也不自己处理，继续拦截器链的执行");  </div><div class="line">	        return true;  </div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>isAccessAllowed：即是否允许访问，返回true表示允许；</p>
+<p>onAccessDenied：表示访问拒绝时是否自己处理，如果返回true表示自己不处理且继续拦截器链执行，返回false表示自己已经处理了（比如重定向到另一个页面）</p>
+<p>其中如果isAccessAllowed返回true，onAccessDenied将不执行，反之执行</p>
+<h4 id="默认拦截器"><a href="#默认拦截器" class="headerlink" title="默认拦截器"></a>默认拦截器</h4><p>Shiro内置了很多默认的拦截器，比如身份验证、授权等相关的<br><img src="/images/imgs4/3.gif" alt="Alt text"><br><img src="/images/imgs4/4.gif" alt="Alt text"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;Shiro使用了与Servlet一样的Filter接口进行扩展，还有拦截器是基于java的反射机制，如利用动态代理实现，而平时说的过滤器是基
+    
+    </summary>
+    
+      <category term="安全框架" scheme="http://www.myzwl.win/categories/%E5%AE%89%E5%85%A8%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Shiro" scheme="http://www.myzwl.win/source/tags/Shiro/"/>
+    
+  </entry>
   
   <entry>
     <title>shiro之编码加密</title>
@@ -869,172 +1124,6 @@
     <summary type="html">
     
       &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt; Struts2框架为我们提供了许多标签，这些标签从总体上可以分为两类：通用标签和ui标签。而较常使用的是通用标签，通用标签又分为两类，数据
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>struts2 之四:OGNL表达式</title>
-    <link href="http://www.myzwl.win/2017/03/29/structs4/"/>
-    <id>http://www.myzwl.win/2017/03/29/structs4/</id>
-    <published>2017-03-29T11:48:51.000Z</published>
-    <updated>2017-04-07T10:30:22.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>OGNL表达式的全称是 Object Graph Navigation Language，即 对象图导航语言，使用OGNL表达式可以使用简单的语法设置以及读取java对象的值</p>
-<p>一般， <s:property value="””">　注意：  value里的内容称为ognl表达式，由于其功能强大，涉及东西太多，只做部分总结</s:property></p>
-<p>下面就先模拟一个案例，首先需要几个模拟的对象类<br>首先是Dog类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">private String name;</div><div class="line">   </div><div class="line">	public Dog(String name)&#123;</div><div class="line">		this.name=name;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public Dog()&#123;&#125;</div><div class="line">此处省略set。。get方法</div></pre></td></tr></table></figure></p>
-<p>然后是Cat类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">private Dog friend;</div><div class="line">	</div><div class="line">	public String miaomiao()</div><div class="line">	&#123;</div><div class="line">		return "miaomiao";</div><div class="line">	&#125;</div><div class="line">此处省略set。。get方法</div></pre></td></tr></table></figure></p>
-<p>接着是user类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">private String msg;</div><div class="line"></div><div class="line">public user()&#123;&#125;</div><div class="line"></div><div class="line">public user(String msg)&#123;</div><div class="line">	this.msg=msg;</div><div class="line">&#125;</div><div class="line">此处省略set。。get方法</div></pre></td></tr></table></figure></p>
-<p>在配置文件中，仍然不变</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;package name=<span class="string">"default"</span> namespace=<span class="string">"/"</span> extends=<span class="string">"struts-default"</span>&gt;</div><div class="line">  &lt;global-results&gt;</div><div class="line">  &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">  &lt;/global-results&gt;</div><div class="line">  </div><div class="line">  &lt;action name=<span class="string">"ognlaction"</span> class=<span class="string">"com.zwl.action.ognlaction"</span>&gt;</div><div class="line">  &lt;/action&gt;</div></pre></td></tr></table></figure>
-<p>下面是action，思路是在action中一点一点加入模拟代码，在相应的jsp中将值回显出来<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class ognlaction extends ActionSupport&#123;</div><div class="line">  private String username;</div><div class="line">	public String execute() throws Exception &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		return super.execute();</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>下面所以属性的set与get方法都将省略。。<br>首先是验证普通属性，对应jsp页面为</p>
-<p>1：<li>访问值栈中的action的普通属性:</li></p>
-<blockquote>
-<p>username = <s:property value="username"> </s:property></p>
-</blockquote>
-<p>2：访问值栈中对象的普通属性(get set方法)：</p>
-<blockquote>
-<p>首先action增加 private user use;<br>对应jsp为：<s:property value="use.msg"></s:property></p>
-</blockquote>
-<p>3访问值栈中对象中的成员对象的普通属性(get set方法)</p>
-<blockquote>
-<p>首先action增加：private Cat cat;<br>对应jsp为：<s:property value="cat.friend.name"></s:property></p>
-</blockquote>
-<p>4访问值栈中对象的普通方法<br><s:property value="cat.miaomiao()"></s:property></p>
-<p>5访问值栈中action的普通方法<br>首先action增加：public String m() {<br>             return “hello”;}<br>对应jsp为：<s:property value="m()"></s:property></p>
-<p>6 OGNL表达式语言访问静态方法，需要在Struts2.xml配置文件如下：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;constant name=<span class="string">"struts.ognl.allowStaticMethodAccess"</span> value=<span class="string">"true"</span>&gt;&lt;/constant&gt;</div></pre></td></tr></table></figure>
-<p>首先增加一个pojo类：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class s &#123;</div><div class="line">	 public static String STR = "STATIC STRING";  </div><div class="line">	  public static String s() &#123;</div><div class="line">	     return "static method";  &#125;&#125;</div></pre></td></tr></table></figure>
-<p>对应jsp：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;li&gt;访问静态方法：&lt;s:property value=<span class="string">"@com.zwl.pojo.s@s()"</span>/&gt;&lt;/li&gt;</div><div class="line">       &lt;li&gt;访问静态属性：&lt;s:property value=<span class="string">"@com.zwl.pojo.s@STR"</span>/&gt;&lt;/li&gt;</div><div class="line">       &lt;li&gt;访问Math类的静态方法：&lt;s:property value=<span class="string">"@@max(2,3)"</span> /&gt;&lt;/li&gt;</div></pre></td></tr></table></figure></p>
-<p>注意使用@符号访问</p>
-<p>7访问List中元素某个属性的集合中的特定值：<br>首先action增加<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">private List&lt;user&gt; users=new ArrayList&lt;&gt;();</div><div class="line">public ognlaction()&#123;</div><div class="line">		users.add(new user("1"));</div><div class="line">		users.add(new user("2"));</div><div class="line">		users.add(new user("3"));</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>对应jsp为：<s:property value="users[0].msg"></s:property></p>
-<p>8：访问Set中某个元素<br>首先action增加：</p>
-<blockquote>
-<p>private Set<dog> dogs = new HashSet<dog>();</dog></dog></p>
-</blockquote>
-<p>对应jsp为：<s:property value="dogs[1]"></s:property></p>
-<p>9：访问Map中某个元素<br>首先action增加：</p>
-<blockquote>
-<p>private Map<string, dog=""> dogMap = new HashMap<string, dog="">();<br>  <li>访问Map中某个元素:<s:property value="dogMap['dog101']"></s:property></li><br>               <li>访问Map中所有的key:<s:property value="dogMap.keys"></s:property></li><br>       <li>访问Map中所有的value:<s:property value="dogMap.values"></s:property></li></string,></string,></p>
-</blockquote>
-<p>  10：调试：   <s:debug></s:debug><br>主要用来查看值栈。而值栈主要来存放对象的，类似于正常的栈，</p>
-<p>以下为部分结果截图：<br><img src="/images/imgs2/23.gif" alt="Alt text"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;OGNL表达式的全称是 Object Graph Navigation Language，即 对象图导航语言，使用OGNL表达式可以使用简单
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>struts2 之三:result返回结果</title>
-    <link href="http://www.myzwl.win/2017/03/28/structs3/"/>
-    <id>http://www.myzwl.win/2017/03/28/structs3/</id>
-    <published>2017-03-28T09:48:51.000Z</published>
-    <updated>2017-04-07T10:29:26.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Structs2中的result是作为返回结果的，当一个action处理完之后返回字符串的结果码。框架可以根据这个返回的字符串，映射到指定的页面。Result元素可以分为两部分：一是结果映射，一部分是返回结果类型</p>
-<p>结果映射<br>  Result有两个属性可以配置：name属性和type属性，其中name属性主要用来指定资源的逻辑名称，实际名称在标签内指定。Type属性就是result返回的类型，这两个属性不是必须的。其中默认情况下，name为success，type为dispatch（转发）<br>另外，result标签还有一个子标签param，该标签可以为result指定实际资源位置，其中属性name为必填，而当type为dispatch时，param可以省略不写</p>
-<p>针对上面，不妨先模拟一个案例<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> &lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.helloworld"</span>&gt;</div><div class="line">  &lt;result type=<span class="string">"dispatcher"</span>&gt;</div><div class="line">&lt;param name=<span class="string">"location"</span>&gt;/success.jsp&lt;/param&gt;</div><div class="line">  &lt;/result&gt;</div><div class="line">  &lt;/action&gt;</div></pre></td></tr></table></figure></p>
-<p>这里的location是用于指示资源的位置，标签内的内容是参数的值</p>
-<p>对应我们习惯写的形式为<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.helloworld"</span>&gt;</div><div class="line">  &lt;result name=<span class="string">"success"</span>&gt;</div><div class="line">/success<span class="selector-class">.jsp</span></div><div class="line">  &lt;/result&gt;</div><div class="line">  &lt;/action&gt;</div></pre></td></tr></table></figure></p>
-<p>结果类型：<br> 常用的有四种，dispatch、redirect、redirectAction和chain，其中dispatch相当于转发，redirect相当于重定向，redirectAction也是重定向，但是它是重定向到某个action，而chain则是利用action的链式处理</p>
-<p>第一种：dispatch<br> 它是系统默认的结果类型，其有两个属性，localtion和parse，配置如下<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> &lt;result type=<span class="string">"dispatcher"</span>&gt;</div><div class="line">&lt;param name=<span class="string">"location"</span>&gt;/success.jsp&lt;/param&gt;</div><div class="line">&lt;param name=<span class="string">"parse"</span>&gt;true&lt;/param&gt;</div><div class="line">  &lt;/result&gt;</div></pre></td></tr></table></figure></p>
-<p>其中parse是一个布尔类型，当为true时，表示解析localtion参数中的OGNL表达式，默认是true</p>
-<p>第二种：redirect<br>  当使用该类型时，框架后台会使用response对象的sendRedirect方法进行重定向，下面先简单对比一下重定向与转发的区别：<br>一：重定向会发生两次请求，转发只会发生一次请求<br>      重定向的时候，浏览器的地址栏会发生变化，而转发的地址栏是无变化的<br>      重定向的实质是服务器告诉浏览器去另外的地方寻找资源，所以地址栏会发生变化，而转发则是在服务器内部发生的，所以地址栏不会发生变化<br>      由于重定向是两次请求，所以第二次请求的会话保存的信息是无效的，而转发的时候会话仍然有效，因为请求不变<br>      对于重定向中会话仍然有效的方法是在配置文件中使用OGNL表达式，将参数传递过去<br>对于以上内容，不妨一个实例来的具体点</p>
-<p>首先是上面的dispatch<br>如之前的hello world入门程序，最终观察地址栏和参数是可以接收到的</p>
-<p>当type为redirect时<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.helloworld"</span>&gt;</div><div class="line">  &lt;result type=<span class="string">"redirect"</span>&gt;</div><div class="line">/success<span class="selector-class">.jsp</span></div><div class="line">  &lt;/result&gt;</div><div class="line">  &lt;/action&gt;</div></pre></td></tr></table></figure></p>
-<p>观察地址栏是显示jsp的，但是参数是无法接收到的<br>那么如何解决了？<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> &lt;action name="helloworld" class="com.zwl.action.helloworld"&gt;</div><div class="line">  &lt;result name="success" type="redirect"&gt;</div><div class="line">/success.jsp?user=$&#123;use.msg&#125;</div><div class="line">  &lt;/result&gt;</div><div class="line">  &lt;/action&gt;</div></pre></td></tr></table></figure></p>
-<p>即带一个参数，注意此时的话，在success.jsp中值就不在值栈中了，因为不经过action，所以应该用如下方法取出<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">  &lt;s:property value=<span class="string">"#parameters.user"</span>/&gt;</div><div class="line">  &lt;/body&gt;</div></pre></td></tr></table></figure></p>
-<p>第三种：redirectAction，<br>其底层都是通过Response对象的sendRedirect方法进行重定向的，只不过它是重定向到某个action，所以如果一个action处理完之后还要交给另一个action据需处理，则使用该类型。<br>它的结果类型有两个参数，actionName（指定需要重定向的action）和namespace（指定action所在的命名空间，如果没有指定该参数，框架会从默认的namespace中去寻找）<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;package name=<span class="string">"default"</span> namespace=<span class="string">"/"</span> extends=<span class="string">"struts-default"</span>&gt;</div><div class="line">   &lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.helloworld"</span>&gt;</div><div class="line">   &lt;result type=<span class="string">"redirectAction"</span>&gt;</div><div class="line">   &lt;param name=<span class="string">"actionName"</span>&gt;helloworld1&lt;/param&gt;</div><div class="line">   &lt;param name=<span class="string">"namespace"</span>&gt;/&lt;/param&gt;</div><div class="line">   &lt;/result&gt;</div><div class="line">   &lt;/action&gt;</div></pre></td></tr></table></figure></p>
-<p>第四种：chain<br>一样，也是跳转到某个action<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;action name=<span class="string">"r3"</span>&gt;</div><div class="line">        &lt;result type=<span class="string">"chain"</span>&gt;r1&lt;/result&gt;</div><div class="line">        &lt;/action&gt;</div></pre></td></tr></table></figure></p>
-<p>接下来，进行简单对比<br>Redirect和redirectAciton都是客户端跳转，<br>而dispatch和chain都是服务器端跳转</p>
-<p>全局action：<br>当有多个action都需要返回某个页面的时候，就可以用到全局结果<br>即在同一个包下所有的action都共享该result，如下所示<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;global-results&gt;</div><div class="line">  &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">  &lt;/global-results&gt;</div><div class="line">  </div><div class="line">  &lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.helloworld"</span>&gt;</div><div class="line">  &lt;/action&gt;</div></pre></td></tr></table></figure></p>
-<p>仍然操作之前的步骤，结果仍能执行全局中的result</p>
-<p>Namespace<br>Namespace决定了action的访问路径，默认为“”，可以接收所有路径的action，如果没有找到相应的namespace时，则使用namespace为空的action<br>Namespace可以写为/，或者/xxx,或者/xxx/yyy，对应的action访问路径为/index.action、/xxx/index.action、或者/xxx/yyy/index.action.<br>Namespace最好也用模块来进行命名</p>
-<p><package>标签</package></p>
-<p><package>是用来解决重名的问题，例如当系统的前台和后台都有一个action名叫hello，这时就需要用package来区分。    前台<package name="front">后台<package name="back"><br>struts2中的package与java的package是相同的作用的</package></package></package></p>
-<p>访问Web元素<br>Action中的会话一般有三种request,session,application，但是他们都是map类型<br>一般情况下有四种方式可以获得</p>
-<p>方法一：ActionContext方式<br>一般在Action类的构造方法、或execute()方法中获取<br>如下案例：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">public class LoginAction1 extends ActionSupport&#123;</div><div class="line">  private Map request;</div><div class="line">  private Map session;</div><div class="line">  private Map application;</div><div class="line"></div><div class="line">  public LoginAction1() &#123;</div><div class="line">	  request=(Map) ActionContext.getContext().get("request");</div><div class="line">	  session=ActionContext.getContext().getSession();</div><div class="line">	  application=ActionContext.getContext().getApplication();</div><div class="line">  &#125;</div><div class="line">	</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public String execute() throws Exception &#123;</div><div class="line">	       request.put("r1", "r1");</div><div class="line">	       session.put("s1", "s1");</div><div class="line">	       application.put("a1", "a1");</div><div class="line"></div><div class="line">		return super.execute();</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<p>然后在页面中可以通过标签或者java片段取出<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;s:property value="#request.r1"/&gt; | &lt;%=request.getAttribute("r1") %&gt; &lt;br /&gt;</div><div class="line">    &lt;s:property value="#session.s1"/&gt; | &lt;%=session.getAttribute("s1") %&gt; &lt;br /&gt;</div><div class="line">&lt;s:property value="#application.a1"/&gt; | &lt;%=application.getAttribute("a1") %&gt; &lt;br/&gt;</div></pre></td></tr></table></figure></p>
-<p>方式二：Ioc(控制反转)—推荐使用<br>让Action类实现RequestAware、SessionAware、ApplicationAware接口，然后重写他们的set方法(setRequest、setSession、setApplication)，通过依赖注入、控制反转(原来自己控制，现在由别人来控制值。)</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">public class LoginAction2 extends ActionSupport implements RequestAware,SessionAware, ApplicationAware &#123;</div><div class="line">    private Map&lt;String, Object&gt; request;</div><div class="line">    private Map&lt;String, Object&gt; session;</div><div class="line">    private Map&lt;String, Object&gt; application;</div><div class="line">  public String execute() &#123;</div><div class="line">       request.put("r1", "r1");</div><div class="line">       session.put("s1", "s1");</div><div class="line">       application.put("a1", "a1");</div><div class="line">       return SUCCESS;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void setRequest(Map&lt;String, Object&gt; request) &#123;</div><div class="line">       this.request = request;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void setSession(Map&lt;String, Object&gt; session) &#123;</div><div class="line">       this.session = session;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void setApplication(Map&lt;String, Object&gt; application) &#123;</div><div class="line">       this.application = application;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<p>方式三：获取原类型<br>获取是的HttpServletRequest/HttpSession/ServletContext<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">private HttpServletRequest request;</div><div class="line">    private HttpSession session;</div><div class="line">    private ServletContext application;</div><div class="line">    public LoginAction3() &#123;</div><div class="line">       request = ServletActionContext.getRequest();</div><div class="line">       session = request.getSession();</div><div class="line">       application = session.getServletContext();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
-<p>一般情况下只用前三种，第四种就不说了</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;Structs2中的result是作为返回结果的，当一个action处理完之后返回字符串的结果码。框架可以根据这个返回的字符串，映射到指定的
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>struts2 之二:action详解</title>
-    <link href="http://www.myzwl.win/2017/03/27/structs2/"/>
-    <id>http://www.myzwl.win/2017/03/27/structs2/</id>
-    <published>2017-03-27T08:48:51.000Z</published>
-    <updated>2017-04-07T10:29:12.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在structs2中，action是其核心功能，而使用structs2框架，主要都是围绕action进行，我们编写的action通常需要实现com.opensymphony.xwork2.Action接口，需要实现的方法时execute方法，但是在实际开发中，编写的action也可以不必实现action接口，而是直接创建一个普通的java类，并添加execute方法就可以，如入门程序的案例，还有一种方式就是继承ActionSupport类，其已经实现了action的execute方法，以上方式，后两者比较常用</p>
-<p>接下来将在入门程序的基础上，来介绍action属性</p>
-<p> 一：action属性<br>  Action中有一个映射框架，主要讲url映射到对应的action，action的配置主要在struts.xml文件中编写，</p>
-<p>  以下是action的几个常见属性</p>
-<blockquote>
-<p>属性       是否必须       说明<br>Name       是           action的名字，用于匹配请求的url<br>Class        否           action实现类的完整类名<br>Method     否            调用action实现类中指定的方法</p>
-</blockquote>
-<p>需要注意的是，action的name属性有规范，即不允许出现.或者/或者-，另外我们来看看如果只配置一个name属性，class怎么加载？<br>理论上是框架会调用actionsupport类中的execute方法，该方法的实现仅仅是返回一个success，但是实际上去掉之后，入门程序中跳转正确，但是数据取不到，至少说明的确跳转正确，</p>
-<p>下面对method属性进行说明<br>由之前我们知道通常action的作用是完成一个功能点，但是如果同时又crud方法，显然创建四个action就太麻烦了，这时候就可以使用method属性，至于怎么用，先看一个实例。<br>即对用户进行增删该查</p>
-<p>首先是useraction.java</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">import com.opensymphony.xwork2.ActionSupport;</div><div class="line"></div><div class="line">public class useraction extends ActionSupport&#123;</div><div class="line"></div><div class="line">	//查询</div><div class="line">	public String selectall()&#123;</div><div class="line">		return SUCCESS;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//更新</div><div class="line">	public String update()</div><div class="line">	&#123;</div><div class="line">		return SUCCESS;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//删除</div><div class="line">	public String delete()</div><div class="line">	&#123;</div><div class="line">		return SUCCESS;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//添加</div><div class="line">	public String add()&#123;</div><div class="line">		return SUCCESS;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里注意一下，在action中并不一定非要需要写execute方法，也可以自己指定需要的方法，但是必须要在Struts.xml中做相应的配置，如下<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;package name=<span class="string">"default"</span> namespace=<span class="string">"/"</span> extends=<span class="string">"struts-default"</span>&gt;</div><div class="line">       &lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"selectall"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div><div class="line">        &lt;action name=<span class="string">"helloworld1"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"update"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div><div class="line">        &lt;action name=<span class="string">"helloworld2"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"delete"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div><div class="line">        &lt;action name=<span class="string">"helloworld3"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"add"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div><div class="line">&lt;/package&gt;</div></pre></td></tr></table></figure></p>
-<p>然后在前台页面写需要调用的action<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> &lt;<span class="selector-tag">form</span> action=<span class="string">"helloworld.action"</span>&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"msg"</span>/&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>显然我们发现用此种方法思路清晰，但是太啰嗦，这就是有时需要动态调用action，简称DMI，<br>先看一个例子，<br>首先是useraction1.java<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">public class useraction1 extends ActionSupport&#123;</div><div class="line"></div><div class="line">	private String msg;</div><div class="line">	</div><div class="line">	public String getMsg() &#123;</div><div class="line">		return msg;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setMsg(String msg) &#123;</div><div class="line">		this.msg = msg;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">		//查询</div><div class="line">		public String selectall()&#123;</div><div class="line">			return "selectall";</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//更新</div><div class="line">		public String update()</div><div class="line">		&#123;</div><div class="line">			return "update";</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//删除</div><div class="line">		public String delete()</div><div class="line">		&#123;</div><div class="line">			return "delete";</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//添加</div><div class="line">		public String add()&#123;</div><div class="line">			return "add";</div><div class="line">		&#125;</div></pre></td></tr></table></figure></p>
-<p>这里我们可以通过自定义方法返回不同的值，然后通过result中name属性配置相应不同的值，来返回到不同的界面<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//这里是是否启用DMI方法，默认是关闭的</span></div><div class="line">&lt;constant name=<span class="string">"struts.enable.DynamicMethodInvocation"</span> value=<span class="string">"true"</span> /&gt; </div><div class="line"><span class="comment">//这里是否启用开发者模式，这样就不用每次重启服务器</span></div><div class="line">    &lt;constant name=<span class="string">"struts.devMode"</span> value=<span class="string">"true"</span> /&gt;</div><div class="line">    </div><div class="line">    &lt;package name=<span class="string">"default"</span> namespace=<span class="string">"/"</span> extends=<span class="string">"struts-default"</span>&gt;</div><div class="line">     &lt;action name=<span class="string">"useraction1"</span> class=<span class="string">"com.zwl.action.useraction1"</span>&gt;</div><div class="line">     &lt;result name=<span class="string">"selectall"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">     &lt;result name=<span class="string">"update"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">     &lt;result name=<span class="string">"delete"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">     &lt;result name=<span class="string">"add"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">     &lt;/action&gt;</div><div class="line">&lt;/package&gt;</div></pre></td></tr></table></figure></p>
-<p>好了，配置文件也配置好了，接下来就是在页面中调用DMI方法，一般的格式是actionname!xxx.action<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"useraction1!delete.action"</span>&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"msg"</span>/&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">  &lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>至此动态调用action已完成，接下来将是默认的action配置<br>默认的action<br>先看配置实例：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;package name=<span class="string">"default"</span> namespace=<span class="string">"/"</span> extends=<span class="string">"struts-default"</span>&gt;</div><div class="line">    &lt;default-action-ref name=<span class="string">"helloworld"</span>&gt;&lt;/default-action-ref&gt;</div><div class="line"></div><div class="line">   &lt;action name=<span class="string">"helloworld"</span> class=<span class="string">"com.zwl.action.useraction"</span> method=<span class="string">"selectall"</span>&gt;</div><div class="line">       &lt;result name=<span class="string">"success"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">       &lt;/action&gt;</div></pre></td></tr></table></figure></p>
-<p>在表单中跳转到一个不存在的action时，则执行设置的默认action，这里需要注意的是每个namespace下，只能有一个默认的action，否则不知道执行那个默认的action</p>
-<p>通配符映射<br> 使用通配符，可以将配置量降到最低，不过一定要实现约定好命名规范，即约定优于配置原则<br>在action配置中，<em>表示所有，可以匹配任意的字符，而{数字}表示第几个通配符，如
-</em>_<em>，{1}表示第一个</em>，{2}表示第二个*<br>接下来模拟一个案例，如下所示<br>首先是action<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public class useractionsave extends ActionSupport&#123;</div><div class="line">   </div><div class="line">	private String msg;</div><div class="line"></div><div class="line">	public String getMsg() &#123;</div><div class="line">		return msg;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setMsg(String msg) &#123;</div><div class="line">		this.msg = msg;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public String save()&#123;</div><div class="line">		return "save";</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>配置文件<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;action name=<span class="string">"useraction*"</span> class=<span class="string">"com.zwl.action.useraction&#123;1&#125;"</span> method=<span class="string">"&#123;1&#125;"</span>&gt;</div><div class="line">  &lt;result name=<span class="string">"save"</span>&gt;/success.jsp&lt;/result&gt;</div><div class="line">  &lt;/action&gt;</div><div class="line"></div><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"useractionsave.action"</span>&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"msg"</span>/&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">  &lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>最后测试通过</p>
-<p>最后介绍一下action的属性接受参数<br>事实上action中有三种方法</p>
-<p>方法一：在Action添加成员属性接受参数<br>之前的案例都是采用这种方法的，就不多介绍了，不过值得注意的是，参数提交的名称必须和action的属性一致，并且要有set与get方法</p>
-<p>方法二： 域模型(Domain Model)<br>就是先创建一个对象，通过在action中操作其属性来传递参数，相应的先建立一个user对象<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">public class user &#123;</div><div class="line">private String msg;</div><div class="line"></div><div class="line">public String getMsg() &#123;</div><div class="line">	return msg;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public void setMsg(String msg) &#123;</div><div class="line">	this.msg = msg;</div><div class="line">&#125;</div><div class="line"></div><div class="line">然后是action</div><div class="line">	private user use;</div><div class="line">	</div><div class="line">	public user getUse() &#123;</div><div class="line">		return use;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setUse(user use) &#123;</div><div class="line">		this.use = use;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public String save()&#123;</div><div class="line">		return "save";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>这里需要注意的是前台参数传递，是action中引用对象的那个属性，其它都一样<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">  &lt;<span class="selector-tag">form</span> action=<span class="string">"useractionsave.action"</span>&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"use.msg"</span>/&gt;</div><div class="line">  &lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span>/&gt;</div><div class="line">  &lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>方法三： ModelDriven接收参数<br>使Action实现com.opensymphony.xwork2.ModelDriven<user>(在实现接口时需要使用泛型，否则使用时需要转型)中利用其getModel()方法返回对象模型，从而获得传入的参数。</user></p>
-<p>参数被传入至Action后，会被ModelDriven对象根据参数名自动赋值给User对象相应的属性而生成User对象，并且由getModel()返回。那么我们在Action中就可以利用这个对象了。<br>注意：传入的参数名需要与对象模型中的成员属性一致。</p>
-<p>这里在将上述案例中的action修改一下。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class useractionsave extends ActionSupport implements ModelDriven&lt;user&gt;&#123;</div><div class="line">public String save()&#123;</div><div class="line">		return "save";</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	private user use=new user();</div><div class="line">	</div><div class="line">public user getUse() &#123;</div><div class="line">		return use;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setUse(user use) &#123;</div><div class="line">		this.use = use;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public user getModel() &#123;</div><div class="line">	// TODO Auto-generated method stub</div><div class="line">	return use;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在structs2中，action是其核心功能，而使用structs2框架，主要都是围绕action进行，我们编写的action通常需要实现
     
     </summary>
     
