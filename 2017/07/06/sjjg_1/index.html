@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java, hexo" />
+  <meta name="keywords" content="数据结构," />
 
 
 
@@ -105,28 +105,25 @@
 
 
 
-<meta name="description" content="前言之前我们都是通过xml方式显示配置，会发现配置起来特别麻烦。当使用注解时，有时只需在相关类中做相关的声明，就能完成同样的工作。
-不多说：先来一个注解开发例子
-步骤一：首先创建一个web工程
-步骤二：添加jar包
-步骤三：配置web.xml123456789101112131415161718192021222324252627282930313233&amp;lt;?xml version=&quot;1.0&quot;">
+<meta name="description" content="前言数据结构是指数据间存在的关系，通常包含三个方面。数据的逻辑结构（线性结构、树、图），数据的存储结构（顺序存储和链式存储），数据操作（对数据结构中的元素进行各种运算和处理），而通常所说的算法是建立在数据结构之上，读数据结构的操作需要用算法来描述。而算法的分析又主要包括时间代价和空间代价两方面
+线性表的顺序表示和实现
+数组是顺序存储的随机存取结构，占用一组连续的存储单元，通过下标识别元素，元素地址">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spring mvc之三:注解开发">
-<meta property="og:url" content="http://www.myzwl.win/2017/03/19/springmvc3/index.html">
+<meta property="og:title" content="线性表之顺序表">
+<meta property="og:url" content="http://www.myzwl.win/2017/07/06/sjjg_1/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="前言之前我们都是通过xml方式显示配置，会发现配置起来特别麻烦。当使用注解时，有时只需在相关类中做相关的声明，就能完成同样的工作。
-不多说：先来一个注解开发例子
-步骤一：首先创建一个web工程
-步骤二：添加jar包
-步骤三：配置web.xml123456789101112131415161718192021222324252627282930313233&amp;lt;?xml version=&quot;1.0&quot;">
-<meta property="og:updated_time" content="2017-04-07T10:26:34.000Z">
+<meta property="og:description" content="前言数据结构是指数据间存在的关系，通常包含三个方面。数据的逻辑结构（线性结构、树、图），数据的存储结构（顺序存储和链式存储），数据操作（对数据结构中的元素进行各种运算和处理），而通常所说的算法是建立在数据结构之上，读数据结构的操作需要用算法来描述。而算法的分析又主要包括时间代价和空间代价两方面
+线性表的顺序表示和实现
+数组是顺序存储的随机存取结构，占用一组连续的存储单元，通过下标识别元素，元素地址">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs4/1.jpg">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs4/7.gif">
+<meta property="og:updated_time" content="2017-07-21T15:52:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spring mvc之三:注解开发">
-<meta name="twitter:description" content="前言之前我们都是通过xml方式显示配置，会发现配置起来特别麻烦。当使用注解时，有时只需在相关类中做相关的声明，就能完成同样的工作。
-不多说：先来一个注解开发例子
-步骤一：首先创建一个web工程
-步骤二：添加jar包
-步骤三：配置web.xml123456789101112131415161718192021222324252627282930313233&amp;lt;?xml version=&quot;1.0&quot;">
+<meta name="twitter:title" content="线性表之顺序表">
+<meta name="twitter:description" content="前言数据结构是指数据间存在的关系，通常包含三个方面。数据的逻辑结构（线性结构、树、图），数据的存储结构（顺序存储和链式存储），数据操作（对数据结构中的元素进行各种运算和处理），而通常所说的算法是建立在数据结构之上，读数据结构的操作需要用算法来描述。而算法的分析又主要包括时间代价和空间代价两方面
+线性表的顺序表示和实现
+数组是顺序存储的随机存取结构，占用一组连续的存储单元，通过下标识别元素，元素地址">
+<meta name="twitter:image" content="http://www.myzwl.win/images/imgs4/1.jpg">
 
 
 
@@ -154,13 +151,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/03/19/springmvc3/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/07/06/sjjg_1/"/>
 
 
 
 
 
-  <title> spring mvc之三:注解开发 | 秒西 </title>
+  <title> 线性表之顺序表 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -506,7 +503,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/03/19/springmvc3/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/07/06/sjjg_1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -527,7 +524,7 @@ var _hmt = _hmt || [];
             
             
               
-                spring mvc之三:注解开发
+                线性表之顺序表
               
             
           </h1>
@@ -542,8 +539,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-19T19:48:51+08:00">
-                2017-03-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-06T13:48:51+08:00">
+                2017-07-06
               </time>
             
 
@@ -570,8 +567,8 @@ var _hmt = _hmt || [];
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习总结/" itemprop="url" rel="index">
-                    <span itemprop="name">学习总结</span>
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
                   </a>
                 </span>
 
@@ -588,7 +585,7 @@ var _hmt = _hmt || [];
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a class="cloud-tie-join-count" href="/2017/03/19/springmvc3/#comments" itemprop="discussionUrl">
+                <a class="cloud-tie-join-count" href="/2017/07/06/sjjg_1/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count join-count" itemprop="commentCount"></span>
                 </a>
               </span>
@@ -620,54 +617,15 @@ var _hmt = _hmt || [];
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前我们都是通过xml方式显示配置，会发现配置起来特别麻烦。当使用注解时，有时只需在相关类中做相关的声明，就能完成同样的工作。</p>
-<p>不多说：先来一个注解开发例子</p>
-<p>步骤一：首先创建一个web工程</p>
-<p>步骤二：添加jar包</p>
-<p>步骤三：配置web.xml<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5"&gt;</div><div class="line">  </div><div class="line">  &lt;filter&gt;</div><div class="line">  &lt;filter-name&gt;characterEncoding&lt;/filter-name&gt;</div><div class="line">  &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;</div><div class="line">  &lt;init-param&gt;</div><div class="line">  &lt;param-name&gt;encoding&lt;/param-name&gt;</div><div class="line">  &lt;param-value&gt;UTF-8&lt;/param-value&gt;</div><div class="line">  &lt;/init-param&gt;</div><div class="line">  &lt;/filter&gt;</div><div class="line">  </div><div class="line">  &lt;filter-mapping&gt;</div><div class="line">  &lt;filter-name&gt;characterEncoding&lt;/filter-name&gt;</div><div class="line">  &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</div><div class="line">  &lt;/filter-mapping&gt;</div><div class="line">  </div><div class="line">  &lt;servlet&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;</div><div class="line">  &lt;!-- 默认加载方式</div><div class="line">  	   默认加载必须规范：</div><div class="line">  	   * 文件命名：servlet-name-servlet.xml====springmvc-servlet.xml</div><div class="line">  	   * 路径规范：必须在WEB-INF目录下面</div><div class="line">   --&gt;</div><div class="line"> &lt;/servlet&gt;</div><div class="line">  </div><div class="line">  &lt;servlet-mapping&gt;</div><div class="line">  &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;</div><div class="line">  &lt;url-pattern&gt;*.do&lt;/url-pattern&gt;</div><div class="line">  &lt;/servlet-mapping&gt;</div><div class="line"></div><div class="line">&lt;/web-app&gt;</div></pre></td></tr></table></figure></p>
-<p>步骤四：配置springmvc-servlet.xml文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;beans xmlns="http://www.springframework.org/schema/beans"</div><div class="line">	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"</div><div class="line">	xmlns:context="http://www.springframework.org/schema/context"</div><div class="line">	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"</div><div class="line">	xsi:schemaLocation="http://www.springframework.org/schema/beans </div><div class="line">		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/mvc </div><div class="line">		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/context </div><div class="line">		http://www.springframework.org/schema/context/spring-context-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/aop </div><div class="line">		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd </div><div class="line">		http://www.springframework.org/schema/tx </div><div class="line">		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd"&gt;</div><div class="line">		</div><div class="line">		&lt;!--  扫描基本的父包，这样子类包被自动扫到执行 --&gt;</div><div class="line">		&lt;context:component-scan base-package="com.zwl"&gt;&lt;/context:component-scan&gt;</div><div class="line">		</div><div class="line">	&lt;!-- 配置注解处理器映射器 </div><div class="line">			功能：寻找执行类Controller</div><div class="line">		--&gt;</div><div class="line"></div><div class="line">		 &lt;bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"&gt;&lt;/bean&gt;</div><div class="line">		&lt;!-- 配置注解处理器适配器 </div><div class="line">			功能：调用controller方法，执行controller</div><div class="line">		--&gt;</div><div class="line"></div><div class="line">		&lt;bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"&gt;</div><div class="line">		&lt;/bean&gt;</div><div class="line">		&lt;!-- 配置sprigmvc视图解析器：解析逻辑试图 </div><div class="line">			 后台返回逻辑试图：index</div><div class="line">			视图解析器解析出真正物理视图：前缀+逻辑试图+后缀====/WEB-INF/jsps/index.jsp</div><div class="line">		--&gt;</div><div class="line">		&lt;bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"&gt;</div><div class="line">		&lt;property name="prefix" value="/"&gt;&lt;/property&gt;</div><div class="line">		&lt;property name="suffix" value=".jsp"&gt;&lt;/property&gt;		</div><div class="line">		&lt;/bean&gt;</div><div class="line">		&lt;/beans&gt;</div></pre></td></tr></table></figure></p>
-<p>这里简要说明一下，以上是注解最基本的配置，有扫描配置，两个基本配置和一个视图配置</p>
-<p>步骤五：自定义controller类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">package com.zwl.control;</div><div class="line"></div><div class="line">import org.springframework.stereotype.Controller;</div><div class="line">import org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"></div><div class="line">@Controller  //相当于&lt;bean class="Usercontrol"/&gt;并且声明这是一个controller</div><div class="line">public class Usercontrol &#123;</div><div class="line"></div><div class="line">	@RequestMapping("hello") //相当于需要访问的路径hello.do</div><div class="line">	public String say()&#123;</div><div class="line">		return "index" ;  //放回到逻辑视图index.jsp</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>这是一个最简化的注解配置<br>对应index.jsp<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"> &lt;body&gt;</div><div class="line">hello 盲僧</div><div class="line">  &lt;/body&gt;</div></pre></td></tr></table></figure></p>
-<p>测试：浏览器中输入<a href="http://localhost:100/springmvc2/hello.do" target="_blank" rel="external">http://localhost:100/springmvc2/hello.do</a></p>
-<p>对应输出结果</p>
-<blockquote>
-<p>hello 盲僧</p>
-</blockquote>
-<h4 id="RequestMapping"><a href="#RequestMapping" class="headerlink" title="RequestMapping"></a>RequestMapping</h4><p>它有三种方式，分别为</p>
-<blockquote>
-<p>requestMapping(“hello”)<br>requestMapping(“/hello.do”)<br>requestMapping(value=”/hello.do”)</p>
-</blockquote>
-<p>都能达到同样的效果，都是需要访问的路径<br>如果在类前面添加此属性，则相当于映射路径在加一层<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@Controller <span class="comment">//&lt;bean class="Usercontrol"/&gt;</span></div><div class="line">@RequestMapping(<span class="string">"/test"</span>)</div><div class="line">public class Usercontrol &#123;&#125;</div></pre></td></tr></table></figure></p>
-<p>即<a href="http://localhost:100/springmvc2/test/hello.do" target="_blank" rel="external">http://localhost:100/springmvc2/test/hello.do</a></p>
-<p>另外，注意下里面还有个method配置，即按什么模式接受表单</p>
-<blockquote>
-<p>@RequestMapping(value=”/hello.do”,method=RequestMethod.GET)</p>
-</blockquote>
-<p>或者</p>
-<blockquote>
-<p>@RequestMapping(value=”/hello.do”,method=RequestMethod.POST)</p>
-</blockquote>
-<p>默认是两个都可以的</p>
-<blockquote>
-<p>requestMapping(value=”/hello.do”,method={RequestMethod.POST, RequestMethod.GET})</p>
-</blockquote>
-<h4 id="封装参数"><a href="#封装参数" class="headerlink" title="封装参数"></a>封装参数</h4><p>分析接受参数类型：<br>基本类型，int，String等等基本类型。<br>Pojo类型<br>包装类型<br>Springmvc参数封装：基于方法进行封装。</p>
-<p>一：基本类型<br> 封装int型参数<br>页面<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">  &lt;body&gt;</div><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/ test/recieve.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">id：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"id"</span> id=<span class="string">"id"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div><div class="line">  &lt;/body&gt;</div></pre></td></tr></table></figure></p>
-<p>接受参数方法<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("recieve")</div><div class="line">	public String recieve(Integer id)&#123;</div><div class="line">		System.out.println(id);</div><div class="line">  return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>注意这里的Integer id必须要与页面中的name=”id”一致才能正确接受参数</p>
-<p>测试：在浏览器中输入<a href="http://localhost:100/springmvc2/index.jsp" target="_blank" rel="external">http://localhost:100/springmvc2/index.jsp</a></p>
-<p>然后输入id，后台即可接收到参数</p>
-<p>接受字符转类型<br>页面：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/ test/recievestr.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">id：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"name"</span> id=<span class="string">"name"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>接收参数方法：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("recievestr")</div><div class="line">	public String recievestr(String name)&#123;</div><div class="line">		System.out.println(name);</div><div class="line">		  return "login";&#125;</div></pre></td></tr></table></figure></p>
-<p>接受数组：<br>分析：批量：checkbox复选框。Value必须有值<br>页面：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/test/recievearray.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">ID：&lt;<span class="selector-tag">input</span> type=<span class="string">"checkbox"</span> name=<span class="string">"ids"</span> value=<span class="string">"1"</span> id=<span class="string">"ids"</span>&gt;</div><div class="line">ID：&lt;<span class="selector-tag">input</span> type=<span class="string">"checkbox"</span> name=<span class="string">"ids"</span> value=<span class="string">"2"</span> id=<span class="string">"ids"</span>&gt;</div><div class="line">ID：&lt;<span class="selector-tag">input</span> type=<span class="string">"checkbox"</span> name=<span class="string">"ids"</span> value=<span class="string">"3"</span> id=<span class="string">"ids"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>接受参数的方法<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("recievearray")</div><div class="line">	public String recievearray(Integer []ids)&#123;</div><div class="line">		System.out.println(ids);</div><div class="line">		 return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>接受pojo类<br>页面：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">form</span> action=<span class="string">"$&#123;pageContext.request.contextPath &#125;/test/recieveUser.do"</span> method=<span class="string">"post"</span>&gt;</div><div class="line">姓名：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"username"</span> id=<span class="string">"username"</span>&gt;</div><div class="line">生日：&lt;<span class="selector-tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"birthday"</span> id=<span class="string">"birthday"</span>&gt;</div><div class="line">&lt;<span class="selector-tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">"提交"</span>&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
-<p>Pojo类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class User &#123;</div><div class="line">	</div><div class="line">	private String username;</div><div class="line">	private Date birthday;</div><div class="line"></div><div class="line">此处省略set。Get方法&#125;</div></pre></td></tr></table></figure></p>
-<p>接受参数的方法：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("recieveUser")</div><div class="line">	public String recievearray(User user)&#123;</div><div class="line">		System.out.println(user.getUsername());</div><div class="line">		 return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>接受包装类型参数<br> 包装pojo类</p>
- <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class Usercus &#123;</div><div class="line">	private User user;</div><div class="line">此处省略set。Get方法。&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">&lt;form action="$&#123;pageContext.request.contextPath &#125;/test/usercus.do" method="post"&gt;</div><div class="line">姓名：&lt;input type="text" name="user.username" id="username"&gt;</div><div class="line">生日：&lt;input type="text" name="user.birthday" id="birthday"&gt;</div><div class="line">&lt;input type="submit" value="提交"&gt;</div><div class="line">&lt;/form&gt;</div><div class="line"></div><div class="line">接受参数的方法：</div><div class="line">@RequestMapping("usercus")</div><div class="line">	public String usercus(Usercus user)&#123;</div><div class="line">		System.out.println(user.getUser().getUsername());</div><div class="line">		 return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<p>接受集合类型参数<br> 接受list集合<br>首先在包装类中加入如下代码<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">private List&lt;User&gt; userlist;</div><div class="line">此处省略set，get方法</div><div class="line"></div><div class="line">然后是页面</div><div class="line">&lt;form action="$&#123;pageContext.request.contextPath &#125;/test/recievelist.do" method="post"&gt;</div><div class="line">姓名：&lt;input type="text" name="userList[0].username" id="username"&gt;</div><div class="line">地址：&lt;input type="text" name="userList[0].address" id="address"&gt;</div><div class="line"></div><div class="line">姓名：&lt;input type="text" name="userList[1].username" id="username"&gt;</div><div class="line">地址：&lt;input type="text" name="userList[1].address" id="address"&gt;</div><div class="line">&lt;input type="submit" value="提交"&gt;</div><div class="line"></div><div class="line">&lt;/form&gt;</div><div class="line"></div><div class="line">接受参数方法：</div><div class="line">@RequestMapping("recievelist")</div><div class="line">	public String recievelist(Usercus userlist)</div><div class="line">	&#123;</div><div class="line">		System.out.println(userlist.getUserlist().get(0).getUsername());</div><div class="line">		 return "login";</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>数据结构是指数据间存在的关系，通常包含三个方面。数据的逻辑结构（线性结构、树、图），数据的存储结构（顺序存储和链式存储），数据操作（对数据结构中的元素进行各种运算和处理），而通常所说的算法是建立在数据结构之上，读数据结构的操作需要用算法来描述。而算法的分析又主要包括时间代价和空间代价两方面</p>
+<h4 id="线性表的顺序表示和实现"><a href="#线性表的顺序表示和实现" class="headerlink" title="线性表的顺序表示和实现"></a>线性表的顺序表示和实现</h4><p><img src="/images/imgs4/1.jpg" alt="Alt text"></p>
+<p>数组是顺序存储的随机存取结构，占用一组连续的存储单元，通过下标识别元素，元素地址是下标的线性函数，一个下标能唯一确定一个元素<br> 不妨构造一个顺序表接口类来模仿顺序表<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public interface LList&lt;T&gt; &#123;</div><div class="line">	boolean isEmpty();       //判断线性表是否为空</div><div class="line">	int length();            //返回线性表长度</div><div class="line">	T get(int i);            //返回第i(i&gt;=0)个元素</div><div class="line">	void set(int i,T x);     //设置第i个元素值为x</div><div class="line">	void insert(int i,T x);  //插入x作为第i个元素</div><div class="line">	void append(T x);        //在线性表最后插入第i个元素</div><div class="line">	T remove(int i);         //删除第i个元素并返回被删除对象</div><div class="line">	void removeAll();        //删除线性表所有元素</div><div class="line">	int indexOf(T key);      //顺序查找关键字为key的元素，返回首次出现的位置</div><div class="line">	boolean contain(T key);  //是否包含关键字</div><div class="line">	T search(T key);         //顺序查找关键字为key的元素，返回首次出现的元素</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下面是其实现类<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div></pre></td><td class="code"><pre><div class="line">public class seqList&lt;T&gt; implements LList&lt;T&gt;&#123;</div><div class="line"></div><div class="line">	private Object[] element; //存放线性表元素的一维数组</div><div class="line">	private int len;       //顺序表长度，记载元素个数</div><div class="line">	</div><div class="line">	public seqList(int size)&#123;            //创建容量为size的空表</div><div class="line">		//若size&lt;0，java将抛出负数组长度异常</div><div class="line">		this.element=new Object[size];</div><div class="line">		this.len=0;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public seqList()&#123;     //创建默认容量的空表，这里是64</div><div class="line">		this(64);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public boolean isEmpty() &#123;</div><div class="line">		</div><div class="line">		return this.len==0;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public int length() &#123;</div><div class="line">	</div><div class="line">		return this.len;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public T get(int i) &#123; //返回第i个元素（i&gt;=0),若i指定元素无效，则返回null</div><div class="line">	if(i&gt;=0&amp;&amp;i&lt;this.len)</div><div class="line">		return (T)this.element[i];</div><div class="line">    return null;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	//设置第i(i&gt;=0)个元素的值为x，若i指定序号无效则抛出序号越界异常</div><div class="line">	public void set(int i, T x) &#123;</div><div class="line">		if(x==null)</div><div class="line">			return;</div><div class="line">		if(i&gt;=0&amp;&amp;i&lt;this.len)</div><div class="line">			this.element[i]=x;</div><div class="line">		else</div><div class="line">			throw new IndexOutOfBoundsException(i+"");</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">/**</div><div class="line"> * 在顺序表元素ai位置插入元素x，首选必须将i到n个元素后移，空出一个位置，然后插入元素x</div><div class="line"> */</div><div class="line">	public void insert(int i, T x) &#123;</div><div class="line">		if(x==null)</div><div class="line">			return ;           //不能添加null</div><div class="line">		if(this.len==element.length)	 //若数组满，则扩充顺序表容量</div><div class="line">		&#123; </div><div class="line">			Object[] temp=this.element;</div><div class="line">			this.element=new Object[temp.length*2]; //容量扩充2倍</div><div class="line">			for(int j=0;j&lt;temp.length;j++)&#123; </div><div class="line">				this.element[i]=temp[i];  //复制数组元素</div><div class="line">			&#125;</div><div class="line">			if(i&lt;0)                      //下标容错</div><div class="line">				i=0;</div><div class="line">			if(i&gt;this.len)</div><div class="line">				i=this.len;</div><div class="line">			for(int j=this.len-1;j&gt;=i;j--)       //元素后移，平均移动len/2</div><div class="line">				this.element[j+1]=this.element[j];</div><div class="line">			this.element[i]=x;</div><div class="line">			this.len++;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void append(T x) &#123;</div><div class="line">		insert(this.len,x);	   //在顺序表最后插入x对象</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	/**</div><div class="line">	 * 删除元素ai，必须将元素i+1到n向前移动</div><div class="line">	 */</div><div class="line">	public T remove(int i) &#123; //删除成功返回被删除对象，否则返回null</div><div class="line">		if(this.len==0||i&lt;0||i&gt;this.len)</div><div class="line">			return null;</div><div class="line">		T old=(T)this.element[i];</div><div class="line">		 for(int j=i;j&lt;this.len-1;j++)     //元素前移，平均移动len/2</div><div class="line">			 this.element[j]=this.element[j+1];</div><div class="line">		 this.element[this.len-1]=null;</div><div class="line">		 this.len--;</div><div class="line">		return old;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void removeAll() &#123;</div><div class="line">		</div><div class="line">		this.len=0;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">//顺序查找关键字为key的元素，返回首次出现的位置，若查找不成功返回-1</div><div class="line">	public int indexOf(T key) &#123;</div><div class="line">		if(key!=null)</div><div class="line">			for(int i=0;i&lt;this.len;i++)</div><div class="line">				if(this.element[i].equals(key))</div><div class="line">					return i;</div><div class="line">		return -1;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	//判断线性表是否包含关键字为key元素</div><div class="line">	public boolean contain(T key) &#123;</div><div class="line">		</div><div class="line">		return this.indexOf(key)&gt;=0;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	//查找，返回首次出现的关键字为key的元素</div><div class="line">	public T search(T key) &#123;</div><div class="line">	 int find=this.indexOf(key);</div><div class="line">		return find==-1?null:(T)this.element[find];</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="约瑟夫环问题"><a href="#约瑟夫环问题" class="headerlink" title="约瑟夫环问题"></a>约瑟夫环问题</h4><p> 问题描述：古代某法官要判决n个犯人的死刑，他有一条荒唐的法律：将犯人站成一个圆圈，从第s个人开始数起，每数到第d个犯人，就拉出来处决，在从下一个开始数d个，数到的人在处决。。。直到数到最后一个人就开始赦免</p>
+<p><img src="/images/imgs4/7.gif" alt="Alt text"><br>上面是假设n=5，s=1，d=2，并且起始位置是从第一个人开始数起，因为该圆圈可以看成顺序表进行模拟<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class Josephus &#123;</div><div class="line"></div><div class="line">	public Josephus(int number,int start,int distance)&#123;</div><div class="line">		seqList&lt;String&gt; list=new seqList&lt;String&gt;(number); //初始化顺序表</div><div class="line">		for(int i=0;i&lt;number;i++)                      </div><div class="line">		//依次添加犯人，这里记为A,B.C,D,E</div><div class="line">			list.append((char)('A'+i)+"");</div><div class="line">		System.out.println("初始化约瑟夫环:"+'('+number+','+start+','+distance+')');</div><div class="line">		int i=start;            //起始数起的人</div><div class="line">		while(list.length()&gt;1)&#123;        //多于一个犯人时数起</div><div class="line">			i=(i+distance-1)%list.length(); </div><div class="line">			System.out.print("删除"+list.remove(i).toString()+"");</div><div class="line">			System.out.println(list.toString());</div><div class="line">		&#125;</div><div class="line">		System.out.println("最后的被赦免者是:"+list.get(0).toString());	</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public static void main(String args[])&#123;</div><div class="line">		new Josephus(5,0,2);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>结果</p>
+<h4 id="顺序表的效率分析"><a href="#顺序表的效率分析" class="headerlink" title="顺序表的效率分析"></a>顺序表的效率分析</h4><p>由之前的源码易看出，存取任何一个元素，即set（）、get（）方法的时间复杂度为O（1），而插入或者删除很耗时，不妨假设在第i个位置插入元素，并且概率为p<em>{i},表长度为n；则平均移动次数为 \sum</em>{i=0}^n{(n-i)}*{p_i};<br>如果插入元素的概率相同，即都是1/(n+1);最后求得时间复杂度为O(n);同理删除的时间复杂度也为O(n);<br>所以得出一个结论:顺序表的动态操作效率极低</p>
+<h4 id="顺序表比较相等"><a href="#顺序表比较相等" class="headerlink" title="顺序表比较相等"></a>顺序表比较相等</h4><p>首先简单说一下深拷贝和浅拷贝，浅拷贝类似于只引用某个对象，和原对象指向相同的空间，而深拷贝是开辟了新空间并且复制原来对象的数据<br>而两个顺序表的相等是指，他们对应的元素相等并且长度也相同<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public boolean equals(Object obj)&#123;</div><div class="line">		if(this==obj)</div><div class="line">			return true;</div><div class="line">		if(obj instanceof seqList)&#123;</div><div class="line">			seqList&lt;T&gt; list=(seqList&lt;T&gt;)obj;</div><div class="line">			if(this.length()==list.length())&#123;</div><div class="line">				for(int i=0;i&lt;this.length();i++)</div><div class="line">					if(!(this.get(i).equals(list.get(i))))</div><div class="line">						return false;</div><div class="line">				return true;</div><div class="line">			&#125;</div><div class="line">				</div><div class="line">		&#125;</div><div class="line">			return true;</div><div class="line">	</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -706,6 +664,12 @@ var _hmt = _hmt || [];
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/source/tags/数据结构/" rel="tag"># 数据结构</a>
+          
+        </div>
+      
 
       
         
@@ -715,8 +679,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/18/springmvc2/" rel="next" title="spring mvc之二:处理器">
-                <i class="fa fa-chevron-left"></i> spring mvc之二:处理器
+              <a href="/2017/07/05/shiro_5/" rel="next" title="shiro之会话管理">
+                <i class="fa fa-chevron-left"></i> shiro之会话管理
               </a>
             
           </div>
@@ -724,10 +688,6 @@ var _hmt = _hmt || [];
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/20/springmvc4/" rel="prev" title="spring mvc之四:数据回显与json">
-                spring mvc之四:数据回显与json <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -916,7 +876,7 @@ Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true)
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RequestMapping"><span class="nav-text">RequestMapping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#封装参数"><span class="nav-text">封装参数</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线性表的顺序表示和实现"><span class="nav-text">线性表的顺序表示和实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#约瑟夫环问题"><span class="nav-text">约瑟夫环问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#顺序表的效率分析"><span class="nav-text">顺序表的效率分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#顺序表比较相等"><span class="nav-text">顺序表比较相等</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
