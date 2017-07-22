@@ -117,7 +117,7 @@
 数组是顺序存储的随机存取结构，占用一组连续的存储单元，通过下标识别元素，元素地址">
 <meta property="og:image" content="http://www.myzwl.win/images/imgs4/1.jpg">
 <meta property="og:image" content="http://www.myzwl.win/images/imgs4/7.gif">
-<meta property="og:updated_time" content="2017-07-21T15:52:06.000Z">
+<meta property="og:updated_time" content="2017-07-22T07:55:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线性表之顺序表">
 <meta name="twitter:description" content="前言数据结构是指数据间存在的关系，通常包含三个方面。数据的逻辑结构（线性结构、树、图），数据的存储结构（顺序存储和链式存储），数据操作（对数据结构中的元素进行各种运算和处理），而通常所说的算法是建立在数据结构之上，读数据结构的操作需要用算法来描述。而算法的分析又主要包括时间代价和空间代价两方面
@@ -624,7 +624,10 @@ var _hmt = _hmt || [];
 <h4 id="约瑟夫环问题"><a href="#约瑟夫环问题" class="headerlink" title="约瑟夫环问题"></a>约瑟夫环问题</h4><p> 问题描述：古代某法官要判决n个犯人的死刑，他有一条荒唐的法律：将犯人站成一个圆圈，从第s个人开始数起，每数到第d个犯人，就拉出来处决，在从下一个开始数d个，数到的人在处决。。。直到数到最后一个人就开始赦免</p>
 <p><img src="/images/imgs4/7.gif" alt="Alt text"><br>上面是假设n=5，s=1，d=2，并且起始位置是从第一个人开始数起，因为该圆圈可以看成顺序表进行模拟<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class Josephus &#123;</div><div class="line"></div><div class="line">	public Josephus(int number,int start,int distance)&#123;</div><div class="line">		seqList&lt;String&gt; list=new seqList&lt;String&gt;(number); //初始化顺序表</div><div class="line">		for(int i=0;i&lt;number;i++)                      </div><div class="line">		//依次添加犯人，这里记为A,B.C,D,E</div><div class="line">			list.append((char)('A'+i)+"");</div><div class="line">		System.out.println("初始化约瑟夫环:"+'('+number+','+start+','+distance+')');</div><div class="line">		int i=start;            //起始数起的人</div><div class="line">		while(list.length()&gt;1)&#123;        //多于一个犯人时数起</div><div class="line">			i=(i+distance-1)%list.length(); </div><div class="line">			System.out.print("删除"+list.remove(i).toString()+"");</div><div class="line">			System.out.println(list.toString());</div><div class="line">		&#125;</div><div class="line">		System.out.println("最后的被赦免者是:"+list.get(0).toString());	</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public static void main(String args[])&#123;</div><div class="line">		new Josephus(5,0,2);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>结果</p>
-<h4 id="顺序表的效率分析"><a href="#顺序表的效率分析" class="headerlink" title="顺序表的效率分析"></a>顺序表的效率分析</h4><p>由之前的源码易看出，存取任何一个元素，即set（）、get（）方法的时间复杂度为O（1），而插入或者删除很耗时，不妨假设在第i个位置插入元素，并且概率为p<em>{i},表长度为n；则平均移动次数为 \sum</em>{i=0}^n{(n-i)}*{p_i};<br>如果插入元素的概率相同，即都是1/(n+1);最后求得时间复杂度为O(n);同理删除的时间复杂度也为O(n);<br>所以得出一个结论:顺序表的动态操作效率极低</p>
+<blockquote>
+<p>初始化约瑟夫环:(5,0,2)<br>删除B(A,C,D,E)<br>删除D(A,C,E)<br>删除A(C,E)<br>删除E(C)<br>最后的被赦免者是:C</p>
+</blockquote>
+<h4 id="顺序表的效率分析"><a href="#顺序表的效率分析" class="headerlink" title="顺序表的效率分析"></a>顺序表的效率分析</h4><p>由之前的源码易看出，存取任何一个元素，即set（）、get（）方法的时间复杂度为O（1），而插入或者删除很耗时，不妨假设在第i个位置插入元素，并且概率为p<em>{i},表长度为n；则平均移动次数为\sum</em>{i=0}^n{(n-i)}*{p_i};<br>如果插入元素的概率相同，即都是1/(n+1);最后求得时间复杂度为O(n);同理删除的时间复杂度也为O(n);<br>所以得出一个结论:顺序表的动态操作效率极低</p>
 <h4 id="顺序表比较相等"><a href="#顺序表比较相等" class="headerlink" title="顺序表比较相等"></a>顺序表比较相等</h4><p>首先简单说一下深拷贝和浅拷贝，浅拷贝类似于只引用某个对象，和原对象指向相同的空间，而深拷贝是开辟了新空间并且复制原来对象的数据<br>而两个顺序表的相等是指，他们对应的元素相等并且长度也相同<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public boolean equals(Object obj)&#123;</div><div class="line">		if(this==obj)</div><div class="line">			return true;</div><div class="line">		if(obj instanceof seqList)&#123;</div><div class="line">			seqList&lt;T&gt; list=(seqList&lt;T&gt;)obj;</div><div class="line">			if(this.length()==list.length())&#123;</div><div class="line">				for(int i=0;i&lt;this.length();i++)</div><div class="line">					if(!(this.get(i).equals(list.get(i))))</div><div class="line">						return false;</div><div class="line">				return true;</div><div class="line">			&#125;</div><div class="line">				</div><div class="line">		&#125;</div><div class="line">			return true;</div><div class="line">	</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
 
       
@@ -688,6 +691,10 @@ var _hmt = _hmt || [];
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/07/sjjg_2/" rel="prev" title="线性表之单链表">
+                线性表之单链表 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -798,7 +805,7 @@ Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">60</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
