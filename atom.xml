@@ -5,10 +5,104 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-07-23T15:45:46.000Z</updated>
+  <updated>2017-07-26T14:02:36.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>优先队列与递归</title>
+    <link href="http://www.myzwl.win/2017/07/12/sjjg_7/"/>
+    <id>http://www.myzwl.win/2017/07/12/sjjg_7/</id>
+    <published>2017-07-12T05:48:51.000Z</published>
+    <updated>2017-07-26T14:02:36.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果按照队列的特点，即先来先服务原则，在很多情况下不能实现相关设计，比如操作系统中的进程调度管理，就是按照优先级大小来进行调度</p>
+<h4 id="优先队列"><a href="#优先队列" class="headerlink" title="优先队列"></a>优先队列</h4><p>若一个队列中的每个元素都有一个优先级，每次出队的是具有优先级最高的元素，则称该队列为优先队列<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">public class PriorityQueue&lt;T extends Comparable&lt;T&gt;&gt; implements QQueue&#123;</div><div class="line"></div><div class="line">	private SortedSinglyLinkedList&lt;T&gt; list; //使用排序单链表存储队列元素</div><div class="line">	</div><div class="line">	public PriorityQueue()&#123;   //构造空队列</div><div class="line">		this.list=new SortedSinglyLinkedList&lt;T&gt;();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public boolean isEmpty() &#123; //判断队列是否为空</div><div class="line">		return list.isEmpty();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void enqueue(Object x) &#123; //元素x入队，根据元素大小插入在单链表适当位置</div><div class="line">		list.insert(x);</div><div class="line">		</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public Object dequeue() &#123;//出队，返回对头元素</div><div class="line"></div><div class="line">		return list.remove(0);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public String toString()&#123;</div><div class="line">		return list.toString();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>进程按优先级调度管理<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public class Process implements Comparable&lt;Process&gt;&#123;</div><div class="line"></div><div class="line">	private String name;   //进程名</div><div class="line">	private int priority;  //优先级</div><div class="line"></div><div class="line"></div><div class="line">	public Process(String name, int priority) &#123;</div><div class="line">		super();</div><div class="line">		this.name = name;</div><div class="line">		this.priority = priority;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	</div><div class="line">	public int compareTo(Process o) &#123;//比较两个进程的大小，约定进程排队次序的规则</div><div class="line"></div><div class="line">		return this.priority-o.priority;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h4><p>从形式上，递归的定义可如下所示<br><img src="/images/imgs4/6.jpg" alt="Alt text"><br>同时递归定义必须满足以下两个条件<br>1.边界条件：至少有一条初始定义是非递归的。<br>2.递归通式： 由已知函数值逐步递推计算出未知函数值</p>
+<p>递归算法是指直接或者间接调用自身的算法<br>如用递归算法求fibonacci数列<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public class Factorial &#123;</div><div class="line"></div><div class="line">	public static int factorial(int n)</div><div class="line">	&#123;</div><div class="line">		if(n&lt;0)</div><div class="line">			throw new IllegalArgumentException("n="+n);</div><div class="line">		if(n==0||n==1)</div><div class="line">			return n;</div><div class="line">		return factorial(n-1)+factorial(n-2);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public static void main(String args[])&#123;</div><div class="line">		for(int i=0;i&lt;=24;i++)</div><div class="line">			System.out.print(factorial(i)+" ");</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>运行结果：</p>
+<blockquote>
+<p>0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657 46368 </p>
+</blockquote>
+<p>再如将之前的SinglyLinkenList类增加一个复制方法，采用递归法<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">private Node&lt;T&gt; copy(Node&lt;T&gt; p)&#123;</div><div class="line">	Node&lt;T&gt; q=null; //新结点</div><div class="line">	if(p!=null)  //要复制的结点非空</div><div class="line">	&#123;</div><div class="line">		q=new Node&lt;T&gt;(p.data,null); //相当于q.data=p.data，q.next=null</div><div class="line">		q.next=copy(p.next);//递归，q1.data=p.next.data，q1.next=null，先返回q1，q.next=q1</div><div class="line">		//可以看成一棵二叉树</div><div class="line">	&#125;</div><div class="line">	return q;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;如果按照队列的特点，即先来先服务原则，在很多情况下不能实现相关设计，比如操作系统中的进程调度管理，就是按照优先级大小来进行调度&lt;/p&gt;
+&lt;h
+    
+    </summary>
+    
+      <category term="数据结构" scheme="http://www.myzwl.win/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+    
+      <category term="数据结构" scheme="http://www.myzwl.win/source/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>顺序与链式队列</title>
+    <link href="http://www.myzwl.win/2017/07/11/sjjg_6/"/>
+    <id>http://www.myzwl.win/2017/07/11/sjjg_6/</id>
+    <published>2017-07-11T05:48:51.000Z</published>
+    <updated>2017-07-26T07:03:30.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>队列是一种特殊的线性表，其插入和删除操作分别在线性表的两端进行。特点是先进先出。</p>
+<h4 id="队列抽象数据类型"><a href="#队列抽象数据类型" class="headerlink" title="队列抽象数据类型"></a>队列抽象数据类型</h4><p><img src="/images/imgs4/5.jpg" alt="Alt text"><br>其中，像队列中插入元素的过程称为入队（enqueue），删除元素的过程称为出队（dequeue），允许入队的一端称为队尾（rear），允许出队的一头称为对头（front），没有元素的队列称为空队列<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public interface QQueue&lt;T&gt; &#123;</div><div class="line"></div><div class="line">	boolean isEmpty();          //判断队列是否为空</div><div class="line">	void enqueue(T x);          //元素x入队</div><div class="line">	T dequeue();                //出队，返回对头元素</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="顺序队列"><a href="#顺序队列" class="headerlink" title="顺序队列"></a>顺序队列</h4><p>顺序队列使用数组存储数据元素<br>1.当队列空时，设置队头、队尾下标front=rear=-1，<br>2.当第一个元素入队时，front=rear=0，同时改变两个下标<br>3.进行入队、出队操作，front、rear随之变化<br>4.当入队的元素个数（包括已出队元素）超出数组容量时，rear下标越界，数据溢出，但是，由于之前已有若干元素出队，数组前部以空出许多存储单元，所以这种溢出并不是因为存储空间不够而产生的，称为假溢出</p>
+<p>所以顺序队列有两个缺点：假溢出和存储单元没有重复使用机制</p>
+<h4 id="顺序循环队列"><a href="#顺序循环队列" class="headerlink" title="顺序循环队列"></a>顺序循环队列</h4><p>相比较顺序队列，有如下不同<br>1.队头、队尾元素按照如下循环规律变化，其中length表示数组长度<br>front=（front+1)%length;<br>rear=(rear+1)%length;<br>所以可以看出front和rear的取值范围为0~length-1；</p>
+<p>2.约定rear是下一个入队元素位置，队列空条件是front==rear，即入队只改变rear，出队只改变front<br>3.约定队列满条件是队列中仍然有一个空位置，即front==（rear+1）%length，</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">public class SeqQueue&lt;T&gt; implements QQueue&lt;T&gt;&#123;</div><div class="line"></div><div class="line">	private Object element[];  //存储队列数据元素的数组</div><div class="line">	private int front,rear;    //分别为对头和队尾元素</div><div class="line">	</div><div class="line">	public SeqQueue(int length)&#123;        //构造容量为length的空队列</div><div class="line">		if(length&lt;64)</div><div class="line">			length=64;</div><div class="line">		this.element=new Object[Math.abs(length)];</div><div class="line">		this.front=this.rear=0;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public SeqQueue()&#123;       //构造默认容量空队列</div><div class="line">		this(64);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public boolean isEmpty() &#123;     //判断队列是否为空</div><div class="line">		return this.front==this.rear;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void enqueue(T x) &#123;   //元素x入队，空对象不能入队</div><div class="line">	if(x==null)</div><div class="line">		return;</div><div class="line">	if(this.front==(this.rear+1)%this.element.length) //当队满时，扩充容量</div><div class="line">	&#123;</div><div class="line">		Object[] temp=this.element;</div><div class="line">		this.element=new Object[temp.length*2];</div><div class="line">		int i=this.front,j=0;</div><div class="line">		while(i!=this.rear)&#123;        //按照队列元素次序复制数组元素</div><div class="line">			this.element[j]=temp[i];</div><div class="line">			i=(i+1)%temp.length;</div><div class="line">			j++;</div><div class="line">		&#125;</div><div class="line">		this.front=0;</div><div class="line">		this.rear=j;</div><div class="line">	&#125;</div><div class="line">		this.element[this.rear]=x;</div><div class="line">		this.rear=(this.rear+1)%this.element.length;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public T dequeue() &#123;         //出队，返回队头元素，若队列空则返回null</div><div class="line">   if(isEmpty())</div><div class="line">		return null;</div><div class="line">    T temp=(T)this.element[this.front];</div><div class="line">      this.front=(this.front+1)%this.element.length;  //取得队头元素</div><div class="line">     return temp;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="链式队列"><a href="#链式队列" class="headerlink" title="链式队列"></a>链式队列</h4><p>以不带头结点的单链表实现链式队列，设指针front和rear分别指向队头和队尾结点，初始空队列的状态设置为front=rear=null；队列空条件是front==null&amp;&amp;rear==null</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">public class LinkedQueue&lt;T&gt; implements QQueue&lt;T&gt;&#123;</div><div class="line"></div><div class="line">	private Node&lt;T&gt; front,rear;        //分别指向队头和队尾</div><div class="line">	</div><div class="line">	public LinkedQueue()&#123;             //构造空队列</div><div class="line">		this.front=this.rear=null;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public boolean isEmpty() &#123;        //判断队列是否为空</div><div class="line">		return this.front==null&amp;&amp;this.rear==null;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void enqueue(T x) &#123;       //元素x入队，空对象入队</div><div class="line">		if(x==null)  </div><div class="line">			return;</div><div class="line">		Node&lt;T&gt; q=new Node&lt;T&gt;(x,null);  </div><div class="line">		 if(this.front==null)</div><div class="line">			 this.front=q;   //空队入队</div><div class="line">		 else</div><div class="line">			 this.rear.next=q; //插入在队尾之后</div><div class="line">		 this.rear=q;		</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public T dequeue() &#123;  //出队，返回对头元素，若队列元素为空，返回null</div><div class="line">		if(isEmpty())</div><div class="line">			return null;</div><div class="line">		T temp=this.front.data;    //取得队头元素</div><div class="line">		this.front=this.front.next;    //删除队头结点</div><div class="line">		if(this.front==null)</div><div class="line">			this.rear=null;</div><div class="line">		return temp;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;队列是一种特殊的线性表，其插入和删除操作分别在线性表的两端进行。特点是先进先出。&lt;/p&gt;
+&lt;h4 id=&quot;队列抽象数据类型&quot;&gt;&lt;a href
+    
+    </summary>
+    
+      <category term="数据结构" scheme="http://www.myzwl.win/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+    
+      <category term="数据结构" scheme="http://www.myzwl.win/source/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>栈</title>
+    <link href="http://www.myzwl.win/2017/07/10/sjjg_5/"/>
+    <id>http://www.myzwl.win/2017/07/10/sjjg_5/</id>
+    <published>2017-07-10T05:48:51.000Z</published>
+    <updated>2017-07-26T05:25:58.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>栈是一种特殊的线性表，其特殊之处在于插入和删除操作的位置受到限制，而且插入和删除只允许在线性表的一端进行，特点是后进先出</p>
+<h4 id="栈抽象数据类型"><a href="#栈抽象数据类型" class="headerlink" title="栈抽象数据类型"></a>栈抽象数据类型</h4><p><img src="/images/imgs4/8.gif" alt="Alt text"><br>其中允许操作的一端为栈顶（top），不允许操作的一端为栈底（bottom），栈中插入元素的操作称为入栈（push），删除元素的操作为出栈（pop），没有元素的栈称为空栈</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public interface SStack&lt;T&gt; &#123;</div><div class="line"></div><div class="line">	boolean isEmpty();  //判断是否为空栈</div><div class="line">	void push(T x);     //元素x入栈</div><div class="line">	T pop();            //出栈，返回当前栈顶元素</div><div class="line">	T get();            //取栈顶元素，未出栈</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="顺序栈"><a href="#顺序栈" class="headerlink" title="顺序栈"></a>顺序栈</h4><p>采用顺序存储结构的栈称为顺序栈<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">public class SeqStack&lt;T&gt; implements SStack&lt;T&gt;&#123;</div><div class="line"></div><div class="line">	private Object element[];    //存取栈数据元素的数组</div><div class="line">	private int top;             //栈顶元素下标</div><div class="line">	</div><div class="line">	public SeqStack(int size)&#123;    //构造容量为size的空栈</div><div class="line">		this.element=new Object[Math.abs(size)];</div><div class="line">		this.top=-1;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public SeqStack()&#123;         //构造默认容量的空栈</div><div class="line">		this(64);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public boolean isEmpty() &#123; //判断栈是否为空</div><div class="line">		</div><div class="line">		return this.top==-1;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void push(T x) &#123;    //元素x入栈，空对象不能入栈</div><div class="line">		if(x==null)</div><div class="line">			return;</div><div class="line">		if(this.top==element.length-1)   //栈满，扩充栈容量</div><div class="line">		&#123;</div><div class="line">			Object[] temp=this.element;</div><div class="line">			this.element=new Object[temp.length*2];</div><div class="line">			for(int i=0;i&lt;temp.length;i++)</div><div class="line">				this.element[i]=temp[i];</div><div class="line">		&#125;</div><div class="line">		this.top++;</div><div class="line">		this.element[this.top]=x;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public T pop() &#123;  //出栈</div><div class="line">		</div><div class="line">		return this.top==-1?null:(T)this.element[this.top--];</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public T get() &#123;		//取栈顶元素</div><div class="line">		return this.top==-1?null:(T)this.element[this.top];</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如上，push（），pop（），get（）方法的时间复杂度为O（1），而需要扩充容量时，复杂度为O（n）；</p>
+<h4 id="链式栈"><a href="#链式栈" class="headerlink" title="链式栈"></a>链式栈</h4><p>采用链式存储结构的栈称为链式栈，这里采用单链表</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">public class LinkedStack&lt;T&gt; implements SStack&lt;T&gt;&#123;</div><div class="line"></div><div class="line">	private Node&lt;T&gt; top;         //栈顶结点</div><div class="line">	</div><div class="line">	public LinkedStack()&#123;        //构造空栈</div><div class="line">		this.top=null;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public boolean isEmpty() &#123;     //判断栈是否为空</div><div class="line">		return this.top==null;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void push(T x) &#123;</div><div class="line">		if(x!=null)</div><div class="line">			this.top=new Node(x, this.top);  //头插入，x结点作为新的栈顶结点</div><div class="line">		</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public T pop() &#123;         //出栈，返回栈顶元素</div><div class="line">		if(this.top==null)</div><div class="line">			return null;</div><div class="line">		T temp=this.top.data;</div><div class="line">		this.top=this.top.next;</div><div class="line">		return temp;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public T get() &#123;</div><div class="line">		return this.top==null?null:this.top.data;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;栈是一种特殊的线性表，其特殊之处在于插入和删除操作的位置受到限制，而且插入和删除只允许在线性表的一端进行，特点是后进先出&lt;/p&gt;
+&lt;h4 i
+    
+    </summary>
+    
+      <category term="数据结构" scheme="http://www.myzwl.win/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+    
+      <category term="数据结构" scheme="http://www.myzwl.win/source/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
   
   <entry>
     <title>串之字符串</title>
@@ -947,145 +1041,6 @@ abstract boolean onAccessDenied(ServletRequest request, ServletResponse response
     
     
       <category term="java集合" scheme="http://www.myzwl.win/source/tags/java%E9%9B%86%E5%90%88/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>初识Linkedlist底层</title>
-    <link href="http://www.myzwl.win/2017/04/05/linkedlist/"/>
-    <id>http://www.myzwl.win/2017/04/05/linkedlist/</id>
-    <published>2017-04-05T13:48:51.000Z</published>
-    <updated>2017-04-08T12:24:38.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>LinkedList底层是基于双端链表实现的，也就是说它具有指向其前驱与后继的引用，而且，在插入与删除数据时效率极高</p>
-<p>至于它继承谁和实现什么接口，直接看源码</p>
-<blockquote>
-<p>public class LinkedList<e> extends AbstractSequentialList<e><br> implements List<e>, Deque<e>, Cloneable, java.io.Serializable</e></e></e></e></p>
-</blockquote>
-<p> 和ArrayList一样，从源码分析其add、get以及remove方法</p>
-<h4 id="add方法"><a href="#add方法" class="headerlink" title="add方法"></a>add方法</h4><p> 首先通过MyEclipse进入LinkedList的源码</p>
-<p> 找到add（）方法<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public boolean add(E e) &#123;</div><div class="line"> //把e放在链表的最后一个位置</div><div class="line">       linkLast(e);</div><div class="line">       return true;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
-<p>找到linkLast（）方法<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/**</div><div class="line">    * Pointer to last node.</div><div class="line">    * Invariant: (first == null &amp;&amp; last == null) ||</div><div class="line">    *            (last.next == null &amp;&amp; last.item != null)</div><div class="line">    */</div><div class="line">   transient Node&lt;E&gt; last; //链表最后一个结点的引用</div><div class="line"></div><div class="line">   transient Node&lt;E&gt; first; //链表第一个结点的引用</div><div class="line"></div><div class="line"></div><div class="line">void linkLast(E e) &#123;</div><div class="line">       //将l也指向最后一个结点</div><div class="line">       final Node&lt;E&gt; l = last;</div><div class="line"></div><div class="line">       //调用Node（Node&lt;E&gt; prev，E element，Node&lt;e&gt; next）构造方法</div><div class="line">       //其中prev为前驱结点，element为对象元素，next为后继结点</div><div class="line">       //这里构造新节点，并且是作为尾节点</div><div class="line">       final Node&lt;E&gt; newNode = new Node&lt;&gt;(l, e, null);</div><div class="line"></div><div class="line">       //last结点指向newNode</div><div class="line">       last = newNode;</div><div class="line"></div><div class="line">       //如果l为空，则表示链表为空，直接把newNode作为首节点，否则放在l结点之后</div><div class="line">       if (l == null)</div><div class="line">           first = newNode;</div><div class="line">       else</div><div class="line">           l.next = newNode;</div><div class="line"></div><div class="line">        //链表的元素个数加一</div><div class="line">       size++;</div><div class="line"></div><div class="line">       //链表发生结构性修改的次数，这里主要指添加及删除操作</div><div class="line">       modCount++;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
-<p>以上便是add方法的源码，主要通过改变链表的前驱及后继引用来完成插入，可想而知，使用链表，使插入数据的速度异常快，相对顺序查找</p>
-<h4 id="get方法"><a href="#get方法" class="headerlink" title="get方法"></a>get方法</h4><p>找到get方法<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public E get(int index) &#123;</div><div class="line"></div><div class="line">     //检查index是否合法</div><div class="line">       checkElementIndex(index);</div><div class="line"></div><div class="line">     //如果合法就返回该节点位置的值</div><div class="line">       return node(index).item;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
-<p>找到checkElementIndex(int index)方法<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">private void checkElementIndex(int index) &#123;</div><div class="line">    //检查index是否合法</div><div class="line">       if (!isElementIndex(index))</div><div class="line">           throw new IndexOutOfBoundsException(outOfBoundsMsg(index));</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
-<p>找到isElementIndex(index)方法<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//判断index是否存在于链表中</div><div class="line">private boolean isElementIndex(int index) &#123;</div><div class="line">       return index &gt;= 0 &amp;&amp; index &lt; size;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
-<p>找到node(int index)方法<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Node&lt;E&gt; node(int index) &#123;</div><div class="line">    //index已在链表中</div><div class="line">    // assert isElementIndex(index);</div><div class="line">    //从第一个位置开始寻找，知道找到index的位置，最后返回该节点的位置</div><div class="line">    if (index &lt; (size &gt;&gt; 1)) &#123;</div><div class="line">        Node&lt;E&gt; x = first;</div><div class="line">        for (int i = 0; i &lt; index; i++)</div><div class="line">            x = x.next;</div><div class="line">        return x;</div><div class="line">    &#125; </div><div class="line"></div><div class="line">    //从最后一个位置开始往前寻找该节点</div><div class="line">    else &#123;</div><div class="line">        Node&lt;E&gt; x = last;</div><div class="line">        for (int i = size - 1; i &gt; index; i--)</div><div class="line">            x = x.prev;</div><div class="line">        return x;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>linkedlist在查找时的效率非常低，就是因为它是从头或从尾部遍历链表，所以当数据量大时，造成效率低下</p>
-<h4 id="remove方法"><a href="#remove方法" class="headerlink" title="remove方法"></a>remove方法</h4><p>找到remove方法</p>
- <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public E remove(int index) &#123;</div><div class="line">      //检查index是否合法</div><div class="line">        checkElementIndex(index);</div><div class="line"></div><div class="line"></div><div class="line">        return unlink(node(index));</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<p>找到unlink(node(index))方法<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"> E unlink(Node&lt;E&gt; x) &#123;</div><div class="line">        // assert x != null;</div><div class="line">        //保存x节点的值</div><div class="line">        final E element = x.item;</div><div class="line">        //保存x节点的后继</div><div class="line">        final Node&lt;E&gt; next = x.next;</div><div class="line">        //保存x节点的前驱</div><div class="line">        final Node&lt;E&gt; prev = x.prev;</div><div class="line"></div><div class="line">       //如果前驱为空，则表明要移除的是第一个结点，在把first指向下一个节点</div><div class="line">        if (prev == null) &#123;</div><div class="line">            first = next;</div><div class="line">        &#125; else &#123;</div><div class="line">        	//否则把x前驱的后继指向x的后继，并把x前驱设置为null</div><div class="line">            prev.next = next;</div><div class="line">            x.prev = null;</div><div class="line">        &#125;</div><div class="line"></div><div class="line"> //如果后继为空，则表明要移除的是最后一个结点，在把last引用指向x的前驱</div><div class="line">        if (next == null) &#123;</div><div class="line">            last = prev;</div><div class="line">        &#125; else &#123;</div><div class="line">            next.prev = prev;</div><div class="line">            x.next = null;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">//把x结点的值设置为null，保证x没有任何引用了</div><div class="line">        x.item = null;</div><div class="line"></div><div class="line"> //链表的size减一</div><div class="line">        size--;</div><div class="line"></div><div class="line">   //链表的结构性修改次数加一</div><div class="line">        modCount++;</div><div class="line"></div><div class="line">   //这里该节点移除之前以保存在element中，然后返回该节点</div><div class="line">        return element;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
-<p>至此，简单把上面三个方法的源码简单过了一遍<br>当然，还有一点不得不提的是LinkedList可以当做stack（栈），queue（队列）处理，因为它是双端链表，另外，在遍历时，有index &lt; (size &gt;&gt; 1)，即判断index与size/2比较，这样可以缩小范围，选择是从前遍历还是从后遍历，从而大大增加查找效率</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;LinkedList底层是基于双端链表实现的，也就是说它具有指向其前驱与后继的引用，而且，在插入与删除数据时效率极高&lt;/p&gt;
-&lt;p&gt;至于它继
-    
-    </summary>
-    
-      <category term="学习进阶" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E8%BF%9B%E9%98%B6/"/>
-    
-    
-      <category term="java集合" scheme="http://www.myzwl.win/source/tags/java%E9%9B%86%E5%90%88/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hibernate之四:反向工程</title>
-    <link href="http://www.myzwl.win/2017/04/04/hbm4/"/>
-    <id>http://www.myzwl.win/2017/04/04/hbm4/</id>
-    <published>2017-04-04T07:48:51.000Z</published>
-    <updated>2017-04-08T04:42:14.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在运用持久层框架时，先前我们都是先通过建立对象—映射文件—数据库的方法，倘若数据库中的表非常多和复杂时，我们可以改变下开发顺序，即从数据库自动生成映射文件和对象，这样涉及表之间的关系，级联或者主外键约束就自动生成，更方便。一般我们用hibernate的反向工程达到此目的。</p>
-<p>不多说，先模拟一个案例。<br>首先建立三张表user，picture，addr表，分别如下<br>User表<br><img src="/images/imgs3/1.gif" alt="Alt text"></p>
-<p>Picture表<br><img src="/images/imgs3/2.gif" alt="Alt text"></p>
-<p>外键<br><img src="/images/imgs3/3.gif" alt="Alt text"></p>
-<p>这里的uid是外键对应user表的主键，并且只有当user的id删除时，对应uid相应的记录删除</p>
-<p>Addr表<br><img src="/images/imgs3/4.gif" alt="Alt text"></p>
-<p>外键<br><img src="/images/imgs3/5.gif" alt="Alt text"></p>
-<p>通过myeclipse 提供 数据库浏览器连接到我们的mysql数据库<br><img src="/images/imgs3/6.gif" alt="Alt text"></p>
-<p>然后点击右键，选择new，出现如下界面<br><img src="/images/imgs3/7.gif" alt="Alt text"></p>
-<p>首先选择数据库，然后填写相关配置信息，其中Driver name随便取，添加jar包，然后点击test Driver，如股票成功，则表示与数据库连接成功，此外，可以选择保存密码，不然，后续操作一次，就要输入密码<br>直接点击finish，</p>
-<p>接下来在MyEclipse中创建一个web工程，通过工具自身引入hibernate，具体步骤如下<br><img src="/images/imgs3/8.gif" alt="Alt text"></p>
-<p><img src="/images/imgs3/9.gif" alt="Alt text"></p>
-<p>选择之前配置好的sshe</p>
-<p><img src="/images/imgs3/10.gif" alt="Alt text"></p>
-<p>直接点结束，这样hibernate就引入了。</p>
-<p>下面我们使用myeclipse提供的逆向工程，自动的创建对象类和对象关系映射文件<br>选中要反向的表<br><img src="/images/imgs3/11.gif" alt="Alt text"></p>
-<p>注意我们可以事先在项目中新建一个包，用来存放映射对象和文件<br><img src="/images/imgs3/12.gif" alt="Alt text"></p>
-<p>最后点击finish，则自动生成了。<br><img src="/images/imgs3/13.gif" alt="Alt text"></p>
-<p>最后值得注意的是，这里只是模拟了三张表，有一对多和多对一关系，主外键及级联，这样就省得我们自己去配置了，因为hibernate的关系配置真的很麻烦！！</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在运用持久层框架时，先前我们都是先通过建立对象—映射文件—数据库的方法，倘若数据库中的表非常多和复杂时，我们可以改变下开发顺序，即从数据库自
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hibernate之三:浅谈HQL和映射文件</title>
-    <link href="http://www.myzwl.win/2017/04/03/hbm3/"/>
-    <id>http://www.myzwl.win/2017/04/03/hbm3/</id>
-    <published>2017-04-03T07:48:51.000Z</published>
-    <updated>2017-04-08T04:21:18.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>当我们想要精确的查找某一个数据库中的信息时，最理想的方法就是通过sql语句查询，一般hibernate中可以通过query接口来写语句进行查询，这个语句可以使sql，hql，当然推荐的是hql，事实上我认为hql和sql基本差不多</p>
-<p>一：Query接口<br>    Query接口类型的对象可以对数据库操作,它可以使用Hql和原生SQL(native Sql)对数据库操作.官方推荐使用Hql语句<br>先来看一个例子</p>
-<p>测试代码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">	public void selectone()&#123;</div><div class="line">	User u=(User)session.createQuery(" from User where id=1").uniqueResult();</div><div class="line">	System.out.println(u.getName());&#125;</div></pre></td></tr></table></figure></p>
-<p>分析：这里用了uniqueResult()方法 ，如果我们检索一个对象，明确知道最多只有一个对象，则建议使用该方法:</p>
-<p>如果是取出集合对象，则使用如下方法：<br>测试代码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public void selectone()&#123;		</div><div class="line">List&lt;User&gt; list=session.createQuery("from User").list();</div><div class="line">     for(User user : list)&#123;</div><div class="line">	System.out.println(user.getName());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>由此我们可以发现，使用list可以取出集合对象，同时方法里面写想要的hql语句</p>
-<p>二：HQL简单语法<br>  HQL是面向对象的查询语言，与SQL不同，HQL中的对象名是区分大小写的；HQL中查的是对象而不是表，并且支持多态；HQL主要通过Query来操作，Query的创建方式：</p>
-<blockquote>
-<p>Query q = session.createQuery(hql);</p>
-</blockquote>
-<p>1：between.. and..<br>  测试代码：</p>
-<blockquote>
-<p>List<user> list=session.createQuery(“from User where id between 0 and 2”).list();</user></p>
-</blockquote>
-<p>2：in /not in</p>
-<blockquote>
-<p>List<user> list=session.createQuery(“from User where id in (1,2)”).list();</user></p>
-</blockquote>
-<p>其他如group by，having，聚集函数等都类似于sql语句，换汤不换药。</p>
-<p>参数绑定：<br> 先看例子：</p>
- <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">org.hibernate.Query query= session.createQuery("from User where id between ? and ?");</div><div class="line">	      query.setInteger(0, 1);</div><div class="line">	      query.setInteger(1,2);</div><div class="line">	      List&lt;User&gt; list=query.list();</div><div class="line">	      for(User user : list)&#123;</div><div class="line">	  		System.out.println(user.getName());</div><div class="line">	  	&#125;</div></pre></td></tr></table></figure>
-<p>主要通过set与？的形式来注入参数，注意这里第一个？对应set的序号为0<br>使用绑定参数的好处:<br>1.可读性好.<br>2.性能提高.<br>3.防止sql注入</p>
-<p>HQL语句远不止这些，这里只简单介绍了其中一些，</p>
-<p>三：映射文件的配置<br> 映射文件的内容繁多，这里只简单介绍其中一些常见属性。大体说来，映射文件主要对class的映射，还包括属性，属性又分为主键，普通属性和集合属性，甚至还有复合属性，每种属性都需要进行不同的配置。</p>
-<p> 先从入门程序中的例子说起：</p>
-<blockquote>
-<p> <hibernate-mapping package="com.zwl.bean"></hibernate-mapping></p>
-<class name="User" table="user">
-
-</class></blockquote>
-<p>其中：package : 表示该类在哪个包下，name : 表示类名 table 表示 该类和哪个表映射<br>同时在class内部可以配置各种属性</p>
-<p>主键：<br> 主键就是持久化类中标识属性，用于唯一标识该对象，主要通过<id>进行设置，有三个常用属性：name，column，type。<br>  Name  ：表示类的哪个属性是主键   必须指定<br>Column：指定在数据库中主键对应的列明  不必须指定<br>  Type：与数据库中对应字段类型一致  不必须指定<br>例外：主键需指定主键生产策略，即generator，一般用于自增长，针对不同数据库，关键词不一样，由于是mysql，所以自增长选择increment<br>以上的代码表示：</id></p>
- <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;id name=<span class="string">"id"</span> type=<span class="string">"java.lang.Integer"</span>&gt;</div><div class="line">		&lt;generator class=<span class="string">"increment"</span>&gt;</div><div class="line">		&lt;/generator&gt;</div><div class="line">		&lt;/id&gt;</div></pre></td></tr></table></figure>
-<p>普通属性：<br>  使用<property>标签，该标签必须指定name属性，用于标记持久化类的属性名称。一般有如下常见属性：<br> Type，column，not-null（是否允许为空），lazy（是否支持延迟加载，默认为false不支持），<br>代码如下：</property></p>
- <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;property name=<span class="string">"name"</span> type=<span class="string">"java.lang.String"</span>&gt;</div><div class="line">		&lt;column name=<span class="string">"name"</span> not-null=<span class="string">"false"</span>/&gt;</div><div class="line">		&lt;/property&gt;</div><div class="line">		&lt;property name=<span class="string">"age"</span> type=<span class="string">"java.lang.Integer"</span>&gt;</div><div class="line">		&lt;column name=<span class="string">"age"</span> not-null=<span class="string">"false"</span>/&gt;</div><div class="line">		&lt;/property&gt;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;当我们想要精确的查找某一个数据库中的信息时，最理想的方法就是通过sql语句查询，一般hibernate中可以通过query接口来写语句进行查
-    
-    </summary>
-    
-      <category term="学习总结" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-    
-      <category term="五大框架" scheme="http://www.myzwl.win/source/tags/%E4%BA%94%E5%A4%A7%E6%A1%86%E6%9E%B6/"/>
     
   </entry>
   
