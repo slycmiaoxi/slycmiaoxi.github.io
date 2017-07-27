@@ -5,10 +5,99 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-07-26T14:02:36.000Z</updated>
+  <updated>2017-07-27T14:25:56.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>二分查找</title>
+    <link href="http://www.myzwl.win/2017/07/15/sjjg_10/"/>
+    <id>http://www.myzwl.win/2017/07/15/sjjg_10/</id>
+    <published>2017-07-15T05:48:51.000Z</published>
+    <updated>2017-07-27T14:25:56.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>查找操作，通俗的讲，就是给定一个值key，在一个数据结构中找出关键字为key的元素。而基于线性表的查找算法有顺序查找（O（n）），二分查找和分块查找</p>
+<h4 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h4><p>主要用于已排序的顺序表<br>算法描述：假定顺序表已按照升序排列，从表的中间位置开始比较，如果当前元素的关键字等于给定值，则查找成功，否则，若给定的值小于当前元素关键字，则在表的前半段继续查找，反之，在后半段查找，以此重复，直到获得查找结果<br><img src="/images/imgs4/10.gif" alt="Alt text"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">public class BSArray &#123;</div><div class="line"></div><div class="line">	//在升序排列的数组中，若找到关键字，则返回相应下标，否则返回-1</div><div class="line">	public static&lt;T&gt; int binarySearch(Comparable&lt;T&gt;[] value,T key)&#123;</div><div class="line">		return binarySearch(value,0,value.length-1,key);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public static&lt;T&gt; int binarySearch(Comparable&lt;T&gt;[] value,int begin,int end,T key)&#123;</div><div class="line">		if(key!=null)</div><div class="line">			while(begin&lt;=end)&#123;    //边界有效</div><div class="line">				int mid=(begin+end)/2;  //中间位置，当前比较元素位置</div><div class="line">		System.out.println(value[mid]+"?");</div><div class="line">		if(value[mid].compareTo(key)==0) //对象比较大小</div><div class="line">			return mid;                  //查找成功</div><div class="line">		if(value[mid].compareTo(key)&gt;0)  </div><div class="line">			end=mid-1;                    //缩小到前半段</div><div class="line">		else</div><div class="line">			begin=mid+1;                 //缩小到后半段</div><div class="line">	&#125; </div><div class="line">	return -1;                           //查找不成功</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;查找操作，通俗的讲，就是给定一个值key，在一个数据结构中找出关键字为key的元素。而基于线性表的查找算法有顺序查找（O（n）），二分查找和
+    
+    </summary>
+    
+      <category term="数据结构" scheme="http://www.myzwl.win/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+    
+      <category term="数据结构" scheme="http://www.myzwl.win/source/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hash散列表</title>
+    <link href="http://www.myzwl.win/2017/07/14/sjjg_9/"/>
+    <id>http://www.myzwl.win/2017/07/14/sjjg_9/</id>
+    <published>2017-07-14T05:48:51.000Z</published>
+    <updated>2017-07-27T11:02:40.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>散列（hash）表是一种支持高效的查找、插入和删除操作的数据结构，它是针对查找效率接近O（1）而专门设计的。它根据元素的关键字确定元素的存储位置，而其中主要解决两个问题，设计散列函数和处理冲突</p>
+<h4 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h4><p>在数据元素的关键字和该元素的存储位置之间建立一种对应关系，称为散列函数，而由散列函数决定元素存储位置的存储结构称为散列表，散列函数声明为</p>
+<blockquote>
+<p>public int hash(int key) //散列函数，确定关键字为key元素的散列地址</p>
+</blockquote>
+<p>散列函数实质上是关键字集合到地址集合的映射，如果这种映射是一一对应的，则查找效率是O（1），但是由于散列表是一个压缩映射，即存储容量有限，即映射关系是多对一的映射，所以会产生冲突<br><img src="/images/imgs4/9.gif" alt="Alt text"></p>
+<h4 id="冲突"><a href="#冲突" class="headerlink" title="冲突"></a>冲突</h4><p>设两个关键字k1和k2（k1！=k2），如果有hash（k1）=hash（k2），即它们的散列值相同，表示不同关键字的多个元素映射到同一个存储位置，称为冲突，如图，所设的关键字序列是（1,4,3,11,12,6,14,74,16,96），元素个数是10，关键字范围是0~99，如果散列值的容量是100，很明显是一对一不会产生冲突，但是空间利用率此时只有10%，如果容量是10或者20，冲突差生的频率会减少</p>
+<h4 id="除留余数法"><a href="#除留余数法" class="headerlink" title="除留余数法"></a>除留余数法</h4><p>该散列函数定义为hash（k）=k%p，函数结果范围为0~p-1，图示就是采用这种方法，而p取值为小于散列表长度的最大素数，如散列表长度分别为8,16,128，则对应的p（最大素数）分别为7,13,127</p>
+<h4 id="冲突处理"><a href="#冲突处理" class="headerlink" title="冲突处理"></a>冲突处理</h4><p><strong>开放定址法</strong><br>当产生冲突时，开放定址法在散列表内寻找另一个位置存储冲突的元素，如利用线性探查发实现，即设一个元素关键字为k，其散列地址为i=hash（k），若散列表中i位置已存储元素，则产生冲突，探测下一个位置i+1是否为空，。。直到找到一个空位置，但是它的缺陷就是在散列表内处理冲突，使得一个存储地址i可被任意一个元素抢占，这样就破坏了散列函数i=hash（k）的规则</p>
+<p><strong>链地址法</strong><br><img src="/images/imgs4/12.jpg" alt="Alt text"><br>该方法是将多个冲突的元素存储在一条单链表中（称为同义词单链表），如图示<br>而对链地址法表进行插入、删除、查找等操作主要分两步完成<br>1.计算元素的散列函数值<br>2.根据元素的散列函数值，对某一条同义词单链表进行插入、删除和查找操作<br>规定查找成功的平均查找长度为（根据图示）ASL=(9<em>1+3</em>2)/12<br>并且有如下结论：<br>1.查找操作的时间复杂度为O（m），其中m为一条痛一次单链表的长度，插入操作为O(1),删除操作为O(m)</p>
+<h4 id="模拟HashSet类"><a href="#模拟HashSet类" class="headerlink" title="模拟HashSet类"></a>模拟HashSet类</h4><p>这里同义词单链表采用单链表<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">public class HashSet&lt;T&gt; &#123;</div><div class="line"></div><div class="line">	private SinglyLinkenList&lt;T&gt;[] table;    //散列表，同义词单链表对象数组</div><div class="line">	public HashSet(int size)&#123;               //构造指定容量的散列表</div><div class="line">		this.table=new SinglyLinkenList[Math.abs(size)];</div><div class="line">		for(int i=0;i&lt;table.length;i++)</div><div class="line">			table[i]=new SinglyLinkenList&lt;T&gt;();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public HashSet()&#123; //构造最大质数为97的容量</div><div class="line">		this(97);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	private int hash(T x)&#123;  //散列函数，确定关键字为key元素的散列地址</div><div class="line">		int key=Math.abs(x.hashCode()); //每个对象的hashcode（）方法返回散列码，并且每个对象不同</div><div class="line">		return key%table.length; //出留余数法，除数是散列表长度</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void insert(T x)&#123;//插入x元素</div><div class="line">		table[hash(x)].insert(0, x);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void remove(T x)&#123; //删除x元素</div><div class="line">		table[hash(x)].remove((Integer) x);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public T search(T key)&#123; //返回查找到的关键字为key元素，查找不成功返回null</div><div class="line">		return table[hash(key)].search(key);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public boolean contain(T key)&#123; //判断散列表是否包含关键字为key元素</div><div class="line">		return this.search(key)!=null;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public String toString()&#123;</div><div class="line">		String str="";</div><div class="line">		for(int i=0;i&lt;table.length;i++)  //遍历各同义词单链表</div><div class="line">			if(!table[i].isEmpty())</div><div class="line">				str+=table[i].toString()+"\n";</div><div class="line">		return str;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;散列（hash）表是一种支持高效的查找、插入和删除操作的数据结构，它是针对查找效率接近O（1）而专门设计的。它根据元素的关键字确定元素的存储
+    
+    </summary>
+    
+      <category term="数据结构" scheme="http://www.myzwl.win/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+    
+      <category term="数据结构" scheme="http://www.myzwl.win/source/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>树和二叉树</title>
+    <link href="http://www.myzwl.win/2017/07/13/sjjg_8/"/>
+    <id>http://www.myzwl.win/2017/07/13/sjjg_8/</id>
+    <published>2017-07-13T05:48:51.000Z</published>
+    <updated>2017-07-27T07:33:58.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>树是数据元素（结点）之间具有层次关系的非线性结构。在树结构中，除根以外的结点只有一个前驱结点，可以有零至多个后继结点，根结点没有前驱结点</p>
+<h4 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h4><p><img src="/images/imgs4/7.jpg" alt="Alt text"><br>1.父母、孩子、兄弟结点<br>2.度（结点所拥有的子树数目），如A的度为3<br>3.结点的层次（结点处于树中的位置，约定根结点层次为1），树的高度（树中结点的最大层次数）如图中树高度为3<br>4.边（设X结点是y结点的父母结点，有序对（X，y）称为这两个结点的边，路径如A到E结点，表示为（A，B，E），路径长度（路径上的边数）为2<br>5.无序数与有序树（区别子树之间有没有次序）<br>6.森林（删除根结点）</p>
+<h4 id="二叉树性质"><a href="#二叉树性质" class="headerlink" title="二叉树性质"></a>二叉树性质</h4><p><img src="/images/imgs4/8.jpg" alt="Alt text"><br>二叉树最多有两颗子树，分别为左右子树<br>性质1：若根结点的层次为1，则二叉树第i层最多有2^(i-1)(i&gt;1)个结点<br>性质2：在高度为h的二叉树中，最多有2^h-1个结点（h&gt;=0)<br>性质3：设一棵二叉树的叶子结点数为n0,2度结点数为n2，则n0=n2+1<br>性质4：一颗具有n个结点的完全二叉树，其高度为h=[log以2为底数n为参数]+1；其中[]是高斯取整函数<br>性质5：一颗具有n个结点的完全二叉树，对序号为i（0&lt;=i<n)的结点，有 1.若i="0，则i为根结点，无父母结点：若i">0，则i的父母结点序号为[(i+1)/2]<br>2.若2<em>i+1&lt;n，则i的左孩子结点序号为2</em>i+1；否则无左孩子<br>3.若2<em>i+2&lt;n，则i的右孩子结点序号为2</em>i+2，否则i无右孩子</n)的结点，有></p>
+<h4 id="二叉树的遍历规则"><a href="#二叉树的遍历规则" class="headerlink" title="二叉树的遍历规则"></a>二叉树的遍历规则</h4><p><strong>孩子优先遍历</strong><br>二叉树的遍历是按照一定规则和次序访问二叉树中的所有结点，并且每个结点仅被访问一次，同时遍历二叉树访问结点的次序是线性的。<br>1.先根次序：访问根结点，遍历左子树，遍历右子树（124536）<br>2.中根次序：遍历左子树，访问根结点，遍历右子树（425136）<br>3.后根次序：遍历左子树，遍历右子树，访问根结点（452631）</p>
+<p><strong>兄弟优先遍历</strong><br>该遍历是按照层次进行的，遍历历程是从根结点开始，逐层深入，从左至右依次访问完当前层的所有结点，在访问下一层</p>
+<h4 id="二叉树抽象数据类型和存储结构"><a href="#二叉树抽象数据类型和存储结构" class="headerlink" title="二叉树抽象数据类型和存储结构"></a>二叉树抽象数据类型和存储结构</h4><p><strong>顺序存储结构</strong><br><img src="/images/imgs4/9.jpg" alt="Alt text"><br>二叉树的顺序存储结构仅适用于完全二叉树和满二叉树，如图所示。根据之前的性质，可以实现对应关系一一对应个。<br>而对于非完全二叉树，如果采取顺序存储，可以将其补成一个完全二叉树，对于空结点利用特殊符号代替，但是会造成空间浪费，并且线性映射关系不明确</p>
+<p><strong>链式存储结构</strong><br><img src="/images/imgs4/11.jpg" alt="Alt text"><br>二叉链表采用两条链分别连接左右孩子结点，每个结点有三个域：data存储数据元素，left、right分别指向左右孩子结点<br>三叉链表在二叉链表基础上增加一条链parent连接父母结点<br><img src="/images/imgs4/10.jpg" alt="Alt text"></p>
+<p><strong>二叉链表结点</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public class BinaryNode&lt;T&gt; &#123;</div><div class="line"></div><div class="line">	public T data;                 //数据域，存储数据元素</div><div class="line">	public BinaryNode&lt;T&gt; left,right;   //链域，分别指向左、右孩子结点</div><div class="line">	</div><div class="line">	public BinaryNode(T data,BinaryNode&lt;T&gt; left,BinaryNode&lt;T&gt; right)&#123;</div><div class="line">		this.data=data;</div><div class="line">		this.left=left;</div><div class="line">		this.right=right;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public BinaryNode(T data)&#123;</div><div class="line">		this(data,null,null);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public BinaryNode()&#123;</div><div class="line">		this(null,null,null);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>抽象数据类型</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public interface BinaryTTree&lt;T&gt; &#123;</div><div class="line"></div><div class="line">	boolean isEmpty();           //判断二叉树是否为空</div><div class="line">	int count();                 //返回二叉树的结点个数</div><div class="line">	int height();                //返回二叉树的高度</div><div class="line">	void preOrder();             //先根次序遍历二叉树</div><div class="line">	void inOrder();              //中根次序遍历二叉树</div><div class="line">	void postOrder();            //后根次序遍历二叉树</div><div class="line">	void levelOrder();           //按层次遍历二叉树</div><div class="line">	BinaryNode&lt;T&gt; search(T key);   //查找并返回首次出现关键字为key元素结点</div><div class="line">	BinaryNode&lt;T&gt; getParent(BinaryNode&lt;T&gt; node);      //返回node的父母结点</div><div class="line">	void insertRoot(T x);            //插入元素x作为根结点</div><div class="line">	BinaryNode&lt;T&gt; insertChild(BinaryNode&lt;T&gt; p,T x,boolean leftChild); //插入孩子节点</div><div class="line">	void removeChild(BinaryNode&lt;T&gt; p,boolean leftChild); //删除p结点的左或右子树</div><div class="line">	void removeAll();  //删除二叉树</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下面是其实现类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div></pre></td><td class="code"><pre><div class="line">public class BinaryTree&lt;T&gt; implements BinaryTTree&lt;T&gt;&#123;</div><div class="line"></div><div class="line">	public BinaryNode&lt;T&gt; root;   //根结点，结点结构为二叉链表</div><div class="line">	public BinaryTree()&#123;         //构造空二叉树</div><div class="line">		this.root=null;</div><div class="line">	&#125;</div><div class="line">	public boolean isEmpty() &#123;  //判断二叉树是否为空</div><div class="line">		return this.root==null;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public int count() &#123;</div><div class="line">		return count(root);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public int count(BinaryNode&lt;T&gt; p)&#123; //返回以p结点为根的子树的结点个数</div><div class="line">		if(p==null)</div><div class="line">			return 0;</div><div class="line">		return 1+count(p.left)+count(p.right);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public int height() &#123;</div><div class="line">		return height(root);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public int height(BinaryNode&lt;T&gt; p)&#123;</div><div class="line">		if(p==null)</div><div class="line">			return 0;</div><div class="line">		int lh=height(p.left); //返回左子树高度</div><div class="line">		int rh=height(p.right); //返回右子树高度</div><div class="line">		return (lh&gt;=rh)?lh+1:rh+1; //当前子树高度为较高子树高度加1</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void preOrder() &#123;</div><div class="line">		System.out.println("先根次序遍历二叉树:  ");</div><div class="line">		preOrder(root);</div><div class="line">		System.out.println();</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void preOrder(BinaryNode&lt;T&gt; p)&#123;</div><div class="line">		if(p!=null)</div><div class="line">		&#123;</div><div class="line">			System.out.println(p.data.toString()+" ");//访问当前结点</div><div class="line">			preOrder(p.left); //按先根次序遍历当前结点左子树，递归调用</div><div class="line">			preOrder(p.right); //按先根次序遍历当前结点右子树，递归调用</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void inOrder() &#123;</div><div class="line">		System.out.println("中根次序遍历二叉树 :   ");</div><div class="line">		inOrder(root);</div><div class="line">		System.out.println();	</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void inOrder(BinaryNode&lt;T&gt; p)&#123;</div><div class="line">		if(p!=null)</div><div class="line">		&#123;</div><div class="line">			inOrder(p.left);</div><div class="line">			System.out.println(p.data.toString()+" ");</div><div class="line">			inOrder(p.right);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void postOrder() &#123;</div><div class="line">	</div><div class="line">		System.out.println("后根次序遍历二叉树 :   ");</div><div class="line">		inOrder(root);</div><div class="line">		System.out.println();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void postOrder(BinaryNode&lt;T&gt; p)&#123;</div><div class="line">		if(p!=null)&#123;</div><div class="line">			postOrder(p.left);</div><div class="line">			postOrder(p.right);</div><div class="line">			System.out.println(p.data.toString()+" ");</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void levelOrder() &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public BinaryNode&lt;T&gt; search(T key) &#123;</div><div class="line">		return search(root,key);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public BinaryNode&lt;T&gt; search(BinaryNode&lt;T&gt; p,T key) &#123;</div><div class="line">		if(p==null||key==null)</div><div class="line">			return null;</div><div class="line">		if(p.data.equals(key))  //查找成功，返回找到结点</div><div class="line">			return p;</div><div class="line">		BinaryNode&lt;T&gt; find=search(p.left,key);//在左子树中查找，递归调用</div><div class="line">		if(find==null)</div><div class="line">			find=search(p.right,key);//左子树中未找到，在右子树中继续递归查找</div><div class="line">		return find;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public BinaryNode&lt;T&gt; getParent(BinaryNode&lt;T&gt; node) &#123;</div><div class="line">	if(root==null||node==null||node==root)</div><div class="line">		return null;</div><div class="line">	 return getParent(root,node);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public BinaryNode&lt;T&gt; getParent(BinaryNode&lt;T&gt; p,BinaryNode&lt;T&gt; node) &#123;</div><div class="line">	if(p==null)</div><div class="line">		return null;</div><div class="line">	if(p.left==node||p.right==node)</div><div class="line">		return p;</div><div class="line">	BinaryNode&lt;T&gt; find=getParent(p.left,node);</div><div class="line">	if(find==null)</div><div class="line">		find=getParent(p.right,node);</div><div class="line">		return find;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void insertRoot(T x) &#123;</div><div class="line">		root=new BinaryNode&lt;T&gt;(x, root, null);</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">	//插入元素x作为p结点的孩子，若leftChild为true,插入结点作为左孩子，否则作为右孩子</div><div class="line">	public BinaryNode&lt;T&gt; insertChild(BinaryNode&lt;T&gt; p,T x,boolean leftChild)&#123;</div><div class="line">		if(p==null||x==null)</div><div class="line">			return null;</div><div class="line">		if(leftChild)</div><div class="line">		&#123;</div><div class="line">			p.left=new BinaryNode&lt;T&gt;(x, p.left, null);//插入x作为p的左孩子，p原左孩子变为x左孩子</div><div class="line">			return p.left;</div><div class="line">		&#125;</div><div class="line">		p.right=new BinaryNode&lt;T&gt;(x,null,p.right); //插入x结点作为p的右孩子</div><div class="line">		return p.right;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	</div><div class="line"></div><div class="line">	public void removeChild(BinaryNode&lt;T&gt; p, boolean leftChild) &#123;</div><div class="line">	if(p!=null)</div><div class="line">		if(leftChild)</div><div class="line">			p.left=null;</div><div class="line">		else</div><div class="line">			p.right=null;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void removeAll() &#123;</div><div class="line">		this.root=null;</div><div class="line">		</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;树是数据元素（结点）之间具有层次关系的非线性结构。在树结构中，除根以外的结点只有一个前驱结点，可以有零至多个后继结点，根结点没有前驱结点&lt;/
+    
+    </summary>
+    
+      <category term="数据结构" scheme="http://www.myzwl.win/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+    
+      <category term="数据结构" scheme="http://www.myzwl.win/source/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
   
   <entry>
     <title>优先队列与递归</title>
@@ -851,196 +940,6 @@ abstract boolean onAccessDenied(ServletRequest request, ServletResponse response
     
     
       <category term="多线程" scheme="http://www.myzwl.win/source/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>并发系列一之初识java线程</title>
-    <link href="http://www.myzwl.win/2017/04/10/thrd1/"/>
-    <id>http://www.myzwl.win/2017/04/10/thrd1/</id>
-    <published>2017-04-10T13:48:51.000Z</published>
-    <updated>2017-04-18T15:47:18.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>曾在论坛中看过这样一句话，如果连多线程都不懂，别说自己学过java，可见多线程的重要性！</p>
-<h4 id="何谓线程"><a href="#何谓线程" class="headerlink" title="何谓线程"></a>何谓线程</h4><p>简单来说，就像我们在执行一个程序时，他总按照顺序执行，如果从头到尾都没有分叉，也就是说总是一个流程，那么就可以看做单线程，并且程序执行的主体只有一个，所以，我们把正在执行程序的主体称为线程</p>
-<p>当然，平时我们说的最多的就是多线程，顾名思义就是由一个以上的线程所构成的程序，比如文件处理，io请求处理及网络客户端发出的请求等等都可以看做多线程</p>
-<h4 id="Thread类"><a href="#Thread类" class="headerlink" title="Thread类"></a>Thread类</h4><p>先看一个简单的例子<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">package com.zwl.utest1;</div><div class="line"></div><div class="line">import java.util.Date;</div><div class="line"></div><div class="line">public class Mythread extends Thread &#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		for(int i=0;i&lt;700;i++)&#123;</div><div class="line">	System.out.print("hello!");</div><div class="line">	</div><div class="line">	&#125;&#125;&#125;</div></pre></td></tr></table></figure></p>
-<p>测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Mythread m=new Mythread();</div><div class="line">	  m.start();</div><div class="line">	  for(int i=0;i&lt;900;i++)&#123;</div><div class="line">	  System.out.print("lol!");</div><div class="line">	  &#125;</div></pre></td></tr></table></figure></p>
-<p>测试结果</p>
-<blockquote>
-<p>lol!lol!lol!lol!lol!lol!。。hello!hello!hello!hello!hello!。。lol!lol!lol!lol!lol!lol!</p>
-</blockquote>
-<p>然后在去认识上面程序，其中start方法会启动新的线程，然后再由这个新线程调用run方法，<br>当然也可以直接调用run方法</p>
-<p>那么两者有什么区别了？<br>调用start方法会出现字符串交错，也就是并发，而run方法，就是等run方法执行完，在执行其它，显然不会出现交错现象<br>当然数据量小的话，出现的结果很难有说服力，所以并发模拟尽量使用大数量</p>
-<h4 id="线程的启动"><a href="#线程的启动" class="headerlink" title="线程的启动"></a>线程的启动</h4><ol>
-<li>利用thread的子类的实例，启动线程<br>正如前面模拟的程序，不过下面测试用两个线程<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">new Mythread().start（）;</div><div class="line">new Mythread().start（）;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>显然两个线程操作两个对象，所以thread是线程安全的</p>
-<ol>
-<li>利用Runnable接口<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public class Mythread implements Runnable</div><div class="line">&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		for(int i=0;i&lt;700;i++)&#123;</div><div class="line">	System.out.print("hello!");</div><div class="line">	</div><div class="line">	&#125;&#125;&#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">      Mythread m=new Mythread();</div><div class="line">new Thread(m).start();</div><div class="line">new Thread(m).start();</div></pre></td></tr></table></figure></p>
-<p>这里主要向Runnable接口实现的实例作为参数传递给Thread，再启动线程，这里就有一个问题，因为不同线程操作一个对象，所以会造成线程不安全的问题，也就是脏数据</p>
-<h4 id="线程的暂时停止"><a href="#线程的暂时停止" class="headerlink" title="线程的暂时停止"></a>线程的暂时停止</h4><p>利用Thread的sleep方法可暂时停止线程当前的操作，如<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">      public class Mythread implements Runnable</div><div class="line">&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		for(int i=0;i&lt;5;i++)&#123;</div><div class="line">	System.out.print("hello!");</div><div class="line">		try &#123;</div><div class="line">			Thread.sleep(1000);</div><div class="line">		&#125; catch (InterruptedException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">	</div><div class="line">	&#125;&#125;&#125;</div></pre></td></tr></table></figure></p>
-<p>这里的参数是ms，所以1000就是1s了</p>
-<h4 id="线程的共享互斥"><a href="#线程的共享互斥" class="headerlink" title="线程的共享互斥"></a>线程的共享互斥</h4><p>在程序里，多个线程可自由操作，就会造成一个线程还在执行，另一个线程就插进来执行，就会造成一些脏数据的产生<br>如：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">       private int count=1000;</div><div class="line">@Override</div><div class="line">public void run() &#123;</div><div class="line">	for(int i=0;i&lt;100;i++)&#123;</div><div class="line">		count--;</div><div class="line">		System.out.println("mythread"+(count));</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>测试类：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">     Mythread m=new Mythread();</div><div class="line">new Thread(m).start();</div><div class="line">new Thread(m).start();</div><div class="line">new Thread(m).start();</div></pre></td></tr></table></figure></p>
-<p>测试结果：（取部分）</p>
-<blockquote>
-<p>mythread999<br>mythread997<br>mythread996<br>mythread995<br>mythread994</p>
-</blockquote>
-<p>显然出现了脏数据<br>要想使数据正确，一种方法是加同步锁，即一个线程在执行该操作时，其余线程无锁，则必须等待，直到该线程执行结束或者被挂起，才释放锁，然后在门外等待的线程依次执行，加锁，重复上述步骤<br>显然，就不会出现多个线程操作同一个对象了</p>
-<p>java中通过声明synchronized关键字实现同步锁<br>如：</p>
-<blockquote>
-<p>public synchronized void run()</p>
-</blockquote>
-<p>则在执行run方法前加同步锁，控制线程，当然该关键字可以声明在任何方法前，包括静态方法<br>另外，它还有另外一种声明方式</p>
-<blockquote>
-<p>public  void run() {<br>        synchronized (xx.class) {<br>        }</p>
-</blockquote>
-<p>注意这里xx.class是操作该方法的那个类实现同步比如这里可以将</p>
-<blockquote>
-<p>synchronized (this) {}</p>
-</blockquote>
-<p>就是对本身这个类加锁控制了等同于上述的另一种写法</p>
-<h4 id="线程的协调"><a href="#线程的协调" class="headerlink" title="线程的协调"></a>线程的协调</h4><p>如果有一个线程正在执行同步锁，而其他线程则要等待，这是典型的线程互斥现象<br>假如当该空间有空余时则写入数据，无空闲时间则等待（等待）<br>当该空间有空闲时，则通知等待的线程（通知）</p>
-<p>这里是根据空间是否空闲为条件进行线程处理，java中通过wait（让线程等待），notify与notifyAll（启动等候中的线程）</p>
-<p>我们可以把线程处于等待的地方形象的看做wait set（线程的休息室）</p>
-<h4 id="wait-把线程放入休息室"><a href="#wait-把线程放入休息室" class="headerlink" title="wait-把线程放入休息室"></a>wait-把线程放入休息室</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">	private static int count=90;</div><div class="line">	</div><div class="line">public synchronized int s() throws InterruptedException&#123;</div><div class="line">	count--;</div><div class="line">	System.out.println("ok:"+count);</div><div class="line">	this.wait();</div><div class="line">	System.out.println("lockover");</div><div class="line">	return count;</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">	public  void run() &#123;	</div><div class="line">				try &#123;</div><div class="line">					s();</div><div class="line">				&#125; catch (InterruptedException e) &#123;</div><div class="line">					// TODO Auto-generated catch block</div><div class="line">					e.printStackTrace();</div><div class="line">				&#125;</div><div class="line">		&#125;</div></pre></td></tr></table></figure>
-<p>然后在测试中启动几个线程<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">     Count m=new Count();</div><div class="line">new Thread(m).start();</div><div class="line">new Thread(m).start();</div><div class="line">new Thread(m).start();</div></pre></td></tr></table></figure></p>
-<p>测试结果：</p>
-<blockquote>
-<p>ok:89<br>ok:88<br>ok:87</p>
-</blockquote>
-<p>一般为obj.wait（），而obj是某个对象的实例，也就是说该线程在obj的休息区<br>之后会自动释放锁，等待的线程开始执行</p>
-<p>当然也有obj.wait（1000）；也可以设置在休息区等待的秒数，然后继续执行</p>
-<p>测试结果：</p>
-<blockquote>
-<p>ok:89<br>ok:88<br>ok:87<br>lockover<br>lockover<br>lockover</p>
-</blockquote>
-<h4 id="notify方法-从休息区拿出线程"><a href="#notify方法-从休息区拿出线程" class="headerlink" title="notify方法-从休息区拿出线程"></a>notify方法-从休息区拿出线程</h4><p>一般为obj.notify（），即从obj的wait set里的线程中挑选一个，唤醒一个线程并退出该休息区<br>当然，这里有一个顺序，召唤该线程的那个线程执行完，释放锁后，那个在休息区的线程在执行</p>
-<p>obj.notifyAll（），即从线程区中拿出所有线程</p>
-<p>最后需要说一下的是wait、notify、notifyAll是Object的类方法，也就是所有类都能使用</p>
-<p>由此可看出多线程的确是一个复杂而且很重要的东西！！</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;曾在论坛中看过这样一句话，如果连多线程都不懂，别说自己学过java，可见多线程的重要性！&lt;/p&gt;
-&lt;h4 id=&quot;何谓线程&quot;&gt;&lt;a href
-    
-    </summary>
-    
-      <category term="并发编程" scheme="http://www.myzwl.win/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="多线程" scheme="http://www.myzwl.win/source/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>集合中的线程安全问题</title>
-    <link href="http://www.myzwl.win/2017/04/07/thread2/"/>
-    <id>http://www.myzwl.win/2017/04/07/thread2/</id>
-    <published>2017-04-07T13:48:51.000Z</published>
-    <updated>2017-04-08T15:58:22.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>早在刚开始学习java se的时候，就遇到过这样问题，xxx是线程安全的，xxxx是线程不安全的，当时也是一脸蒙，只记住了结论。后来接触了单例才有一点了解</p>
-<p>线程安全的：<br>vector、hashtable、stringbuffer等</p>
-<p>非线程安全的：<br>arraylist、linkedlist、hashmap、StringBuilder等等</p>
-<p>首先来模拟一个案例</p>
-<p>测试集合类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">public static void test()  &#123;</div><div class="line">// 用来测试的List  </div><div class="line">   List&lt;Object&gt; list = new ArrayList&lt;Object&gt;();  </div><div class="line">   </div><div class="line">   // 线程数量(1000)  </div><div class="line">   int threadCount = 1000;  </div><div class="line">   </div><div class="line">// 用来让主线程等待threadCount个子线程执行完毕  </div><div class="line">   CountDownLatch countDownLatch = new CountDownLatch(threadCount);  </div><div class="line">   </div><div class="line">    // 启动threadCount个子线程  </div><div class="line">   for(int i = 0; i &lt; threadCount; i++)  </div><div class="line">   &#123;  </div><div class="line">       Thread thread = new Thread(new Mythread(list,countDownLatch));  </div><div class="line">       thread.start();  </div><div class="line">   &#125;  </div><div class="line">   try  </div><div class="line">   &#123;  </div><div class="line">       // 主线程等待所有子线程执行完成，再向下执行  </div><div class="line">       countDownLatch.await();  </div><div class="line">   &#125;  </div><div class="line">   catch (InterruptedException e)  </div><div class="line">   &#123;  </div><div class="line">       e.printStackTrace();  </div><div class="line">   &#125;  </div><div class="line">   // List的size  </div><div class="line">   System.out.println(list.size());  </div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
-<p>自定义线程<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">package com.zwl.test;</div><div class="line"></div><div class="line">import java.util.List;</div><div class="line">import java.util.concurrent.CountDownLatch;</div><div class="line"></div><div class="line">public class Mythread implements Runnable &#123;</div><div class="line">	private List&lt;Object&gt; list;  </div><div class="line">	</div><div class="line">	private CountDownLatch countDownLatch; </div><div class="line">	public Mythread(List&lt;Object&gt; list,CountDownLatch countDownLatch)&#123;</div><div class="line">		  this.list = list; </div><div class="line">		  this.countDownLatch = countDownLatch;  </div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		// 每个线程向List中添加100个元素  </div><div class="line">        for(int i = 0; i &lt; 100; i++)  </div><div class="line">        &#123;  </div><div class="line">            list.add(new Object());  </div><div class="line">        &#125;  </div><div class="line">     // 完成一个子线程  </div><div class="line">        countDownLatch.countDown();  </div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>测试类：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line">	 </div><div class="line">	 // 进行10次测试  </div><div class="line">        for(int i = 0; i &lt; 10; i++)  </div><div class="line">        &#123;  </div><div class="line">            test();  </div><div class="line">        &#125;  </div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
-<p>测试结果：</p>
-<blockquote>
-<p>99873<br>99968<br>99955<br>100000<br>100000<br>100000<br>100000<br>Exception in thread “Thread-7516” java.lang.ArrayIndexOutOfBoundsException: 76327<br>    at java.util.ArrayList.add(ArrayList.java:441)<br>    at com.zwl.test.Mythread.run(Mythread.java:20)<br>    at java.lang.Thread.run(Thread.java:744)</p>
-</blockquote>
-<p>有时不会出现异常，但是list的长度不是最终期望的那样，显然是线程不安全的，<br>这里是arraylist，同样将其换成linkedlist，也可以改变list，变成其它，得到同样线程不安全结果</p>
-<p>测试结果：</p>
-<blockquote>
-<p>100000<br>99783<br>100000<br>99945<br>99897<br>99996<br>99879<br>99971<br>100000<br>99899</p>
-</blockquote>
-<p>将其换成线程安全的，如</p>
-<blockquote>
-<p>List<object> list = new Vector<object>(); </object></object></p>
-</blockquote>
-<p>测试结果：</p>
-<blockquote>
-<p>100000<br>100000<br>100000<br>100000<br>100000<br>100000<br>100000<br>100000<br>100000<br>100000</p>
-</blockquote>
-<p>当然集合中的线程不安全是多线程同时操作同一个对象，如果是不同类，就不存在线程安全问题</p>
-<p>对于线程安全，一般通过线程同步来实现，即通过申明synchronized关键字</p>
-<p>如，改一下之前的线程安全的例子number类</p>
-<p>修改后的number类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">package com.zwl.test;</div><div class="line"></div><div class="line">public class number &#123;</div><div class="line"></div><div class="line">	private int num=0; </div><div class="line"></div><div class="line">	public  void count()&#123;</div><div class="line">	</div><div class="line">		num++;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public int getnumber()&#123;</div><div class="line">		return num;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>然后是自定义线程<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">public class Mythread implements Runnable &#123;</div><div class="line">	private number num;</div><div class="line">	</div><div class="line">	private CountDownLatch countDownLatch; </div><div class="line">	public Mythread(number num,CountDownLatch countDownLatch)&#123;</div><div class="line">		  this.num = num; </div><div class="line">		  this.countDownLatch = countDownLatch;  </div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void run() &#123; </div><div class="line">        for(int i = 0; i &lt; 100; i++)  </div><div class="line">        &#123;  </div><div class="line"> </div><div class="line">        	num.count();</div><div class="line">        	</div><div class="line">        &#125;  </div><div class="line">     // 完成一个子线程  </div><div class="line">        countDownLatch.countDown();  </div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>线程测试类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"> public static void test()  &#123;</div><div class="line"></div><div class="line">   </div><div class="line">   number num=new number();</div><div class="line">   // 线程数量(1000)  </div><div class="line">   int threadCount = 1000;  </div><div class="line">   </div><div class="line">// 用来让主线程等待threadCount个子线程执行完毕  </div><div class="line">   CountDownLatch countDownLatch = new CountDownLatch(threadCount);  </div><div class="line">   </div><div class="line">   for(int i = 0; i &lt; threadCount; i++)  </div><div class="line">   &#123;  </div><div class="line">       Thread thread = new Thread(new Mythread(num,countDownLatch));  </div><div class="line">       thread.start();  </div><div class="line">   &#125;  </div><div class="line">   try  </div><div class="line">   &#123;  </div><div class="line">       // 主线程等待所有子线程执行完成，再向下执行  </div><div class="line">       countDownLatch.await();  </div><div class="line">   &#125;  </div><div class="line">   catch (InterruptedException e)  </div><div class="line">   &#123;  </div><div class="line">       e.printStackTrace();  </div><div class="line">   &#125;  </div><div class="line"></div><div class="line">   System.out.println(num.getnumber());  </div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
-<p>测试类：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public static void main(String[] args) &#123;</div><div class="line">		 </div><div class="line">		 // 进行10次测试  </div><div class="line">	        for(int i = 0; i &lt; 10; i++)  </div><div class="line">	        &#123;  </div><div class="line">	            test();  </div><div class="line">	        &#125;  </div><div class="line">	 &#125;</div></pre></td></tr></table></figure></p>
-<p>测试结果：</p>
-<blockquote>
-<p>100000<br>100000<br>100000<br>100000<br>99940<br>99300<br>100000<br>100000<br>100000<br>100000</p>
-</blockquote>
-<p>出现了线程不安全<br>可以通过对方法声明同步</p>
-<blockquote>
-<p>public synchronized void count(){}</p>
-</blockquote>
-<p>最后输出的书都是同一个数</p>
-<p>最后不得不说，线程安全是一个很复杂的问题，有时候不注意就会出现数据上的各种问题！！！</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;早在刚开始学习java se的时候，就遇到过这样问题，xxx是线程安全的，xxxx是线程不安全的，当时也是一脸蒙，只记住了结论。后来接触了单
-    
-    </summary>
-    
-      <category term="学习进阶" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E8%BF%9B%E9%98%B6/"/>
-    
-    
-      <category term="java集合" scheme="http://www.myzwl.win/source/tags/java%E9%9B%86%E5%90%88/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>初识线程安全与线程不安全</title>
-    <link href="http://www.myzwl.win/2017/04/06/thread1/"/>
-    <id>http://www.myzwl.win/2017/04/06/thread1/</id>
-    <published>2017-04-06T13:48:51.000Z</published>
-    <updated>2017-04-08T15:58:10.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于线程问题基本上贯穿学习的整个过程，像集合，servlet，structs，hibernate，spring等等，其都涉及到线程问题</p>
-<h4 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h4><p>什么是线程安全？<br>如果你的代码所在的进程中有多个线程在同时运行，而这些线程可能会同时运行这段代码。如果每次运行结果和单线程运行的结果是一样的，而且其他的变量的值也和预期的是一样的，就是线程安全的。</p>
-<p>线程安全问题都是由全局变量及静态变量引起的。</p>
-<p>若每个线程中对全局变量、静态变量只有读操作，而无写操作，一般来说，这个全局变量是线程安全的；若有多个线程同时执行写操作，一般都需要考虑线程同步，否则就可能影响线程安全</p>
-<p>不妨来一个实例<br>首先是number类，里面有一个计数的全局和静态变量<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">package com.zwl.test;</div><div class="line"></div><div class="line">public class number &#123;</div><div class="line"></div><div class="line">	private int num;</div><div class="line">	private static int count;</div><div class="line">	</div><div class="line">	public void count()&#123;</div><div class="line">		for(int i=1;i&lt;=10;i++)&#123;</div><div class="line">			num+=i;</div><div class="line">		&#125;</div><div class="line">		System.out.println(Thread.currentThread().getName()+":"+num);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void countstatic()&#123;</div><div class="line">		for(int i=1;i&lt;=10;i++)&#123;</div><div class="line">			count+=i;</div><div class="line">		&#125;</div><div class="line">		System.out.println(Thread.currentThread().getName()+":"+count);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>显然我们希望每个线程都能输出的结果是55就是线程安全</p>
-<p>线面是测试类：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">package com.zwl.test;</div><div class="line"></div><div class="line">public class test &#123;</div><div class="line"></div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">	</div><div class="line">		Runnable runner=new Runnable() &#123;</div><div class="line">			number num=new number();</div><div class="line">			@Override</div><div class="line">			public void run() &#123;</div><div class="line">				num.count();</div><div class="line">				System.out.println("statis:");</div><div class="line">				num.countstatic();</div><div class="line">			&#125;</div><div class="line">		&#125;;</div><div class="line"></div><div class="line">		for(int i=0;i&lt;10;i++)&#123;</div><div class="line">			new Thread(runner).start();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>这里启动十个线程，依次通过run方法输出全局和静态变量的累加和，如果是线程安全的，则应该都是55</p>
-<p>结果如下所示</p>
-<blockquote>
-<p>Thread-0:55<br>statis:<br>Thread-0:55<br>Thread-1:110<br>statis:<br>Thread-1:110<br>Thread-2:165<br>statis:<br>Thread-2:165<br>Thread-6:275<br>statis:<br>Thread-6:220<br>Thread-3:385<br>statis:<br>Thread-4:220<br>statis:<br>Thread-3:275<br>Thread-8:385<br>statis:<br>Thread-8:385<br>Thread-4:330<br>Thread-5:440<br>statis:<br>Thread-5:440<br>Thread-7:495<br>statis:<br>Thread-7:495<br>Thread-9:550<br>statis:<br>Thread-9:550</p>
-</blockquote>
-<p>发现不是线程安全的</p>
-<h4 id="线程不安全"><a href="#线程不安全" class="headerlink" title="线程不安全"></a>线程不安全</h4><p>线程不安全就是不提供数据访问保护，有可能出现多个线程先后更改数据造成所得到的数据是脏数据</p>
-<p>对于上面的线程不安全可以进行如下修改</p>
-<p>解决方法：将全局变量变成局部变量（静态变量暂时不讨论）<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public void count()&#123;</div><div class="line">		int num = 0;</div><div class="line">		for(int i=1;i&lt;=10;i++)&#123;</div><div class="line">			num+=i;</div><div class="line">		&#125;</div><div class="line">		System.out.println(Thread.currentThread().getName()+":"+num);</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>最后所有的线程都输出了55</p>
-<p>或者将new 的number放到run里面，变成局部的<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">			public void run() &#123;</div><div class="line">				number num=new number();</div><div class="line">				num.count();</div><div class="line">				System.out.println("statis:");</div><div class="line">				num.countstatic();</div><div class="line">			&#125;</div><div class="line">		&#125;;</div></pre></td></tr></table></figure></p>
-<p>最后也能保证了线程安全了</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;关于线程问题基本上贯穿学习的整个过程，像集合，servlet，structs，hibernate，spring等等，其都涉及到线程问题&lt;/p
-    
-    </summary>
-    
-      <category term="学习进阶" scheme="http://www.myzwl.win/categories/%E5%AD%A6%E4%B9%A0%E8%BF%9B%E9%98%B6/"/>
-    
-    
-      <category term="java集合" scheme="http://www.myzwl.win/source/tags/java%E9%9B%86%E5%90%88/"/>
     
   </entry>
   
