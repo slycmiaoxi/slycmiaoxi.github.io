@@ -1,0 +1,1238 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java基础," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言不得不说，我们平时在写程序时遇到最多的情形或者最头疼的事情就是遇到异常，然后各种调试，各种方法用尽最后才解决它，那么异常主要分为几类，每个类又有什么特征了（如图）从大的角度说主要分成两类：Error类代表了编译和系统的错误，不允许捕获，也就是我们自己无法主动去处理它；Exception类代表了我们可捕获并且可自己可处理异常，而Exception有包括两类，一个是你必须要处理的异常，如某个类有t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java异常处理一">
+<meta property="og:url" content="http://www.myzwl.win/2017/07/16/yc_1/index.html">
+<meta property="og:site_name" content="秒西">
+<meta property="og:description" content="前言不得不说，我们平时在写程序时遇到最多的情形或者最头疼的事情就是遇到异常，然后各种调试，各种方法用尽最后才解决它，那么异常主要分为几类，每个类又有什么特征了（如图）从大的角度说主要分成两类：Error类代表了编译和系统的错误，不允许捕获，也就是我们自己无法主动去处理它；Exception类代表了我们可捕获并且可自己可处理异常，而Exception有包括两类，一个是你必须要处理的异常，如某个类有t">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs4/11.gif">
+<meta property="og:updated_time" content="2017-08-05T05:27:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java异常处理一">
+<meta name="twitter:description" content="前言不得不说，我们平时在写程序时遇到最多的情形或者最头疼的事情就是遇到异常，然后各种调试，各种方法用尽最后才解决它，那么异常主要分为几类，每个类又有什么特征了（如图）从大的角度说主要分成两类：Error类代表了编译和系统的错误，不允许捕获，也就是我们自己无法主动去处理它；Exception类代表了我们可捕获并且可自己可处理异常，而Exception有包括两类，一个是你必须要处理的异常，如某个类有t">
+<meta name="twitter:image" content="http://www.myzwl.win/images/imgs4/11.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":true,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.myzwl.win/2017/07/16/yc_1/"/>
+
+
+
+
+
+  <title> java异常处理一 | 秒西 </title>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"   background="imags/bg.jpg" style="opacity: 0.7;background-color: transparent;">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秒西</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+	
+	<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+    function c() {
+        var e = document.createElement("link");
+        e.setAttribute("type", "text/css");
+        e.setAttribute("rel", "stylesheet");
+        e.setAttribute("href", f);
+        e.setAttribute("class", l);
+        document.body.appendChild(e)
+    }
+
+    function h() {
+        var e = document.getElementsByClassName(l);
+        for (var t = 0; t < e.length; t++) {
+            document.body.removeChild(e[t])
+        }
+    }
+
+    function p() {
+        var e = document.createElement("div");
+        e.setAttribute("class", a);
+        document.body.appendChild(e);
+        setTimeout(function() {
+            document.body.removeChild(e)
+        }, 100)
+    }
+
+    function d(e) {
+        return {
+            height : e.offsetHeight,
+            width : e.offsetWidth
+        }
+    }
+
+    function v(i) {
+        var s = d(i);
+        return s.height > e && s.height < n && s.width > t && s.width < r
+    }
+
+    function m(e) {
+        var t = e;
+        var n = 0;
+        while (!!t) {
+            n += t.offsetTop;
+            t = t.offsetParent
+        }
+        return n
+    }
+
+    function g() {
+        var e = document.documentElement;
+        if (!!window.innerWidth) {
+            return window.innerHeight
+        } else if (e && !isNaN(e.clientHeight)) {
+            return e.clientHeight
+        }
+        return 0
+    }
+
+    function y() {
+        if (window.pageYOffset) {
+            return window.pageYOffset
+        }
+        return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+    }
+
+    function E(e) {
+        var t = m(e);
+        return t >= w && t <= b + w
+    }
+
+    function S() {
+        var e = document.createElement("audio");
+        e.setAttribute("class", l);
+        e.src = i;
+        e.loop = false;
+        e.addEventListener("canplay", function() {
+            setTimeout(function() {
+                x(k)
+            }, 500);
+            setTimeout(function() {
+                N();
+                p();
+                for (var e = 0; e < O.length; e++) {
+                    T(O[e])
+                }
+            }, 15500)
+        }, true);
+        e.addEventListener("ended", function() {
+            N();
+            h()
+        }, true);
+        e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+        document.body.appendChild(e);
+        e.play()
+    }
+
+    function x(e) {
+        e.className += " " + s + " " + o
+    }
+
+    function T(e) {
+        e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+    }
+
+    function N() {
+        var e = document.getElementsByClassName(s);
+        var t = new RegExp("\\b" + s + "\\b");
+        for (var n = 0; n < e.length; ) {
+            e[n].className = e[n].className.replace(t, "")
+        }
+    }
+
+    var e = 30;
+    var t = 30;
+    var n = 350;
+    var r = 350;
+    var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+    var s = "mw-harlem_shake_me";
+    var o = "im_first";
+    var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+    var a = "mw-strobe_light";
+    var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+    var l = "mw_added_css";
+    var b = g();
+    var w = y();
+    var C = document.getElementsByTagName("*");
+    var k = null;
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            if (E(A)) {
+                k = A;
+                break
+            }
+        }
+    }
+    if (A === null) {
+        console.warn("Could not find a node of the right size. Please try a different page.");
+        return
+    }
+    c();
+    S();
+    var O = [];
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            O.push(A)
+        }
+    }
+})()    '>让标题抖起来</a> </li>
+	
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/07/16/yc_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java异常处理一
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-16T13:48:51+08:00">
+                2017-07-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java基础/" itemprop="url" rel="index">
+                    <span itemprop="name">java基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/07/16/yc_1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>不得不说，我们平时在写程序时遇到最多的情形或者最头疼的事情就是遇到异常，然后各种调试，各种方法用尽最后才解决它，那么异常主要分为几类，每个类又有什么特征了（如图）<br><img src="/images/imgs4/11.gif" alt="Alt text"><br>从大的角度说主要分成两类：Error类代表了编译和系统的错误，不允许捕获，也就是我们自己无法主动去处理它；Exception类代表了我们可捕获并且可自己可处理异常，而Exception有包括两类，一个是你必须要处理的异常，如某个类有throws异常了，在未进入运行期就必须处理，另一类就是Runtime Exception（运行期异常），就是只有在运行时（也就是编译成class文件）时才知道，这个异常可处理或不处理</p>
+<h4 id="处理异常机制"><a href="#处理异常机制" class="headerlink" title="处理异常机制"></a>处理异常机制</h4><p>在java应用程序中，异常处理机制主要为两种:抛出异常和捕获异常<br><strong>抛出异常</strong><br>简单的说，就是不处理异常，将异常不断抛给上一级，直至某一级有有处理异常措施，一般用throws、throw如</p>
+<blockquote>
+<p>public readFile() throws IOException{<br>    throw new xxx();<br>}</p>
+</blockquote>
+<p><strong>捕获异常</strong><br>定义是这样说的，在方法抛出异常之后，运行时系统将转为寻找合适的异常处理器（exception handler）。潜在的异常处理器是异常发生时依次存留在调用栈中的方法的集合。当异常处理器所能处理的异常类型与方法抛出的异常类型相符时，即为合适 的异常处理器。运行时系统从发生异常的方法开始，依次回查调用栈中的方法，直至找到含有合适异常处理器的方法并执行。当运行时系统遍历调用栈而未找到合适 的异常处理器，则运行时系统终止。同时，意味着Java程序的终止。<br>一般有try..catch语句块，其语法格式如下：</p>
+<blockquote>
+<p>   try {<br>        // 可能会发生异常的程序代码<br>    } catch (Type1 id1){<br>        // 捕获并处置try抛出的异常类型Type1<br>    }<br>    catch (Type2 id2){<br>         //捕获并处置try抛出的异常类型Type2<br>    }  </p>
+</blockquote>
+<pre><code>如果，不管异常有没有捕获，都要执行某段代码，如数据库查询后都要关闭等等，就可以用finally，上面修改
+</code></pre><blockquote>
+<p>   try {<br>        // 可能会发生异常的程序代码<br>    } catch (Type1 id1){<br>        // 捕获并处置try抛出的异常类型Type1<br>    }<br>    catch (Type2 id2){<br>         //捕获并处置try抛出的异常类型Type2<br>    }  finally{<br>        //必须执行的代码<br>    }</p>
+</blockquote>
+<h4 id="try-catch-finally-规则"><a href="#try-catch-finally-规则" class="headerlink" title="try-catch-finally 规则"></a>try-catch-finally 规则</h4><pre><code>try块：用于捕获异常。其后可接0个或多个catch块，如果没有catch块，则必须跟一个finally块
+catch块：用于处理try捕获到的异常。
+finally 块：无论是否捕获或处理异常，finally块里的语句都会被执行。当在try块或catch块中遇到return语句时，finally语句块将在方法返回之前被执行。在以下4种特殊情况下，finally块不会被执行：
+</code></pre><p>1）在finally语句块中发生了异常。<br>2）在前面的代码中用了System.exit()退出程序。<br>3）程序所在的线程死亡。<br>4）关闭CPU。</p>
+<p>try..catch..拥有执行顺序，即第一个catch之后，后面不在执行catch，所以一般将较详细的catch放在最前面，如先捕获IOException在捕获Exception</p>
+<h4 id="throws规则"><a href="#throws规则" class="headerlink" title="throws规则"></a>throws规则</h4><p>1) 如果是不可查异常（unchecked exception），即Error、RuntimeException或它们的子类，那么可以不使用throws关键字来声明要抛出的异常，编译仍能顺利通过，但在运行时会被系统抛出。</p>
+<p>2）必须声明方法可抛出的任何可查异常（checked exception）。即如果一个方法可能出现受可查异常，要么用try-catch语句捕获，要么用throws子句声明将它抛出，否则会导致编译错误</p>
+<p>3)仅当抛出了异常，该方法的调用者才必须处理或者重新抛出该异常。当方法的调用者无力处理该异常的时候，应该继续抛出</p>
+<p>4）调用方法必须遵循任何可查异常的处理和声明规则。若覆盖一个方法，则不能声明与覆盖方法不同的异常。声明的任何异常必须是被覆盖方法所声明异常的同类或子类。<br>如下</p>
+<blockquote>
+<pre><code>void method1() throws IOException{}  //合法    
+</code></pre></blockquote>
+<pre><code>//编译错误，必须捕获或声明抛出IOException    
+void method2(){    
+  method1();    
+}    
+
+//合法，声明抛出IOException    
+void method3()throws IOException {    
+  method1();    
+}    
+
+//合法，声明抛出Exception，IOException是Exception的子类    
+void method4()throws Exception {    
+  method1();    
+}    
+
+//合法，捕获IOException    
+void method5(){    
+ try{    
+    method1();    
+ }catch(IOException e){…}    
+}    
+
+//编译错误，必须捕获或声明抛出Exception    
+void method6(){    
+  try{    
+    method1();    
+  }catch(IOException e){throw new Exception();}    
+}    
+
+//合法，声明抛出Exception    
+void method7()throws Exception{    
+ try{    
+  method1();    
+ }catch(IOException e){throw new Exception();}    
+}   
+
+这里需要注意的是throw 抛出的只能够是可抛出类Throwable 或者其子类的实例对象
+</code></pre><p><strong>Throwable类源码分析</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div></pre></td><td class="code"><pre><div class="line">/**  </div><div class="line">    *   </div><div class="line">    * Throwable是所有Error和Exceptiong的父类  </div><div class="line">    * 注意它有四个构造函数:  </div><div class="line">    * Throwable()  </div><div class="line">    * Throwable(String message)  </div><div class="line">    * Throwable(Throwable cause)  </div><div class="line">    * Throwable(String message, Throwable cause)  </div><div class="line">    *   </div><div class="line">    */    </div><div class="line">    public class Throwable implements Serializable &#123;    </div><div class="line">          private static final long serialVersionUID = -3042686055658047285L;    </div><div class="line">        </div><div class="line">          /**  </div><div class="line">           * Native code saves some indication of the stack backtrace in this slot.  </div><div class="line">           */    </div><div class="line">          private transient Object backtrace;     </div><div class="line">          /** </div><div class="line">       * 描述此异常的信息 </div><div class="line">       */  </div><div class="line">      private String detailMessage;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 表示当前异常由那个Throwable引起 </div><div class="line">        * 如果为null表示此异常不是由其他Throwable引起的 </div><div class="line">        * 如果此对象与自己相同,表明此异常的起因对象还没有被初始化 </div><div class="line">       */  </div><div class="line">      private Throwable cause = this;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 描述异常轨迹的数组 </div><div class="line">       */  </div><div class="line">      private StackTraceElement[] stackTrace;  </div><div class="line">      /** </div><div class="line">       * 构造函数,起因对象没有被初始化可以在以后使用initCause进行初始化 </div><div class="line">        * fillInStackTrace可以用来初始化它的异常轨迹的数组 </div><div class="line">       */  </div><div class="line">      public Throwable() &#123;  </div><div class="line">          fillInStackTrace();  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 构造函数 </div><div class="line">       */  </div><div class="line">      public Throwable(String message) &#123;  </div><div class="line">         //填充异常轨迹数组  </div><div class="line">          fillInStackTrace();  </div><div class="line">         //初始化异常描述信息  </div><div class="line">          detailMessage = message;  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 构造函数,cause表示起因对象 </div><div class="line">       */  </div><div class="line">      public Throwable(String message, Throwable cause) &#123;  </div><div class="line">          fillInStackTrace();  </div><div class="line">          detailMessage = message;  </div><div class="line">          this.cause = cause;  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 构造函数 </div><div class="line">       */  </div><div class="line">      public Throwable(Throwable cause) &#123;  </div><div class="line">          fillInStackTrace();  </div><div class="line">          detailMessage = (cause==null ? null : cause.toString());  </div><div class="line">          this.cause = cause;  </div><div class="line">      &#125;  </div><div class="line">      /** </div><div class="line">       * 获取详细信息 </div><div class="line">       */  </div><div class="line">      public String getMessage() &#123;  </div><div class="line">          return detailMessage;  </div><div class="line">      &#125;  </div><div class="line"></div><div class="line">      /** </div><div class="line">       * 获取详细信息 </div><div class="line">       */  </div><div class="line">      public String getLocalizedMessage() &#123;  </div><div class="line">          return getMessage();  </div><div class="line">      &#125;  </div><div class="line">       /** </div><div class="line">       * 获取起因对象 </div><div class="line">       */  </div><div class="line">      public Throwable getCause() &#123;  </div><div class="line">          return (cause==this ? null : cause);  </div><div class="line">      &#125;  </div><div class="line">      /** </div><div class="line">       * 初始化起因对象,这个方法只能在未被初始化的情况下调用一次 </div><div class="line">       */  </div><div class="line">      public synchronized Throwable initCause(Throwable cause) &#123;  </div><div class="line">         //如果不是未初始化状态则抛出异常  </div><div class="line">          if (this.cause != this)  </div><div class="line">              throw new IllegalStateException("Can't overwrite cause");  </div><div class="line">          </div><div class="line">         //要设置的起因对象与自身相等则抛出异常  </div><div class="line">          if (cause == this)  </div><div class="line">              throw new IllegalArgumentException("Self-causation not permitted");  </div><div class="line">          </div><div class="line">         //设置起因对象  </div><div class="line">          this.cause = cause;  </div><div class="line">         //返回设置的起因的对象  </div><div class="line">          return this;  </div><div class="line">      &#125;  </div><div class="line">      /** </div><div class="line">       * 字符串表示形式 </div><div class="line">       */  </div><div class="line">      public String toString() &#123;       </div><div class="line">          String s = getClass().getName();          </div><div class="line">          String message = getLocalizedMessage();        </div><div class="line">          return (message != null) ? (s + ": " + message) : s;  </div><div class="line">      &#125;  </div><div class="line">      /** </div><div class="line">       * 打印出错误轨迹 </div><div class="line">       */  </div><div class="line">      public void printStackTrace() &#123;   </div><div class="line">          printStackTrace(System.err);  </div><div class="line">      &#125;  </div><div class="line"></div><div class="line">       /** </div><div class="line">       * 打印出错误轨迹 </div><div class="line">       */  </div><div class="line">      public void printStackTrace(PrintStream s) &#123;  </div><div class="line">          synchronized (s) &#123;  </div><div class="line">            //调用当前对象的toString方法  </div><div class="line">              s.println(this);  </div><div class="line">            //获取异常轨迹数组  </div><div class="line">              StackTraceElement[] trace = getOurStackTrace();  </div><div class="line">              </div><div class="line">            //打印出每个元素的字符串表示  </div><div class="line">              for (int i=0; i &lt; trace.length; i++)  </div><div class="line">                s.println("\tat " + trace[i]);  </div><div class="line">  </div><div class="line">            //获取起因对象  </div><div class="line">              Throwable ourCause = getCause();  </div><div class="line">              </div><div class="line">            //递归的打印出起因对象的信息  </div><div class="line">              if (ourCause != null)  </div><div class="line">                ourCause.printStackTraceAsCause(s, trace);  </div><div class="line">          &#125;  </div><div class="line">      &#125;  </div><div class="line">       /** </div><div class="line">       * 打印起因对象的信息 </div><div class="line">       * @param s 打印的流 </div><div class="line">        * @param causedTrace 有此对象引起的异常的异常轨迹  </div><div class="line">       */  </div><div class="line">      private void printStackTraceAsCause(PrintStream s,  </div><div class="line">                                          StackTraceElement[] causedTrace)  </div><div class="line">      &#123;  </div><div class="line">         //获得当前的异常轨迹  </div><div class="line">          StackTraceElement[] trace = getOurStackTrace();  </div><div class="line">         //m为当前异常轨迹数组的最后一个元素位置,   </div><div class="line">         //n为当前对象引起的异常的异常轨迹数组的最后一个元素  </div><div class="line">          int m = trace.length-1, n = causedTrace.length-1;  </div><div class="line">         //分别从两个数组的后面做循环,如果相等则一直循环,直到不等或数组到头  </div><div class="line">          while (m &gt;= 0 &amp;&amp; n &gt;=0 &amp;&amp; trace[m].equals(causedTrace[n])) &#123;  </div><div class="line">              m--; n--;  </div><div class="line">         &#125;  </div><div class="line">          </div><div class="line">         //相同的个数  </div><div class="line">          int framesInCommon = trace.length - 1 - m;  </div><div class="line">          </div><div class="line">         //打印出不同的错误轨迹  </div><div class="line">          s.println("Caused by: " + this);  </div><div class="line">          for (int i=0; i &lt;= m; i++)  </div><div class="line">              s.println("\tat " + trace[i]);  </div><div class="line">          //如果有相同的则打印出相同的个数  </div><div class="line">          if (framesInCommon != 0)  </div><div class="line">              s.println("\t... " + framesInCommon + " more");  </div><div class="line">  </div><div class="line">         //获得此对象的起因对象,并递归打印出信息  </div><div class="line">          Throwable ourCause = getCause();  </div><div class="line">          if (ourCause != null)  </div><div class="line">              ourCause.printStackTraceAsCause(s, trace);  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 打印出错误轨迹 </div><div class="line">       */  </div><div class="line">      public void printStackTrace(PrintWriter s) &#123;   </div><div class="line">          synchronized (s) &#123;  </div><div class="line">              s.println(this);  </div><div class="line">              StackTraceElement[] trace = getOurStackTrace();  </div><div class="line">              for (int i=0; i &lt; trace.length; i++)  </div><div class="line">                  s.println("\tat " + trace[i]);  </div><div class="line">  </div><div class="line">              Throwable ourCause = getCause();  </div><div class="line">              if (ourCause != null)  </div><div class="line">                  ourCause.printStackTraceAsCause(s, trace);  </div><div class="line">          &#125;  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 打印起因对象的信息 </div><div class="line">        */  </div><div class="line">      private void printStackTraceAsCause(PrintWriter s,  </div><div class="line">                                          StackTraceElement[] causedTrace)  </div><div class="line">      &#123;  </div><div class="line">          // assert Thread.holdsLock(s);  </div><div class="line">  </div><div class="line">          // Compute number of frames in common between this and caused  </div><div class="line">          StackTraceElement[] trace = getOurStackTrace();  </div><div class="line">          int m = trace.length-1, n = causedTrace.length-1;  </div><div class="line">          while (m &gt;= 0 &amp;&amp; n &gt;=0 &amp;&amp; trace[m].equals(causedTrace[n])) &#123;  </div><div class="line">              m--; n--;  </div><div class="line">          &#125;  </div><div class="line">          int framesInCommon = trace.length - 1 - m;  </div><div class="line">  </div><div class="line">          s.println("Caused by: " + this);  </div><div class="line">          for (int i=0; i &lt;= m; i++)  </div><div class="line">              s.println("\tat " + trace[i]);  </div><div class="line">          if (framesInCommon != 0)  </div><div class="line">              s.println("\t... " + framesInCommon + " more");  </div><div class="line">  </div><div class="line">          // Recurse if we have a cause  </div><div class="line">          Throwable ourCause = getCause();  </div><div class="line">          if (ourCause != null)  </div><div class="line">              ourCause.printStackTraceAsCause(s, trace);  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 填充异常轨迹 </div><div class="line">       */  </div><div class="line">      public synchronized native Throwable fillInStackTrace();  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 返回当前的异常轨迹的拷贝 </div><div class="line">       */  </div><div class="line">      public StackTraceElement[] getStackTrace() &#123;  </div><div class="line">          return (StackTraceElement[]) getOurStackTrace().clone();  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      </div><div class="line">      /** </div><div class="line">       * 获取当前的异常轨迹 </div><div class="line">        */  </div><div class="line">      private synchronized StackTraceElement[] getOurStackTrace() &#123;  </div><div class="line">         //如果第一次调用此方法则初始化异常轨迹数组  </div><div class="line">          if (stackTrace == null) &#123;  </div><div class="line">            //获得异常轨迹深度  </div><div class="line">              int depth = getStackTraceDepth();  </div><div class="line">            //创建新的异常轨迹数组,并填充它  </div><div class="line">              stackTrace = new StackTraceElement[depth];  </div><div class="line">              </div><div class="line">            for (int i=0; i &lt; depth; i++)  </div><div class="line">                stackTrace[i] = getStackTraceElement(i);//获取指定位标的异常轨迹  </div><div class="line">          &#125;  </div><div class="line">          </div><div class="line">          return stackTrace;  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 设置异常轨迹 </div><div class="line">       */  </div><div class="line">      public void setStackTrace(StackTraceElement[] stackTrace) &#123;  </div><div class="line">         //拷贝设置参数  </div><div class="line">          StackTraceElement[] defensiveCopy =  </div><div class="line">              (StackTraceElement[]) stackTrace.clone();  </div><div class="line">          </div><div class="line">         //如果设置参数有空元素则抛出异常  </div><div class="line">          for (int i = 0; i &lt; defensiveCopy.length; i++)  </div><div class="line">              if (defensiveCopy[i] == null)  </div><div class="line">                  throw new NullPointerException("stackTrace[" + i + "]");  </div><div class="line">  </div><div class="line">         //设置当前对象的异常轨迹  </div><div class="line">          this.stackTrace = defensiveCopy;  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 异常轨迹的深度,0表示无法获得 </div><div class="line">       */  </div><div class="line">      private native int getStackTraceDepth();  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 获取指定位标的异常轨迹 </div><div class="line">       */  </div><div class="line">      private native StackTraceElement getStackTraceElement(int index);  </div><div class="line">  </div><div class="line">      </div><div class="line">      private synchronized void writeObject(java.io.ObjectOutputStream s)  </div><div class="line">          throws IOException  </div><div class="line">      &#123;  </div><div class="line">          getOurStackTrace();  </div><div class="line">          s.defaultWriteObject();  </div><div class="line">      &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>以上源码分析来自于互联网，同时由于目前是jdk1.8和这个源码有一小部分不一样，但不影响整体分析。当然，我们真正关心的是他的下面几个方法</p>
+<blockquote>
+<p>e.getMessage();”用于输出错误性质。通常异常处理常用3个函数来获取异常的有关信息:<br>   getCause()：返回抛出异常的原因。如果 cause 不存在或未知，则返回 null。<br>　 getMeage()：返回异常的消息信息。<br>　 printStackTrace()：对象的堆栈跟踪输出至错误输出流，作为字段 System.err 的值。<br>而当我们出现异常时，就形成一条异常链，一个一个堆栈的打印出相关信息和异常</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>纯属娱乐！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/java基础/" rel="tag"># java基础</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/15/sjjg_10/" rel="next" title="二分查找">
+                <i class="fa fa-chevron-left"></i> 二分查找
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/17/yc_2/" rel="prev" title="java异常处理二">
+                java异常处理二 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+     <div class="comments" id="comments">
+       
+         <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+		 <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+  url: document.location.href, 
+  sourceId: "",
+  productKey: "874139175a2d4e1281085b0f0647e3e1",
+  target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+</script>
+       
+     </div>
+   
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description">try your best</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">71</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/slycmiaoxi" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/images/zwl.png" target="_blank" title="Weixin">
+                  
+                    <i class="fa fa-fw fa-weixin"></i>
+                  
+                  Weixin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+      
+        
+
+
+		
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#处理异常机制"><span class="nav-text">处理异常机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#try-catch-finally-规则"><span class="nav-text">try-catch-finally 规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#throws规则"><span class="nav-text">throws规则</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=86 height=100 src="http://music.163.com/outchain/player?type=0&id=120897804&auto=0&height=90&auto=1&height=86&autoPlay=true" style="width:0px;height:0px;"></iframe>
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+
+
+
+
+
+
+<br/>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.min.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {          
+          jQuery("img").lazyload({
+            placeholder:"http://www.arao.me/loading.gif",
+              effect:"fadeIn"
+            });
+          });
+    </script>
+	<!-- 动态线条 -->
+	<script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+	
+
+
+
+</body>
+</html>
