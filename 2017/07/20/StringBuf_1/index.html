@@ -1,0 +1,1255 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java基础," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言String与StringBuffer的区别，简单地说，就是一个变量和常量的关系。StringBuffer对象的内容可以修改；而String对象一旦产生后就不可以被修改，重新赋值其实是两个对象。
+String常用方法在之前的数据结构与算法中已经模拟了部分String常用的方法
+
+public final class Stringextends Objectimplements Serializ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="String与StringBuffer常用方法总结">
+<meta property="og:url" content="http://www.myzwl.win/2017/07/20/StringBuf_1/index.html">
+<meta property="og:site_name" content="秒西">
+<meta property="og:description" content="前言String与StringBuffer的区别，简单地说，就是一个变量和常量的关系。StringBuffer对象的内容可以修改；而String对象一旦产生后就不可以被修改，重新赋值其实是两个对象。
+String常用方法在之前的数据结构与算法中已经模拟了部分String常用的方法
+
+public final class Stringextends Objectimplements Serializ">
+<meta property="og:updated_time" content="2017-08-07T06:24:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="String与StringBuffer常用方法总结">
+<meta name="twitter:description" content="前言String与StringBuffer的区别，简单地说，就是一个变量和常量的关系。StringBuffer对象的内容可以修改；而String对象一旦产生后就不可以被修改，重新赋值其实是两个对象。
+String常用方法在之前的数据结构与算法中已经模拟了部分String常用的方法
+
+public final class Stringextends Objectimplements Serializ">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":true,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.myzwl.win/2017/07/20/StringBuf_1/"/>
+
+
+
+
+
+  <title> String与StringBuffer常用方法总结 | 秒西 </title>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"   background="imags/bg.jpg" style="opacity: 0.7;background-color: transparent;">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秒西</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+	
+	<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+    function c() {
+        var e = document.createElement("link");
+        e.setAttribute("type", "text/css");
+        e.setAttribute("rel", "stylesheet");
+        e.setAttribute("href", f);
+        e.setAttribute("class", l);
+        document.body.appendChild(e)
+    }
+
+    function h() {
+        var e = document.getElementsByClassName(l);
+        for (var t = 0; t < e.length; t++) {
+            document.body.removeChild(e[t])
+        }
+    }
+
+    function p() {
+        var e = document.createElement("div");
+        e.setAttribute("class", a);
+        document.body.appendChild(e);
+        setTimeout(function() {
+            document.body.removeChild(e)
+        }, 100)
+    }
+
+    function d(e) {
+        return {
+            height : e.offsetHeight,
+            width : e.offsetWidth
+        }
+    }
+
+    function v(i) {
+        var s = d(i);
+        return s.height > e && s.height < n && s.width > t && s.width < r
+    }
+
+    function m(e) {
+        var t = e;
+        var n = 0;
+        while (!!t) {
+            n += t.offsetTop;
+            t = t.offsetParent
+        }
+        return n
+    }
+
+    function g() {
+        var e = document.documentElement;
+        if (!!window.innerWidth) {
+            return window.innerHeight
+        } else if (e && !isNaN(e.clientHeight)) {
+            return e.clientHeight
+        }
+        return 0
+    }
+
+    function y() {
+        if (window.pageYOffset) {
+            return window.pageYOffset
+        }
+        return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+    }
+
+    function E(e) {
+        var t = m(e);
+        return t >= w && t <= b + w
+    }
+
+    function S() {
+        var e = document.createElement("audio");
+        e.setAttribute("class", l);
+        e.src = i;
+        e.loop = false;
+        e.addEventListener("canplay", function() {
+            setTimeout(function() {
+                x(k)
+            }, 500);
+            setTimeout(function() {
+                N();
+                p();
+                for (var e = 0; e < O.length; e++) {
+                    T(O[e])
+                }
+            }, 15500)
+        }, true);
+        e.addEventListener("ended", function() {
+            N();
+            h()
+        }, true);
+        e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+        document.body.appendChild(e);
+        e.play()
+    }
+
+    function x(e) {
+        e.className += " " + s + " " + o
+    }
+
+    function T(e) {
+        e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+    }
+
+    function N() {
+        var e = document.getElementsByClassName(s);
+        var t = new RegExp("\\b" + s + "\\b");
+        for (var n = 0; n < e.length; ) {
+            e[n].className = e[n].className.replace(t, "")
+        }
+    }
+
+    var e = 30;
+    var t = 30;
+    var n = 350;
+    var r = 350;
+    var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+    var s = "mw-harlem_shake_me";
+    var o = "im_first";
+    var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+    var a = "mw-strobe_light";
+    var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+    var l = "mw_added_css";
+    var b = g();
+    var w = y();
+    var C = document.getElementsByTagName("*");
+    var k = null;
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            if (E(A)) {
+                k = A;
+                break
+            }
+        }
+    }
+    if (A === null) {
+        console.warn("Could not find a node of the right size. Please try a different page.");
+        return
+    }
+    c();
+    S();
+    var O = [];
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            O.push(A)
+        }
+    }
+})()    '>让标题抖起来</a> </li>
+	
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/07/20/StringBuf_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                String与StringBuffer常用方法总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-20T13:48:51+08:00">
+                2017-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java基础/" itemprop="url" rel="index">
+                    <span itemprop="name">java基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/07/20/StringBuf_1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>String与StringBuffer的区别，简单地说，就是一个变量和常量的关系。StringBuffer对象的内容可以修改；而String对象一旦产生后就不可以被修改，重新赋值其实是两个对象。</p>
+<h4 id="String常用方法"><a href="#String常用方法" class="headerlink" title="String常用方法"></a>String常用方法</h4><p>在之前的数据结构与算法中已经模拟了部分String常用的方法</p>
+<blockquote>
+<p>public final class Stringextends Objectimplements Serializable, Comparable<string>, CharSequence</string></p>
+</blockquote>
+<p><strong>构造方法</strong></p>
+<blockquote>
+<p>public String()：初始化一个新创建的 String 对象，使其表示一个空字符序列。注意，由于 String 是不可变的，所以无需使用此构造方法。<br> public String(String original）：创建一个String对象为original的拷贝<br> public String(char[] value)：用一个字符数组创建一个String对象<br> public String(char[] value, int offset,int count)：用一个字符数组从offset项开始的count个字符序列创建一个String对象</p>
+</blockquote>
+<p><strong>普通方法</strong></p>
+<blockquote>
+<p>public char charAt(int index):返回字符串中第index个字符<br> public int length():返回字符串的长度<br> public int indexOf(String str):返回字符串中出现str的第一个位置<br> public int indexOf(String str,int fromIndex):返回字符串中从fromIndex开始起出现str的第一个位置<br> public boolean equalsIgnoreCase(String another):比较字符串与another是否一样（忽略大小写）<br> public String replace(char oldChar,char newChar):在字符串中用newChar替换oldChar<br> public boolean startWith(String prefix):判断字符串是否以prefix字符串开头<br> public boolean endsWith(String suffix):判断字符串是否以suffix为结尾<br> public String toLowerCase():返回一个字符串为该字符串的小写形式<br> public String substring(int beginIndex):返回该字符串从beginIndex开始到结尾的字符串<br> public String substring(int beginIndex,int endIndex):返回该字符串从beginIndex开始到endIndex结尾的字符串<br> public String trim():返回将该字符串去掉开头和结尾空格后的字符串</p>
+</blockquote>
+<p><strong>静态重载方法</strong></p>
+<blockquote>
+<p>public static String valueOf(..):将基本类型数据转化为字符串，如<br> public static String valueOf(double d)</p>
+</blockquote>
+<p><strong>其它常用方法</strong></p>
+<blockquote>
+<p>public String[] split(String regix):可以将一个字符串按照指定的分隔符分隔，返回分隔后的字符串数组<br>public String concat(String str)//将参数中的字符串str连接到当前字符串的后面，效果等价于”+”；<br>contains(String str)//判断参数s是否被包含在字符串中，并返回一个布尔类型的值。<br>字符串转换为基本类型<br>java.lang包中有Byte、Short、Integer、Float、Double类的调用方法：<br>1)public static byte parseByte(String s)<br>2)public static short parseShort(String s)<br>3)public static short parseInt(String s)<br>4)public static long parseLong(String s)<br>5)public static float parseFloat(String s)<br>6)public static double parseDouble(String s)</p>
+</blockquote>
+<p><strong>字符串比较</strong></p>
+<blockquote>
+<p>1)public int compareTo(String anotherString)//该方法是对字符串内容按字典顺序进行大小比较，通过返回的整数值指明当前字符串与参数字符串的大小关系。若当前对象比参数大则返回正整数，反之返回负整数，相等返回0。<br>2)public int compareToIgnore(String anotherString)//与compareTo方法相似，但忽略大小写。<br>3)public boolean equals(Object anotherObject)//比较当前字符串和参数字符串，在两个字符串相等的时候返回true，否则返回false。<br>4)public boolean equalsIgnoreCase(String anotherString)//与equals方法相似，但忽略大小写。</p>
+</blockquote>
+<h4 id="StringBuffer常用方法"><a href="#StringBuffer常用方法" class="headerlink" title="StringBuffer常用方法"></a>StringBuffer常用方法</h4><p><strong>构造方法</strong></p>
+<blockquote>
+<p>StringBuffer() ：构造一个没有任何字符的StringBuffer类。<br>StringBuffer(int length) ：：构造一个没有任何字符的StringBuffer类，并且，其长度为length。<br>StringBuffer(String str) ：以str为初始值构造一个StringBuffer类。</p>
+</blockquote>
+<p><strong>append方法</strong><br>为该对象添加字符序列，返回添加后的该对象引用，同时是调用了toString方法转化为字符串</p>
+<blockquote>
+<ol>
+<li>StringBuffer append(boolean b)</li>
+<li>StringBuffer append(char c)</li>
+<li>StringBuffer append(char[] str)</li>
+<li>StringBuffer append(char[] str, int offset, int len)</li>
+<li>StringBuffer append(double d)</li>
+<li>StringBuffer append(float f)</li>
+<li>StringBuffer append(int i)</li>
+<li>StringBuffer append(long l)</li>
+<li>StringBuffer append(Object obj)</li>
+<li>StringBuffer append(String str)</li>
+<li>StringBuffer append(StringBuffer sb)</li>
+</ol>
+</blockquote>
+<p><strong>其他方法</strong></p>
+<blockquote>
+<p>12.int capacity() ：返回当前StringBuffer对象（字符串缓冲区）的总空间，而非字符号串的长度。</p>
+<ol>
+<li>char charAt(int index) ：在当前StringBuffer对象中取索引号为index的字符。第一个字符的索引为“0”</li>
+<li>StringBuffer delete(int start, int end) ：删除当前StringBuffer对象中以索引号start开始，到end结束的子串。</li>
+<li>StringBuffer deleteCharAt(int index) ：删除当前StringBuffer对象中索引号为index的字符。</li>
+<li>void ensureCapacity(int minimumCapacity) ：重新设置字符号串缓冲区的总空间。如果minimumCapacity大于当前的总空间，则新的空间被设置：一种结果是minimumCapacity；另一种结果是{“老空间”乘2加2}<br>17.void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) ：从当前StringBuffer对象的索引号srcBegin开始，到srcEnd结束的子串，赋值到字符数组dst中，并且从dst的索引号dstBegin开始</li>
+<li>int indexOf(String str) ：返回当前StringBuffer对象中，第一个满足str子串的位置。</li>
+<li>int indexOf(String str, int fromIndex) ：从当前StringBuffer对象的fromIndex开始查找，返回第一个满足str子串的位置。</li>
+<li>StringBuffer insert(int offset, boolean b)</li>
+<li>StringBuffer insert(int offset, char c)</li>
+<li>StringBuffer insert(int offset, char[] str)</li>
+<li>StringBuffer insert(int index, char[] str, int offset, int len)</li>
+<li>StringBuffer insert(int offset, double d)</li>
+<li>StringBuffer insert(int offset, float f)</li>
+<li>StringBuffer insert(int offset, int i)</li>
+<li>StringBuffer insert(int offset, long l)</li>
+<li>StringBuffer insert(int offset, Object obj)</li>
+<li>StringBuffer insert(int offset, String str)</li>
+<li>int lastIndexOf(String str) ：返回当前StringBuffer对象中，最后一个满足str子串的位置。</li>
+<li>int lastIndexOf(String str, int fromIndex) ：从当前StringBuffer对象的fromIndex开始查找，返回最后一个满足str子串的位置。</li>
+<li>int length() ：返回当前StringBuffer对象（字符缓冲区）中，字符串的长度。注意：此方法与capacity() 不同。</li>
+<li>StringBuffer replace(int start, int end, String str) ：替换当前StringBuffer对象的字符串。从start开始，到end结束的位置替换成str。</li>
+<li>StringBuffer reverse() ：将字符串翻转。</li>
+<li>void setCharAt(int index, char ch) ：设置索引号index的字符为ch。</li>
+<li>void setLength(int newLength) ：重新设置字符串缓冲区中字符串的长度，如果newLength小于当前的字符串长度，将截去多余的字符。</li>
+<li>String substring(int start) ：取当前StringBuffer对象中，从start开始到结尾的子串。</li>
+<li>String substring(int start, int end) ：取当前StringBuffer对象中，从start开始到end的子串。</li>
+<li>String toString() ：将当前StringBuffer对象转换成String对象。</li>
+</ol>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>纯属娱乐！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/java基础/" rel="tag"># java基础</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/19/suanfa_2/" rel="next" title="Brute-Force与KMP算法">
+                <i class="fa fa-chevron-left"></i> Brute-Force与KMP算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/21/jihes_1/" rel="prev" title="常用集合类简单总结">
+                常用集合类简单总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+     <div class="comments" id="comments">
+       
+         <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+		 <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+  url: document.location.href, 
+  sourceId: "",
+  productKey: "874139175a2d4e1281085b0f0647e3e1",
+  target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+</script>
+       
+     </div>
+   
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description">try your best</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">75</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/slycmiaoxi" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/images/zwl.png" target="_blank" title="Weixin">
+                  
+                    <i class="fa fa-fw fa-weixin"></i>
+                  
+                  Weixin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+      
+        
+
+
+		
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#String常用方法"><span class="nav-text">String常用方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#StringBuffer常用方法"><span class="nav-text">StringBuffer常用方法</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=86 height=100 src="http://music.163.com/outchain/player?type=0&id=120897804&auto=0&height=90&auto=1&height=86&autoPlay=true" style="width:0px;height:0px;"></iframe>
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+
+
+
+
+
+
+<br/>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.min.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {          
+          jQuery("img").lazyload({
+            placeholder:"http://www.arao.me/loading.gif",
+              effect:"fadeIn"
+            });
+          });
+    </script>
+	<!-- 动态线条 -->
+	<script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+	
+
+
+
+</body>
+</html>

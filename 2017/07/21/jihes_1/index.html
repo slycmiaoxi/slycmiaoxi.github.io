@@ -1,0 +1,1203 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java基础," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言在没有集合之前我们都是直接用数组存放对象，但是这样操作会很不方便，于是利用数据结构封装了一些列集合，而集合中不存放输几局的基本类型，只存放对象的引用，如图（部分集合源码分析在之前的总结中已经简单研究过）java集合主要分为以下三种类型：Set(集)：集合中的对象不按特定方式排序，且没有重复对象。它的有些实现类能对集合中的对象按照特地方式排序。List(列表)：集合中的对象按照索引位置排序，可以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用集合类简单总结">
+<meta property="og:url" content="http://www.myzwl.win/2017/07/21/jihes_1/index.html">
+<meta property="og:site_name" content="秒西">
+<meta property="og:description" content="前言在没有集合之前我们都是直接用数组存放对象，但是这样操作会很不方便，于是利用数据结构封装了一些列集合，而集合中不存放输几局的基本类型，只存放对象的引用，如图（部分集合源码分析在之前的总结中已经简单研究过）java集合主要分为以下三种类型：Set(集)：集合中的对象不按特定方式排序，且没有重复对象。它的有些实现类能对集合中的对象按照特地方式排序。List(列表)：集合中的对象按照索引位置排序，可以">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs4/1.png">
+<meta property="og:updated_time" content="2017-08-08T12:17:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常用集合类简单总结">
+<meta name="twitter:description" content="前言在没有集合之前我们都是直接用数组存放对象，但是这样操作会很不方便，于是利用数据结构封装了一些列集合，而集合中不存放输几局的基本类型，只存放对象的引用，如图（部分集合源码分析在之前的总结中已经简单研究过）java集合主要分为以下三种类型：Set(集)：集合中的对象不按特定方式排序，且没有重复对象。它的有些实现类能对集合中的对象按照特地方式排序。List(列表)：集合中的对象按照索引位置排序，可以">
+<meta name="twitter:image" content="http://www.myzwl.win/images/imgs4/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":true,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.myzwl.win/2017/07/21/jihes_1/"/>
+
+
+
+
+
+  <title> 常用集合类简单总结 | 秒西 </title>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"   background="imags/bg.jpg" style="opacity: 0.7;background-color: transparent;">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秒西</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+	
+	<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+    function c() {
+        var e = document.createElement("link");
+        e.setAttribute("type", "text/css");
+        e.setAttribute("rel", "stylesheet");
+        e.setAttribute("href", f);
+        e.setAttribute("class", l);
+        document.body.appendChild(e)
+    }
+
+    function h() {
+        var e = document.getElementsByClassName(l);
+        for (var t = 0; t < e.length; t++) {
+            document.body.removeChild(e[t])
+        }
+    }
+
+    function p() {
+        var e = document.createElement("div");
+        e.setAttribute("class", a);
+        document.body.appendChild(e);
+        setTimeout(function() {
+            document.body.removeChild(e)
+        }, 100)
+    }
+
+    function d(e) {
+        return {
+            height : e.offsetHeight,
+            width : e.offsetWidth
+        }
+    }
+
+    function v(i) {
+        var s = d(i);
+        return s.height > e && s.height < n && s.width > t && s.width < r
+    }
+
+    function m(e) {
+        var t = e;
+        var n = 0;
+        while (!!t) {
+            n += t.offsetTop;
+            t = t.offsetParent
+        }
+        return n
+    }
+
+    function g() {
+        var e = document.documentElement;
+        if (!!window.innerWidth) {
+            return window.innerHeight
+        } else if (e && !isNaN(e.clientHeight)) {
+            return e.clientHeight
+        }
+        return 0
+    }
+
+    function y() {
+        if (window.pageYOffset) {
+            return window.pageYOffset
+        }
+        return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+    }
+
+    function E(e) {
+        var t = m(e);
+        return t >= w && t <= b + w
+    }
+
+    function S() {
+        var e = document.createElement("audio");
+        e.setAttribute("class", l);
+        e.src = i;
+        e.loop = false;
+        e.addEventListener("canplay", function() {
+            setTimeout(function() {
+                x(k)
+            }, 500);
+            setTimeout(function() {
+                N();
+                p();
+                for (var e = 0; e < O.length; e++) {
+                    T(O[e])
+                }
+            }, 15500)
+        }, true);
+        e.addEventListener("ended", function() {
+            N();
+            h()
+        }, true);
+        e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+        document.body.appendChild(e);
+        e.play()
+    }
+
+    function x(e) {
+        e.className += " " + s + " " + o
+    }
+
+    function T(e) {
+        e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+    }
+
+    function N() {
+        var e = document.getElementsByClassName(s);
+        var t = new RegExp("\\b" + s + "\\b");
+        for (var n = 0; n < e.length; ) {
+            e[n].className = e[n].className.replace(t, "")
+        }
+    }
+
+    var e = 30;
+    var t = 30;
+    var n = 350;
+    var r = 350;
+    var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+    var s = "mw-harlem_shake_me";
+    var o = "im_first";
+    var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+    var a = "mw-strobe_light";
+    var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+    var l = "mw_added_css";
+    var b = g();
+    var w = y();
+    var C = document.getElementsByTagName("*");
+    var k = null;
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            if (E(A)) {
+                k = A;
+                break
+            }
+        }
+    }
+    if (A === null) {
+        console.warn("Could not find a node of the right size. Please try a different page.");
+        return
+    }
+    c();
+    S();
+    var O = [];
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            O.push(A)
+        }
+    }
+})()    '>让标题抖起来</a> </li>
+	
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/07/21/jihes_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                常用集合类简单总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-21T13:48:51+08:00">
+                2017-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java基础/" itemprop="url" rel="index">
+                    <span itemprop="name">java基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/07/21/jihes_1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在没有集合之前我们都是直接用数组存放对象，但是这样操作会很不方便，于是利用数据结构封装了一些列集合，而集合中不存放输几局的基本类型，只存放对象的引用，如图（部分集合源码分析在之前的总结中已经简单研究过）<br><img src="/images/imgs4/1.png" alt="Alt text"><br>java集合主要分为以下三种类型：<br>Set(集)：集合中的对象不按特定方式排序，且没有重复对象。它的有些实现类能对集合中的对象按照特地方式排序。<br>List(列表)：集合中的对象按照索引位置排序，可以有重复对象，允许使用索引检索对象。<br>Map(映射)：集合中的每一个元素都包含一对键对象和值对象（key-value），集合中的键对象是不能重复的,它的一些实现类能对集合中的键对象进行排序。</p>
+<p>注意这里的不能重复与比较hashcode和equals有关</p>
+<h4 id="集合底层概述"><a href="#集合底层概述" class="headerlink" title="集合底层概述"></a>集合底层概述</h4><p><strong>Collection接口</strong><br>Collection接口是Set、List、Queue接口的父接口，提供了多数集合常用的方法声明，包括 add()、remove()、contains() 、size() 、iterator() 等</p>
+<p><strong>List接口</strong><br>它的特点是有序可重复，使用此接口能够精确的控制每个元素插入的位置用户能够使用索引来访问List中的元素并且允许有可重复的元素</p>
+<p><strong>ArrayList</strong><br>底层实现是一个动态的数组，查询快，增删慢，线程不安全，效率高</p>
+<p><strong>LinkedList</strong><br>底层实现是一个双向循环链表，查询慢，增删快，线程不安全，效率较高</p>
+<p><strong>Vector</strong><br>是ArrlyList的线程安全版，底层同它基本一致，但是效率低，现在基本很少用</p>
+<p><strong>Set接口</strong><br>它的特点就是唯一性并且不允许出现重复元素和是无序的</p>
+<p><strong>hashSet</strong><br>底层是基于哈希表实现的，而其核心就是先比较hashCode（）值是否相同（相当于索引），然后在用equals比较是否相同，从而确定元素是否重复，所以当不希望集合中有重复值，并且不关心元素之间的顺序时可以使用此类</p>
+<p><strong>LinkedHashSet</strong><br>底层实现是使用链表和哈希表，它由链表保证元素有序，哈希表保证元素唯一，因此当不希望集合中有重复值，并且希望按照元素的插入顺序进行迭代遍历时可采用此类</p>
+<p><strong>TreeSet</strong><br>底层实现是红黑树，也就是一种平衡AVL树，通过比较返回值是否是0来保证元素唯一性，并且通过自然排序来保证元素的排序（自然排序也就是让元素所属的类实现Comparable接口，比如abc排在abd前面，总之就是和插入顺序无关，只和元素本身的内容和特质有关）</p>
+<p><strong>Queue接口</strong><br>它的特点就是队列，即用于保存将要执行的任务列表</p>
+<p><strong>LinkedList</strong><br>实现了该接口，可以实现先进先出的队列</p>
+<p><strong>PriorityQueue</strong><br>底层采用某种排序的单链表存储队列元素，用来创建自然排序的优先级队列</p>
+<p><strong>Map接口</strong><br>Map关心的是唯一的标识符，也就是将唯一的键映射到某个元素，以键值对形式存储，键唯一，值可重复</p>
+<p><strong>HashMap</strong><br>底层实现是基于哈希表依赖于hashCode（）和equals（）方法，线程不安全，允许key和value为NULL，效率高</p>
+<p><strong>Hashtable</strong><br>HashMap的线程安全版，效率低，不允许key和value为NULL</p>
+<p><strong>LinkedHashMap</strong><br>底层是由链表和哈希表组成，链表保证元素有序，哈希表保证元素唯一，所以当需要键值对，并且关心插入顺序时可采用它</p>
+<p><strong>TreeMap</strong><br>底层是由红黑树实现，当需要键值对，并关心元素的自然排序时可采用它</p>
+<p><strong>Collections</strong><br>内置了一些常见的集合算法，像排序，查找算法等</p>
+<h4 id="如何选择哪种集合"><a href="#如何选择哪种集合" class="headerlink" title="如何选择哪种集合"></a>如何选择哪种集合</h4><p>1 首先看是否是键值对形式<br>  是的话就选择Map<br>   然后再看是否需要排序：<br>     是的话就是TreeMap<br>     不是的话就是HashMap<br>     一般情况下都使用HashMap<br>   不是键值对的话就选择Collection<br>     再看元素是否唯一：<br>       是的话就选set<br>         元素是否需要排序<br>           是的话就选TreeSet<br>           反之选择HashSet<br>          一般情况选择HashSet<br>        不是元素唯一就选List<br>          再看是否是否需要线程安全：<br>           是的话就选Vector<br>            不是的话就选择ArrayList或者LinkedList<br>             增删选择：LinkedList<br>              查询选择ArrayList<br>              一般情况下都选择ArrayList</p>
+<h4 id="集合常见方法"><a href="#集合常见方法" class="headerlink" title="集合常见方法"></a>集合常见方法</h4><p><strong>Collection的常见方法</strong></p>
+<blockquote>
+<p>1，添加。<br>    boolean add(Object obj):<br>    boolean addAll(Collection coll):<br>2，删除。<br>    boolean remove(object obj):<br>    boolean removeAll(Collection coll);<br>    void clear();<br>3，判断：<br>    boolean contains(object obj):<br>    boolean containsAll(Colllection coll);<br>    boolean isEmpty():判断集合中是否有元素。<br>4，获取：<br>    int size():<br>    Iterator iterator():取出元素的方式：迭代器。<br> 5，其他：<br>    boolean retainAll(Collection coll);取交集。<br>    Object[] toArray():将集合转成数组。 </p>
+</blockquote>
+<p><strong>Map的常见方法</strong></p>
+<blockquote>
+<p> 1，添加。<br>          value put(key,value):返回前一个和key关联的值，如果没有返回null.<br> 2，删除。<br>            void  clear():清空map集合。<br>            value remove(key):根据指定的key翻出这个键值对。<br> 3，判断。<br>                boolean containsKey(key):<br>                boolean containsValue(value):<br>                boolean isEmpty();<br> 4，获取。<br>                value get(key):通过键获取值，如果没有该键返回null。                        当然可以通过返回null，来判断是否包含指定键。<br>                int size(): 获取键值对的个数。<br>5.特殊方法： Collection<v> values() 包含的值的 Collection 视图。<br>             Set<map.entry<k,v>&gt; entrySet()方法：返回一个set集合，里面装的是Map.Entry接口类型的键值对象</map.entry<k,v></v></p>
+</blockquote>
+<p><strong>Map遍历方法</strong></p>
+<blockquote>
+<p>  第一种遍历的方法<br>  Set<k> keySet()：返回键的set集合<br> 取出map中的所有元素。<br> 原理，通过keySet方法获取map中所有的键所在的Set集合，在通过Set的迭代器获取到每一个键，<br>  在对每一个键通过map集合的get方法获取其对应的值即可。<br>    Set<integer> keySet = map.keySet();<br>        System.out.println(keySet);//键的set集合<br>        Iterator<integer> it = keySet.iterator();//迭代keySet<br>        while(it.hasNext()){<br>            Integer key = it.next();<br>            String value = map.get(key);<br>            System.out.println(key+”:”+value);<br>        }</integer></integer></k></p>
+<p>第二种遍历map的方式：通过看API:Set<map.entry<k,v>&gt; entrySet()：Map.Entry<k,v>接口类型，<br>  里面有K getKey() 返回与此项对应的键。 V getValue()  返回与此项对应的值。<br>  Set<map.entry<integer, string="">&gt;entrySet = map.entrySet();<br>        System.out.println(entrySet);//键值对对象<br>        Iterator<map.entry<integer, string="">&gt;it = entrySet.iterator();<br>        while(it.hasNext()){<br>            Map.Entry<integer, string=""> entryMap = it.next();<br>            Integer key = entryMap.getKey();//获取键<br>            String value = entryMap.getValue();//获取值<br>            System.out.println(key+”:”+value);<br>  }</integer,></map.entry<integer,></map.entry<integer,></k,v></map.entry<k,v></p>
+</blockquote>
+<h4 id="collections常用方法"><a href="#collections常用方法" class="headerlink" title="collections常用方法"></a>collections常用方法</h4><p>由于该集合工具类方法太多，只总结出部分<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">sort</span><span class="params">(Collection)</span></span>：对集合进行自然排序</div><div class="line"><span class="function"><span class="title">reverse</span><span class="params">()</span></span>：反转集合中元素的顺序</div><div class="line"><span class="function"><span class="title">shuffle</span><span class="params">(Collection)</span></span>：对集合进行随机排序</div><div class="line"><span class="function"><span class="title">fill</span><span class="params">(List list,Object o)</span></span>：用对象o替换集合list中的所有元素</div><div class="line"><span class="function"><span class="title">copy</span><span class="params">(List m,List n)</span></span>：将集合n中的元素全部复制到m中,并且覆盖相应索引的元素</div><div class="line"><span class="function"><span class="title">min</span><span class="params">(Collection)</span></span>,min(Collection,Comparator)：前者采用Collection内含自然比较法，后者采用Comparator进行比较</div><div class="line"><span class="function"><span class="title">max</span><span class="params">(Collection)</span></span>,max(Collection,Comparator)：同上</div><div class="line"><span class="function"><span class="title">indexOfSubList</span><span class="params">(List list,List subList)</span></span>：查找subList在list中首次出现位置的索引</div><div class="line"><span class="function"><span class="title">swap</span><span class="params">(List list,int i,int j)</span></span>：交换集合中指定元素索引的位置</div><div class="line">.binarySearch(Collection,Object)：查找指定集合中的元素，返回所查找元素的索引</div><div class="line"><span class="function"><span class="title">replaceAll</span><span class="params">(List list,Object old,Object new)</span></span>：替换批定元素为某元素,若要替换的值存在刚返回true,反之返回false</div></pre></td></tr></table></figure></p>
+<p>最后不得不说集合容器是在太复杂了，它包装了许许多多的数据结构和算法，也正是因为如此，才大大简化了难度，但同时也说明了数据结构与算法的重要性，只有我们真正理解了算法和数据结构，才能更好的驾驭集合类</p>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>纯属娱乐！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/java基础/" rel="tag"># java基础</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/20/StringBuf_1/" rel="next" title="String与StringBuffer常用方法总结">
+                <i class="fa fa-chevron-left"></i> String与StringBuffer常用方法总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+     <div class="comments" id="comments">
+       
+         <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+		 <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+  url: document.location.href, 
+  sourceId: "",
+  productKey: "874139175a2d4e1281085b0f0647e3e1",
+  target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+</script>
+       
+     </div>
+   
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description">try your best</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">75</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/slycmiaoxi" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/images/zwl.png" target="_blank" title="Weixin">
+                  
+                    <i class="fa fa-fw fa-weixin"></i>
+                  
+                  Weixin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+      
+        
+
+
+		
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#集合底层概述"><span class="nav-text">集合底层概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何选择哪种集合"><span class="nav-text">如何选择哪种集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集合常见方法"><span class="nav-text">集合常见方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#collections常用方法"><span class="nav-text">collections常用方法</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=86 height=100 src="http://music.163.com/outchain/player?type=0&id=120897804&auto=0&height=90&auto=1&height=86&autoPlay=true" style="width:0px;height:0px;"></iframe>
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+
+
+
+
+
+
+<br/>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.min.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {          
+          jQuery("img").lazyload({
+            placeholder:"http://www.arao.me/loading.gif",
+              effect:"fadeIn"
+            });
+          });
+    </script>
+	<!-- 动态线条 -->
+	<script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+	
+
+
+
+</body>
+</html>
