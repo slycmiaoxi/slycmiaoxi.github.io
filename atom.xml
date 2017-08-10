@@ -5,10 +5,193 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-08-08T12:17:58.000Z</updated>
+  <updated>2017-08-10T08:11:46.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>死锁和生产者消费者问题</title>
+    <link href="http://www.myzwl.win/2017/07/26/procos_1/"/>
+    <id>http://www.myzwl.win/2017/07/26/procos_1/</id>
+    <published>2017-07-26T05:48:51.000Z</published>
+    <updated>2017-08-10T08:11:46.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h4><p>线程同步操作的是同一个线程对象，所以可能造成线程不安全，出现非数据的原子操作，所以，需要加锁，同时线程是程序的执行顺序，也就是cpu根据不同时间片选择某个时间执行某个线程，关于线程并发，在以前的总结中做过了几个简单的总结。<br>而死锁最经典的例子就是哲学家进餐问题，每个哲学家都左手拿着一只筷子，并且总共有五个哲学家，5个筷子，只有当哲学家左右手都有筷子时才能进餐，所以每个哲学家都在等右边哲学家方上筷子，处于僵持等待状态，称为死锁。<br>这里模仿两个线程死锁的情况<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">public class LockTest implements Runnable&#123;</div><div class="line"></div><div class="line">	public int flag=1;</div><div class="line">	 static Object o1=new Object(),o2=new Object();</div><div class="line">	   </div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		System.out.println("flag="+flag);</div><div class="line">		 if(flag==1)&#123;</div><div class="line">		 synchronized (o1) &#123;</div><div class="line">			try &#123;</div><div class="line">				Thread.sleep(5000);</div><div class="line">			&#125; catch (Exception e) &#123;</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">			synchronized (o2) &#123;</div><div class="line">				System.out.println("1");</div><div class="line">			&#125;</div><div class="line">		 &#125;	 </div><div class="line">		&#125;</div><div class="line">		if(flag==0)&#123;</div><div class="line">			 synchronized (o2) &#123;</div><div class="line">					try &#123;</div><div class="line">						Thread.sleep(5000);</div><div class="line">					&#125; catch (Exception e) &#123;</div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;</div><div class="line">					synchronized (o1) &#123;</div><div class="line">						System.out.println("0");</div><div class="line">					&#125;</div><div class="line">				 &#125;	</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		LockTest lt1=new LockTest();</div><div class="line">		LockTest lt2=new LockTest();</div><div class="line">		 lt1.flag=1;</div><div class="line">		 lt2.flag=0;</div><div class="line">		  Thread t1=new Thread(lt1);</div><div class="line">		  Thread t2=new Thread(lt2);</div><div class="line">		  t1.start();</div><div class="line">		  t2.start();</div><div class="line"></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>结果：</p>
+<blockquote>
+<p>flag=1<br>flag=0</p>
+</blockquote>
+<p>大概分析一下，该类本身是一个线程类，flag用来控制执行哪个锁，O1和O2是两个被锁住对象，flag为1时先锁住o1，在锁住o2，flag为0则相反，而死锁发生就在此处两个线程启动了，o1被锁住了，另一个o2被锁住了，都在等待对方释放锁，显然处于僵持，产生死锁，<br>解决死锁的一个简单办法就是增大锁的粒度，扩大锁对象，比如讲前面的O1与O2改成this<br>结果：</p>
+<blockquote>
+<p>flag=1<br>flag=0<br>1<br>0</p>
+</blockquote>
+<h4 id="生产者与消费者"><a href="#生产者与消费者" class="headerlink" title="生产者与消费者"></a>生产者与消费者</h4><p>概述，模拟一个生产者利用生产食物放到篮子里，而一个消费者从篮子里消费食物<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line">public class Food &#123; //食物类</div><div class="line"> int id;</div><div class="line"> public Food(int id)&#123;</div><div class="line">	 this.id=id;</div><div class="line"> &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class UtilStack &#123;//工具，用来放食物</div><div class="line"></div><div class="line">	int index=0; //食物计数变量</div><div class="line">	Food[] arrFD=new Food[4]; //最多工具能放食物容量</div><div class="line">	</div><div class="line">	public synchronized void push(Food fd)&#123; //生产食物，必须加锁，保证生产过程不被打断</div><div class="line">		while(index==arrFD.length)</div><div class="line">		&#123;</div><div class="line">			try &#123;</div><div class="line">				System.out.println("full");</div><div class="line">				this.wait();  //生产满了，就去休息区休息，等待被唤醒</div><div class="line">			&#125; catch (InterruptedException e) &#123;</div><div class="line">				// TODO Auto-generated catch block</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		this.notify();//唤醒当前在休息区的线程</div><div class="line">		arrFD[index]=fd;</div><div class="line">		index++;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public synchronized Food pop()&#123; //消费</div><div class="line">		while(index==0) //消费完了，进休息区</div><div class="line">			try &#123;</div><div class="line">				System.out.println("empty");</div><div class="line">				this.wait();</div><div class="line">			&#125; catch (InterruptedException e) &#123;</div><div class="line">				// TODO Auto-generated catch block</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		this.notify();</div><div class="line">		index--;</div><div class="line">		return arrFD[index];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class Producer implements Runnable&#123;//生产者</div><div class="line"></div><div class="line">	UtilStack ss=null;</div><div class="line">	</div><div class="line">	Producer(UtilStack ss)&#123;</div><div class="line">		this.ss=ss;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		for(int i=0;i&lt;20;i++)</div><div class="line">		&#123;</div><div class="line">			Food fd=new Food(i);</div><div class="line">			ss.push(fd);</div><div class="line">			System.out.println("生产了"+fd.id);</div><div class="line">			try &#123;</div><div class="line">				Thread.sleep(1000);</div><div class="line">			&#125; catch (InterruptedException e) &#123;</div><div class="line">				// TODO Auto-generated catch block</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">public class Consumer implements Runnable&#123;//消费者</div><div class="line"></div><div class="line">	UtilStack ss=null;</div><div class="line">	</div><div class="line">	Consumer(UtilStack ss)&#123;</div><div class="line">		this.ss=ss;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		for(int i=0;i&lt;20;i++)</div><div class="line">		&#123;</div><div class="line">			Food fd=ss.pop();</div><div class="line">			System.out.println("消费了"+fd.id);</div><div class="line">		 try &#123;</div><div class="line">			Thread.sleep(2000);</div><div class="line">		&#125; catch (InterruptedException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>消费利用一对生产者和消费者模拟</p>
+<blockquote>
+<pre><code>UtilStack ss=new UtilStack();
+    Producer p=new Producer(ss);
+    Consumer c=new Consumer(ss);
+    new Thread(p).start();
+    new Thread(c).start();
+</code></pre></blockquote>
+<p>结果如下：</p>
+<blockquote>
+<p>生产了0<br>消费了0<br>生产了1<br>生产了2<br>消费了2<br>生产了3<br>生产了4<br>消费了4<br>生产了5<br>生产了6<br>消费了6<br>生产了7<br>full<br>消费了7<br>生产了8<br>full<br>消费了8<br>生产了9<br>full<br>消费了9<br>生产了10<br>full<br>消费了10<br>生产了11<br>full<br>消费了11<br>生产了12<br>full<br>消费了12<br>生产了13<br>full<br>消费了13<br>生产了14<br>full<br>消费了14<br>生产了15<br>full</p>
+</blockquote>
+<p>这里优于设置了消费者消费时间长，所以导致index不一样。可以发现当生产者满了，生产者不生产了，进入休息区，等待被唤醒，关于wait（）、notify（）、notifyAll（），在之前的多线程总结中已总结了</p>
+<p><strong>结果分析</strong><br>从中我们可以看到生产者有满了的情况，但是消费者消费完了，index就不满了，然后就去叫醒了生产者继续生产，同样如果我们把消费者时间设置短一点看看，预测应该是empty的，在被生产者叫醒</p>
+<blockquote>
+<p>生产了0<br>消费了0<br>empty<br>消费了1<br>生产了1<br>empty<br>消费了2<br>生产了2<br>empty<br>消费了3<br>生产了3<br>empty<br>生产了4<br>消费了4<br>empty</p>
+</blockquote>
+<p>最后不得不说生产者与消费者问题可以解决平时在项目开发配置中不求甚解的一些问题，像缓冲区、连接池、消息队列、死锁、同步等等，</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;死锁&quot;&gt;&lt;a href=&quot;#死锁&quot; class=&quot;headerlink&quot; title=&quot;死锁&quot;&gt;&lt;/a&gt;死锁&lt;/h4&gt;&lt;p&gt;线程同步操作的是同一个线程对象，所以可能造成线程不安全，出现非数据的原子操作，所以，需要加锁，同时线程是程序的执行顺序，也就是cpu根据不同
+    
+    </summary>
+    
+      <category term="java基础" scheme="http://www.myzwl.win/categories/java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+      <category term="java基础" scheme="http://www.myzwl.win/source/tags/java%E5%9F%BA%E7%A1%80/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>快速排序</title>
+    <link href="http://www.myzwl.win/2017/07/25/quick_1/"/>
+    <id>http://www.myzwl.win/2017/07/25/quick_1/</id>
+    <published>2017-07-25T05:48:51.000Z</published>
+    <updated>2017-08-10T04:46:14.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>快速排序被列为20世纪十大算法之一，正如其名一样，排序的速度非常快。<br>而它的基本思想就是通过一趟排序将待排序的记录分割成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续排序，最终达到有序的目的<br><img src="/images/imgs4/22.gif" alt="Alt text"></p>
+<h4 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h4><p>采取同样的策略，从计算机的角度看看程序是怎么执行的<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">void QuickSort(SqList *L)&#123;</div><div class="line">  QSort(L,1,L-&gt;length);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void QSort(SqList *L,int low,int high)&#123;</div><div class="line">  int pivot;</div><div class="line">   if(low&lt;high)&#123;</div><div class="line">    pivot=Partition(L,low,high);//将L-&gt;r[low..high]一分为二</div><div class="line">     QSort(L,low,pivor-1); //对低子表递归排序</div><div class="line">      QSort(L,pivot+1,high); //对高子表递归排序</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>里面有个函数Partition(L,low,high),和归并排序一样，暂时先不管它，初始化数组为{50,10,90,30,70,40,80,60,20}，初始low=1，high=9；<br>pivot为选择其中一个关键字，比pivot小的排到左边，比pivot大的排到右边，显然此时pivot=5，然后执行 QSort(L，1,4）直至排好序，同样右边也是递归调用QSort（L，6,9），这里的核心算法也就是Partition(L,low,high)如何排序的了<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">int Partition(SqList *L,int low,int high)&#123;</div><div class="line">  int pivotkey;</div><div class="line">   pivotkey=L-&gt;[low]; //用子表的第一个记录做关键字</div><div class="line">    while(low&lt;high)</div><div class="line">    &#123;</div><div class="line">      while(low&lt;high&amp;&amp;L-&gt;r[high]&gt;=pivotkey)</div><div class="line">        high--;</div><div class="line">      swap(L,low,high);//交换low和high的记录</div><div class="line">      while(low&lt;high&amp;&amp;L-&gt;r[low]&lt;=pivotkey)</div><div class="line">         low++;</div><div class="line">       swap(L,low,high);</div><div class="line">    &#125;</div><div class="line">    return low;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>同样一行一行的看，这里默认选取子表的第一个记录作为关键字pivotkey=L-&gt;[low];接下来，由于low=1<high=9，执行内部程序，然后比较l->r[high]=L-&gt;r[9]=20与pivotkey=50大小，显然前者小于后者，不满足，将high与low交换，也就是说小的在左边，此时为{20,10,90.。。50},；然后明显20<50，所以low++；得low=2；并且10<50，在循环，得low=3，此时90>50,退出循环，在此交换位置，得{20,10,50.。。。90}；<br>最后low=3<9在循环，90>50,满足，high–，high=8，有L-&gt;high[8]=60&gt;50;high–;有80&gt;50;high–,有40&lt;50,退出循环，此时high=6，交换，依次类推，最终low=high=5，退出整个循环<br>最后在分别递归低和高的子表，最后我们发现他的规律如此只简单，遇到比关键字小的，依次递增比较，直到有比它大的，在换另一边比较，不得不说快速排序实在是太精妙了</9在循环，90></50，所以low++；得low=2；并且10<50，在循环，得low=3，此时90></high=9，执行内部程序，然后比较l-></p>
+<p>最后再来看一下快速排序的时间复杂度，在最优的情况下为O（nlogn);</p>
+<h4 id="排序算法间的比较"><a href="#排序算法间的比较" class="headerlink" title="排序算法间的比较"></a>排序算法间的比较</h4><p><img src="/images/imgs4/2.png" alt="Alt text"><br>分类<br><img src="/images/imgs4/15.jpg" alt="Alt text"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;快速排序被列为20世纪十大算法之一，正如其名一样，排序的速度非常快。&lt;br&gt;而它的基本思想就是通过一趟排序将待排序的记录分割成独立的两部分，
+    
+    </summary>
+    
+      <category term="算法" scheme="http://www.myzwl.win/categories/%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="算法" scheme="http://www.myzwl.win/source/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>java IO简单总结</title>
+    <link href="http://www.myzwl.win/2017/07/23/IO_1/"/>
+    <id>http://www.myzwl.win/2017/07/23/IO_1/</id>
+    <published>2017-07-23T05:48:51.000Z</published>
+    <updated>2017-08-09T07:01:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在涉及IO流之前需要知道文件的概念。文件是数据源（保存数据的的地方）的一种，比如word文件、txt文件。他既可以保存一张图片，也可以保存视频、声音。。。等等<br><strong>文件流</strong><br><img src="/images/imgs4/19.gif" alt="Alt text"><br>文件在程序中是以流的形式来操作的<br>流：数据在数据源（文件）和程序（内存）之间经历的路径<br>输入流：数据从数据源到内存的路径<br>输出流：数据从内存到数据源的路径</p>
+<h4 id="IO流分类"><a href="#IO流分类" class="headerlink" title="IO流分类"></a>IO流分类</h4><p>1.根据处理数据类型的不同分为：字符流和字节流<br>字节流：可以用于读写二进制文件及任何类型的byte，也就是一个字节一个的读<br>字符流：可以用于读写文本文件，不能操作二进制文件，也就是两个字节两个字节的读<br>2.根据数据流向不同分为：输入流和输出流<br>3。节点流和处理流<br>节点流：直接与数据源相连，读入或读出，可以发现使用该流过于频繁操作硬件，从而使读写很不方便<br>常用的结点流：</p>
+<blockquote>
+<p>父类：InputStream、OutputStream、Reader、Writer<br>文件 ：FileInputStream 、 FileOutputStrean 、FileReader、FileWriter 文件进行处理的节点流<br>数　组 ：ByteArrayInputStream、 ByteArrayOutputStream、 CharArrayReader 、CharArrayWriter 对数组进行处理的节点流（对应的不再是文件，而是内存中的一个数组）<br>字符串 ：StringReader、 StringWriter 对字符串进行处理的节点流<br>管　道 ：PipedInputStream 、PipedOutputStream 、PipedReader 、PipedWriter 对管道进行处理的节点流</p>
+</blockquote>
+<p>处理流：处理流和节点流一块使用，在节点流的基础上，再套接一层，套接在节点流上的就是处理流。如BufferedReader.处理流的构造方法总是要带一个其他的流对象做参数。一个流对象经过其他流的多次包装，称为流的链接。<br><img src="/images/imgs4/20.gif" alt="Alt text"><br>常用的处理流：</p>
+<blockquote>
+<p>缓冲流：BufferedInputStrean 、BufferedOutputStream、 BufferedReader、 BufferedWriter 增加缓冲功能，避免频繁读写硬盘<br>转换流：InputStreamReader 、OutputStreamReader实现字节流和字符流之间的转换<br>数据流： DataInputStream 、DataOutputStream 等-提供将基础数据类型写入到文件中，或者读取出来</p>
+</blockquote>
+<p><img src="/images/imgs4/13.jpg" alt="Alt text"></p>
+<h4 id="文件File类"><a href="#文件File类" class="headerlink" title="文件File类"></a>文件File类</h4><p><strong>File常用方法</strong></p>
+<blockquote>
+<p>创建：<br>createNewFile()在指定位置创建一个空文件，成功就返回true，如果已存在就不创建，然后返回false。<br>mkdir()  在指定位置创建一个单级文件夹。<br>mkdirs()  在指定位置创建一个多级文件夹。<br>renameTo(File dest)如果目标文件与源文件是在同一个路径下，那么renameTo的作用是重命名， 如果目标文件与源文件不是在同一个路径下，那么renameTo的作用就是剪切，而且还不能操作文件夹。<br>删除：<br>delete()  删除文件或者一个空文件夹，不能删除非空文件夹，马上删除文件，返回一个布尔值。<br>deleteOnExit()jvm退出时删除文件或者文件夹，用于删除临时文件，无返回值。<br> 判断：<br>exists()  文件或文件夹是否存在。<br>isFile()  是否是一个文件，如果不存在，则始终为false。<br>isDirectory()  是否是一个目录，如果不存在，则始终为false。<br>isHidden()  是否是一个隐藏的文件或是否是隐藏的目录。<br>isAbsolute()  测试此抽象路径名是否为绝对路径名。<br> 获取：<br>getName()  获取文件或文件夹的名称，不包含上级路径。<br>getAbsolutePath()获取文件的绝对路径，与文件是否存在没关系<br>length()  获取文件的大小（字节数），如果文件不存在则返回0L，如果是文件夹也返回0L。<br>getParent()  返回此抽象路径名父目录的路径名字符串；如果此路径名没有指定父目录，则返回null。<br>lastModified()获取最后一次被修改的时间。<br>文件夹相关：<br>static File[] listRoots()列出所有的根目录（Window中就是所有系统的盘符）<br>list()  返回目录下的文件或者目录名，包含隐藏文件。对于文件这样操作会返回null。<br>listFiles()  返回目录下的文件或者目录对象（File类实例），包含隐藏文件。对于文件这样操作会返回null。<br>list(FilenameFilter filter)返回指定当前目录中符合过滤条件的子文件或子目录。对于文件这样操作会返回null。<br>listFiles(FilenameFilter filter)返回指定当前目录中符合过滤条件的子文件或子目录。对于文件这样操作会返回null。</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"> //创建一个文件对象</div><div class="line">  File f1=new File("e:\\aa.txt");</div><div class="line">  //得到文件的路径</div><div class="line">  System.out.println("文件路径"+f1.getAbsolutePath());</div><div class="line">//得到文件的大小,字节数</div><div class="line">  System.out.println("文件的大小"+f1.length());</div><div class="line">//创建文件夹</div><div class="line">		File f3=new File("e:\\ff");</div><div class="line">		//判断文件夹是否存在</div><div class="line">		if(f3.isDirectory())&#123;</div><div class="line">			System.out.println("文件夹存在，不能创建!");</div><div class="line">		&#125;else&#123;</div><div class="line">			//创建文件夹</div><div class="line">			f3.mkdir();</div><div class="line">		&#125;</div><div class="line">		//创建文件和创建文件夹</div><div class="line">		File f2=new File("e:\\ff\\zwl.txt");</div><div class="line">		//判断文件是否存在</div><div class="line">		if(!f2.exists())//可以创建</div><div class="line">			try &#123;</div><div class="line">				f2.createNewFile();//创建一个新文件</div><div class="line">			&#125; catch (Exception e) &#123;</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">		else&#123;</div><div class="line">			System.out.println("文件存在，不能创建!");</div><div class="line">		&#125;</div><div class="line">		//列出一个文件夹下面的所有文件</div><div class="line">		File f4=new File("e:\\ff");</div><div class="line">		//判断文件夹是事存在</div><div class="line">		if(f4.isDirectory())&#123;</div><div class="line">			//将文件夹的文件，传给lists数组</div><div class="line">			//将文件夹的文件，传给lists数组</div><div class="line">			File lists[]=f4.listFiles();</div><div class="line">			//遍历数组</div><div class="line">			for(int i=0;i&lt;lists.length;i++)&#123;</div><div class="line">				//输出文件夹下所有文件文件名</div><div class="line">				System.out.println("显示出文件名是"+lists[i].getName());</div><div class="line">			&#125;</div><div class="line">		&#125;</div></pre></td></tr></table></figure>
+<p>对应的结果：</p>
+<blockquote>
+<p>文件路径e:\aa.txt<br>文件的大小0<br>显示出文件名是zwl.txt</p>
+</blockquote>
+<h4 id="文件字节与字符流"><a href="#文件字节与字符流" class="headerlink" title="文件字节与字符流"></a>文件字节与字符流</h4><p><strong>InputStream常用方法</strong></p>
+<blockquote>
+<p>public abstract int read() throws IOException:从输入流中读取数据的下一个字节,到达末尾，返回-1；<br> public int read(byte[] b)throws IOException：从输入流中读取一定数量的字节，并将其存储在缓冲区数组 b 中<br> public int read(byte[] b,int off,int len)throws IOException：将输入流中最多 len 个数据字节读入 byte 数组<br> public void close() throws IOException：关闭此输入流并释放与该流关联的所有系统资源</p>
+</blockquote>
+<p><strong>OutputStream常用方法</strong></p>
+<blockquote>
+<p>public void flush()throws IOException:刷新此输出流并强制写出所有缓冲的输出字节<br> public abstract void write(int b)throws IOException:将 b.length 个字节从指定的 byte 数组写入此输出流。<br> public void write(byte[] b, int off, int len)throws IOException:将指定 byte 数组中从偏移量 off 开始的 len 个字节写入此输出流<br> public void write(byte[] b)throws IOException:将指定的字节写入此输出流。</p>
+</blockquote>
+<p> Reader与Writer和上述方法基本类似，只不过它操作的是字符。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">int b=0;</div><div class="line">  //FileInputStream in=null;</div><div class="line">  FileReader in=null;</div><div class="line">   FileOutputStream out=null;</div><div class="line">    try &#123;</div><div class="line">		in=new FileReader("E:\\php练习\\readmeFirst.txt");</div><div class="line">		out=new FileOutputStream("E:\\php练习\\ttl.txt");</div><div class="line">	&#125; catch (Exception e) &#123;</div><div class="line">		System.out.println("not file");</div><div class="line">		 System.exit(-1);</div><div class="line">	&#125;</div><div class="line">    try &#123;</div><div class="line">		long num=0;</div><div class="line">		while((b=in.read())!=-1)&#123;</div><div class="line">			System.out.print((char)b);</div><div class="line">			//out.write(b);;</div><div class="line">			num++;</div><div class="line">		&#125;</div><div class="line">		in.close();</div><div class="line">		out.close();</div><div class="line">		System.out.println();</div><div class="line">		System.out.println("共读取了"+num+"个字符");</div><div class="line">	&#125; catch (Exception e) &#123;</div><div class="line">		System.out.println("error!");</div><div class="line">		 System.exit(-1);</div><div class="line">	&#125;</div><div class="line">    System.out.println("copy ok");</div></pre></td></tr></table></figure></p>
+<p>上面程序是将已存在的一个文件复制到另一个文件中</p>
+<p><strong>缓冲字节与字符流</strong><br>它是在原来节点流基础上增加了一根管道，用于缓存数据，用法基本类似，但是它的构造函数必须是结点流，同时在字符缓冲流中有一个可以读取或存取字符串的方法如：</p>
+<blockquote>
+<p>public String readLine()throws IOException:读取一个文本行</p>
+</blockquote>
+<p><strong>Object流</strong><br>Object流的意思将是像一根节点流插入一根Object流管道，专门操作Object，而它必须实现Serializable接口，该接口的意思是可序列化，就是说将一个对象流序列化成子节流写进网络或者文件，比如说游戏存盘，有各个游戏的记录，如果以面向对象来写进管道，它的各个成员变量，会在内存中被序列化成二进制写进去，而Serializable接口无方法，它只是个标记接口，编译器看到实现该接口的类就知道它应该被序列化，同样有一个transient关键字，是使可序列化的某个属性变成透明，也就是它不能变成字节写进去，那个属性只能为默认属性写进去<br>ok，接下来就来看看Object流相关常用方法</p>
+<blockquote>
+<p>ObjectOutput:有一个void writeObject(Object obj) throws IOException：将对象写入底层存储或流。<br>ObjectInput：Object readObject()throws ClassNotFoundException,IOException：读取并返回对象</p>
+</blockquote>
+<p>最后不得不说IO流是在太复杂，就是一根管道不断套接着另一根管道，但是IO流是非常有用的，不仅能帮助我们了解计算机底层，而且涉及到数据传输都离不开它。。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在涉及IO流之前需要知道文件的概念。文件是数据源（保存数据的的地方）的一种，比如word文件、txt文件。他既可以保存一张图片，也可以保存视
+    
+    </summary>
+    
+      <category term="java基础" scheme="http://www.myzwl.win/categories/java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+      <category term="java基础" scheme="http://www.myzwl.win/source/tags/java%E5%9F%BA%E7%A1%80/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>直接插入和希尔排序</title>
+    <link href="http://www.myzwl.win/2017/07/22/inserSort_1/"/>
+    <id>http://www.myzwl.win/2017/07/22/inserSort_1/</id>
+    <published>2017-07-22T05:48:51.000Z</published>
+    <updated>2017-08-09T04:21:26.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>直接插入在本质上改良了之前的冒泡和选择排序，而希尔排序更是超越O（n^2)的传统排序的改良算法</p>
+<h4 id="直接插入排序"><a href="#直接插入排序" class="headerlink" title="直接插入排序"></a>直接插入排序</h4><p>算法描述：直接插入排序就是将一个记录插入到已经排好序的有序表中，从而得到一个新的、记录数增1的有序表<br>首先先定义数据结构</p>
+<blockquote>
+<p>#define MAXSIZE 10<br>typedef struct{<br>    int r[Maxsize+1]//用于存储要排序的数组，r[0]用作哨兵或者临时变量<br>    int length; //记录顺序表的长度<br>}SqList;</p>
+</blockquote>
+<p>接下来不妨以5个数模拟该算法执行过程</p>
+<blockquote>
+<p>初始化为{0,5,3,4,6,2}<br>从第二个数开始往前比较，如3比5小，那么，3赋值给哨兵，5后移到3位置，哨兵赋值给5位置，此时变成<br>{3,3,5,4,6,2}；<br>继续循环，哨兵初始化为0,4比5小，4给哨兵，5后移至4，在比较哨兵与3大小，如果比3小，3后移，在插入到该位置，否则直接插到5位置，ok这就是该算法的核心，在合适的位置直接插入</p>
+</blockquote>
+<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><p>下面在来看算法，一般理解算法的过程，就把自己当做计算机，自我调试，然后就会发现其中无穷的乐趣<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;    </div><div class="line">#include &lt;string.h&gt;</div><div class="line">#include &lt;ctype.h&gt;      </div><div class="line">#include &lt;stdlib.h&gt;   </div><div class="line">#include &lt;io.h&gt;  </div><div class="line">#include &lt;math.h&gt;  </div><div class="line">#include &lt;time.h&gt;</div><div class="line"></div><div class="line">#define OK 1</div><div class="line">#define ERROR 0</div><div class="line">#define TRUE 1</div><div class="line">#define FALSE 0</div><div class="line"></div><div class="line"></div><div class="line">typedef int Status; </div><div class="line"></div><div class="line"></div><div class="line">#define MAXSIZE 10000  /* 用于要排序数组个数最大值，可根据需要修改 */</div><div class="line">typedef struct</div><div class="line">&#123;</div><div class="line">	int r[MAXSIZE+1];	/* 用于存储要排序数组，r[0]用作哨兵或临时变量 */</div><div class="line">	int length;			/* 用于记录顺序表的长度 */</div><div class="line">&#125;SqList;</div><div class="line"></div><div class="line">void InsertSort(SqList *L)</div><div class="line">&#123;</div><div class="line">	int i,j; //i用来控制外层循环，也就是r[i]中每个数，j用来控制r[i]与前面的数大小，并插到合适的位置</div><div class="line">for(i=2;i&lt;=L-&gt;length;i++)&#123;</div><div class="line">   if(L-&gt;r[i]&lt;L-&gt;r[i-1]) //要插的数比前一个数大</div><div class="line">   &#123;</div><div class="line">   	L-&gt;r[0]=L-&gt;r[i];    //要插入的数先放到哨兵</div><div class="line">   	 for(j=i-1;L-&gt;r[j]&gt;L-&gt;r[0];j--) //依次比较插入的数前面的数，放到合适的位置</div><div class="line">   	 	L-&gt;r[j+1]=L-&gt;r[j]; //记录后移</div><div class="line">   	 L-&gt;r[j+1]=L-&gt;r[0];  //插入合适的位置</div><div class="line">   &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void print(SqList L) //打印元素</div><div class="line">&#123;</div><div class="line">	int i;</div><div class="line">	for(i=1;i&lt;L.length;i++)</div><div class="line">		printf("%d,",L.r[i]);</div><div class="line">	printf("%d",L.r[i]);</div><div class="line">	printf("\n");</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">	int i;</div><div class="line">      int d[5]=&#123;5,3,4,6,2&#125;;</div><div class="line">        SqList L;</div><div class="line">          for(i=0;i&lt;5;i++)</div><div class="line">          	L.r[i+1]=d[i];</div><div class="line">             L.r[0]=0;</div><div class="line">             L.length=5;</div><div class="line">            printf("直接插入排序:\n");</div><div class="line">             InsertSort(&amp;L);</div><div class="line">              print(L);</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下面在看看它的时间复杂度，最好的情况就是{2,3,4,5,6}，也就是说其本身已经是一个有序的，很显然只需要L-&gt;r[i]与L-&gt;r[r-1]大小，所以此时时间复杂度为O(n);最坏的情况就是{6,5,4,3,2}，即2+3+。。+n为（n+2)(n-1)/2<br>所以最后根据平局原则，知道直接插入排序的时间复杂度为O(n^2);</p>
+<h4 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h4><p><strong>基本有序</strong><br>首先需要了解一下基本有序的概念，就是指小的关键字基本在前面，大的基本在后面，不大不小的基本在中间，如{2,1,3,6,4,7,5,8,9}，但如{1,5,9,3,7,8,2,4,6}这种9在第三位，2在倒数第三位就不叫基本有序</p>
+<p>希尔排序的关键就是将相隔某个”增量”的记录组成一个子序列，实现跳跃式的移动</p>
+<blockquote>
+<p>初始一个数组{0,9,1,5,8,3,7,4,6,2}，其中0为哨兵<br>并且初始化增量为数组长度（哨兵不算），所以为9，并约定一个循环，当且仅当增量小于等于1退出循环，并且每次增量都执行增量=增量/3+1（也可以是其他增量原则），第一次就是4了<br>然后一个循环变量i从增量+1开始直到小于等于数组长度，然后比较该i值与i-增量值，也就是第一个值大小，后面就是直接插入算法思想了，有一点不一样，就是循环变量j控制不太一样</p>
+</blockquote>
+<p>然后看看上述数组怎么比较的</p>
+<blockquote>
+<p>第一次：i=增量+1=5开始，也就是3与9比较，明显满足3&lt;9,然后交换（直接插入思想），依次7与1，不交换，4与5交换，6与8交换，2与9交换这里那个j条件也满足并且2&lt;3在交换，ok得到一个交换后的数组<br>{2,1,4,6,3,7,5,8,9}可以发现经过第一轮后，该数组基本有序了<br>紧接着开始进行第二轮，即增量=增量/3+1=2，即从第三个2与4不交换，1与6不交换，4与3交换，6与7不交换，4与5不交换，7与8不交换，5与9不交换，即得到{2,1,3,6,4,7,5,,8,9};<br>最后一轮：增量为1,2与1交换，2与4不交换，然后依次比较，由于目前已经基本有序，所以交换的比较少，<br>最后得到{1,2,3,4,5,6,7,8,9}</p>
+</blockquote>
+<h4 id="码上有戏-1"><a href="#码上有戏-1" class="headerlink" title="码上有戏"></a>码上有戏</h4><p>通过上面的例子，大概就是希尔排序的模拟过程，可以发现增量值是一个很巧妙的地方<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">void ShellSort(SqList *L)</div><div class="line">&#123;</div><div class="line">  int i,j;</div><div class="line">  int increment=L-&gt;length; //初始化增量为数组长度</div><div class="line">  do&#123;</div><div class="line">    increment=increment/3+1; //增量序列</div><div class="line">    for(i=increment+1;i&lt;=L-&gt;length;i++) //从增量序列后一位开始</div><div class="line">    &#123;</div><div class="line">      if(L-&gt;r[i]&lt;L-&gt;r[i-increment]) //该位置与第一位比较，是否交换</div><div class="line">      &#123;</div><div class="line">        L-&gt;r[0]=L-&gt;r[i]; //若交换，先放到哨兵位置</div><div class="line">         for(j=i-increment;j&gt;0&amp;&amp;L-&gt;r[0]&lt;L-&gt;r[j];j-=increment)</div><div class="line">           L-&gt;r[j+increment]=L-&gt;r[j]; //记录后移</div><div class="line">            L-&gt;r[j+increment]=L-&gt;r[0];//插入到正确位置</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">  &#125;while(increment&gt;1);</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">	int i;</div><div class="line">      int d[5]=&#123;5,3,4,6,2&#125;;</div><div class="line">        SqList L;</div><div class="line">          for(i=0;i&lt;5;i++)</div><div class="line">          	L.r[i+1]=d[i];</div><div class="line">             L.r[0]=0;</div><div class="line">             L.length=5;</div><div class="line">            printf("希尔排序:\n");</div><div class="line">           ShellSort(&amp;L);</div><div class="line">               print(L);</div><div class="line">              print(L);</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可以发现希尔排序的关键就是增量的选择，而它的时间复杂度是O(n^(3/2)),显然比传统的算法O(n^2)时间复杂度要小很多</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;直接插入在本质上改良了之前的冒泡和选择排序，而希尔排序更是超越O（n^2)的传统排序的改良算法&lt;/p&gt;
+&lt;h4 id=&quot;直接插入排序&quot;&gt;&lt;a
+    
+    </summary>
+    
+      <category term="算法" scheme="http://www.myzwl.win/categories/%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="算法" scheme="http://www.myzwl.win/source/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>常用集合类简单总结</title>
@@ -755,332 +938,6 @@ void method7()throws Exception{
     
     
       <category term="数据结构" scheme="http://www.myzwl.win/source/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>shiro之会话管理</title>
-    <link href="http://www.myzwl.win/2017/07/05/shiro_5/"/>
-    <id>http://www.myzwl.win/2017/07/05/shiro_5/</id>
-    <published>2017-07-05T05:48:51.000Z</published>
-    <updated>2017-07-16T01:05:18.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>shiro提供了完整的会话功能，不依赖于底层容器，即直接使用shiro的会话管理可以直接替换掉web容器的会话管理</p>
-<h4 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h4><p>所谓会话，即用户访问应用时保持的连接关系，在多次交互中应用能够识别出当前访问的用户是谁，且可以在多次交互中保存一些数据。如访问一些网站时登录成功后，网站可以记住用户，且在退出之前都可以识别当前用户是谁。</p>
-<p><strong>获取会话</strong></p>
-<blockquote>
-<p>Subject subject = SecurityUtils.getSubject();<br>Session session = subject.getSession();  </p>
-</blockquote>
-<p><strong>获取当前会话的唯一标识</strong></p>
-<blockquote>
-<p>session.getId(); </p>
-</blockquote>
-<p><strong>获取当前Subject的主机地址</strong></p>
-<blockquote>
-<p>session.getHost();</p>
-</blockquote>
-<p><strong>获取/设置当前Session的过期时间</strong></p>
-<blockquote>
-<p>session.getTimeout();<br>session.setTimeout(毫秒); </p>
-</blockquote>
-<p><strong>获取会话的启动时间及最后访问时间</strong></p>
-<blockquote>
-<p>session.getStartTimestamp();<br>session.getLastAccessTime();</p>
-</blockquote>
-<p><strong>更新会话最后访问时间及销毁会话</strong></p>
-<blockquote>
-<p>session.touch();<br>session.stop();</p>
-</blockquote>
-<p>当Subject.logout()时会自动调用stop方法来销毁会话</p>
-<p><strong>设置/获取/删除会话属性</strong></p>
-<blockquote>
-<p>session.setAttribute(“key”, “WORD”);<br>session.getAttribute(“key”);<br>session.removeAttribute(“key”); </p>
-</blockquote>
-<h4 id="会话管理器"><a href="#会话管理器" class="headerlink" title="会话管理器"></a>会话管理器</h4><p>会话管理器管理着应用中所有subject的会话的创建、维护、删除、失效、验证等工作。它是shiro的核心，顶层组件SecurityManager直接继承了SessionManager，且提供了SessionsSecurityManager实现直接把会话管理委托给相应的SessionManager，DefaultSecurityManager及DefaultWebSecurityManager默认SecurityManager都继承了SessionsSecurityManager。</p>
-<p><strong>SecurityManager</strong></p>
-<blockquote>
-<p>Session start(SessionContext context); //启动会话<br>Session getSession(SessionKey key) throws SessionException; //根据会话Key获取会话 </p>
-</blockquote>
-<p><strong>WebSessionManager</strong></p>
-<blockquote>
-<p>boolean isServletContainerSessions();//是否使用Servlet容器的会话  </p>
-</blockquote>
-<p><strong>ValidatingSessionManager</strong></p>
-<blockquote>
-<p>void validateSessions();//验证所有会话是否过期 </p>
-</blockquote>
-<p><img src="/images/imgs4/5.gif" alt="Alt text"></p>
-<p>Shiro提供了三个默认实现：</p>
-<p>DefaultSessionManager：DefaultSecurityManager使用的默认实现，用于JavaSE环境；</p>
-<p>ServletContainerSessionManager：DefaultWebSecurityManager使用的默认实现，用于Web环境，其直接使用Servlet容器的会话；</p>
-<p>DefaultWebSessionManager：用于Web环境的实现，可以替代ServletContainerSessionManager，自己维护着会话，直接废弃了Servlet容器的会话管理。</p>
-<p><strong>全局会话时间</strong><br>在web.xml中设置(单位：分钟)</p>
-<blockquote>
-<p><session-config><br>  <session-timeout>30</session-timeout><br></session-config> </p>
-</blockquote>
-<h4 id="会话监听器"><a href="#会话监听器" class="headerlink" title="会话监听器"></a>会话监听器</h4><p>会话监听器用于监听会话创建、过期及停止事件：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">public class MySessionListener1 implements SessionListener &#123;  </div><div class="line">     @Override  </div><div class="line">     public void onStart(Session session) &#123;//会话创建时触发  </div><div class="line">         System.out.println("会话创建：" + session.getId());  </div><div class="line">     &#125;  </div><div class="line">     @Override  </div><div class="line">     public void onExpiration(Session session) &#123;//会话过期时触发  </div><div class="line">         System.out.println("会话过期：" + session.getId());  </div><div class="line">     &#125;  </div><div class="line">     @Override  </div><div class="line">     public void onStop(Session session) &#123;//退出/会话过期时触发  </div><div class="line">         System.out.println("会话停止：" + session.getId());  </div><div class="line">     &#125;    </div><div class="line"> &#125;</div></pre></td></tr></table></figure>
-<p>如果只想监听某一个事件，可以继承SessionListenerAdapter实现：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class MySessionListener2 extends SessionListenerAdapter &#123;  </div><div class="line">    @Override  </div><div class="line">    public void onStart(Session session) &#123;  </div><div class="line">        System.out.println("会话创建：" + session.getId());  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="会话存储-持久化"><a href="#会话存储-持久化" class="headerlink" title="会话存储/持久化"></a>会话存储/持久化</h4><p>Shiro提供SessionDAO用于会话的CRUD</p>
-<blockquote>
-<pre><code>//如DefaultSessionManager在创建完session后会调用该方法；如保存到关系数据库/文件系统/NoSQL数据库；即可以实现会话的持久化；返回会话ID；主要此处返回的ID.equals(session.getId())；  
-Serializable create(Session session);  
-//根据会话ID获取会话  
-Session readSession(Serializable sessionId) throws UnknownSessionException;  
-//更新会话；如更新会话最后访问时间/停止会话/设置超时时间/设置移除属性等会调用  
-void update(Session session) throws UnknownSessionException;  
-//删除会话；当会话过期/会话停止（如用户退出时）会调用  
-void delete(Session session);  
-//获取当前所有活跃用户，如果用户量多此方法影响性能  
-Collection&lt;Session&gt; getActiveSessions();   
-</code></pre></blockquote>
-<p><img src="/images/imgs4/6.gif" alt="Alt text"></p>
-<p>AbstractSessionDAO提供了SessionDAO的基础实现，如生成会话ID等；CachingSessionDAO提供了对开发者透明的会话缓存的功能，只需要设置相应的CacheManager即可；MemorySessionDAO直接在内存中进行会话维护；而EnterpriseCacheSessionDAO提供了缓存功能的会话维护，默认情况下使用MapCache实现，内部使用ConcurrentHashMap保存缓存的会话。</p>
-<pre><code>如果自定义实现SessionDAO，继承CachingSessionDAO即可
-</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">public class MySessionDAO extends CachingSessionDAO &#123;  </div><div class="line">    private JdbcTemplate jdbcTemplate = JdbcTemplateUtils.jdbcTemplate();  </div><div class="line">     protected Serializable doCreate(Session session) &#123;  </div><div class="line">        Serializable sessionId = generateSessionId(session);  </div><div class="line">        assignSessionId(session, sessionId);  </div><div class="line">        String sql = "insert into sessions(id, session) values(?,?)";  </div><div class="line">        jdbcTemplate.update(sql, sessionId, SerializableUtils.serialize(session));  </div><div class="line">        return session.getId();  </div><div class="line">    &#125;  </div><div class="line">protected void doUpdate(Session session) &#123;  </div><div class="line">    if(session instanceof ValidatingSession &amp;&amp; !((ValidatingSession)session).isValid()) &#123;  </div><div class="line">        return; //如果会话过期/停止 没必要再更新了  </div><div class="line">    &#125;  </div><div class="line">        String sql = "update sessions set session=? where id=?";  </div><div class="line">        jdbcTemplate.update(sql, SerializableUtils.serialize(session), session.getId());  </div><div class="line">    &#125;  </div><div class="line">    protected void doDelete(Session session) &#123;  </div><div class="line">        String sql = "delete from sessions where id=?";  </div><div class="line">        jdbcTemplate.update(sql, session.getId());  </div><div class="line">    &#125;  </div><div class="line">    protected Session doReadSession(Serializable sessionId) &#123;  </div><div class="line">        String sql = "select session from sessions where id=?";  </div><div class="line">        List&lt;String&gt; sessionStrList = jdbcTemplate.queryForList(sql, String.class, sessionId);  </div><div class="line">        if(sessionStrList.size() == 0) return null;  </div><div class="line">        return SerializableUtils.deserialize(sessionStrList.get(0));  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="会话验证"><a href="#会话验证" class="headerlink" title="会话验证"></a>会话验证</h4><p>Shiro提供了会话验证调度器，用于定期的验证会话是否已过期，如果过期将停止会话，Shiro提供了会话验证调度器SessionValidationScheduler来验证</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">//分页获取会话并验证  </div><div class="line">String sql = "select session from sessions limit ?,?";  </div><div class="line">int start = 0; //起始记录  </div><div class="line">int size = 20; //每页大小  </div><div class="line">List&lt;String&gt; sessionList = jdbcTemplate.queryForList(sql, String.class, start, size);  </div><div class="line">while(sessionList.size() &gt; 0) &#123;  </div><div class="line">  for(String sessionStr : sessionList) &#123;  </div><div class="line">    try &#123;  </div><div class="line">      Session session = SerializableUtils.deserialize(sessionStr);  </div><div class="line">      Method validateMethod =   </div><div class="line">        ReflectionUtils.findMethod(AbstractValidatingSessionManager.class,   </div><div class="line">            "validate", Session.class, SessionKey.class);  </div><div class="line">      validateMethod.setAccessible(true);  </div><div class="line">      ReflectionUtils.invokeMethod(validateMethod,   </div><div class="line">        sessionManager, session, new DefaultSessionKey(session.getId()));  </div><div class="line">    &#125; catch (Exception e) &#123;  </div><div class="line">        //ignore  </div><div class="line">    &#125;  </div><div class="line">  &#125;  </div><div class="line"> start = start + size;  </div><div class="line">  sessionList = jdbcTemplate.queryForList(sql, String.class, start, size);  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>sessionFactory</strong><br>sessionFactory是创建会话的工厂，根据相应的Subject上下文信息来创建会话；默认提供了SimpleSessionFactory用来创建SimpleSession会话。<br>自定义一个session</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class OnlineSession extends SimpleSession &#123;  </div><div class="line">    public static enum OnlineStatus &#123;  </div><div class="line">        on_line("在线"), hidden("隐身"), force_logout("强制退出");  </div><div class="line">        private final String info;  </div><div class="line">        private OnlineStatus(String info) &#123;  </div><div class="line">            this.info = info;  </div><div class="line">        &#125;  </div><div class="line">        public String getInfo() &#123;  </div><div class="line">            return info;  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">    private String userAgent; //用户浏览器类型  </div><div class="line">    private OnlineStatus status = OnlineStatus.on_line; //在线状态  </div><div class="line">    private String systemHost; //用户登录时系统IP   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>自定义SessionFactory<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public class OnlineSessionFactory implements SessionFactory &#123;  </div><div class="line">  </div><div class="line">    @Override  </div><div class="line">    public Session createSession(SessionContext initData) &#123;  </div><div class="line">        OnlineSession session = new OnlineSession();  </div><div class="line">        if (initData != null &amp;&amp; initData instanceof WebSessionContext) &#123;  </div><div class="line">            WebSessionContext sessionContext = (WebSessionContext) initData;  </div><div class="line">            HttpServletRequest request = (HttpServletRequest) sessionContext.getServletRequest();  </div><div class="line">            if (request != null) &#123;  </div><div class="line">                session.setHost(IpUtils.getIpAddr(request));  </div><div class="line">                session.setUserAgent(request.getHeader("User-Agent"));  </div><div class="line">                session.setSystemHost(request.getLocalAddr() + ":" + request.getLocalPort());  </div><div class="line">            &#125;  </div><div class="line">        &#125;  </div><div class="line">        return session;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;shiro提供了完整的会话功能，不依赖于底层容器，即直接使用shiro的会话管理可以直接替换掉web容器的会话管理&lt;/p&gt;
-&lt;h4 id=&quot;
-    
-    </summary>
-    
-      <category term="安全框架" scheme="http://www.myzwl.win/categories/%E5%AE%89%E5%85%A8%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="Shiro" scheme="http://www.myzwl.win/source/tags/Shiro/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>shiro之jstl标签</title>
-    <link href="http://www.myzwl.win/2017/07/04/shiro_4/"/>
-    <id>http://www.myzwl.win/2017/07/04/shiro_4/</id>
-    <published>2017-07-04T05:48:51.000Z</published>
-    <updated>2017-07-15T12:33:26.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>shiro提供了JSTL标签用于在页面进行权限控制</p>
-<h4 id="导入标签库"><a href="#导入标签库" class="headerlink" title="导入标签库"></a>导入标签库</h4><blockquote>
-<p>&lt;%@taglib prefix=”shiro” uri=”<a href="http://shiro.apache.org/tags" target="_blank" rel="external">http://shiro.apache.org/tags</a>“ %&gt; </p>
-</blockquote>
-<h4 id="各类标签"><a href="#各类标签" class="headerlink" title="各类标签"></a>各类标签</h4><p><strong>guest标签</strong></p>
-<blockquote>
-<p><shiro:guest><br>欢迎游客访问，<br></shiro:guest></p>
-</blockquote>
-<p>用户没有身份验证时显示相应信息，即游客访问信息</p>
-<p><strong>user标签 </strong></p>
-<blockquote>
-<p>   <shiro:user><br>    欢迎[<shiro:principal>]登录<br>    </shiro:principal></shiro:user>   </p>
-</blockquote>
-<p>用户已经身份验证/记住我登录后显示相应的信息。</p>
-<p><strong>authenticated标签 </strong></p>
-<blockquote>
-<p> shiro:authenticated&gt;<br>     </p>
-</blockquote>
-<p> 用户已经身份验证通过，即Subject.login登录成功，不是记住我登录的。</p>
-<p><strong>notAuthenticated标签</strong></p>
-<blockquote>
-<p>  <shiro:notauthenticated><br>     </shiro:notauthenticated></p>
-</blockquote>
-<p> 用户已经身份验证通过，即没有调用Subject.login进行登录，包括记住我自动登录的也属于未进行身份验证</p>
-<p><strong>principal标签</strong></p>
-<blockquote>
-<shiro: principal="">
-
-</shiro:></blockquote>
-<p> 显示用户身份信息，默认调用Subject.getPrincipal()获取，即Primary Principal。</p>
-<p><strong>hasRole标签</strong></p>
-<blockquote>
-<p> <shiro:hasrole name="admin"><br>    用户[<shiro:principal>]拥有角色admin<br><br>    </shiro:principal></shiro:hasrole></p>
-</blockquote>
-<p> 如果当前Subject有角色将显示body体内容</p>
-<p><strong>hasAnyRoles标签</strong></p>
-<blockquote>
-<pre><code>&lt;shiro:hasAnyRoles name=&quot;admin,user&quot;&gt;    
-   &lt;/shiro:hasAnyRoles&gt;   
-</code></pre></blockquote>
-<p> 如果当前Subject有任意一个角色（或的关系）将显示body体内容</p>
-<p><strong>lacksRole标签</strong></p>
-<blockquote>
-<p>  <shiro:lacksrole name="abc"><br>     </shiro:lacksrole></p>
-</blockquote>
-<p> 如果当前Subject没有角色将显示body体内容</p>
-<p><strong>hasPermission标签</strong></p>
-<blockquote>
-<p><shiro:haspermission name="user:create"><br>    </shiro:haspermission></p>
-</blockquote>
-<p> 如果当前Subject有权限将显示body体内容。</p>
-<p><strong>lacksPermission标签</strong></p>
-<blockquote>
-<p> <shiro:lackspermission name="sss:create"><br>     </shiro:lackspermission> </p>
-</blockquote>
-<p> 如果当前Subject没有权限将显示body体内容。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;shiro提供了JSTL标签用于在页面进行权限控制&lt;/p&gt;
-&lt;h4 id=&quot;导入标签库&quot;&gt;&lt;a href=&quot;#导入标签库&quot; class=&quot;h
-    
-    </summary>
-    
-      <category term="安全框架" scheme="http://www.myzwl.win/categories/%E5%AE%89%E5%85%A8%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="Shiro" scheme="http://www.myzwl.win/source/tags/Shiro/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>shiro之拦截器机制</title>
-    <link href="http://www.myzwl.win/2017/07/03/shiro_3/"/>
-    <id>http://www.myzwl.win/2017/07/03/shiro_3/</id>
-    <published>2017-07-03T05:48:51.000Z</published>
-    <updated>2017-07-15T11:44:20.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Shiro使用了与Servlet一样的Filter接口进行扩展，还有拦截器是基于java的反射机制，如利用动态代理实现，而平时说的过滤器是基于回调函数的实现，在实现原理上有着本质的区别<br><img src="/images/imgs4/2.gif" alt="Alt text"></p>
-<h4 id="拦截器介绍"><a href="#拦截器介绍" class="headerlink" title="拦截器介绍"></a>拦截器介绍</h4><p><strong>NameableFilter</strong><br>顾名思义，就是根据相应拦截器链组装拦截器的名字找到相应的拦截器实例</p>
-<p><strong>OncePerRequestFilter</strong><br>该拦截器用于控制一次请求只能走一次拦截器链，默认是开启拦截的</p>
-<p><strong>ShiroFilter</strong><br>是整个shiro的入口点，用于拦截需要安全控制的请求进行处理</p>
-<p><strong>AdviceFilter</strong><br>该拦截器非常类似于struct中拦截器，同时支持AOP拦截</p>
-<blockquote>
-<p>boolean preHandle(ServletRequest request, ServletResponse response) throws Exception<br>void postHandle(ServletRequest request, ServletResponse response) throws Exception<br>void afterCompletion(ServletRequest request, ServletResponse response, Exception exception) throws Exception;  </p>
-</blockquote>
-<p>preHandler：类似于AOP中的前置增强；在拦截器链执行之前执行；如果返回true则继续拦截器链；否则中断后续的拦截器链的执行直接返回；进行预处理（如基于表单的身份验证、授权）</p>
-<p>postHandle：类似于AOP中的后置返回增强；在拦截器链执行完成后执行；进行后处理（如记录执行时间之类的）；</p>
-<p>afterCompletion：类似于AOP中的后置最终增强；即不管有没有异常都会执行；可以进行清理资源（如解除Subject与线程的绑定之类的）；</p>
-<p><strong>PathMatchingFilter</strong><br>提供了基于Ant风格的请求路径匹配功能及拦截器参数解析的功能，如“roles[admin,user]”自动根据“，”分割解析到一个路径参数配置并绑定到相应的路径：</p>
-<blockquote>
-<p>boolean pathsMatch(String path, ServletRequest request)<br>boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception </p>
-</blockquote>
-<p>pathsMatch：该方法用于path与请求路径进行匹配的方法；如果匹配返回true；</p>
-<p>onPreHandle：在preHandle中，当pathsMatch匹配一个路径后，会调用opPreHandler方法并将路径绑定参数配置传给mappedValue；然后可以在这个方法中进行一些验证（如角色授权），如果验证失败可以返回false中断流程；默认返回true；也就是说子类可以只实现onPreHandle即可，无须实现preHandle。如果没有path与请求路径匹配，默认是通过的（即preHandle返回true）。</p>
-<p><strong>AccessControlFilter</strong><br>提供了访问控制的基础功能</p>
-<blockquote>
-<pre><code>abstract boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception;  
-boolean onAccessDenied(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception;  
-abstract boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception;   
-</code></pre></blockquote>
-<pre><code>isAccessAllowed：表示是否允许访问；mappedValue就是[urls]配置中拦截器参数部分，如果允许访问返回true，否则false；
-</code></pre><p>onAccessDenied：表示当访问拒绝时是否已经处理了；如果返回true表示需要继续处理；如果返回false表示该拦截器实例已经处理了，将直接返回即可。</p>
-<p>同时它还有一些扩展的功能</p>
-<blockquote>
-<p>void setLoginUrl(String loginUrl) //身份验证时使用，默认/login.jsp<br>String getLoginUrl()<br>Subject getSubject(ServletRequest request, ServletResponse response) //获取Subject实例<br>boolean isLoginRequest(ServletRequest request, ServletResponse response)//当前请求是否是登录请求<br>void saveRequestAndRedirectToLogin(ServletRequest request, ServletResponse response) throws IOException //将当前请求保存起来并重定向到登录页面<br>void saveRequest(ServletRequest request) //将请求保存起来，如登录成功后再重定向回该请求<br>void redirectToLogin(ServletRequest request, ServletResponse response) //重定向到登录页面 </p>
-</blockquote>
-<h4 id="拦截器链"><a href="#拦截器链" class="headerlink" title="拦截器链"></a>拦截器链</h4><p>在web容器中，先执行shiro的filter链，再执行servlet容器的filter链，同时shiro的ProxiedFilterChain对Servlet容器的FilterChain进行了代理</p>
-<blockquote>
-<p>FilterChain getChain(ServletRequest request, ServletResponse response, FilterChain originalChain);</p>
-</blockquote>
-<h4 id="自定义拦截器"><a href="#自定义拦截器" class="headerlink" title="自定义拦截器"></a>自定义拦截器</h4><p>通过自定义拦截器可以扩展一些功能，如动态url-角色/权限访问控制，根据Subject身份信息获取用户信息绑定到Request（即设置通用数据）、验证码验证、在线用户信息的保存等等</p>
-<p><strong>扩展OncePerRequestFilter</strong><br>OncePerRequestFilter保证一次请求只调用一次doFilterInternal<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public class MyOncePerRequestFilter extends OncePerRequestFilter&#123;</div><div class="line">	@Override</div><div class="line">	protected void doFilterInternal(ServletRequest request, ServletResponse response, FilterChain chain)</div><div class="line">			throws ServletException, IOException &#123;	</div><div class="line">		  System.out.println("once");</div><div class="line">		  chain.doFilter(request, response);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>对应的ini配置文件中</p>
-<blockquote>
-<p>[filters]<br>myFilter1=com.shiro.web.MyOncePerRequestFilter<br>[urls]<br>/**=myFilter1</p>
-</blockquote>
-<p>其中[filters]声明拦截器，[urls]执行拦截器</p>
-<p><strong>扩展AdviceFilter</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class MyAdviceFilter extends AdviceFilter&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception &#123;</div><div class="line">		System.out.println("pre");</div><div class="line">		return true;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	protected void postHandle(ServletRequest request, ServletResponse response) throws Exception &#123;</div><div class="line">	  System.out.println("postHandle");</div><div class="line">		super.postHandle(request, response);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void afterCompletion(ServletRequest request, ServletResponse response, Exception exception)</div><div class="line">			throws Exception &#123;</div><div class="line">		System.out.println("afterCompletion");</div><div class="line">		super.afterCompletion(request, response, exception);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>preHandle：进行请求的预处理，然后根据返回值决定是否继续处理（true：继续过滤器链）；可以通过它实现权限控制；</p>
-<p>postHandle：执行完拦截器链之后正常返回后执行；</p>
-<p>afterCompletion：不管最后有没有异常，afterCompletion都会执行，完成如清理资源功能。</p>
-<p><strong>扩展PathMatchingFilter</strong><br>提供了url模式过滤的功能<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public class MyPathMatchingFilter extends PathMatchingFilter&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue)</div><div class="line">			throws Exception &#123;</div><div class="line">		</div><div class="line">		   System.out.println("url matches,config is " + Arrays.toString((String[])mappedValue));  </div><div class="line">	       return true;  </div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>preHandle：会进行url模式与请求url进行匹配，如果匹配会调用onPreHandle；如果没有配置url模式/没有url模式匹配，默认直接返回true；</p>
-<p>onPreHandle：如果url模式与请求url匹配，那么会执行onPreHandle，并把该拦截器配置的参数传入。默认什么不处理直接返回true。</p>
-<p><strong>扩展AccessControlFilter</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class MyAccessControlFilter extends AccessControlFilter&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)</div><div class="line">			throws Exception &#123;</div><div class="line">		System.out.println("isAccessAllowed");  </div><div class="line">        return false;  </div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception &#123;</div><div class="line">		 System.out.println("访问拒绝也不自己处理，继续拦截器链的执行");  </div><div class="line">	        return true;  </div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>isAccessAllowed：即是否允许访问，返回true表示允许；</p>
-<p>onAccessDenied：表示访问拒绝时是否自己处理，如果返回true表示自己不处理且继续拦截器链执行，返回false表示自己已经处理了（比如重定向到另一个页面）</p>
-<p>其中如果isAccessAllowed返回true，onAccessDenied将不执行，反之执行</p>
-<h4 id="默认拦截器"><a href="#默认拦截器" class="headerlink" title="默认拦截器"></a>默认拦截器</h4><p>Shiro内置了很多默认的拦截器，比如身份验证、授权等相关的<br><img src="/images/imgs4/3.gif" alt="Alt text"><br><img src="/images/imgs4/4.gif" alt="Alt text"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;Shiro使用了与Servlet一样的Filter接口进行扩展，还有拦截器是基于java的反射机制，如利用动态代理实现，而平时说的过滤器是基
-    
-    </summary>
-    
-      <category term="安全框架" scheme="http://www.myzwl.win/categories/%E5%AE%89%E5%85%A8%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="Shiro" scheme="http://www.myzwl.win/source/tags/Shiro/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>shiro之编码加密</title>
-    <link href="http://www.myzwl.win/2017/07/02/shiro_2/"/>
-    <id>http://www.myzwl.win/2017/07/02/shiro_2/</id>
-    <published>2017-07-02T05:48:51.000Z</published>
-    <updated>2017-07-14T12:51:18.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在涉及数据在网络上的传输时，都要将明文数据加密传输，并且通常情况下的加密都是不可逆的</p>
-<h2 id="编码与解码"><a href="#编码与解码" class="headerlink" title="编码与解码"></a>编码与解码</h2><p>shiro内部提供了base64和16进制字符串编码/解码的API支持，如下<br><strong>base64编码/解码</strong></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">     String str="123456";	</div><div class="line">String base64Encoded=Base64.encodeToString(str.getBytes());//加密</div><div class="line"> System.out.println(base64Encoded);</div><div class="line">  String str2=Base64.decodeToString(base64Encoded); //解密</div><div class="line">   System.out.println(str2);</div><div class="line">    System.out.println(str.equals(str2));</div></pre></td></tr></table></figure>
-<p>输出结果：</p>
-<blockquote>
-<p>MTIzNDU2<br>123456<br>true</p>
-</blockquote>
-<p><strong>16进制字符串编码/解码</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">     String str="123456";	</div><div class="line">String base64Encoded = Hex.encodeToString(str.getBytes());//加密</div><div class="line"> System.out.println(base64Encoded);</div><div class="line"> String str2 = new String(Hex.decode(base64Encoded.getBytes())); //解密</div><div class="line">   System.out.println(str2);</div><div class="line">    System.out.println(str.equals(str2));</div></pre></td></tr></table></figure></p>
-<p>输出结果：</p>
-<blockquote>
-<p>313233343536<br>123456<br>true</p>
-</blockquote>
-<p><strong>byte与string编码/解码</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">     String str="123456";</div><div class="line">     byte[] str3=CodecSupport.toBytes(str, "utf-8");  //变成byte数组</div><div class="line">System.out.println(str3);</div><div class="line">String str4=CodecSupport.toString(str3, "utf-8"); //编程String</div><div class="line">System.out.println(str4);</div></pre></td></tr></table></figure></p>
-<p>输出结果</p>
-<blockquote>
-<p>[B@cd51c3<br>123456</p>
-</blockquote>
-<h4 id="散列算法"><a href="#散列算法" class="headerlink" title="散列算法"></a>散列算法</h4><p>该算法是一种不可逆的算法，如MD5，SHA等，一般该算法最好需要提供一个salt（盐）来增加破解难度，一般情况下的盐被设置为 密码+用户名+盐，这样只有系统知道盐值，更难被破解</p>
-<p><strong>MD5散列</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">  String str = "hello";  </div><div class="line">String salt = "world";  </div><div class="line">String md5 = new Md5Hash(str, salt,2).toString();</div><div class="line">System.out.println(md5);</div></pre></td></tr></table></figure></p>
-<p>这里的2是散列次数，即迭代多少次，这里是2次</p>
-<blockquote>
-<p>556b1a232d4d63a2f3ab87c9535abe25</p>
-</blockquote>
-<p><strong>其它散列</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">    String str = "hello";  </div><div class="line">String salt = "world";  </div><div class="line">String sha1 = new Sha256Hash(str, salt).toString(); </div><div class="line">String SHA1=new Sha1Hash(str, salt).toString();</div><div class="line">String SHA512=new Sha512Hash(str, salt).toString();</div><div class="line">System.out.println(sha1);</div><div class="line">System.out.println(SHA1);</div><div class="line">System.out.println(SHA512);</div></pre></td></tr></table></figure></p>
-<p>相应的输入结果：</p>
-<blockquote>
-<p>5715790a892990382d98858c4aa38d0617151575<br>3e64afa1cb7d643aa36f63b8d092ad76b1f04ff557abbb3d05f5b9037abf68a6606a8885d51bec8f6f39ee7d0badd504241c3704e777a51c21a9723e285fb9b8</p>
-</blockquote>
-<p><strong>通用散列</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String simpleHash = new SimpleHash("SHA-1", str, salt).toString();</div></pre></td></tr></table></figure></p>
-<p>其中第一个参数指定采用哪种算法<br>输出结果：</p>
-<blockquote>
-<p>5715790a892990382d98858c4aa38d0617151575</p>
-</blockquote>
-<p><strong>默认匹配</strong><br>Shiro提供了HashService，默认提供了DefaultHashService实现。<br>先来看下它的构造函数<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public DefaultHashService() &#123;</div><div class="line">        this.algorithmName = "SHA-512";//默认算法SHA-512</div><div class="line">        this.iterations = 1; //生成Hash值的迭代次数，默认1</div><div class="line">        this.generatePublicSalt = false; //是否生成公盐，默认false</div><div class="line">        this.rng = new SecureRandomNumberGenerator();//用于生成公盐</div><div class="line">    &#125;</div><div class="line">    String hex = randomNumberGenerator.nextBytes().toHex();//随机生成一个盐</div></pre></td></tr></table></figure></p>
-<h4 id="加密与解密"><a href="#加密与解密" class="headerlink" title="加密与解密"></a>加密与解密</h4><p>Shiro还提供对称式加密/解密算法的支持，如AES、Blowfish等<br><strong>AES算法</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">AesCipherService aesCipherService = new AesCipherService();</div><div class="line">      aesCipherService.setKeySize(128);//设置key长度</div><div class="line">      //生成key</div><div class="line">      Key key = aesCipherService.generateNewKey();</div><div class="line">      String text = "zwl";</div><div class="line">      //加密</div><div class="line">      String encrptText = aesCipherService.encrypt(text.getBytes(), key.getEncoded()).toHex();</div><div class="line">      //解密</div><div class="line">      String text2 = new String(aesCipherService.decrypt(Hex.decode(encrptText), key.getEncoded()).getBytes());</div><div class="line">        System.out.println(key.toString());</div><div class="line">      System.out.println(encrptText);</div><div class="line">    System.out.println(text2);</div></pre></td></tr></table></figure></p>
-<p>而上面的key就相当于一把钥匙，只有了这把钥匙，就能解密<br>输出结果：</p>
-<blockquote>
-<p>javax.crypto.spec.SecretKeySpec@176a4<br>a316645482dff96d9c86c64adabc51dee5170232365a3c15dab941dc6b73c2ec<br>zwl</p>
-</blockquote>
-<p><strong>Blowfish算法</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">BlowfishCipherService blowfishCipherService = new BlowfishCipherService();</div><div class="line">        blowfishCipherService.setKeySize(128);</div><div class="line">        //生成key</div><div class="line">        Key key = blowfishCipherService.generateNewKey();</div><div class="line">        String text = "zwl";</div><div class="line">        //加密</div><div class="line">        String encrptText = blowfishCipherService.encrypt(text.getBytes(), key.getEncoded()).toHex();</div><div class="line">        //解密</div><div class="line">        String text2 = new String(blowfishCipherService.decrypt(Hex.decode(encrptText), key.getEncoded()).getBytes()); </div><div class="line">        System.out.println(key.toString());</div><div class="line">       System.out.println(encrptText);</div><div class="line">      System.out.println(text2);</div></pre></td></tr></table></figure></p>
-<p>输出结果：</p>
-<blockquote>
-<p>javax.crypto.spec.SecretKeySpec@d97afa5c<br>8e7f6626884b7b429a1000286f4990a4<br>zwl</p>
-</blockquote>
-<h4 id="PasswordService-CredentialsMatcher"><a href="#PasswordService-CredentialsMatcher" class="headerlink" title="PasswordService/CredentialsMatcher"></a>PasswordService/CredentialsMatcher</h4><p>在用户输入明文密码时，shiro默认的实现方式如下<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public interface PasswordService &#123;  </div><div class="line">    //输入明文密码得到密文密码  </div><div class="line">    String encryptPassword(Object plaintextPassword) throws IllegalArgumentException;  </div><div class="line">&#125;  </div><div class="line"></div><div class="line">    public interface CredentialsMatcher &#123;  </div><div class="line">    //匹配用户输入的token的凭证（未加密）与系统提供的凭证（已加密）  </div><div class="line">    boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info);  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>Shiro默认提供了PasswordService实现DefaultPasswordService；CredentialsMatcher实现PasswordMatcher及HashedCredentialsMatcher</p>
-<p>关于shiro的编码\加密是在是丰富多多彩，一般是学习中遇到采取查询相关的</p>
-<h4 id="一个对称加密的算法"><a href="#一个对称加密的算法" class="headerlink" title="一个对称加密的算法"></a>一个对称加密的算法</h4><p>下面是在一个项目中使用到的工具类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div></pre></td><td class="code"><pre><div class="line">public class DesUtils &#123;</div><div class="line">	/** 字符串默认键值     */</div><div class="line">	  private static String strDefaultKey = "national";</div><div class="line"></div><div class="line">	  /** 加密工具     */</div><div class="line">	  private Cipher encryptCipher = null;</div><div class="line"></div><div class="line">	  /** 解密工具     */</div><div class="line">	  private Cipher decryptCipher = null;</div><div class="line"></div><div class="line">	  /**  </div><div class="line">	   * 将byte数组转换为表示16进制值的字符串， 如：byte[]&#123;8,18&#125;转换为：0813， 和public static byte[]  </div><div class="line">	   * hexStr2ByteArr(String strIn) 互为可逆的转换过程  </div><div class="line">	   *   </div><div class="line">	   * @param arrB  </div><div class="line">	   *            需要转换的byte数组  </div><div class="line">	   * @return 转换后的字符串  </div><div class="line">	   * @throws Exception  </div><div class="line">	   *             本方法不处理任何异常，所有异常全部抛出  </div><div class="line">	   */</div><div class="line">	  public static String byteArr2HexStr(byte[] arrB) throws Exception &#123;</div><div class="line">	    int iLen = arrB.length;</div><div class="line">	    // 每个byte用两个字符才能表示，所以字符串的长度是数组长度的两倍   </div><div class="line">	    StringBuffer sb = new StringBuffer(iLen * 2);</div><div class="line">	    for (int i = 0; i &lt; iLen; i++) &#123;</div><div class="line">	      int intTmp = arrB[i];</div><div class="line">	      // 把负数转换为正数   </div><div class="line">	      while (intTmp &lt; 0) &#123;</div><div class="line">	        intTmp = intTmp + 256;</div><div class="line">	      &#125;</div><div class="line">	      // 小于0F的数需要在前面补0   </div><div class="line">	      if (intTmp &lt; 16) &#123;</div><div class="line">	        sb.append("0");</div><div class="line">	      &#125;</div><div class="line">	      sb.append(Integer.toString(intTmp, 16));</div><div class="line">	    &#125;</div><div class="line">	    return sb.toString();</div><div class="line">	  &#125;</div><div class="line"></div><div class="line">	  /**  </div><div class="line">	   * 将表示16进制值的字符串转换为byte数组， 和public static String byteArr2HexStr(byte[] arrB)  </div><div class="line">	   * 互为可逆的转换过程  </div><div class="line">	   *   </div><div class="line">	   * @param strIn  </div><div class="line">	   *            需要转换的字符串  </div><div class="line">	   * @return 转换后的byte数组  </div><div class="line">	   * @throws Exception  </div><div class="line">	   *             本方法不处理任何异常，所有异常全部抛出  </div><div class="line">	   *  </div><div class="line">	   */</div><div class="line">	  public static byte[] hexStr2ByteArr(String strIn) throws Exception &#123;</div><div class="line">	    byte[] arrB = strIn.getBytes();</div><div class="line">	    int iLen = arrB.length;</div><div class="line"></div><div class="line">	    // 两个字符表示一个字节，所以字节数组长度是字符串长度除以2   </div><div class="line">	    byte[] arrOut = new byte[iLen / 2];</div><div class="line">	    for (int i = 0; i &lt; iLen; i = i + 2) &#123;</div><div class="line">	      String strTmp = new String(arrB, i, 2);</div><div class="line">	      arrOut[i / 2] = (byte) Integer.parseInt(strTmp, 16);</div><div class="line">	    &#125;</div><div class="line">	    return arrOut;</div><div class="line">	  &#125;</div><div class="line"></div><div class="line">	  /**  </div><div class="line">	   * 默认构造方法，使用默认密钥  </div><div class="line">	   *   </div><div class="line">	   * @throws Exception  </div><div class="line">	   */</div><div class="line">	  public DesUtils() throws Exception &#123;</div><div class="line">	    this(strDefaultKey);</div><div class="line">	  &#125;</div><div class="line"></div><div class="line">	  /**  </div><div class="line">	   * 指定密钥构造方法  </div><div class="line">	   *   </div><div class="line">	   * @param strKey  </div><div class="line">	   *            指定的密钥  </div><div class="line">	   * @throws Exception  </div><div class="line">	   */</div><div class="line">	  public DesUtils(String strKey) throws Exception &#123;</div><div class="line">	    //Security.addProvider(new com.sun.crypto.provider.SunJCE());</div><div class="line">	    Key key = getKey(strKey.getBytes());</div><div class="line"></div><div class="line">	    encryptCipher = Cipher.getInstance("DES");</div><div class="line">	    encryptCipher.init(Cipher.ENCRYPT_MODE, key);</div><div class="line"></div><div class="line">	    decryptCipher = Cipher.getInstance("DES");</div><div class="line">	    decryptCipher.init(Cipher.DECRYPT_MODE, key);</div><div class="line">	  &#125;</div><div class="line"></div><div class="line">	  /**  </div><div class="line">	   * 加密字节数组  </div><div class="line">	   *   </div><div class="line">	   * @param arrB  </div><div class="line">	   *            需加密的字节数组  </div><div class="line">	   * @return 加密后的字节数组  </div><div class="line">	   * @throws Exception  </div><div class="line">	   */</div><div class="line">	  public byte[] encrypt(byte[] arrB) throws Exception &#123;</div><div class="line">	    return encryptCipher.doFinal(arrB);</div><div class="line">	  &#125;</div><div class="line"></div><div class="line">	  /**  </div><div class="line">	   * 加密字符串  </div><div class="line">	   *   </div><div class="line">	   * @param strIn  </div><div class="line">	   *            需加密的字符串  </div><div class="line">	   * @return 加密后的字符串  </div><div class="line">	   * @throws Exception  </div><div class="line">	   */</div><div class="line">	  public String encrypt(String strIn) throws Exception &#123;</div><div class="line">	    return byteArr2HexStr(encrypt(strIn.getBytes()));</div><div class="line">	  &#125;</div><div class="line"></div><div class="line">	  /**  </div><div class="line">	   * 解密字节数组  </div><div class="line">	   *   </div><div class="line">	   * @param arrB  </div><div class="line">	   *            需解密的字节数组  </div><div class="line">	   * @return 解密后的字节数组  </div><div class="line">	   * @throws Exception  </div><div class="line">	   */</div><div class="line">	  public byte[] decrypt(byte[] arrB) throws Exception &#123;</div><div class="line">	    return decryptCipher.doFinal(arrB);</div><div class="line">	  &#125;</div><div class="line"></div><div class="line">	  /**  </div><div class="line">	   * 解密字符串  </div><div class="line">	   *   </div><div class="line">	   * @param strIn  </div><div class="line">	   *            需解密的字符串  </div><div class="line">	   * @return 解密后的字符串  </div><div class="line">	   * @throws Exception  </div><div class="line">	   */</div><div class="line">	  public String decrypt(String strIn) throws Exception &#123;</div><div class="line">	    return new String(decrypt(hexStr2ByteArr(strIn)));</div><div class="line">	  &#125;</div><div class="line"></div><div class="line">	  /**  </div><div class="line">	   * 从指定字符串生成密钥，密钥所需的字节数组长度为8位 不足8位时后面补0，超出8位只取前8位  </div><div class="line">	   *   </div><div class="line">	   * @param arrBTmp  </div><div class="line">	   *            构成该字符串的字节数组  </div><div class="line">	   * @return 生成的密钥  </div><div class="line">	   * @throws java.lang.Exception  </div><div class="line">	   */</div><div class="line">	  private Key getKey(byte[] arrBTmp) throws Exception &#123;</div><div class="line">	    // 创建一个空的8位字节数组（默认值为0）   </div><div class="line">	    byte[] arrB = new byte[8];</div><div class="line"></div><div class="line">	    // 将原始字节数组转换为8位   </div><div class="line">	    for (int i = 0; i &lt; arrBTmp.length &amp;&amp; i &lt; arrB.length; i++) &#123;</div><div class="line">	      arrB[i] = arrBTmp[i];</div><div class="line">	    &#125;</div><div class="line"></div><div class="line">	    // 生成密钥   </div><div class="line">	    Key key = new javax.crypto.spec.SecretKeySpec(arrB, "DES");</div><div class="line"></div><div class="line">	    return key;</div><div class="line">	  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在涉及数据在网络上的传输时，都要将明文数据加密传输，并且通常情况下的加密都是不可逆的&lt;/p&gt;
-&lt;h2 id=&quot;编码与解码&quot;&gt;&lt;a href=
-    
-    </summary>
-    
-      <category term="安全框架" scheme="http://www.myzwl.win/categories/%E5%AE%89%E5%85%A8%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="Shiro" scheme="http://www.myzwl.win/source/tags/Shiro/"/>
     
   </entry>
   
