@@ -1,0 +1,1207 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="算法," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言压缩与解压的另一种说法就是，压缩相当于对文件的加密过程，解压相当于对文件的解密过程，比如说，盲-z，僧-w，那么盲僧-zw，当然加密与解密各种各样，不一定非是字符型的
+压缩对比如图，最左边是未压缩的原始txt文本文件，里面有38个字节，所以占38字节，中间是利用哈夫曼编码压缩的，居然只占15个字节，最右边是好压自带的压缩，占185个字节，通过对比，发现哈夫曼压缩居然节约这么多空间！
+压缩原理计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="哈夫曼树之压缩与解压">
+<meta property="og:url" content="http://www.myzwl.win/2017/07/30/huffman_2/index.html">
+<meta property="og:site_name" content="秒西">
+<meta property="og:description" content="前言压缩与解压的另一种说法就是，压缩相当于对文件的加密过程，解压相当于对文件的解密过程，比如说，盲-z，僧-w，那么盲僧-zw，当然加密与解密各种各样，不一定非是字符型的
+压缩对比如图，最左边是未压缩的原始txt文本文件，里面有38个字节，所以占38字节，中间是利用哈夫曼编码压缩的，居然只占15个字节，最右边是好压自带的压缩，占185个字节，通过对比，发现哈夫曼压缩居然节约这么多空间！
+压缩原理计">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs4/29.gif">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs4/30.gif">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs4/31.gif">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs4/32.gif">
+<meta property="og:updated_time" content="2017-08-13T12:14:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="哈夫曼树之压缩与解压">
+<meta name="twitter:description" content="前言压缩与解压的另一种说法就是，压缩相当于对文件的加密过程，解压相当于对文件的解密过程，比如说，盲-z，僧-w，那么盲僧-zw，当然加密与解密各种各样，不一定非是字符型的
+压缩对比如图，最左边是未压缩的原始txt文本文件，里面有38个字节，所以占38字节，中间是利用哈夫曼编码压缩的，居然只占15个字节，最右边是好压自带的压缩，占185个字节，通过对比，发现哈夫曼压缩居然节约这么多空间！
+压缩原理计">
+<meta name="twitter:image" content="http://www.myzwl.win/images/imgs4/29.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":true,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.myzwl.win/2017/07/30/huffman_2/"/>
+
+
+
+
+
+  <title> 哈夫曼树之压缩与解压 | 秒西 </title>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"   background="imags/bg.jpg" style="opacity: 0.7;background-color: transparent;">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秒西</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+	
+	<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+    function c() {
+        var e = document.createElement("link");
+        e.setAttribute("type", "text/css");
+        e.setAttribute("rel", "stylesheet");
+        e.setAttribute("href", f);
+        e.setAttribute("class", l);
+        document.body.appendChild(e)
+    }
+
+    function h() {
+        var e = document.getElementsByClassName(l);
+        for (var t = 0; t < e.length; t++) {
+            document.body.removeChild(e[t])
+        }
+    }
+
+    function p() {
+        var e = document.createElement("div");
+        e.setAttribute("class", a);
+        document.body.appendChild(e);
+        setTimeout(function() {
+            document.body.removeChild(e)
+        }, 100)
+    }
+
+    function d(e) {
+        return {
+            height : e.offsetHeight,
+            width : e.offsetWidth
+        }
+    }
+
+    function v(i) {
+        var s = d(i);
+        return s.height > e && s.height < n && s.width > t && s.width < r
+    }
+
+    function m(e) {
+        var t = e;
+        var n = 0;
+        while (!!t) {
+            n += t.offsetTop;
+            t = t.offsetParent
+        }
+        return n
+    }
+
+    function g() {
+        var e = document.documentElement;
+        if (!!window.innerWidth) {
+            return window.innerHeight
+        } else if (e && !isNaN(e.clientHeight)) {
+            return e.clientHeight
+        }
+        return 0
+    }
+
+    function y() {
+        if (window.pageYOffset) {
+            return window.pageYOffset
+        }
+        return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+    }
+
+    function E(e) {
+        var t = m(e);
+        return t >= w && t <= b + w
+    }
+
+    function S() {
+        var e = document.createElement("audio");
+        e.setAttribute("class", l);
+        e.src = i;
+        e.loop = false;
+        e.addEventListener("canplay", function() {
+            setTimeout(function() {
+                x(k)
+            }, 500);
+            setTimeout(function() {
+                N();
+                p();
+                for (var e = 0; e < O.length; e++) {
+                    T(O[e])
+                }
+            }, 15500)
+        }, true);
+        e.addEventListener("ended", function() {
+            N();
+            h()
+        }, true);
+        e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+        document.body.appendChild(e);
+        e.play()
+    }
+
+    function x(e) {
+        e.className += " " + s + " " + o
+    }
+
+    function T(e) {
+        e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+    }
+
+    function N() {
+        var e = document.getElementsByClassName(s);
+        var t = new RegExp("\\b" + s + "\\b");
+        for (var n = 0; n < e.length; ) {
+            e[n].className = e[n].className.replace(t, "")
+        }
+    }
+
+    var e = 30;
+    var t = 30;
+    var n = 350;
+    var r = 350;
+    var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+    var s = "mw-harlem_shake_me";
+    var o = "im_first";
+    var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+    var a = "mw-strobe_light";
+    var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+    var l = "mw_added_css";
+    var b = g();
+    var w = y();
+    var C = document.getElementsByTagName("*");
+    var k = null;
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            if (E(A)) {
+                k = A;
+                break
+            }
+        }
+    }
+    if (A === null) {
+        console.warn("Could not find a node of the right size. Please try a different page.");
+        return
+    }
+    c();
+    S();
+    var O = [];
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            O.push(A)
+        }
+    }
+})()    '>让标题抖起来</a> </li>
+	
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/07/30/huffman_2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                哈夫曼树之压缩与解压
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-30T14:48:51+08:00">
+                2017-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/07/30/huffman_2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>压缩与解压的另一种说法就是，压缩相当于对文件的加密过程，解压相当于对文件的解密过程，比如说，盲-z，僧-w，那么盲僧-zw，当然加密与解密各种各样，不一定非是字符型的</p>
+<h4 id="压缩对比"><a href="#压缩对比" class="headerlink" title="压缩对比"></a>压缩对比</h4><p><img src="/images/imgs4/29.gif" alt="Alt text"><br>如图，最左边是未压缩的原始txt文本文件，里面有38个字节，所以占38字节，中间是利用哈夫曼编码压缩的，居然只占15个字节，最右边是好压自带的压缩，占185个字节，通过对比，发现哈夫曼压缩居然节约这么多空间！</p>
+<h4 id="压缩原理"><a href="#压缩原理" class="headerlink" title="压缩原理"></a>压缩原理</h4><p>计算机只能存储二进制数，即非0即1，比如刚学c语言那会接触到的ASCII码，它是专门处理英文的，比如一个字节占8位（由8个01串组成）来表示各种英文字母以及符号，比如0在ASCII编码的十进制表示是48（00110000），a是97，所以英文共有2的8次方个，但是汉字远远不止256个，所以一个汉字用两个字节表示，所以共有2的16次方汉字，而汉字编码一般用UTF-8和GBK等<br><strong>存储过程</strong><br>比如在文件中存储aaabbc，理论上占6个字节，并且存储的二进制为01100001（a）01100001（a）01100001（a）01100010 （b）01100010 （b）01100011 （c）那么哈夫曼是怎么存储该数据的了<br>它是根据某个字出现的次数，比如a出现3次，b出现2次，c出现1次，将次数作为相应字的权值来构造哈夫曼树的<br><img src="/images/imgs4/30.gif" alt="Alt text"><br>所以得到：哈夫曼编码为a（1），b（01），c（00），所以的到压缩后的编码为aaabbc（111010100），注意这里变成2个字节了，然后将该二进制转换成10进制就行了</p>
+<h4 id="压缩实现"><a href="#压缩实现" class="headerlink" title="压缩实现"></a>压缩实现</h4><p>一般有以下步骤<br>1.读取文件，统计文件中每个字节出现的次数，将该次数作为权值<br>2.根据权值构建哈夫曼树<br>3，根据哈夫曼树构建码表<br>4在读取文件，通过码表对文件中读取的字节进行加密处理<br><img src="/images/imgs4/31.gif" alt="Alt text"><br>在这里定义了一个256的整型数组（存取次数作为权值）和一个256的字符串数组（存取哈夫曼编码值）</p>
+<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><p><strong>哈夫曼结点</strong><br>与之前不同的是增加了索引，便于搜索<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">public class HuffmNode &#123;</div><div class="line">	//数据域  </div><div class="line">    private int data;  </div><div class="line">    //索引  </div><div class="line">    private int index;  </div><div class="line">    //左子节点  </div><div class="line">    private HuffmNode left;  </div><div class="line">    //右子节点  </div><div class="line">    private HuffmNode right;  </div><div class="line">      </div><div class="line">    //哈夫曼节点的构造函数  </div><div class="line">    public HuffmNode(int data,int index)&#123;  </div><div class="line">        this.data=data;  </div><div class="line">        this.index=index;  </div><div class="line">    &#125;  </div><div class="line">      </div><div class="line">    //私有属性的封装  </div><div class="line">    public int getData() &#123;  </div><div class="line">        return data;  </div><div class="line">    &#125;  </div><div class="line">    public void setData(int data) &#123;  </div><div class="line">        this.data = data;  </div><div class="line">    &#125;  </div><div class="line">    public int getIndex() &#123;  </div><div class="line">        return index;  </div><div class="line">    &#125;  </div><div class="line">    public void setIndex(int index) &#123;  </div><div class="line">        this.index = index;  </div><div class="line">    &#125;  </div><div class="line">    public HuffmNode getLeft() &#123;  </div><div class="line">        return left;  </div><div class="line">    &#125;  </div><div class="line">    public void setLeft(HuffmNode left) &#123;  </div><div class="line">        this.left = left;  </div><div class="line">    &#125;  </div><div class="line">    public HuffmNode getRight() &#123;  </div><div class="line">        return right;  </div><div class="line">    &#125;  </div><div class="line">    public void setRight(HuffmNode right) &#123;  </div><div class="line">        this.right = right;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>压缩实现类</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div></pre></td><td class="code"><pre><div class="line">public class Compress &#123;</div><div class="line"></div><div class="line">	 public int[] times=new int[256];</div><div class="line">	 public String[] HuffmCodes=new String[256];</div><div class="line">	 public LinkedList&lt;HuffmNode&gt; list = new LinkedList&lt;HuffmNode&gt;();  </div><div class="line"></div><div class="line">	//初始化 </div><div class="line">     public Compress()&#123;</div><div class="line">    	 for(int i=0;i&lt;HuffmCodes.length;i++)</div><div class="line">    	 &#123;</div><div class="line">    		 HuffmCodes[i]="";</div><div class="line">    	 &#125;</div><div class="line">     &#125;</div><div class="line">     </div><div class="line">     public void countTimes(String path)throws Exception&#123;</div><div class="line">    	//构造文件输入流</div><div class="line">    	 FileInputStream fis=new FileInputStream(path);</div><div class="line">    	//读取文件  </div><div class="line">    	 int value=fis.read();</div><div class="line">    	 while(value!=-1)&#123;</div><div class="line">    		 times[value]++;</div><div class="line">    		 value=fis.read();</div><div class="line">    	 &#125;</div><div class="line">    	 fis.close(); </div><div class="line">     &#125;</div><div class="line">     </div><div class="line">   //构造哈夫曼树 </div><div class="line">     public HuffmNode createTree()&#123;  </div><div class="line">         //将次数作为权值构造森林  </div><div class="line">         for (int i = 0; i &lt; times.length; i++) &#123;  </div><div class="line">             if(times[i]!=0)&#123;  </div><div class="line">                 HuffmNode node = new HuffmNode(times[i],i);  </div><div class="line">                 //将构造好的节点加入到容器中的正确位置  </div><div class="line">                 list.add(getIndex(node), node);  </div><div class="line">             &#125;  </div><div class="line">         &#125;  </div><div class="line">           </div><div class="line">         //将森林（容器中的各个节点）构造成哈夫曼树  </div><div class="line">         while(list.size()&gt;1) &#123;  </div><div class="line">             //获取容器中第一个元素（权值最小的节点）  </div><div class="line">             HuffmNode firstNode =list.removeFirst();  </div><div class="line">             //获取中新的第一个元素，原来的第一个元素已经被移除了（权值次小的节点）  </div><div class="line">             HuffmNode secondNode =list.removeFirst();  </div><div class="line">             //将权值最小的两个节点构造成父节点  </div><div class="line">             HuffmNode fatherNode =  </div><div class="line">                     new HuffmNode(firstNode.getData()+secondNode.getData(),-1);  </div><div class="line">             fatherNode.setLeft(firstNode);  </div><div class="line">             fatherNode.setRight(secondNode);  </div><div class="line">             //父节点加入到容器中的正确位置  </div><div class="line">             list.add(getIndex(fatherNode),fatherNode);  </div><div class="line">         &#125;  </div><div class="line">         //返回整颗树的根节点  </div><div class="line">         return list.getFirst();  </div><div class="line">     &#125;  </div><div class="line">     </div><div class="line">   //利用前序遍历获取编码表  </div><div class="line">     public void getHuffmCode(HuffmNode root,String code)&#123;  </div><div class="line">         //往左走，哈夫曼编码加0  </div><div class="line">         if(root.getLeft()!=null)&#123;  </div><div class="line">             getHuffmCode(root.getLeft(),code+"0");  </div><div class="line">         &#125;  </div><div class="line">         //往右走，哈夫曼编码加1  </div><div class="line">         if(root.getRight()!=null)&#123;  </div><div class="line">             getHuffmCode(root.getRight(),code+"1");  </div><div class="line">         &#125;  </div><div class="line">         //如果是叶子节点，返回该叶子节点的哈夫曼编码  </div><div class="line">         if(root.getLeft()==null &amp;&amp; root.getRight()==null)&#123;  </div><div class="line">//           System.out.println(root.getIndex()+"的编码为："+code);  </div><div class="line">             HuffmCodes[root.getIndex()]=code;  </div><div class="line">         &#125;  </div><div class="line">     &#125;  </div><div class="line">     </div><div class="line">   //压缩文件 </div><div class="line">     public void compress(String path,String destpath)throws Exception&#123;</div><div class="line">    	//构建文件输出流  </div><div class="line">    	 FileOutputStream fos=new FileOutputStream(destpath);</div><div class="line">    	 FileInputStream fis=new FileInputStream(path);</div><div class="line">    	        </div><div class="line">         //读文件，并将对应的哈夫曼编码串接成字符串  </div><div class="line">    	 int value=fis.read();</div><div class="line">    	 String str="";</div><div class="line">    	 while(value!=-1)&#123;</div><div class="line">    		 str+=HuffmCodes[value];</div><div class="line">    		 value=fis.read();</div><div class="line">    	 &#125;</div><div class="line">    	 System.out.println(str);</div><div class="line">    	 fis.close();</div><div class="line">    	 </div><div class="line">    	 String s="";</div><div class="line">    	 while(str.length()&gt;=8)&#123;</div><div class="line">    		 s=str.substring(0, 8);</div><div class="line">    		 int b=changeStringToInt(s);</div><div class="line">    		 fos.write(b);</div><div class="line">    		 fos.flush();</div><div class="line">    		 str=str.substring(8);</div><div class="line">    	 &#125;</div><div class="line">    	 </div><div class="line">    	 int last1=8-str.length();</div><div class="line">    	 for(int i=0;i&lt;last1;i++)&#123;</div><div class="line">    		 str+="0";</div><div class="line">    	 &#125;</div><div class="line">    	 s=str.substring(0, 8);  </div><div class="line">         int d=changeStringToInt(s);  </div><div class="line">         fos.write(d);</div><div class="line">         fos.close();</div><div class="line">     &#125;</div><div class="line">     </div><div class="line">   //插入元素位置的索引  </div><div class="line">     public int getIndex(HuffmNode node) &#123;  </div><div class="line">         for (int i = 0; i &lt; list.size(); i++) &#123;  </div><div class="line">             if(node.getData()&lt;=list.get(i).getData())&#123;  </div><div class="line">                 return i;  </div><div class="line">             &#125;  </div><div class="line">         &#125;  </div><div class="line">        return list.size();  </div><div class="line">     &#125;  </div><div class="line">	 </div><div class="line">   //将字符串转换成整数  </div><div class="line">     public int changeStringToInt(String s)&#123; </div><div class="line">    	 int v1=(s.charAt(0)-48)*128;  </div><div class="line">         int v2=(s.charAt(1)-48)*64;  </div><div class="line">         int v3=(s.charAt(2)-48)*32;  </div><div class="line">         int v4=(s.charAt(3)-48)*16;  </div><div class="line">         int v5=(s.charAt(4)-48)*8;  </div><div class="line">         int v6=(s.charAt(5)-48)*4;  </div><div class="line">         int v7=(s.charAt(6)-48)*2;  </div><div class="line">         int v8=(s.charAt(7)-48)*1;  </div><div class="line">         return v1+v2+v3+v4+v5+v6+v7+v8;</div><div class="line">     &#125; </div><div class="line">	 </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里有几处需要注意下，首先changeStringToInt(String s）方法是根据二进制的定义做转换的，void countTimes(String path)throws Exception中那个value是根据其相应的字节的ASCII码值得，比如a是97，就是times[97]++，初始值都是0；<br>然后void compress(String path,String destpath)throws Exception中读文件刚开始是取8位然后转成int在写进文件，然后取第8未到末尾，在循环直至最后不足8位，在后面补0，在写进去。</p>
+<p><strong>测试类</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">//创建压缩对象  </div><div class="line">      Compress compress = new Compress();  </div><div class="line">      //统计文件中0-255出现的次数  </div><div class="line">      compress.countTimes("C:\\Users\\Administrator\\Desktop\\test.txt");  </div><div class="line">      //构造哈夫曼树，并得到根节点  </div><div class="line">      HuffmNode root=compress.createTree();  </div><div class="line">      //得到哈夫曼编码  </div><div class="line">      compress.getHuffmCode(root, "");  </div><div class="line">      //压缩文件  </div><div class="line">      compress.compress("C:\\Users\\Administrator\\Desktop\\test.txt",  </div><div class="line">              "C:\\Users\\Administrator\\Desktop\\tes.zip");</div></pre></td></tr></table></figure></p>
+<p>结果：</p>
+<blockquote>
+<p>1011010101110010110101011011011011100111011110011000010000100111010100010000010011111101101111110111111011000010000100</p>
+</blockquote>
+<p>同时会生成一个压缩文件，如前面的图所示</p>
+<h4 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h4><p><strong>解压原理</strong><br>之前说过哈夫曼编码不会出现像0和01这样前者是后者子串的情况，所以解压采取的办法就是在压缩时写进去每个编码的长度和对应的编码，就像密码本一样，记录着每个密码的详细信息（这里理解每个密码长度和密码数据域唯一确定一个解码）<br>打个比方，假设ab压缩后为0和10，当然压缩后是变成010，那怎么解码了？，首先在压缩时，在之前压缩代码上加上一个记录编码长度和对应的编码，像a不是97吗，那在写入时记录code[97]=1，对应的编码str[97]=0，code[98]=1；str[98]=0，一次类推，写入时是先写入编码长度的，不过要将字符串转换成十进制，然后通过字符串分割成不同编码，这样每个字节也就拿到手了<br>模拟一下，不妨把abbcc先压缩，然后读出它的二进制如下</p>
+<blockquote>
+<p>000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000015214308</p>
+</blockquote>
+<p>再来分析分析：<br>前面在152之前都是存取密码长度的信息，212是对应ASSII码的相应字节的编码长度，如a（10）、b（0），c（11）所以长度分别对应212，接下来就是152也就是abc的二进制值了，10011，不足8位后面补0，即10011000，对应十进制就是152，后面143就是文本的需要解密的编码，后面08没有弄懂，在压缩文件中并没有输入这个东西，也做了大量实验发现都有后面这些数字，暂且认为就是压缩文件自带的标识吧（逻辑上还没有证明，所以勉强这么认为）<br>所以，解码思路就是先根据长度读取相应位置，然后分割每个位置得到相应二进制编码，最后再转回来，看看编码的打印结果</p>
+<blockquote>
+<p>0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000212000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000codeLength:1<br>int152<br>哈夫曼编码：10011000<br>huff10<br>huff0<br>huff11<br>需要解密的字符串：10001111<br>截取的字符串：10<br>截取后剩余编码长度：6<br>截取的字符串：0<br>截取后剩余编码长度：5<br>截取的字符串：0<br>截取后剩余编码长度：4<br>截取的字符串：11<br>截取后剩余编码长度：2<br>截取的字符串：11<br>截取后剩余编码长度：0</p>
+</blockquote>
+<p>不是很规范，但是大概跟踪了过程，长度为5（10011），不足8位不以为，所以codeLength为1,152就是哈夫曼密码手册值了，变成二进制为10011000，然后分割成10,0,11分别对应ASSII码为a、b、c三个字符，需要解密的是10001111，也就是143，解密分别对应abbcc，所以至此完成解密了<br>说了这么多，再来看看代码吧</p>
+<h4 id="码上有戏-1"><a href="#码上有戏-1" class="headerlink" title="码上有戏"></a>码上有戏</h4><p><strong>压缩编码</strong><br>由于解压需要的压缩编码在之前主要修改一点，所以这里就把增加的代码贴出来，分析分析<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">//将整个哈夫曼编码以及每个编码的长度写入文件  </div><div class="line">     String code ="";  </div><div class="line">     for (int i = 0; i &lt; 256; i++) &#123;  </div><div class="line">         fos.write(HuffmCodes[i].length());  </div><div class="line">         code+=HuffmCodes[i];  </div><div class="line">         fos.flush();  </div><div class="line">     &#125;  </div><div class="line">     //把哈夫曼编码写入文件  </div><div class="line">       </div><div class="line">  System.out.println("code="+code);  </div><div class="line">     String str1="";  </div><div class="line">     while(code.length()&gt;=8)&#123;  </div><div class="line">         str1=code.substring(0, 8);  </div><div class="line">         int c=changeStringToInt(str1);  </div><div class="line">      System.out.println(c);  </div><div class="line">         fos.write(c);  </div><div class="line">         fos.flush();  </div><div class="line">         code=code.substring(8);  </div><div class="line">     &#125;  </div><div class="line">     //处理最后一个不为8的数  </div><div class="line">     int last=8-code.length();  </div><div class="line">     for (int i = 0; i &lt;last; i++) &#123;  </div><div class="line">         code+="0";  </div><div class="line">     &#125;  </div><div class="line">     str1=code.substring(0, 8);  </div><div class="line">     int c=changeStringToInt(str1); </div><div class="line">     System.out.println("c:"+c);</div><div class="line">     fos.write(c);  </div><div class="line">     fos.flush();</div></pre></td></tr></table></figure></p>
+<p>上面代码是说首先我们已经统计了文本中字符出现的次数，压缩那里已经写过了，然后将长度表写入进压缩文件，也就是那一大串000中间含有长度的字符串，存在code里，注意长度为空就是空字符，所以code就是那5位的二进制，然后不足8位的补成8位，再变成十进制也就是152了，这是这段代码与之前增加的部分，我们也称为码表构造</p>
+<p><strong>解压实现类</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div></pre></td><td class="code"><pre><div class="line">//每个编码的长度  </div><div class="line">    public int [] codelengths = new int [256];  </div><div class="line">    //对应的哈夫曼编码值  </div><div class="line">    public String [] codeMap=new String[256];  </div><div class="line">    </div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		 Decompress d = new Decompress();  </div><div class="line">	        d.decompress("C:\\Users\\Administrator\\Desktop\\tes.zip",  </div><div class="line">	                "C:\\Users\\Administrator\\Desktop\\mytes.txt"); </div><div class="line"></div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	/* </div><div class="line">     * 解压思路： </div><div class="line">     * 1、读取文件里面的码表 </div><div class="line">     * 2、得到码表 </div><div class="line">     * 3、读取数据 </div><div class="line">     * 4、还原数据 </div><div class="line">     */  </div><div class="line">      </div><div class="line">    public void decompress(String srcpath,String destpath) &#123;  </div><div class="line">    	   </div><div class="line">        try &#123;  </div><div class="line">            FileInputStream fis = new FileInputStream(srcpath);  </div><div class="line">            FileOutputStream fos = new FileOutputStream(destpath);  </div><div class="line">            int zwl;</div><div class="line">            int value;  </div><div class="line">            int codeLength=0;  </div><div class="line">            String code="";  </div><div class="line">            //还原码表  </div><div class="line">            for (int i = 0; i &lt; codelengths.length; i++) &#123;  </div><div class="line">                value=fis.read();  </div><div class="line">                codelengths[i]=value;  </div><div class="line">             System.out.print(codelengths[i]);  </div><div class="line">                codeLength+=codelengths[i];  </div><div class="line">            &#125;  </div><div class="line">           // System.out.println("总长度:"+codeLength);</div><div class="line">            //得到总长度  </div><div class="line">            //将总长度除以8的到字节个数  </div><div class="line">            int len=codeLength/8;  </div><div class="line">            //如果不是8的倍数，则字节个数加1（对应压缩补0的情况）  </div><div class="line">            if((codeLength)%8!=0)&#123;  </div><div class="line">                len++;  </div><div class="line">            &#125;  </div><div class="line">            //读取哈夫曼编码  </div><div class="line">          System.out.println("codeLength:"+len);  </div><div class="line">            for (int i = 0; i &lt; len; i++) &#123;  </div><div class="line">                //把读到的整数转换成二进制  </div><div class="line">            	int s=fis.read();</div><div class="line">            	System.out.println("int"+s);</div><div class="line">                code+=changeIntToString(s);  </div><div class="line">                  </div><div class="line">            &#125;  </div><div class="line">          System.out.println("哈夫曼编码："+code);  </div><div class="line">              </div><div class="line">            for (int i = 0; i &lt; codeMap.length; i++) &#123;  </div><div class="line">                //如果第i个位置不为0 ，则说明第i个位置存储有哈夫曼编码  </div><div class="line">                if(codelengths[i]!=0)&#123;  </div><div class="line">                    //将得到的一串哈夫曼编码按照长度分割分割  </div><div class="line">                    String ss=code.substring(0, codelengths[i]);  </div><div class="line">                    codeMap[i]=ss;  </div><div class="line">                    System.out.println("huff"+codeMap[i]);</div><div class="line">                    code=code.substring(codelengths[i]);  </div><div class="line">                &#125;else&#123;  </div><div class="line">                    //为0则没有对应的哈夫曼编码  </div><div class="line">                    codeMap[i]="";  </div><div class="line">                &#125;  </div><div class="line">            &#125;  </div><div class="line">              </div><div class="line">            //读取压缩的文件内容  </div><div class="line">            String codeContent="";  </div><div class="line">            while(fis.available()&gt;1)&#123;  </div><div class="line">                codeContent+=changeIntToString(fis.read());  </div><div class="line">            &#125;  </div><div class="line">            //读取最后一个  </div><div class="line">            value=fis.read();  </div><div class="line">            //把最后补的0给去掉  </div><div class="line">            codeContent=codeContent.substring(0, codeContent.length()-value);  </div><div class="line">                  </div><div class="line">            for (int i = 0; i &lt; codeContent.length(); i++) &#123;  </div><div class="line">                  </div><div class="line">                String codecontent=codeContent.substring(0, i+1);  </div><div class="line">                  </div><div class="line">                for (int j = 0; j &lt; codeMap.length; j++) &#123;  </div><div class="line">                    if(codeMap[j].equals(codecontent))&#123;  </div><div class="line">                     System.out.println("截取的字符串："+codecontent);  </div><div class="line">                        fos.write(j);  </div><div class="line">                        fos.flush();   </div><div class="line">                        codeContent=codeContent.substring(i+1);  </div><div class="line">                    System.out.println("截取后剩余编码长度："+codeContent.length());  </div><div class="line"> </div><div class="line">                        i=-1;  </div><div class="line">                        break;  </div><div class="line">                    &#125;  </div><div class="line">            &#125;  </div><div class="line">            &#125;  </div><div class="line"></div><div class="line">              </div><div class="line">            fos.close();  </div><div class="line">            fis.close();  </div><div class="line">              </div><div class="line">        &#125; catch (Exception e) &#123;  </div><div class="line">            e.printStackTrace();  </div><div class="line">        &#125;  </div><div class="line"></div><div class="line">    &#125;  </div><div class="line">      </div><div class="line">    //十进制转二进制字符串  </div><div class="line">    public String changeIntToString(int value) &#123;  </div><div class="line">        String s="";  </div><div class="line">        for (int i = 0; i &lt; 8; i++) &#123;  </div><div class="line">            s=value%2+s;  </div><div class="line">            value=value/2;  </div><div class="line">        &#125;  </div><div class="line">        return s;  </div><div class="line">    &#125;  </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里的codelengths[]和codeMap[]就是分别存放码表和码表值的数组，流程就是先读取文本内容，拿到长度表中有长度的编码，如212，然后判断其是多少个字节，然后读哈夫曼编码，根据字节数，转成二进制后，找到对应的码表，然后就是分割编码了，最后就得到我们想要的解码了。最后<br><img src="/images/imgs4/32.gif" alt="Alt text"><br>分别为压缩前，压缩后的，会发现压缩居然比压缩前占得空间还大，那是因为我们压缩的文件太小了，而之前也比较过了，压缩一般都是针对大文件的</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>最后不得不说哈夫曼树的精妙让人惊叹和着迷，同时也认识到了计算机底层知识的重要性，当你回过头来再去看以前的知识，会有另一种不同的感受，当然当再去看压缩与解压，原来是这么回事。当然探索的过程是很累的，会遇到各种难题和挫折，而在当下这个追求功利主义，很多时候都是表象的去用一些东西，当然有时候你把时间花在一些与收益不是很正相关的上面，可能会让你的性价比不是很高，但是正是由于这种自娱自乐的快乐，才更让人充实，而不是每天都去追求“外功”。</p>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>纯属娱乐！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/算法/" rel="tag"># 算法</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/30/huffman_1/" rel="next" title="哈夫曼树之构建">
+                <i class="fa fa-chevron-left"></i> 哈夫曼树之构建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/31/reflaction_1/" rel="prev" title="反射机制简单总结">
+                反射机制简单总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+     <div class="comments" id="comments">
+       
+         <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+		 <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+  url: document.location.href, 
+  sourceId: "",
+  productKey: "874139175a2d4e1281085b0f0647e3e1",
+  target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+</script>
+       
+     </div>
+   
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description">try your best</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">86</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/slycmiaoxi" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/images/zwl.png" target="_blank" title="Weixin">
+                  
+                    <i class="fa fa-fw fa-weixin"></i>
+                  
+                  Weixin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+      
+        
+
+
+		
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩对比"><span class="nav-text">压缩对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩原理"><span class="nav-text">压缩原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩实现"><span class="nav-text">压缩实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#码上有戏"><span class="nav-text">码上有戏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解压"><span class="nav-text">解压</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#码上有戏-1"><span class="nav-text">码上有戏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=86 height=100 src="http://music.163.com/outchain/player?type=0&id=120897804&auto=0&height=90&auto=1&height=86&autoPlay=true" style="width:0px;height:0px;"></iframe>
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+
+
+
+
+
+
+<br/>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.min.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {          
+          jQuery("img").lazyload({
+            placeholder:"http://www.arao.me/loading.gif",
+              effect:"fadeIn"
+            });
+          });
+    </script>
+	<!-- 动态线条 -->
+	<script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+	
+
+
+
+</body>
+</html>
