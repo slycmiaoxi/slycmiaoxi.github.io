@@ -105,22 +105,22 @@
 
 
 
-<meta name="description" content="title: 序列化二叉树date: 2017-04-30 16:48:51tags: 剑指offer
+<meta name="description" content="title: 序列化二叉树date: 2017-05-02 16:48:51tags: 剑指offer
 categories: 剑指offer问题描述请实现两个函数，分别用来序列化和反序列化二叉树。其中序列化的意思返回一个带有逗号和特殊符号的字符串，而反序列化就是根据带有特殊符号和逗号的字符串返回一个二叉树
-思路分析对应序列化二叉树来说，因为每次都是将根结点序列化，所以可用前序遍历，即如果结点有孩">
+思路分析对应序列化二叉树来说，因为每次都是将根结点序列化，所以可用前序遍历，即如果结点有">
 <meta property="og:type" content="article">
 <meta property="og:title" content="秒西">
 <meta property="og:url" content="http://www.myzwl.win/2017/08/26/offer_22/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="title: 序列化二叉树date: 2017-04-30 16:48:51tags: 剑指offer
+<meta property="og:description" content="title: 序列化二叉树date: 2017-05-02 16:48:51tags: 剑指offer
 categories: 剑指offer问题描述请实现两个函数，分别用来序列化和反序列化二叉树。其中序列化的意思返回一个带有逗号和特殊符号的字符串，而反序列化就是根据带有特殊符号和逗号的字符串返回一个二叉树
-思路分析对应序列化二叉树来说，因为每次都是将根结点序列化，所以可用前序遍历，即如果结点有孩">
-<meta property="og:updated_time" content="2017-09-02T15:36:20.000Z">
+思路分析对应序列化二叉树来说，因为每次都是将根结点序列化，所以可用前序遍历，即如果结点有">
+<meta property="og:updated_time" content="2017-09-02T16:12:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="秒西">
-<meta name="twitter:description" content="title: 序列化二叉树date: 2017-04-30 16:48:51tags: 剑指offer
+<meta name="twitter:description" content="title: 序列化二叉树date: 2017-05-02 16:48:51tags: 剑指offer
 categories: 剑指offer问题描述请实现两个函数，分别用来序列化和反序列化二叉树。其中序列化的意思返回一个带有逗号和特殊符号的字符串，而反序列化就是根据带有特殊符号和逗号的字符串返回一个二叉树
-思路分析对应序列化二叉树来说，因为每次都是将根结点序列化，所以可用前序遍历，即如果结点有孩">
+思路分析对应序列化二叉树来说，因为每次都是将根结点序列化，所以可用前序遍历，即如果结点有">
 
 
 
@@ -592,7 +592,8 @@ var _hmt = _hmt || [];
       
 
       
-        <p>title: 序列化二叉树<br>date: 2017-04-30 16:48:51<br>tags: 剑指offer</p>
+        <hr>
+<p>title: 序列化二叉树<br>date: 2017-05-02 16:48:51<br>tags: 剑指offer</p>
 <h2 id="categories-剑指offer"><a href="#categories-剑指offer" class="headerlink" title="categories: 剑指offer"></a>categories: 剑指offer</h2><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>请实现两个函数，分别用来序列化和反序列化二叉树。其中序列化的意思返回一个带有逗号和特殊符号的字符串，而反序列化就是根据带有特殊符号和逗号的字符串返回一个二叉树</p>
 <h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>对应序列化二叉树来说，因为每次都是将根结点序列化，所以可用前序遍历，即如果结点有孩子，先保存结点值，在继续，当遇到孩子为空时，就用特殊符号输出代替<br>反序列化，同样用递归实现，即先利用一个索引，用于取出每次遍历的字符串中的值，同时把字符串变成一个字符数组，然后比较是否是特殊符号，如果是特殊符号，不做处理，反之，变成根结点的孩子</p>
 <h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">static class TreeNode&#123;</div><div class="line">		int data;</div><div class="line">		TreeNode left;</div><div class="line">		TreeNode right;</div><div class="line">		</div><div class="line">		public TreeNode(int data)&#123;</div><div class="line">			this.data=data;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public String serialize(TreeNode root)&#123;</div><div class="line">	StringBuilder sb=new StringBuilder();</div><div class="line">		if(root==null)</div><div class="line">		&#123;</div><div class="line">		  sb.append("$"+",");</div><div class="line">			 return sb.toString();</div><div class="line">		&#125;</div><div class="line">		       sb.append(root.data+",");</div><div class="line">		        sb.append(serialize(root.left));</div><div class="line">		         sb.append(serialize(root.right));</div><div class="line">		        return sb.toString();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	int n=-1;</div><div class="line">	public TreeNode deSerialize(String str)&#123;</div><div class="line">		 n++;</div><div class="line">		if(n&gt;=str.length())</div><div class="line">			return null;</div><div class="line">		  TreeNode node=null;</div><div class="line">		 String[] s=str.split(",");</div><div class="line">		if(!s[n].equals("$"))&#123;</div><div class="line">			node=new TreeNode(Integer.parseInt(s[n]));</div><div class="line">			  node.left=deSerialize(str);</div><div class="line">			  node.right=deSerialize(str);</div><div class="line">		&#125;</div><div class="line">		 return node;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	void preTraver(TreeNode root)&#123;</div><div class="line">		if(root!=null)&#123;</div><div class="line">		System.out.print(root.data+" ");</div><div class="line">		 preTraver(root.left);</div><div class="line">		  preTraver(root.right);</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>

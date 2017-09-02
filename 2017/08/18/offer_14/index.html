@@ -105,20 +105,20 @@
 
 
 
-<meta name="description" content="title: 树的子结构date: 2017-04-23 15:48:51tags: 剑指offer
+<meta name="description" content="title: 树的子结构date: 2017-04-24 15:48:51tags: 剑指offer
 categories: 剑指offer问题描述输入两颗二叉树A，B，判断B是不是A的子结构
 思路分析要在原二叉树中查找是否具有某棵子树，只需要判断每个节点是否都在二叉树中是否出现即可。所以需要先判断头结点，只有头结点符合要求才继续比较其子树是否符合，然后在从左右子树依次比较，如果都符合，则说明B">
 <meta property="og:type" content="article">
 <meta property="og:title" content="秒西">
 <meta property="og:url" content="http://www.myzwl.win/2017/08/18/offer_14/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="title: 树的子结构date: 2017-04-23 15:48:51tags: 剑指offer
+<meta property="og:description" content="title: 树的子结构date: 2017-04-24 15:48:51tags: 剑指offer
 categories: 剑指offer问题描述输入两颗二叉树A，B，判断B是不是A的子结构
 思路分析要在原二叉树中查找是否具有某棵子树，只需要判断每个节点是否都在二叉树中是否出现即可。所以需要先判断头结点，只有头结点符合要求才继续比较其子树是否符合，然后在从左右子树依次比较，如果都符合，则说明B">
-<meta property="og:updated_time" content="2017-09-02T15:33:32.000Z">
+<meta property="og:updated_time" content="2017-09-02T16:06:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="秒西">
-<meta name="twitter:description" content="title: 树的子结构date: 2017-04-23 15:48:51tags: 剑指offer
+<meta name="twitter:description" content="title: 树的子结构date: 2017-04-24 15:48:51tags: 剑指offer
 categories: 剑指offer问题描述输入两颗二叉树A，B，判断B是不是A的子结构
 思路分析要在原二叉树中查找是否具有某棵子树，只需要判断每个节点是否都在二叉树中是否出现即可。所以需要先判断头结点，只有头结点符合要求才继续比较其子树是否符合，然后在从左右子树依次比较，如果都符合，则说明B">
 
@@ -593,7 +593,7 @@ var _hmt = _hmt || [];
 
       
         <hr>
-<p>title: 树的子结构<br>date: 2017-04-23 15:48:51<br>tags: 剑指offer</p>
+<p>title: 树的子结构<br>date: 2017-04-24 15:48:51<br>tags: 剑指offer</p>
 <h2 id="categories-剑指offer"><a href="#categories-剑指offer" class="headerlink" title="categories: 剑指offer"></a>categories: 剑指offer</h2><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>输入两颗二叉树A，B，判断B是不是A的子结构</p>
 <h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>要在原二叉树中查找是否具有某棵子树，只需要判断每个节点是否都在二叉树中是否出现即可。所以需要先判断头结点，只有头结点符合要求才继续比较其子树是否符合，然后在从左右子树依次比较，如果都符合，则说明B是A的子树</p>
 <h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">public class TreeNode&#123;</div><div class="line">		int data;</div><div class="line">		TreeNode left;</div><div class="line">		TreeNode right;</div><div class="line">		</div><div class="line">		TreeNode(int data)&#123;</div><div class="line">			this.data=data;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public boolean HasSubtree(TreeNode root1,TreeNode root2)&#123;</div><div class="line">		boolean hasSubTree=false;</div><div class="line">		if(root1!=null&amp;&amp;root2!=null)</div><div class="line">		&#123;</div><div class="line">			if(root1.data==root2.data)</div><div class="line">			&#123;</div><div class="line">				hasSubTree=nodesValEqual(root1,root2);</div><div class="line">			&#125;</div><div class="line">			if(!hasSubTree)</div><div class="line">			&#123;</div><div class="line">				hasSubTree=HasSubtree(root1.left,root2.left);</div><div class="line">			&#125;</div><div class="line">			if(!hasSubTree)</div><div class="line">			&#123;</div><div class="line">				hasSubTree=HasSubtree(root1.right,root2.right);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		return hasSubTree;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	private boolean nodesValEqual(TreeNode root1,TreeNode root2)&#123;</div><div class="line">		if(root2==null)</div><div class="line">			return true;</div><div class="line">		if(root1==null)</div><div class="line">			return false;</div><div class="line">		if(root1.data!=root2.data)</div><div class="line">			return false;</div><div class="line">		return nodesValEqual(root1.left,root2.left)&amp;&amp;nodesValEqual(root1.right,root2.right);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>

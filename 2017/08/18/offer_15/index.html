@@ -105,7 +105,7 @@
 
 
 
-<meta name="description" content="title: 二叉树的镜像date: 2017-04-23 16:48:51tags: 剑指offer
+<meta name="description" content="title: 二叉树的镜像date: 2017-04-25 16:48:51tags: 剑指offer
 categories: 剑指offer问题描述请完成一个函数，输入一颗二叉树，该函数输出它的镜像。
 思路分析镜像也就是将每个子节点的左右子节点交换，可以先判断根结点是否有左右子树，然后依次交换，然后在利用递归的思想继续交换
 码上有戏1234567891011121314151617181920">
@@ -113,14 +113,14 @@ categories: 剑指offer问题描述请完成一个函数，输入一颗二叉树
 <meta property="og:title" content="秒西">
 <meta property="og:url" content="http://www.myzwl.win/2017/08/18/offer_15/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="title: 二叉树的镜像date: 2017-04-23 16:48:51tags: 剑指offer
+<meta property="og:description" content="title: 二叉树的镜像date: 2017-04-25 16:48:51tags: 剑指offer
 categories: 剑指offer问题描述请完成一个函数，输入一颗二叉树，该函数输出它的镜像。
 思路分析镜像也就是将每个子节点的左右子节点交换，可以先判断根结点是否有左右子树，然后依次交换，然后在利用递归的思想继续交换
 码上有戏1234567891011121314151617181920">
-<meta property="og:updated_time" content="2017-09-02T15:34:00.000Z">
+<meta property="og:updated_time" content="2017-09-02T16:06:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="秒西">
-<meta name="twitter:description" content="title: 二叉树的镜像date: 2017-04-23 16:48:51tags: 剑指offer
+<meta name="twitter:description" content="title: 二叉树的镜像date: 2017-04-25 16:48:51tags: 剑指offer
 categories: 剑指offer问题描述请完成一个函数，输入一颗二叉树，该函数输出它的镜像。
 思路分析镜像也就是将每个子节点的左右子节点交换，可以先判断根结点是否有左右子树，然后依次交换，然后在利用递归的思想继续交换
 码上有戏1234567891011121314151617181920">
@@ -596,7 +596,7 @@ var _hmt = _hmt || [];
 
       
         <hr>
-<p>title: 二叉树的镜像<br>date: 2017-04-23 16:48:51<br>tags: 剑指offer</p>
+<p>title: 二叉树的镜像<br>date: 2017-04-25 16:48:51<br>tags: 剑指offer</p>
 <h2 id="categories-剑指offer"><a href="#categories-剑指offer" class="headerlink" title="categories: 剑指offer"></a>categories: 剑指offer</h2><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>请完成一个函数，输入一颗二叉树，该函数输出它的镜像。</p>
 <h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>镜像也就是将每个子节点的左右子节点交换，可以先判断根结点是否有左右子树，然后依次交换，然后在利用递归的思想继续交换</p>
 <h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class TreeNode&#123;</div><div class="line">		int data;</div><div class="line">		TreeNode left;</div><div class="line">		TreeNode right;</div><div class="line">		</div><div class="line">		TreeNode(int data)&#123;</div><div class="line">			this.data=data;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">public void Mirror(TreeNode root)&#123;</div><div class="line">		if(root==null||(root.left==null&amp;&amp;root.right==null))</div><div class="line">			return;</div><div class="line">		TreeNode temp=root.left;</div><div class="line">		root.left=root.right;</div><div class="line">		root.right=temp;</div><div class="line">		if(root.left!=null)</div><div class="line">			Mirror(root.left);</div><div class="line">		if(root.right!=null)</div><div class="line">			Mirror(root.right);</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
