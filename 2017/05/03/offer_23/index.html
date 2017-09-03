@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java, hexo" />
+  <meta name="keywords" content="剑指offer," />
 
 
 
@@ -105,22 +105,19 @@
 
 
 
-<meta name="description" content="title: 二叉树中和为某一值的所有路径date: 2017-04-29 14:48:51tags: 剑指offer
-categories: 剑指offer问题描述输入一颗二叉树和一个整数，打印出二叉树中结点值的和为整数的所有路径。路径定义为从树的根结点开始往下一直到叶子结点所经过的结点形成一条路径
-思路分析从问题描述知道，前序遍历符合从根结点遍历，所有可用此方法遍历，同时可以设置两个集合，一">
+<meta name="description" content="问题描述输入一个字符串，按字典序打印出该字符串中字符的所有排列。例如：输入字符串abc，则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab,cba
+思路分析回想字符串的模式匹配思想，我们可以将该字符串分成两部分，一部分是第一个字符串，第二部分是剩余的字符，然后保持第一个字符不变，从剩余字符遍历，同时交换遍历的位置，很显然这是一个递归的过程，最后在回溯，交换第一个">
 <meta property="og:type" content="article">
-<meta property="og:title" content="秒西">
-<meta property="og:url" content="http://www.myzwl.win/2017/08/23/offer_19/index.html">
+<meta property="og:title" content="输出字符串的全排列">
+<meta property="og:url" content="http://www.myzwl.win/2017/05/03/offer_23/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="title: 二叉树中和为某一值的所有路径date: 2017-04-29 14:48:51tags: 剑指offer
-categories: 剑指offer问题描述输入一颗二叉树和一个整数，打印出二叉树中结点值的和为整数的所有路径。路径定义为从树的根结点开始往下一直到叶子结点所经过的结点形成一条路径
-思路分析从问题描述知道，前序遍历符合从根结点遍历，所有可用此方法遍历，同时可以设置两个集合，一">
-<meta property="og:updated_time" content="2017-09-03T10:13:46.000Z">
+<meta property="og:description" content="问题描述输入一个字符串，按字典序打印出该字符串中字符的所有排列。例如：输入字符串abc，则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab,cba
+思路分析回想字符串的模式匹配思想，我们可以将该字符串分成两部分，一部分是第一个字符串，第二部分是剩余的字符，然后保持第一个字符不变，从剩余字符遍历，同时交换遍历的位置，很显然这是一个递归的过程，最后在回溯，交换第一个">
+<meta property="og:updated_time" content="2017-09-03T12:15:36.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="秒西">
-<meta name="twitter:description" content="title: 二叉树中和为某一值的所有路径date: 2017-04-29 14:48:51tags: 剑指offer
-categories: 剑指offer问题描述输入一颗二叉树和一个整数，打印出二叉树中结点值的和为整数的所有路径。路径定义为从树的根结点开始往下一直到叶子结点所经过的结点形成一条路径
-思路分析从问题描述知道，前序遍历符合从根结点遍历，所有可用此方法遍历，同时可以设置两个集合，一">
+<meta name="twitter:title" content="输出字符串的全排列">
+<meta name="twitter:description" content="问题描述输入一个字符串，按字典序打印出该字符串中字符的所有排列。例如：输入字符串abc，则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab,cba
+思路分析回想字符串的模式匹配思想，我们可以将该字符串分成两部分，一部分是第一个字符串，第二部分是剩余的字符，然后保持第一个字符不变，从剩余字符遍历，同时交换遍历的位置，很显然这是一个递归的过程，最后在回溯，交换第一个">
 
 
 
@@ -148,13 +145,13 @@ categories: 剑指offer问题描述输入一颗二叉树和一个整数，打印
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/08/23/offer_19/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/05/03/offer_23/"/>
 
 
 
 
 
-  <title>  | 秒西 </title>
+  <title> 输出字符串的全排列 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -500,7 +497,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/08/23/offer_19/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/05/03/offer_23/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -521,7 +518,7 @@ var _hmt = _hmt || [];
             
             
               
-                
+                输出字符串的全排列
               
             
           </h1>
@@ -536,8 +533,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-23T09:09:54+08:00">
-                2017-08-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-03T14:48:51+08:00">
+                2017-05-03
               </time>
             
 
@@ -552,6 +549,28 @@ var _hmt = _hmt || [];
 
 		  
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -560,7 +579,7 @@ var _hmt = _hmt || [];
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a class="cloud-tie-join-count" href="/2017/08/23/offer_19/#comments" itemprop="discussionUrl">
+                <a class="cloud-tie-join-count" href="/2017/05/03/offer_23/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count join-count" itemprop="commentCount"></span>
                 </a>
               </span>
@@ -592,15 +611,9 @@ var _hmt = _hmt || [];
       
 
       
-        <hr>
-<p>title: 二叉树中和为某一值的所有路径<br>date: 2017-04-29 14:48:51<br>tags: 剑指offer</p>
-<h2 id="categories-剑指offer"><a href="#categories-剑指offer" class="headerlink" title="categories: 剑指offer"></a>categories: 剑指offer</h2><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>输入一颗二叉树和一个整数，打印出二叉树中结点值的和为整数的所有路径。路径定义为从树的根结点开始往下一直到叶子结点所经过的结点形成一条路径</p>
-<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>从问题描述知道，前序遍历符合从根结点遍历，所有可用此方法遍历，同时可以设置两个集合，一个用来保存每次遍历的结点，一个用来记录每次访问过的结点路径，如果等于和的话，就将结点路径加入，如果不等于，则看是否有左右孩子，在递归遍历，最后如果，返回上层，每一次都要删掉保存的结点</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; findPath(TreeNode root,int target)&#123;</div><div class="line">		  int currentSum=0;</div><div class="line">		  ArrayList&lt;Integer&gt; nodes=new ArrayList&lt;Integer&gt;();</div><div class="line">		   ArrayList&lt;ArrayList&lt;Integer&gt;&gt; pathNodes=new ArrayList&lt;&gt;();</div><div class="line">		    if(root==null)</div><div class="line">		    	return pathNodes;</div><div class="line">		      return findPath(pathNodes,nodes,root,target,currentSum);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	private ArrayList&lt;ArrayList&lt;Integer&gt;&gt; findPath(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; pathNodes, ArrayList&lt;Integer&gt; nodes,</div><div class="line">			TreeNode root, int target, int currentSum) &#123;</div><div class="line">	         currentSum+=root.data;</div><div class="line">	          nodes.add(currentSum);</div><div class="line">	         </div><div class="line">	        boolean isLeafNode=(root.left==null)&amp;&amp;(root.right==null);</div><div class="line">	          if(target==currentSum&amp;&amp;isLeafNode)&#123;</div><div class="line">	        	 ArrayList&lt;Integer&gt; path=new ArrayList&lt;Integer&gt;();</div><div class="line">	        	  for(Integer val:nodes)</div><div class="line">	        	  &#123;</div><div class="line">	        		  path.add(val);</div><div class="line">	        	  &#125;</div><div class="line">	        	  pathNodes.add(path);</div><div class="line">	         &#125;</div><div class="line">	         if(root.left!=null)&#123;</div><div class="line">	        	 this.findPath(pathNodes, nodes, root.left, target, currentSum);</div><div class="line">	         &#125;</div><div class="line">	         if(root.right!=null)&#123;</div><div class="line">	        	 this.findPath(pathNodes, nodes, root.right, target, currentSum);</div><div class="line">	         &#125;</div><div class="line">	         Integer value=nodes.remove(pathNodes.size()-1);</div><div class="line">	          currentSum-=value;</div><div class="line">	           return pathNodes;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"> class TreeNode&#123;</div><div class="line">	int data;</div><div class="line">	TreeNode left;</div><div class="line">	TreeNode right;</div><div class="line">	</div><div class="line">	TreeNode(int data)&#123;</div><div class="line">		this.data=data;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>测试：</p>
-<blockquote>
-<p>TreeNode a=new TreeNode(10);<br>       TreeNode b=new TreeNode(5);<br>       TreeNode c=new TreeNode(12);<br>       TreeNode d=new TreeNode(4);<br>       TreeNode e=new TreeNode(7);<br>       a.left=b;<br>       a.right=c;<br>       b.left=d;<br>       b.right=e;<br>       ArrayList<arraylist<integer>&gt; pathNodes=new ConstructBinaryTree().findPath(a, 19);<br>        for(ArrayList<integer> list:pathNodes)<br>            for(Integer val:list){<br>                System.out.println(val+” “);<br>            }</integer></arraylist<integer></p>
-</blockquote>
+        <h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>输入一个字符串，按字典序打印出该字符串中字符的所有排列。例如：输入字符串abc，则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab,cba</p>
+<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>回想字符串的模式匹配思想，我们可以将该字符串分成两部分，一部分是第一个字符串，第二部分是剩余的字符，然后保持第一个字符不变，从剩余字符遍历，同时交换遍历的位置，很显然这是一个递归的过程，最后在回溯，交换第一个字符和剩余字符的位置，依次类推</p>
+<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">public class StringSort &#123;</div><div class="line">	</div><div class="line">	public ArrayList&lt;String&gt; permitution(String str)&#123;</div><div class="line">		ArrayList&lt;String&gt; list=new ArrayList&lt;String&gt;();</div><div class="line">		 if(str==null||str.length()&lt;0)</div><div class="line">			 return list;</div><div class="line">		 list=permitution(list,str.toCharArray(),0,str.length());</div><div class="line">		  Collections.sort(list);</div><div class="line">		  return list;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	private ArrayList&lt;String&gt; permitution(ArrayList&lt;String&gt; list,char[] str,int begin,int length)</div><div class="line">	&#123;</div><div class="line">		if(begin==length-1)</div><div class="line">		&#123;</div><div class="line">			if(!list.contains(str))</div><div class="line">				list.add(String.valueOf(str));</div><div class="line">		&#125;</div><div class="line">		else&#123;</div><div class="line">			for(int i=begin;i&lt;length;i++)&#123;</div><div class="line">				if(i==begin||str[i]!=str[begin])&#123;</div><div class="line">					swap(str,begin,i);</div><div class="line">					permitution(list,str,begin+1,length);</div><div class="line">					swap(str,begin,i);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		return list;</div><div class="line">	&#125;</div><div class="line">	public void swap(char[] str,int begin,int i)&#123;</div><div class="line">		char temp=str[i];</div><div class="line">		str[i]=str[begin];</div><div class="line">		str[begin]=temp;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		ArrayList&lt;String&gt; list=new StringSort().permitution("abcc");</div><div class="line">         for(String s:list)&#123;</div><div class="line">        	 System.out.print(s+" ");</div><div class="line">         &#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -639,6 +652,12 @@ var _hmt = _hmt || [];
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/source/tags/剑指offer/" rel="tag"># 剑指offer</a>
+          
+        </div>
+      
 
       
         
@@ -648,8 +667,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/22/offer_18/" rel="next" title="">
-                <i class="fa fa-chevron-left"></i> 
+              <a href="/2017/05/02/offer_22/" rel="next" title="序列化二叉树">
+                <i class="fa fa-chevron-left"></i> 序列化二叉树
               </a>
             
           </div>
@@ -658,8 +677,8 @@ var _hmt = _hmt || [];
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/08/24/offer_20/" rel="prev" title="">
-                 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/11/jd1/" rel="prev" title="设计模式原则笔记">
+                设计模式原则笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -704,6 +723,9 @@ var _hmt = _hmt || [];
           
           </div>
           
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
 
 
           
@@ -846,7 +868,7 @@ Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true)
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#categories-剑指offer"><span class="nav-text">categories: 剑指offer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题描述"><span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思路分析"><span class="nav-text">思路分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#码上有戏"><span class="nav-text">码上有戏</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题描述"><span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思路分析"><span class="nav-text">思路分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#码上有戏"><span class="nav-text">码上有戏</span></a></li></ol></div>
             
 
           </div>
