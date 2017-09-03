@@ -105,22 +105,22 @@
 
 
 
-<meta name="description" content="title: 二叉搜索树的后续遍历序列date: 2017-04-28 16:48:51tags: 剑指offer
+<meta name="description" content="title: 二叉树的后续遍历序列date: 2017-04-28 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述输入一个整数数组，判断该数组是不是某二叉搜索树的后续遍历的结果。如果是，则输出true，否则返回false
-思路分析如{5,7,6,9,11,10,8}，根据二叉排序树的后续遍历特点，首先知道最后一个数是根结点，然后让前面的数与它比较，">
+思路分析如{5,7,6,9,11,10,8}，根据二叉排序树的后续遍历特点，首先知道最后一个数是根结点，然后让前面的数与它比较，当到">
 <meta property="og:type" content="article">
 <meta property="og:title" content="秒西">
 <meta property="og:url" content="http://www.myzwl.win/2017/08/22/offer_18/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="title: 二叉搜索树的后续遍历序列date: 2017-04-28 16:48:51tags: 剑指offer
+<meta property="og:description" content="title: 二叉树的后续遍历序列date: 2017-04-28 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述输入一个整数数组，判断该数组是不是某二叉搜索树的后续遍历的结果。如果是，则输出true，否则返回false
-思路分析如{5,7,6,9,11,10,8}，根据二叉排序树的后续遍历特点，首先知道最后一个数是根结点，然后让前面的数与它比较，">
-<meta property="og:updated_time" content="2017-09-02T16:08:50.000Z">
+思路分析如{5,7,6,9,11,10,8}，根据二叉排序树的后续遍历特点，首先知道最后一个数是根结点，然后让前面的数与它比较，当到">
+<meta property="og:updated_time" content="2017-09-03T10:13:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="秒西">
-<meta name="twitter:description" content="title: 二叉搜索树的后续遍历序列date: 2017-04-28 16:48:51tags: 剑指offer
+<meta name="twitter:description" content="title: 二叉树的后续遍历序列date: 2017-04-28 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述输入一个整数数组，判断该数组是不是某二叉搜索树的后续遍历的结果。如果是，则输出true，否则返回false
-思路分析如{5,7,6,9,11,10,8}，根据二叉排序树的后续遍历特点，首先知道最后一个数是根结点，然后让前面的数与它比较，">
+思路分析如{5,7,6,9,11,10,8}，根据二叉排序树的后续遍历特点，首先知道最后一个数是根结点，然后让前面的数与它比较，当到">
 
 
 
@@ -593,7 +593,7 @@ var _hmt = _hmt || [];
 
       
         <hr>
-<p>title: 二叉搜索树的后续遍历序列<br>date: 2017-04-28 16:48:51<br>tags: 剑指offer</p>
+<p>title: 二叉树的后续遍历序列<br>date: 2017-04-28 14:48:51<br>tags: 剑指offer</p>
 <h2 id="categories-剑指offer"><a href="#categories-剑指offer" class="headerlink" title="categories: 剑指offer"></a>categories: 剑指offer</h2><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>输入一个整数数组，判断该数组是不是某二叉搜索树的后续遍历的结果。如果是，则输出true，否则返回false</p>
 <h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>如{5,7,6,9,11,10,8}，根据二叉排序树的后续遍历特点，首先知道最后一个数是根结点，然后让前面的数与它比较，当到某一个数大于他时，那门这个数的前面就是左子树，右边就是右子树，比如{5,7,6}为左子树，{9,11,10}为右子树，接着判断如果右子树中有存在某个数小于根结点8，也就是返回false，如果不是，在将左子树和右子树依次递归</p>
 <h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">public class BinaryOfOut &#123;</div><div class="line"></div><div class="line">	public boolean IsBianry(int[] ids)&#123;</div><div class="line">		if(ids.length&lt;0)</div><div class="line">			return false;</div><div class="line">		 int root=ids[ids.length-1];</div><div class="line">		    int i=0;</div><div class="line">		     for(;i&lt;ids.length-1;i++)</div><div class="line">		     &#123;</div><div class="line">		    	 if(ids[i]&gt;root)</div><div class="line">		    		 break;</div><div class="line">		     &#125;</div><div class="line">		     int[] leftTree=new int[i];</div><div class="line">               System.arraycopy(ids, 0, leftTree, 0,i);</div><div class="line">               int j=i;</div><div class="line">               for(;j&lt;ids.length-1;j++)</div><div class="line">               &#123;</div><div class="line">            	   if(root&gt;ids[j])</div><div class="line">            		   return false;</div><div class="line">               &#125;</div><div class="line">               int[] rightTree=new int[ids.length-1-i];</div><div class="line">                System.arraycopy(ids, i, rightTree, 0,ids.length-1-i);</div><div class="line">               boolean leftFlag=true;</div><div class="line">                if(i&gt;0)&#123;</div><div class="line">                	leftFlag=IsBianry(leftTree);</div><div class="line">                &#125;</div><div class="line">                boolean rightFlag=true;</div><div class="line">                if(i&lt;ids.length-1)&#123;</div><div class="line">                	rightFlag=IsBianry(rightTree);</div><div class="line">                &#125;</div><div class="line">                return leftFlag&amp;&amp;rightFlag;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		</div><div class="line">		System.out.println(new BinaryOfOut().IsBianry(new int[]&#123;5,7,6,9,11,10,8&#125;));</div><div class="line">		System.out.println(new BinaryOfOut().IsBianry(new int[]&#123;7,4,6,5&#125;));</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>

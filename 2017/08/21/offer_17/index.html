@@ -105,20 +105,20 @@
 
 
 
-<meta name="description" content="title: 包含min函数的栈date: 2017-04-27 16:48:51tags: 剑指offer
+<meta name="description" content="title: 包含min函数的栈date: 2017-04-27 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的min函数。调用min、push、pop的时间复杂度都是O(1)
 思路分析可以构造一个辅助栈，该栈里只放每次的最小栈顶元素集合，比如刚开始往栈里放3,4；则辅助栈里存放的是3,3；即">
 <meta property="og:type" content="article">
 <meta property="og:title" content="秒西">
 <meta property="og:url" content="http://www.myzwl.win/2017/08/21/offer_17/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="title: 包含min函数的栈date: 2017-04-27 16:48:51tags: 剑指offer
+<meta property="og:description" content="title: 包含min函数的栈date: 2017-04-27 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的min函数。调用min、push、pop的时间复杂度都是O(1)
 思路分析可以构造一个辅助栈，该栈里只放每次的最小栈顶元素集合，比如刚开始往栈里放3,4；则辅助栈里存放的是3,3；即">
-<meta property="og:updated_time" content="2017-09-02T16:07:46.000Z">
+<meta property="og:updated_time" content="2017-09-03T10:12:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="秒西">
-<meta name="twitter:description" content="title: 包含min函数的栈date: 2017-04-27 16:48:51tags: 剑指offer
+<meta name="twitter:description" content="title: 包含min函数的栈date: 2017-04-27 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的min函数。调用min、push、pop的时间复杂度都是O(1)
 思路分析可以构造一个辅助栈，该栈里只放每次的最小栈顶元素集合，比如刚开始往栈里放3,4；则辅助栈里存放的是3,3；即">
 
@@ -593,7 +593,7 @@ var _hmt = _hmt || [];
 
       
         <hr>
-<p>title: 包含min函数的栈<br>date: 2017-04-27 16:48:51<br>tags: 剑指offer</p>
+<p>title: 包含min函数的栈<br>date: 2017-04-27 14:48:51<br>tags: 剑指offer</p>
 <h2 id="categories-剑指offer"><a href="#categories-剑指offer" class="headerlink" title="categories: 剑指offer"></a>categories: 剑指offer</h2><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的min函数。调用min、push、pop的时间复杂度都是O(1)</p>
 <h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>可以构造一个辅助栈，该栈里只放每次的最小栈顶元素集合，比如刚开始往栈里放3,4；则辅助栈里存放的是3,3；即每次比较新加的元素和原辅助栈栈顶最小元素的大小</p>
 <h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">public class StackWithMin &#123;</div><div class="line"></div><div class="line">	Stack&lt;Integer&gt; m_data=new Stack&lt;&gt;();</div><div class="line">	   Stack&lt;Integer&gt; m_min=new Stack&lt;&gt;();</div><div class="line">	   </div><div class="line">	   public void push(Integer value)&#123;</div><div class="line">		   m_data.push(value);</div><div class="line">		   </div><div class="line">		    if(m_min.size()==0||value&lt;m_min.peek())</div><div class="line">		    	m_min.push(value);</div><div class="line">		    else&#123;</div><div class="line">		    	m_min.push(m_min.peek());</div><div class="line">		    &#125;</div><div class="line">	   &#125;</div><div class="line">	   </div><div class="line">	   public void pop()&#123;</div><div class="line">		   if(m_data.size()&gt;0&amp;&amp;m_min.size()&gt;0)</div><div class="line">		   &#123;</div><div class="line">			   m_data.pop();</div><div class="line">			   m_min.pop();</div><div class="line">		   &#125;</div><div class="line">	   &#125;</div><div class="line">	</div><div class="line">	   public Integer min()&#123;</div><div class="line">		   if(m_data.size()&gt;0&amp;&amp;m_min.size()&gt;0)</div><div class="line">			   return m_min.peek();</div><div class="line">		   return null;</div><div class="line">	   &#125;</div><div class="line">	</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		StackWithMin sta=new StackWithMin();</div><div class="line">		 sta.push(3);</div><div class="line">		  sta.push(4);</div><div class="line">		   sta.push(2);</div><div class="line">		    System.out.println(sta.min());</div><div class="line">		      sta.pop();</div><div class="line">		        System.out.println(sta.min());</div><div class="line">		</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>

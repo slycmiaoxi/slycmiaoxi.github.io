@@ -105,20 +105,20 @@
 
 
 
-<meta name="description" content="title: 输出字符串的全排列date: 2017-05-03 19:48:51tags: 剑指offer
+<meta name="description" content="title: 输出字符串的全排列date: 2017-05-03 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述输入一个字符串，按字典序打印出该字符串中字符的所有排列。例如：输入字符串abc，则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab,cba
 思路分析回想字符串的模式匹配思想，我们可以将该字符串分成两部分，一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="秒西">
 <meta property="og:url" content="http://www.myzwl.win/2017/08/27/offer_23/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="title: 输出字符串的全排列date: 2017-05-03 19:48:51tags: 剑指offer
+<meta property="og:description" content="title: 输出字符串的全排列date: 2017-05-03 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述输入一个字符串，按字典序打印出该字符串中字符的所有排列。例如：输入字符串abc，则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab,cba
 思路分析回想字符串的模式匹配思想，我们可以将该字符串分成两部分，一">
-<meta property="og:updated_time" content="2017-09-02T16:13:16.000Z">
+<meta property="og:updated_time" content="2017-09-03T10:16:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="秒西">
-<meta name="twitter:description" content="title: 输出字符串的全排列date: 2017-05-03 19:48:51tags: 剑指offer
+<meta name="twitter:description" content="title: 输出字符串的全排列date: 2017-05-03 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述输入一个字符串，按字典序打印出该字符串中字符的所有排列。例如：输入字符串abc，则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab,cba
 思路分析回想字符串的模式匹配思想，我们可以将该字符串分成两部分，一">
 
@@ -593,7 +593,7 @@ var _hmt = _hmt || [];
 
       
         <hr>
-<p>title: 输出字符串的全排列<br>date: 2017-05-03 19:48:51<br>tags: 剑指offer</p>
+<p>title: 输出字符串的全排列<br>date: 2017-05-03 14:48:51<br>tags: 剑指offer</p>
 <h2 id="categories-剑指offer"><a href="#categories-剑指offer" class="headerlink" title="categories: 剑指offer"></a>categories: 剑指offer</h2><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>输入一个字符串，按字典序打印出该字符串中字符的所有排列。例如：输入字符串abc，则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab,cba</p>
 <h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>回想字符串的模式匹配思想，我们可以将该字符串分成两部分，一部分是第一个字符串，第二部分是剩余的字符，然后保持第一个字符不变，从剩余字符遍历，同时交换遍历的位置，很显然这是一个递归的过程，最后在回溯，交换第一个字符和剩余字符的位置，依次类推</p>
 <h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">public class StringSort &#123;</div><div class="line">	</div><div class="line">	public ArrayList&lt;String&gt; permitution(String str)&#123;</div><div class="line">		ArrayList&lt;String&gt; list=new ArrayList&lt;String&gt;();</div><div class="line">		 if(str==null||str.length()&lt;0)</div><div class="line">			 return list;</div><div class="line">		 list=permitution(list,str.toCharArray(),0,str.length());</div><div class="line">		  Collections.sort(list);</div><div class="line">		  return list;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	private ArrayList&lt;String&gt; permitution(ArrayList&lt;String&gt; list,char[] str,int begin,int length)</div><div class="line">	&#123;</div><div class="line">		if(begin==length-1)</div><div class="line">		&#123;</div><div class="line">			if(!list.contains(str))</div><div class="line">				list.add(String.valueOf(str));</div><div class="line">		&#125;</div><div class="line">		else&#123;</div><div class="line">			for(int i=begin;i&lt;length;i++)&#123;</div><div class="line">				if(i==begin||str[i]!=str[begin])&#123;</div><div class="line">					swap(str,begin,i);</div><div class="line">					permitution(list,str,begin+1,length);</div><div class="line">					swap(str,begin,i);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		return list;</div><div class="line">	&#125;</div><div class="line">	public void swap(char[] str,int begin,int i)&#123;</div><div class="line">		char temp=str[i];</div><div class="line">		str[i]=str[begin];</div><div class="line">		str[begin]=temp;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		ArrayList&lt;String&gt; list=new StringSort().permitution("abcc");</div><div class="line">         for(String s:list)&#123;</div><div class="line">        	 System.out.print(s+" ");</div><div class="line">         &#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>

@@ -105,20 +105,20 @@
 
 
 
-<meta name="description" content="title: 从上到下打印二叉树date: 2017-04-26 15:48:51tags: 剑指offer
+<meta name="description" content="title: 从上到下打印二叉树date: 2017-04-26 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述不分行的从上到下打印二叉树的每个节点，同一层的结点按照从左到右的顺序打印
 思路分析其实也就是树的层次遍历，而层次遍历的通法就是构造一个队列或者其他容器集合，按照从上到下依次加进结点，每次删除一个结点，就把它的左右孩子结点加入队列，依次类推，这">
 <meta property="og:type" content="article">
 <meta property="og:title" content="秒西">
 <meta property="og:url" content="http://www.myzwl.win/2017/08/21/offer_16/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="title: 从上到下打印二叉树date: 2017-04-26 15:48:51tags: 剑指offer
+<meta property="og:description" content="title: 从上到下打印二叉树date: 2017-04-26 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述不分行的从上到下打印二叉树的每个节点，同一层的结点按照从左到右的顺序打印
 思路分析其实也就是树的层次遍历，而层次遍历的通法就是构造一个队列或者其他容器集合，按照从上到下依次加进结点，每次删除一个结点，就把它的左右孩子结点加入队列，依次类推，这">
-<meta property="og:updated_time" content="2017-09-02T16:07:10.000Z">
+<meta property="og:updated_time" content="2017-09-03T10:11:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="秒西">
-<meta name="twitter:description" content="title: 从上到下打印二叉树date: 2017-04-26 15:48:51tags: 剑指offer
+<meta name="twitter:description" content="title: 从上到下打印二叉树date: 2017-04-26 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述不分行的从上到下打印二叉树的每个节点，同一层的结点按照从左到右的顺序打印
 思路分析其实也就是树的层次遍历，而层次遍历的通法就是构造一个队列或者其他容器集合，按照从上到下依次加进结点，每次删除一个结点，就把它的左右孩子结点加入队列，依次类推，这">
 
@@ -593,7 +593,7 @@ var _hmt = _hmt || [];
 
       
         <hr>
-<p>title: 从上到下打印二叉树<br>date: 2017-04-26 15:48:51<br>tags: 剑指offer</p>
+<p>title: 从上到下打印二叉树<br>date: 2017-04-26 14:48:51<br>tags: 剑指offer</p>
 <h2 id="categories-剑指offer"><a href="#categories-剑指offer" class="headerlink" title="categories: 剑指offer"></a>categories: 剑指offer</h2><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>不分行的从上到下打印二叉树的每个节点，同一层的结点按照从左到右的顺序打印</p>
 <h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>其实也就是树的层次遍历，而层次遍历的通法就是构造一个队列或者其他容器集合，按照从上到下依次加进结点，每次删除一个结点，就把它的左右孩子结点加入队列，依次类推，这里使用list模拟层序遍历</p>
 <h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line">class TreeNode&#123;</div><div class="line">	int data;</div><div class="line">	TreeNode left;</div><div class="line">	TreeNode right;</div><div class="line">	</div><div class="line">	TreeNode(int data)&#123;</div><div class="line">		this.data=data;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public List&lt;Integer&gt; printFromToptoButtom(TreeNode root)&#123;</div><div class="line">		List&lt;TreeNode&gt; node=new ArrayList&lt;TreeNode&gt;();</div><div class="line">		 List&lt;Integer&gt; treeDate=new ArrayList&lt;Integer&gt;();</div><div class="line">		  int index=1;</div><div class="line">		   if(root==null)</div><div class="line">			   return null;</div><div class="line">		      node.add(root);</div><div class="line">		     while(node.size()&gt;0)&#123;</div><div class="line">		    	 TreeNode front=node.remove(0);</div><div class="line">		    	   index--;</div><div class="line">		    	   treeDate.add(front.data);</div><div class="line">		    	   if(front.left!=null)</div><div class="line">		    	   &#123;</div><div class="line">		    		   node.add(index++,front.left);</div><div class="line">		    		  </div><div class="line">		    	   &#125;</div><div class="line">		    	   if(front.right!=null)&#123;</div><div class="line">		    		   node.add(index++,front.right);		  </div><div class="line">		    	   &#125;</div><div class="line">		     &#125;</div><div class="line">		     return treeDate;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">       TreeNode a=new TreeNode(1);</div><div class="line">       TreeNode b=new TreeNode(2);</div><div class="line">       TreeNode c=new TreeNode(3);</div><div class="line">       TreeNode d=new TreeNode(4);</div><div class="line">       TreeNode e=new TreeNode(5);</div><div class="line">       a.left=b;</div><div class="line">       a.right=c;</div><div class="line">       b.left=e;</div><div class="line">       b.right=null;</div><div class="line">       c.right=d;</div><div class="line">       c.left=null;</div><div class="line">       d.left=null;</div><div class="line">       d.right=null;</div><div class="line">       e.left=null;</div><div class="line">       e.right=null;</div><div class="line">      List&lt;Integer&gt; data= new ConstructBinaryTree().printFromToptoButtom(a);</div><div class="line">       for(Integer h:data)&#123;</div><div class="line">    	   System.out.print(h+" ");</div><div class="line">       &#125;</div><div class="line">   </div><div class="line">	&#125;</div></pre></td></tr></table></figure>

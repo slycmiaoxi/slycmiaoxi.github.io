@@ -105,20 +105,20 @@
 
 
 
-<meta name="description" content="title: 二叉树中和为某一值的所有路径date: 2017-04-29 17:48:51tags: 剑指offer
+<meta name="description" content="title: 二叉树中和为某一值的所有路径date: 2017-04-29 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述输入一颗二叉树和一个整数，打印出二叉树中结点值的和为整数的所有路径。路径定义为从树的根结点开始往下一直到叶子结点所经过的结点形成一条路径
 思路分析从问题描述知道，前序遍历符合从根结点遍历，所有可用此方法遍历，同时可以设置两个集合，一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="秒西">
 <meta property="og:url" content="http://www.myzwl.win/2017/08/23/offer_19/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="title: 二叉树中和为某一值的所有路径date: 2017-04-29 17:48:51tags: 剑指offer
+<meta property="og:description" content="title: 二叉树中和为某一值的所有路径date: 2017-04-29 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述输入一颗二叉树和一个整数，打印出二叉树中结点值的和为整数的所有路径。路径定义为从树的根结点开始往下一直到叶子结点所经过的结点形成一条路径
 思路分析从问题描述知道，前序遍历符合从根结点遍历，所有可用此方法遍历，同时可以设置两个集合，一">
-<meta property="og:updated_time" content="2017-09-02T16:09:12.000Z">
+<meta property="og:updated_time" content="2017-09-03T10:13:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="秒西">
-<meta name="twitter:description" content="title: 二叉树中和为某一值的所有路径date: 2017-04-29 17:48:51tags: 剑指offer
+<meta name="twitter:description" content="title: 二叉树中和为某一值的所有路径date: 2017-04-29 14:48:51tags: 剑指offer
 categories: 剑指offer问题描述输入一颗二叉树和一个整数，打印出二叉树中结点值的和为整数的所有路径。路径定义为从树的根结点开始往下一直到叶子结点所经过的结点形成一条路径
 思路分析从问题描述知道，前序遍历符合从根结点遍历，所有可用此方法遍历，同时可以设置两个集合，一">
 
@@ -593,7 +593,7 @@ var _hmt = _hmt || [];
 
       
         <hr>
-<p>title: 二叉树中和为某一值的所有路径<br>date: 2017-04-29 17:48:51<br>tags: 剑指offer</p>
+<p>title: 二叉树中和为某一值的所有路径<br>date: 2017-04-29 14:48:51<br>tags: 剑指offer</p>
 <h2 id="categories-剑指offer"><a href="#categories-剑指offer" class="headerlink" title="categories: 剑指offer"></a>categories: 剑指offer</h2><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>输入一颗二叉树和一个整数，打印出二叉树中结点值的和为整数的所有路径。路径定义为从树的根结点开始往下一直到叶子结点所经过的结点形成一条路径</p>
 <h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>从问题描述知道，前序遍历符合从根结点遍历，所有可用此方法遍历，同时可以设置两个集合，一个用来保存每次遍历的结点，一个用来记录每次访问过的结点路径，如果等于和的话，就将结点路径加入，如果不等于，则看是否有左右孩子，在递归遍历，最后如果，返回上层，每一次都要删掉保存的结点</p>
 <h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; findPath(TreeNode root,int target)&#123;</div><div class="line">		  int currentSum=0;</div><div class="line">		  ArrayList&lt;Integer&gt; nodes=new ArrayList&lt;Integer&gt;();</div><div class="line">		   ArrayList&lt;ArrayList&lt;Integer&gt;&gt; pathNodes=new ArrayList&lt;&gt;();</div><div class="line">		    if(root==null)</div><div class="line">		    	return pathNodes;</div><div class="line">		      return findPath(pathNodes,nodes,root,target,currentSum);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	private ArrayList&lt;ArrayList&lt;Integer&gt;&gt; findPath(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; pathNodes, ArrayList&lt;Integer&gt; nodes,</div><div class="line">			TreeNode root, int target, int currentSum) &#123;</div><div class="line">	         currentSum+=root.data;</div><div class="line">	          nodes.add(currentSum);</div><div class="line">	         </div><div class="line">	        boolean isLeafNode=(root.left==null)&amp;&amp;(root.right==null);</div><div class="line">	          if(target==currentSum&amp;&amp;isLeafNode)&#123;</div><div class="line">	        	 ArrayList&lt;Integer&gt; path=new ArrayList&lt;Integer&gt;();</div><div class="line">	        	  for(Integer val:nodes)</div><div class="line">	        	  &#123;</div><div class="line">	        		  path.add(val);</div><div class="line">	        	  &#125;</div><div class="line">	        	  pathNodes.add(path);</div><div class="line">	         &#125;</div><div class="line">	         if(root.left!=null)&#123;</div><div class="line">	        	 this.findPath(pathNodes, nodes, root.left, target, currentSum);</div><div class="line">	         &#125;</div><div class="line">	         if(root.right!=null)&#123;</div><div class="line">	        	 this.findPath(pathNodes, nodes, root.right, target, currentSum);</div><div class="line">	         &#125;</div><div class="line">	         Integer value=nodes.remove(pathNodes.size()-1);</div><div class="line">	          currentSum-=value;</div><div class="line">	           return pathNodes;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"> class TreeNode&#123;</div><div class="line">	int data;</div><div class="line">	TreeNode left;</div><div class="line">	TreeNode right;</div><div class="line">	</div><div class="line">	TreeNode(int data)&#123;</div><div class="line">		this.data=data;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
