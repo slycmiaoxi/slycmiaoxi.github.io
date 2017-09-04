@@ -5,10 +5,233 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-08-14T12:19:56.000Z</updated>
+  <updated>2017-09-04T15:30:18.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>常见面试题之三</title>
+    <link href="http://www.myzwl.win/2017/09/02/face_3/"/>
+    <id>http://www.myzwl.win/2017/09/02/face_3/</id>
+    <published>2017-09-02T05:48:51.000Z</published>
+    <updated>2017-09-04T15:30:18.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力</p>
+<h4 id="题型一"><a href="#题型一" class="headerlink" title="题型一"></a>题型一</h4><p>说说String s1 = “123”；<br>String s2 = new String（“123”）；第二句产生了几个对象，为什么？</p>
+<blockquote>
+<p>一个，此处有一个陷阱，如果单独来看第二句，首先堆里有一个引用对象，然后指向数据域中常量池中的值123，但是第一句已经产生了此常量值，所以只有一个。此外s2是放在堆里的，而s1是放在常量池中的</p>
+</blockquote>
+<h4 id="SpringMVC的工作流程"><a href="#SpringMVC的工作流程" class="headerlink" title="SpringMVC的工作流程"></a>SpringMVC的工作流程</h4><p>答题思路：url&gt;DispatcherServlet&gt;HandlerMapping映射器&gt;Controller&gt;ModelAndView&gt;DispatcherServlet&gt;viewResoler</p>
+<blockquote>
+<p>spring mvc和大部分mvc框架一样，底层也是依赖servlet api的，所以spring mvc的请求处理也是从一个servlet开始，这个servlet就是DispatcherServlet<br>然后就是DispatcherServlet.对一个请求的处理过程<br>1.Handle Mapping映射控制器，负责将url映射成对应的controller<br>2.controller  spring的控制器，相当于servlet或者structs的action，负责主要的业务处理，并返回一个modelandview给DispatcherServlet.<br>3:ModelAndView 包含着一个页面文件(jsp和html等)的逻辑视图名,<br>4:ViewResoler 视图解析器,根据ModelAndView提供的视图对象,查找对应的视图文件,并把他响应给客户.<br>在获得请求以后,DispatcherServlet首先会查询Handler Mapping对象(一个或多个)<br>Handler Mapping的主要工作是将请求的url映射成对应的Controller对象.<br>接着,DispatcherServlet根据Handler Mapping对象找到的结果,把请求分发给对应的Controller对象来处理,Controller负责处理具体的业务逻辑,并返回一个带有下一个页面信息的ModelView对象,最后ViewResoler 对象根据ModelAndView的信息查找对应的视图页面,并响应给用户</p>
+</blockquote>
+<h4 id="myBatis中-和-的区别"><a href="#myBatis中-和-的区别" class="headerlink" title="myBatis中$和#的区别"></a>myBatis中$和#的区别</h4><blockquote>
+<ol>
+<li>#将传入的数据都当成一个字符串，会对自动传入的数据加一个双引号。如：order by #user_id#，如果传入的值是111,那么解析成sql时的值为order by “111”, 如果传入的值是id，则解析成的sql为order by “id”.</li>
+<li>$将传入的数据直接显示生成在sql中。如：order by $user_id$，如果传入的值是111,那么解析成sql时的值为order by user_id,  如果传入的值是id，则解析成的sql为order by id.</li>
+<li>#方式能够很大程度防止sql注入<br>4.$方式无法防止Sql注入<br>5.$方式一般用于传入数据库对象，例如传入表名.<br>6.一般能用#的就别用$.<br>默认情况下，使用#{}格式的语法会导致MyBatis创建预处理语句属性并以它为背景设置安全的值（比如?）。这样做很安全,接受从用户输出的内容并提供给语句中不变的字符串，这样做是不安全的。这会导致潜在的SQL注入攻击，因此你不应该允许用户输入这些字段，或者通常自行转义并检查。</li>
+</ol>
+</blockquote>
+<h4 id="悲观锁和乐观锁的比较"><a href="#悲观锁和乐观锁的比较" class="headerlink" title="悲观锁和乐观锁的比较"></a>悲观锁和乐观锁的比较</h4><p> 面试思路：什么是锁，用来干什么&gt;悲观锁乐观锁各自特点&gt;优缺点比较和各自应用场景</p>
+<blockquote>
+<p>数据库管理系统（DBMS）中的并发控制的任务是确保在多个事务同时存取数据库中同一数据时不破坏事务的隔离性和统一性以及数据库的统一性。<br>悲观锁:<br>简单来说悲观锁认什么操作都可以改变数据，所以在改数据就锁住（在sql语句中加上for update就可以了）<br>MySQL InnoDB中使用悲观锁<br>要使用悲观锁，我们必须关闭mysql数据库的自动提交属性，因为MySQL默认使用autocommit模式，也就是说，当你执行一个更新操作后，MySQL会立刻将结果进行提交。 set autocommit=0;<br>//0.开始事务<br>begin;/begin work;/start transaction; (三者选一就可以)<br>//1.查询出商品信息<br>select status from t_goods where id=1 for update;<br>//2.根据商品信息生成订单<br>insert into t_orders (id,goods_id) values (null,1);<br>//3.修改商品status为2<br>update t_goods set status=2;<br>//4.提交事务<br>commit;/commit work;<br>上面的查询语句中，我们使用了 select…for update 的方式，这样就通过开启排他锁的方式实现了悲观锁。此时在t_goods表中，id为1的 那条数据就被我们锁定了，其它的事务必须等本次事务提交之后才能执行。这样我们可以保证当前的数据不会被其它事务修改。<br>优点与不足：<br>悲观并发控制实际上是“先取锁再访问”的保守策略，为数据处理的安全提供了保证。但是在效率方面，处理加锁的机制会让数据库产生额外的开销，还有增加产生死锁的机会；另外，在只读型事务处理中由于不会产生冲突，也没必要使用锁，这样做只能增加系统负载；还有会降低了并行性，一个事务如果锁定了某行数据，其他事务就必须等待该事务处理完才可以处理那行数<br>乐观锁：<br>简单来说乐观锁很乐观 所以修改数据库后锁住 （一般在数据库中加上一个字段区别历史版本和当前版本）<br>1.查询出商品信息<br>select (status,status,version) from t_goods where id=#{id}<br>2.根据商品信息生成订单<br>3.修改商品status为2<br>update t_goods<br>set status=2,version=version+1<br>where id=#{id} and version=#{version};<br>使用版本号时，可以在数据初始化时指定一个版本号，每次对数据的更新操作都对版本号执行+1操作。并判断当前版本号是不是该数据的最新的版本号。<br>优点与不足<br>乐观并发控制相信事务之间的数据竞争(data race)的概率是比较小的，因此尽可能直接做下去，直到提交的时候才去锁定，所以不会产生任何锁和死锁。但如果直接简单这么做，还是有可能会遇到不可预期的结果，例如两个事务都读取了数据库的某一行，经过修改以后写回数据库，这时就遇到了问题。</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己
+    
+    </summary>
+    
+      <category term="面试题" scheme="http://www.myzwl.win/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    
+    
+      <category term="学习效果检验" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E6%A3%80%E9%AA%8C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常见面试题之java集合二</title>
+    <link href="http://www.myzwl.win/2017/09/01/face_2/"/>
+    <id>http://www.myzwl.win/2017/09/01/face_2/</id>
+    <published>2017-09-01T11:48:51.000Z</published>
+    <updated>2017-09-04T15:30:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力</p>
+<h4 id="说说java集合框架"><a href="#说说java集合框架" class="headerlink" title="说说java集合框架"></a>说说java集合框架</h4><p>ArrayList和Vector有何异同点？</p>
+<blockquote>
+<p>ArrayList和Vector在很多时候都很类似。<br>（1）两者都是基于索引的，内部由一个数组支持。<br>（2）两者维护插入的顺序，我们可以根据插入顺序来获取元素。<br>（3）ArrayList和Vector的迭代器实现都是fail-fast的。<br>（4）ArrayList和Vector两者允许null值，也可以使用索引值对元素进行随机访问。<br>ArrayList和Vector的不同点。<br>（1）Vector是同步的，而ArrayList不是。然而，如果你寻求在迭代的时候对列表进行改变，你应该使用CopyOnWriteArrayList。<br>（2）ArrayList比Vector快，它因为有同步，不会过载。<br>（3）ArrayList更加通用，因为我们可以使用Collections工具类轻易地获取同步列表和只读列表</p>
+</blockquote>
+<p>Array和ArrayList有何区别？什么时候更适合用Array？</p>
+<blockquote>
+<p>Array可以容纳基本类型和对象，而ArrayList只能容纳对象。<br>Array是指定大小的，而ArrayList大小是固定的。<br>Array没有提供ArrayList那么多功能，比如addAll、removeAll和iterator等。尽管ArrayList明显是更好的选择，但也有些时候Array比较好用。<br>（1）如果列表的大小已经指定，大部分情况下是存储和遍历它们。<br>（2）对于遍历基本数据类型，尽管Collections使用自动装箱来减轻编码任务，在指定大小的基本类型的列表上工作也会变得很慢。<br>（3）如果你要使用多维数组，使用[][]比List<list<>&gt;更容易。</list<></p>
+</blockquote>
+<p>ArrayList和LinkedList有何区别？</p>
+<blockquote>
+<p>(1）ArrayList是由Array所支持的基于一个索引的数据结构，所以它提供对元素的随机访问，复杂度为O(1)，但LinkedList存储一系列的节点数据，每个节点都与前一个和下一个节点相连接。所以，尽管有使用索引获取元素的方法，内部实现是从起始点开始遍历，遍历到索引的节点然后返回元素，时间复杂度为O(n)，比ArrayList要慢。<br>（2）与ArrayList相比，在LinkedList中插入、添加和删除一个元素会更快，因为在一个元素被插入到中间的时候，不会涉及改变数组的大小，或更新索引。<br>（3）LinkedList比ArrayList消耗更多的内存，因为LinkedList中的每个节点存储了前后节点的引用。</p>
+</blockquote>
+<p>哪些集合类提供对元素的随机访问？</p>
+<blockquote>
+<p>ArrayList、HashMap、TreeMap和HashTable类提供对元素的随机访问</p>
+</blockquote>
+<p>哪些集合类是线程安全的？</p>
+<blockquote>
+<p>Vector、HashTable、Properties和Stack是同步类，所以它们是线程安全的，可以在多线程环境下使用。Java1.5并发API包括一些集合类，允许迭代时修改，因为它们都工作在集合的克隆上，所以它们在多线程环境中是安全的。</p>
+</blockquote>
+<p>并发集合类是什么？</p>
+<blockquote>
+<p>Java1.5并发包（java.util.concurrent）包含线程安全集合类，允许在迭代时修改集合。迭代器被设计为fail-fast的，会抛出ConcurrentModificationException。一部分类为：CopyOnWriteArrayList、 ConcurrentHashMap、CopyOnWriteArraySet。</p>
+</blockquote>
+<p>BlockingQueue是什么？</p>
+<blockquote>
+<p>Java.util.concurrent.BlockingQueue是一个队列，在进行检索或移除一个元素的时候，它会等待队列变为非空；当在添加一个元素时，它会等待队列中的可用空间。BlockingQueue接口是Java集合框架的一部分，主要用于实现生产者-消费者模式。我们不需要担心等待生产者有可用的空间，或消费者有可用的对象，因为它都在BlockingQueue的实现类中被处理了。Java提供了集中BlockingQueue的实现，比如ArrayBlockingQueue、LinkedBlockingQueue、PriorityBlockingQueue,、SynchronousQueue等。</p>
+</blockquote>
+<p>队列和栈是什么，列出它们的区别？</p>
+<blockquote>
+<p>栈和队列两者都被用来预存储数据。java.util.Queue是一个接口，它的实现类在Java并发包中。队列允许先进先出（FIFO）检索元素，但并非总是这样。Deque接口允许从两端检索元素。<br>栈与队列很相似，但它允许对元素进行后进先出（LIFO）进行检索。<br>Stack是一个扩展自Vector的类，而Queue是一个接口。</p>
+</blockquote>
+<p>Collections类是什么？</p>
+<blockquote>
+<p>Java.util.Collections是一个工具类仅包含静态方法，它们操作或返回集合。它包含操作集合的多态算法，返回一个由指定集合支持的新集合和其它一些内容。这个类包含集合框架算法的方法，比如折半搜索、排序、混编和逆序等。</p>
+</blockquote>
+<p>Comparable和Comparator接口是什么？</p>
+<blockquote>
+<p>如果我们想使用Array或Collection的排序方法时，需要在自定义类里实现Java提供Comparable接口。Comparable接口有compareTo(T OBJ)方法，它被排序方法所使用。我们应该重写这个方法，如果“this”对象比传递的对象参数更小、相等或更大时，它返回一个负整数、0或正整数。但是，在大多数实际情况下，我们想根据不同参数进行排序。比如，作为一个CEO，我想对雇员基于薪资进行排序，一个HR想基于年龄对他们进行排序。这就是我们需要使用Comparator接口的情景，因为Comparable.compareTo(Object o)方法实现只能基于一个字段进行排序，我们不能根据对象排序的需要选择字段。Comparator接口的compare(Object o1, Object o2)方法的实现需要传递两个对象参数，若第一个参数比第二个小，返回负整数；若第一个等于第二个，返回0；若第一个比第二个大，返回正整数。</p>
+</blockquote>
+<p>Comparable和Comparator接口有何区别？</p>
+<blockquote>
+<p>Comparable和Comparator接口被用来对对象集合或者数组进行排序。Comparable接口被用来提供对象的自然排序，我们可以使用它来提供基于单个逻辑的排序。<br>Comparator接口被用来提供不同的排序算法，我们可以选择需要使用的Comparator来对给定的对象集合进行排序。</p>
+</blockquote>
+<p>我们如何对一组对象进行排序？</p>
+<blockquote>
+<p>如果我们需要对一个对象数组进行排序，我们可以使用Arrays.sort()方法。如果我们需要排序一个对象列表，我们可以使用Collection.sort()方法。两个类都有用于自然排序（使用Comparable）或基于标准的排序（使用Comparator）的重载方法sort()。Collections内部使用数组排序方法，所有它们两者都有相同的性能，只是Collections需要花时间将列表转换为数组。</p>
+</blockquote>
+<p>当一个集合被作为参数传递给一个函数时，如何才可以确保函数不能修改它？</p>
+<blockquote>
+<p>在作为参数传递之前，我们可以使用Collections.unmodifiableCollection(Collection c)方法创建一个只读集合，这将确保改变集合的任何操作都会抛出UnsupportedOperationException。</p>
+</blockquote>
+<p>我们如何从给定集合那里创建一个synchronized的集合？</p>
+<blockquote>
+<p>我们可以使用Collections.synchronizedCollection(Collection c)根据指定集合来获取一个synchronized（线程安全的）集合。</p>
+</blockquote>
+<p>大写的O是什么？举几个例子？</p>
+<blockquote>
+<p>大写的O描述的是，就数据结构中的一系列元素而言，一个算法的性能。Collection类就是实际的数据结构，我们通常基于时间、内存和性能，使用大写的O来选择集合实现。比如：例子1：ArrayList的get(index i)是一个常量时间操作，它不依赖list中元素的数量。所以它的性能是O(1)。例子2：一个对于数组或列表的线性搜索的性能是O(n)，因为我们需要遍历所有的元素来查找需要的元素。</p>
+</blockquote>
+<p>与Java集合框架相关的有哪些最好的实践？</p>
+<blockquote>
+<p>（1）根据需要选择正确的集合类型。比如，如果指定了大小，我们会选用Array而非ArrayList。如果我们想根据插入顺序遍历一个Map，我们需要使用TreeMap。如果我们不想重复，我们应该使用Set。<br>（2）一些集合类允许指定初始容量，所以如果我们能够估计到存储元素的数量，我们可以使用它，就避免了重新哈希或大小调整。<br>（3）基于接口编程，而非基于实现编程，它允许我们后来轻易地改变实现。<br>（4）总是使用类型安全的泛型，避免在运行时出现ClassCastException。<br>（5）使用JDK提供的不可变类作为Map的key，可以避免自己实现hashCode()和equals()。<br>（6）尽可能使用Collections工具类，或者获取只读、同步或空的集合，而非编写自己的实现。它将会提供代码重用性，它有着更好的稳定性和可维护性。</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己
+    
+    </summary>
+    
+      <category term="面试题" scheme="http://www.myzwl.win/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    
+    
+      <category term="学习效果检验" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E6%A3%80%E9%AA%8C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常见面试题之java集合一</title>
+    <link href="http://www.myzwl.win/2017/09/01/face_1/"/>
+    <id>http://www.myzwl.win/2017/09/01/face_1/</id>
+    <published>2017-09-01T06:48:51.000Z</published>
+    <updated>2017-09-04T15:29:48.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力</p>
+<h4 id="说说java集合框架"><a href="#说说java集合框架" class="headerlink" title="说说java集合框架"></a>说说java集合框架</h4><p>回答思路：集合是什么，作用&gt;分类&gt;各自底层实现原理&gt;各自应用场景</p>
+<p>集合框架的部分优点如下：</p>
+<blockquote>
+<p>一 使用核心集合类降低开发成本，而非实现我们自己的集合类<br>二：随着使用经过严格测试的集合框架类，代码质量会得到提高。<br>三：通过使用JDK附带的集合类，可以降低代码维护成本<br>四：复用性和可操作性。</p>
+</blockquote>
+<p>集合框架中的泛型有什么优点？</p>
+<blockquote>
+<p>Java1.5引入了泛型，所有的集合接口和实现都大量地使用它。泛型允许我们为集合提供一个可以容纳的对象类型，因此，如果你添加其它类型的任何元素，它会在编译时报错。这避免了在运行时出现ClassCastException，因为你将会在编译时得到报错信息</p>
+</blockquote>
+<p>Java集合框架的基础接口有哪些？</p>
+<blockquote>
+<p>Collection为集合层级的根接口<br>Set是一个不能包含重复元素的集合<br>List是一个有序集合，可以包含重复元素。你可以通过它的索引来访问任何元素。List更像长度动态变换的数组。<br>Map是一个将key映射到value的对象.一个Map不能包含重复的key：每个key最多只能映射一个value。<br>一些其它的接口有Queue、Dequeue、SortedSet、SortedMap和ListIterator</p>
+</blockquote>
+<p>为何Collection不从Cloneable和Serializable接口继承？</p>
+<blockquote>
+<p>Collection接口指定一组对象，对象即为它的元素。如何维护这些元素由Collection的具体实现决定。例如，一些如List的Collection实现允许重复的元素，而其它的如Set就不允许。很多Collection实现有一个公有的clone方法。然而，把它放到集合的所有实现中也是没有意义的。这是因为Collection是一个抽象表现。重要的是实现。</p>
+</blockquote>
+<p>为何Map接口不继承Collection接口？<br>尽管Map接口和它的实现也是集合框架的一部分，但Map不是集合，集合也不是Map。因此，Map继承Collection毫无意义，反之亦然<br>如果Map继承Collection接口，Map包含key-value对，它提供抽取key或value列表集合的方法，但是它不适合“一组对象”规范。</p>
+<p>Iterator是什么？</p>
+<blockquote>
+<p>Iterator接口提供遍历任何Collection的接口。我们可以从一个Collection中使用迭代器方法来获取迭代器实例、迭代器允许调用者在迭代过程中移除元素。</p>
+</blockquote>
+<p>为何迭代器没有一个方法可以直接获取下一个元素，而不需要移动游标？</p>
+<blockquote>
+<p>它可以在当前Iterator的顶层实现，但是它用得很少，如果将它加到接口中，每个继承都要去实现它，这没有意义。</p>
+</blockquote>
+<p>Iterater和ListIterator之间有什么区别？</p>
+<blockquote>
+<p>一:我们可以使用Iterator来遍历Set和List集合，而ListIterator只能遍历List。<br>二:Iterator只可以向前遍历，而LIstIterator可以双向遍历。<br>三:ListIterator从Iterator接口继承，然后添加了一些额外的功能，比如添加一个元素、替换一个元素、获取前面或后面元素的索引位置。</p>
+</blockquote>
+<p>通过迭代器fail-fast属性，你明白了什么？</p>
+<blockquote>
+<p>每次我们尝试获取下一个元素的时候，Iterator fail-fast属性检查当前集合结构里的任何改动。如果发现任何改动，它抛出ConcurrentModificationException。Collection中所有Iterator的实现都是按fail-fast来设计的（ConcurrentHashMap和CopyOnWriteArrayList这类并发集合类除外）。</p>
+</blockquote>
+<p>fail-fast与fail-safe有什么区别？</p>
+<blockquote>
+<p>Iterator的fail-fast属性与当前的集合共同起作用，因此它不会受到集合中任何改动的影响。Java.util包中的所有集合类都被设计为fail-fast的，而java.util.concurrent中的集合类都为fail-safe的。Fail-fast迭代器抛出ConcurrentModificationException，而fail-safe迭代器从不抛出ConcurrentModificationException。</p>
+</blockquote>
+<p>在迭代一个集合的时候，如何避免ConcurrentModificationException？</p>
+<blockquote>
+<p>在遍历一个集合的时候，我们可以使用并发集合类来避免ConcurrentModificationException，比如使用CopyOnWriteArrayList，而不是ArrayList。</p>
+</blockquote>
+<p>为何Iterator接口没有具体的实现？</p>
+<blockquote>
+<p>Iterator接口定义了遍历集合的方法，但它的实现则是集合实现类的责任。每个能够返回用于遍历的Iterator的集合类都有它自己的Iterator实现内部类。<br>这就允许集合类去选择迭代器是fail-fast还是fail-safe的。比如，ArrayList迭代器是fail-fast的，而CopyOnWriteArrayList迭代器是fail-safe的。</p>
+</blockquote>
+<p>UnsupportedOperationException是什么？<br>UnsupportedOperationException是用于表明操作不支持的异常。在JDK类中已被大量运用，在集合框架java.util.Collections.UnmodifiableCollection将会在所有add和remove操作中抛出这个异常。</p>
+<p>在Java中，HashMap是如何工作的？(重点)</p>
+<blockquote>
+<p>HashMap在Map.Entry静态内部类实现中存储key-value对。HashMap使用哈希算法，在put和get方法中，它使用hashCode()和equals()方法。当我们通过传递key-value对调用put方法的时候，HashMap使用Key hashCode()和哈希算法来找出存储key-value对的索引。Entry存储在LinkedList中，所以如果存在entry，它使用equals()方法来检查传递的key是否已经存在，如果存在，它会覆盖value，如果不存在，它会创建一个新的entry然后保存。当我们通过传递key调用get方法时，它再次使用hashCode()来找到数组中的索引，然后使用equals()方法找出正确的Entry，然后返回它的值<br>其它关于HashMap比较重要的问题是容量、负荷系数和阀值调整。HashMap默认的初始容量是32，负荷系数是0.75。阀值是为负荷系数乘以容量，无论何时我们尝试添加一个entry，如果map的大小比阀值大的时候，HashMap会对map的内容进行重新哈希，且使用更大的容量。容量总是2的幂，所以如果你知道你需要存储大量的key-value对，比如缓存从数据库里面拉取的数据，使用正确的容量和负荷系数对HashMap进行初始化是个不错的做法。</p>
+</blockquote>
+<p>hashCode()和equals()方法有何重要性？</p>
+<blockquote>
+<p>HashMap使用Key对象的hashCode()和equals()方法去决定key-value对的索引。当我们试着从HashMap中获取值的时候，这些方法也会被用到。如果这些方法没有被正确地实现，在这种情况下，两个不同Key也许会产生相同的hashCode()和equals()输出，HashMap将会认为它们是相同的，然后覆盖它们，而非把它们存储到不同的地方。同样的，所有不允许存储重复数据的集合类都使用hashCode()和equals()去查找重复，所以正确实现它们非常重要。equals()和hashCode()的实现应该遵循以下规则：<br>（1）如果o1.equals(o2)，那么o1.hashCode() == o2.hashCode()总是为true的。<br>（2）如果o1.hashCode() == o2.hashCode()，并不意味着o1.equals(o2)会为true。</p>
+</blockquote>
+<p>我们能否使用任何类作为Map的key？</p>
+<blockquote>
+<p>我们可以使用任何类作为Map的key，然而在使用它们之前，需要考虑以下几点：<br>（1）如果类重写了equals()方法，它也应该重写hashCode()方法。<br>(2）类的所有实例需要遵循与equals()和hashCode()相关的规则。请参考之前提到的这些规则。<br>（3）如果一个类没有使用equals()，你不应该在hashCode()中使用它。<br>（4）用户自定义key类的最佳实践是使之为不可变的，这样，hashCode()值可以被缓存起来，拥有更好的性能。不可变的类也可以确保hashCode()和equals()在未来不会改变，这样就会解决与可变相关的问题了。<br>比如，我有一个类MyKey，在HashMap中使用它<br>//传递给MyKey的name参数被用于equals()和hashCode()中<br>MyKey key = new MyKey(‘Pankaj’); //assume hashCode=1234<br>myHashMap.put(key, ‘Value’);<br>// 以下的代码会改变key的hashCode()和equals()值<br>key.setName(‘Amit’); //assume new hashCode=7890<br>//下面会返回null，因为HashMap会尝试查找存储同样索引的key，而key已被改变了，匹配失败，返回null<br>myHashMap.get(new MyKey(‘Pankaj’));<br>那就是为何String和Integer被作为HashMap的key大量使用。</p>
+</blockquote>
+<p>Map接口提供了哪些不同的集合视图？</p>
+<blockquote>
+<p>Map接口提供三个集合视图：<br>Set keyset()、Collection values()、Set<map.entry<k,v>&gt; entrySet()</map.entry<k,v></p>
+</blockquote>
+<p>HashMap和HashTable有何不同？</p>
+<blockquote>
+<p>（1）HashMap允许key和value为null，而HashTable不允许。<br>（2）HashTable是同步的，而HashMap不是。所以HashMap适合单线程环境，HashTable适合多线程环境。<br>（3）在Java1.4中引入了LinkedHashMap，HashMap的一个子类，假如你想要遍历顺序，你很容易从HashMap转向LinkedHashMap，但是HashTable不是这样的，它的顺序是不可预知的。<br>（4）HashTable被认为是个遗留的类，如果你寻求在迭代的时候修改Map，你应该使用CocurrentHashMap。</p>
+</blockquote>
+<p>如何决定选用HashMap还是TreeMap？</p>
+<blockquote>
+<p>对于在Map中插入、删除和定位元素这类操作，HashMap是最好的选择。然而，假如你需要对一个有序的key集合进行遍历，TreeMap是更好的选择</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己
+    
+    </summary>
+    
+      <category term="面试题" scheme="http://www.myzwl.win/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    
+    
+      <category term="学习效果检验" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E6%A3%80%E9%AA%8C/"/>
+    
+  </entry>
   
   <entry>
     <title>图的深度和广度遍历</title>
@@ -820,152 +1043,6 @@ public String handleNotFoundError() {
     
     
       <category term="java基础" scheme="http://www.myzwl.win/source/tags/java%E5%9F%BA%E7%A1%80/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>java异常处理一</title>
-    <link href="http://www.myzwl.win/2017/07/16/yc_1/"/>
-    <id>http://www.myzwl.win/2017/07/16/yc_1/</id>
-    <published>2017-07-16T05:48:51.000Z</published>
-    <updated>2017-08-05T05:27:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>不得不说，我们平时在写程序时遇到最多的情形或者最头疼的事情就是遇到异常，然后各种调试，各种方法用尽最后才解决它，那么异常主要分为几类，每个类又有什么特征了（如图）<br><img src="/images/imgs4/11.gif" alt="Alt text"><br>从大的角度说主要分成两类：Error类代表了编译和系统的错误，不允许捕获，也就是我们自己无法主动去处理它；Exception类代表了我们可捕获并且可自己可处理异常，而Exception有包括两类，一个是你必须要处理的异常，如某个类有throws异常了，在未进入运行期就必须处理，另一类就是Runtime Exception（运行期异常），就是只有在运行时（也就是编译成class文件）时才知道，这个异常可处理或不处理</p>
-<h4 id="处理异常机制"><a href="#处理异常机制" class="headerlink" title="处理异常机制"></a>处理异常机制</h4><p>在java应用程序中，异常处理机制主要为两种:抛出异常和捕获异常<br><strong>抛出异常</strong><br>简单的说，就是不处理异常，将异常不断抛给上一级，直至某一级有有处理异常措施，一般用throws、throw如</p>
-<blockquote>
-<p>public readFile() throws IOException{<br>    throw new xxx();<br>}</p>
-</blockquote>
-<p><strong>捕获异常</strong><br>定义是这样说的，在方法抛出异常之后，运行时系统将转为寻找合适的异常处理器（exception handler）。潜在的异常处理器是异常发生时依次存留在调用栈中的方法的集合。当异常处理器所能处理的异常类型与方法抛出的异常类型相符时，即为合适 的异常处理器。运行时系统从发生异常的方法开始，依次回查调用栈中的方法，直至找到含有合适异常处理器的方法并执行。当运行时系统遍历调用栈而未找到合适 的异常处理器，则运行时系统终止。同时，意味着Java程序的终止。<br>一般有try..catch语句块，其语法格式如下：</p>
-<blockquote>
-<p>   try {<br>        // 可能会发生异常的程序代码<br>    } catch (Type1 id1){<br>        // 捕获并处置try抛出的异常类型Type1<br>    }<br>    catch (Type2 id2){<br>         //捕获并处置try抛出的异常类型Type2<br>    }  </p>
-</blockquote>
-<pre><code>如果，不管异常有没有捕获，都要执行某段代码，如数据库查询后都要关闭等等，就可以用finally，上面修改
-</code></pre><blockquote>
-<p>   try {<br>        // 可能会发生异常的程序代码<br>    } catch (Type1 id1){<br>        // 捕获并处置try抛出的异常类型Type1<br>    }<br>    catch (Type2 id2){<br>         //捕获并处置try抛出的异常类型Type2<br>    }  finally{<br>        //必须执行的代码<br>    }</p>
-</blockquote>
-<h4 id="try-catch-finally-规则"><a href="#try-catch-finally-规则" class="headerlink" title="try-catch-finally 规则"></a>try-catch-finally 规则</h4><pre><code>try块：用于捕获异常。其后可接0个或多个catch块，如果没有catch块，则必须跟一个finally块
-catch块：用于处理try捕获到的异常。
-finally 块：无论是否捕获或处理异常，finally块里的语句都会被执行。当在try块或catch块中遇到return语句时，finally语句块将在方法返回之前被执行。在以下4种特殊情况下，finally块不会被执行：
-</code></pre><p>1）在finally语句块中发生了异常。<br>2）在前面的代码中用了System.exit()退出程序。<br>3）程序所在的线程死亡。<br>4）关闭CPU。</p>
-<p>try..catch..拥有执行顺序，即第一个catch之后，后面不在执行catch，所以一般将较详细的catch放在最前面，如先捕获IOException在捕获Exception</p>
-<h4 id="throws规则"><a href="#throws规则" class="headerlink" title="throws规则"></a>throws规则</h4><p>1) 如果是不可查异常（unchecked exception），即Error、RuntimeException或它们的子类，那么可以不使用throws关键字来声明要抛出的异常，编译仍能顺利通过，但在运行时会被系统抛出。</p>
-<p>2）必须声明方法可抛出的任何可查异常（checked exception）。即如果一个方法可能出现受可查异常，要么用try-catch语句捕获，要么用throws子句声明将它抛出，否则会导致编译错误</p>
-<p>3)仅当抛出了异常，该方法的调用者才必须处理或者重新抛出该异常。当方法的调用者无力处理该异常的时候，应该继续抛出</p>
-<p>4）调用方法必须遵循任何可查异常的处理和声明规则。若覆盖一个方法，则不能声明与覆盖方法不同的异常。声明的任何异常必须是被覆盖方法所声明异常的同类或子类。<br>如下</p>
-<blockquote>
-<pre><code>void method1() throws IOException{}  //合法    
-</code></pre></blockquote>
-<pre><code>//编译错误，必须捕获或声明抛出IOException    
-void method2(){    
-  method1();    
-}    
-
-//合法，声明抛出IOException    
-void method3()throws IOException {    
-  method1();    
-}    
-
-//合法，声明抛出Exception，IOException是Exception的子类    
-void method4()throws Exception {    
-  method1();    
-}    
-
-//合法，捕获IOException    
-void method5(){    
- try{    
-    method1();    
- }catch(IOException e){…}    
-}    
-
-//编译错误，必须捕获或声明抛出Exception    
-void method6(){    
-  try{    
-    method1();    
-  }catch(IOException e){throw new Exception();}    
-}    
-
-//合法，声明抛出Exception    
-void method7()throws Exception{    
- try{    
-  method1();    
- }catch(IOException e){throw new Exception();}    
-}   
-
-这里需要注意的是throw 抛出的只能够是可抛出类Throwable 或者其子类的实例对象
-</code></pre><p><strong>Throwable类源码分析</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div></pre></td><td class="code"><pre><div class="line">/**  </div><div class="line">    *   </div><div class="line">    * Throwable是所有Error和Exceptiong的父类  </div><div class="line">    * 注意它有四个构造函数:  </div><div class="line">    * Throwable()  </div><div class="line">    * Throwable(String message)  </div><div class="line">    * Throwable(Throwable cause)  </div><div class="line">    * Throwable(String message, Throwable cause)  </div><div class="line">    *   </div><div class="line">    */    </div><div class="line">    public class Throwable implements Serializable &#123;    </div><div class="line">          private static final long serialVersionUID = -3042686055658047285L;    </div><div class="line">        </div><div class="line">          /**  </div><div class="line">           * Native code saves some indication of the stack backtrace in this slot.  </div><div class="line">           */    </div><div class="line">          private transient Object backtrace;     </div><div class="line">          /** </div><div class="line">       * 描述此异常的信息 </div><div class="line">       */  </div><div class="line">      private String detailMessage;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 表示当前异常由那个Throwable引起 </div><div class="line">        * 如果为null表示此异常不是由其他Throwable引起的 </div><div class="line">        * 如果此对象与自己相同,表明此异常的起因对象还没有被初始化 </div><div class="line">       */  </div><div class="line">      private Throwable cause = this;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 描述异常轨迹的数组 </div><div class="line">       */  </div><div class="line">      private StackTraceElement[] stackTrace;  </div><div class="line">      /** </div><div class="line">       * 构造函数,起因对象没有被初始化可以在以后使用initCause进行初始化 </div><div class="line">        * fillInStackTrace可以用来初始化它的异常轨迹的数组 </div><div class="line">       */  </div><div class="line">      public Throwable() &#123;  </div><div class="line">          fillInStackTrace();  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 构造函数 </div><div class="line">       */  </div><div class="line">      public Throwable(String message) &#123;  </div><div class="line">         //填充异常轨迹数组  </div><div class="line">          fillInStackTrace();  </div><div class="line">         //初始化异常描述信息  </div><div class="line">          detailMessage = message;  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 构造函数,cause表示起因对象 </div><div class="line">       */  </div><div class="line">      public Throwable(String message, Throwable cause) &#123;  </div><div class="line">          fillInStackTrace();  </div><div class="line">          detailMessage = message;  </div><div class="line">          this.cause = cause;  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 构造函数 </div><div class="line">       */  </div><div class="line">      public Throwable(Throwable cause) &#123;  </div><div class="line">          fillInStackTrace();  </div><div class="line">          detailMessage = (cause==null ? null : cause.toString());  </div><div class="line">          this.cause = cause;  </div><div class="line">      &#125;  </div><div class="line">      /** </div><div class="line">       * 获取详细信息 </div><div class="line">       */  </div><div class="line">      public String getMessage() &#123;  </div><div class="line">          return detailMessage;  </div><div class="line">      &#125;  </div><div class="line"></div><div class="line">      /** </div><div class="line">       * 获取详细信息 </div><div class="line">       */  </div><div class="line">      public String getLocalizedMessage() &#123;  </div><div class="line">          return getMessage();  </div><div class="line">      &#125;  </div><div class="line">       /** </div><div class="line">       * 获取起因对象 </div><div class="line">       */  </div><div class="line">      public Throwable getCause() &#123;  </div><div class="line">          return (cause==this ? null : cause);  </div><div class="line">      &#125;  </div><div class="line">      /** </div><div class="line">       * 初始化起因对象,这个方法只能在未被初始化的情况下调用一次 </div><div class="line">       */  </div><div class="line">      public synchronized Throwable initCause(Throwable cause) &#123;  </div><div class="line">         //如果不是未初始化状态则抛出异常  </div><div class="line">          if (this.cause != this)  </div><div class="line">              throw new IllegalStateException("Can't overwrite cause");  </div><div class="line">          </div><div class="line">         //要设置的起因对象与自身相等则抛出异常  </div><div class="line">          if (cause == this)  </div><div class="line">              throw new IllegalArgumentException("Self-causation not permitted");  </div><div class="line">          </div><div class="line">         //设置起因对象  </div><div class="line">          this.cause = cause;  </div><div class="line">         //返回设置的起因的对象  </div><div class="line">          return this;  </div><div class="line">      &#125;  </div><div class="line">      /** </div><div class="line">       * 字符串表示形式 </div><div class="line">       */  </div><div class="line">      public String toString() &#123;       </div><div class="line">          String s = getClass().getName();          </div><div class="line">          String message = getLocalizedMessage();        </div><div class="line">          return (message != null) ? (s + ": " + message) : s;  </div><div class="line">      &#125;  </div><div class="line">      /** </div><div class="line">       * 打印出错误轨迹 </div><div class="line">       */  </div><div class="line">      public void printStackTrace() &#123;   </div><div class="line">          printStackTrace(System.err);  </div><div class="line">      &#125;  </div><div class="line"></div><div class="line">       /** </div><div class="line">       * 打印出错误轨迹 </div><div class="line">       */  </div><div class="line">      public void printStackTrace(PrintStream s) &#123;  </div><div class="line">          synchronized (s) &#123;  </div><div class="line">            //调用当前对象的toString方法  </div><div class="line">              s.println(this);  </div><div class="line">            //获取异常轨迹数组  </div><div class="line">              StackTraceElement[] trace = getOurStackTrace();  </div><div class="line">              </div><div class="line">            //打印出每个元素的字符串表示  </div><div class="line">              for (int i=0; i &lt; trace.length; i++)  </div><div class="line">                s.println("\tat " + trace[i]);  </div><div class="line">  </div><div class="line">            //获取起因对象  </div><div class="line">              Throwable ourCause = getCause();  </div><div class="line">              </div><div class="line">            //递归的打印出起因对象的信息  </div><div class="line">              if (ourCause != null)  </div><div class="line">                ourCause.printStackTraceAsCause(s, trace);  </div><div class="line">          &#125;  </div><div class="line">      &#125;  </div><div class="line">       /** </div><div class="line">       * 打印起因对象的信息 </div><div class="line">       * @param s 打印的流 </div><div class="line">        * @param causedTrace 有此对象引起的异常的异常轨迹  </div><div class="line">       */  </div><div class="line">      private void printStackTraceAsCause(PrintStream s,  </div><div class="line">                                          StackTraceElement[] causedTrace)  </div><div class="line">      &#123;  </div><div class="line">         //获得当前的异常轨迹  </div><div class="line">          StackTraceElement[] trace = getOurStackTrace();  </div><div class="line">         //m为当前异常轨迹数组的最后一个元素位置,   </div><div class="line">         //n为当前对象引起的异常的异常轨迹数组的最后一个元素  </div><div class="line">          int m = trace.length-1, n = causedTrace.length-1;  </div><div class="line">         //分别从两个数组的后面做循环,如果相等则一直循环,直到不等或数组到头  </div><div class="line">          while (m &gt;= 0 &amp;&amp; n &gt;=0 &amp;&amp; trace[m].equals(causedTrace[n])) &#123;  </div><div class="line">              m--; n--;  </div><div class="line">         &#125;  </div><div class="line">          </div><div class="line">         //相同的个数  </div><div class="line">          int framesInCommon = trace.length - 1 - m;  </div><div class="line">          </div><div class="line">         //打印出不同的错误轨迹  </div><div class="line">          s.println("Caused by: " + this);  </div><div class="line">          for (int i=0; i &lt;= m; i++)  </div><div class="line">              s.println("\tat " + trace[i]);  </div><div class="line">          //如果有相同的则打印出相同的个数  </div><div class="line">          if (framesInCommon != 0)  </div><div class="line">              s.println("\t... " + framesInCommon + " more");  </div><div class="line">  </div><div class="line">         //获得此对象的起因对象,并递归打印出信息  </div><div class="line">          Throwable ourCause = getCause();  </div><div class="line">          if (ourCause != null)  </div><div class="line">              ourCause.printStackTraceAsCause(s, trace);  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 打印出错误轨迹 </div><div class="line">       */  </div><div class="line">      public void printStackTrace(PrintWriter s) &#123;   </div><div class="line">          synchronized (s) &#123;  </div><div class="line">              s.println(this);  </div><div class="line">              StackTraceElement[] trace = getOurStackTrace();  </div><div class="line">              for (int i=0; i &lt; trace.length; i++)  </div><div class="line">                  s.println("\tat " + trace[i]);  </div><div class="line">  </div><div class="line">              Throwable ourCause = getCause();  </div><div class="line">              if (ourCause != null)  </div><div class="line">                  ourCause.printStackTraceAsCause(s, trace);  </div><div class="line">          &#125;  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 打印起因对象的信息 </div><div class="line">        */  </div><div class="line">      private void printStackTraceAsCause(PrintWriter s,  </div><div class="line">                                          StackTraceElement[] causedTrace)  </div><div class="line">      &#123;  </div><div class="line">          // assert Thread.holdsLock(s);  </div><div class="line">  </div><div class="line">          // Compute number of frames in common between this and caused  </div><div class="line">          StackTraceElement[] trace = getOurStackTrace();  </div><div class="line">          int m = trace.length-1, n = causedTrace.length-1;  </div><div class="line">          while (m &gt;= 0 &amp;&amp; n &gt;=0 &amp;&amp; trace[m].equals(causedTrace[n])) &#123;  </div><div class="line">              m--; n--;  </div><div class="line">          &#125;  </div><div class="line">          int framesInCommon = trace.length - 1 - m;  </div><div class="line">  </div><div class="line">          s.println("Caused by: " + this);  </div><div class="line">          for (int i=0; i &lt;= m; i++)  </div><div class="line">              s.println("\tat " + trace[i]);  </div><div class="line">          if (framesInCommon != 0)  </div><div class="line">              s.println("\t... " + framesInCommon + " more");  </div><div class="line">  </div><div class="line">          // Recurse if we have a cause  </div><div class="line">          Throwable ourCause = getCause();  </div><div class="line">          if (ourCause != null)  </div><div class="line">              ourCause.printStackTraceAsCause(s, trace);  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 填充异常轨迹 </div><div class="line">       */  </div><div class="line">      public synchronized native Throwable fillInStackTrace();  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 返回当前的异常轨迹的拷贝 </div><div class="line">       */  </div><div class="line">      public StackTraceElement[] getStackTrace() &#123;  </div><div class="line">          return (StackTraceElement[]) getOurStackTrace().clone();  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      </div><div class="line">      /** </div><div class="line">       * 获取当前的异常轨迹 </div><div class="line">        */  </div><div class="line">      private synchronized StackTraceElement[] getOurStackTrace() &#123;  </div><div class="line">         //如果第一次调用此方法则初始化异常轨迹数组  </div><div class="line">          if (stackTrace == null) &#123;  </div><div class="line">            //获得异常轨迹深度  </div><div class="line">              int depth = getStackTraceDepth();  </div><div class="line">            //创建新的异常轨迹数组,并填充它  </div><div class="line">              stackTrace = new StackTraceElement[depth];  </div><div class="line">              </div><div class="line">            for (int i=0; i &lt; depth; i++)  </div><div class="line">                stackTrace[i] = getStackTraceElement(i);//获取指定位标的异常轨迹  </div><div class="line">          &#125;  </div><div class="line">          </div><div class="line">          return stackTrace;  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 设置异常轨迹 </div><div class="line">       */  </div><div class="line">      public void setStackTrace(StackTraceElement[] stackTrace) &#123;  </div><div class="line">         //拷贝设置参数  </div><div class="line">          StackTraceElement[] defensiveCopy =  </div><div class="line">              (StackTraceElement[]) stackTrace.clone();  </div><div class="line">          </div><div class="line">         //如果设置参数有空元素则抛出异常  </div><div class="line">          for (int i = 0; i &lt; defensiveCopy.length; i++)  </div><div class="line">              if (defensiveCopy[i] == null)  </div><div class="line">                  throw new NullPointerException("stackTrace[" + i + "]");  </div><div class="line">  </div><div class="line">         //设置当前对象的异常轨迹  </div><div class="line">          this.stackTrace = defensiveCopy;  </div><div class="line">      &#125;  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 异常轨迹的深度,0表示无法获得 </div><div class="line">       */  </div><div class="line">      private native int getStackTraceDepth();  </div><div class="line">  </div><div class="line">      /** </div><div class="line">       * 获取指定位标的异常轨迹 </div><div class="line">       */  </div><div class="line">      private native StackTraceElement getStackTraceElement(int index);  </div><div class="line">  </div><div class="line">      </div><div class="line">      private synchronized void writeObject(java.io.ObjectOutputStream s)  </div><div class="line">          throws IOException  </div><div class="line">      &#123;  </div><div class="line">          getOurStackTrace();  </div><div class="line">          s.defaultWriteObject();  </div><div class="line">      &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>以上源码分析来自于互联网，同时由于目前是jdk1.8和这个源码有一小部分不一样，但不影响整体分析。当然，我们真正关心的是他的下面几个方法</p>
-<blockquote>
-<p>e.getMessage();”用于输出错误性质。通常异常处理常用3个函数来获取异常的有关信息:<br>   getCause()：返回抛出异常的原因。如果 cause 不存在或未知，则返回 null。<br>　 getMeage()：返回异常的消息信息。<br>　 printStackTrace()：对象的堆栈跟踪输出至错误输出流，作为字段 System.err 的值。<br>而当我们出现异常时，就形成一条异常链，一个一个堆栈的打印出相关信息和异常</p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;不得不说，我们平时在写程序时遇到最多的情形或者最头疼的事情就是遇到异常，然后各种调试，各种方法用尽最后才解决它，那么异常主要分为几类，每个类
-    
-    </summary>
-    
-      <category term="java基础" scheme="http://www.myzwl.win/categories/java%E5%9F%BA%E7%A1%80/"/>
-    
-    
-      <category term="java基础" scheme="http://www.myzwl.win/source/tags/java%E5%9F%BA%E7%A1%80/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>二分查找</title>
-    <link href="http://www.myzwl.win/2017/07/15/sjjg_10/"/>
-    <id>http://www.myzwl.win/2017/07/15/sjjg_10/</id>
-    <published>2017-07-15T05:48:51.000Z</published>
-    <updated>2017-07-27T14:25:56.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>查找操作，通俗的讲，就是给定一个值key，在一个数据结构中找出关键字为key的元素。而基于线性表的查找算法有顺序查找（O（n）），二分查找和分块查找</p>
-<h4 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h4><p>主要用于已排序的顺序表<br>算法描述：假定顺序表已按照升序排列，从表的中间位置开始比较，如果当前元素的关键字等于给定值，则查找成功，否则，若给定的值小于当前元素关键字，则在表的前半段继续查找，反之，在后半段查找，以此重复，直到获得查找结果<br><img src="/images/imgs4/10.gif" alt="Alt text"></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">public class BSArray &#123;</div><div class="line"></div><div class="line">	//在升序排列的数组中，若找到关键字，则返回相应下标，否则返回-1</div><div class="line">	public static&lt;T&gt; int binarySearch(Comparable&lt;T&gt;[] value,T key)&#123;</div><div class="line">		return binarySearch(value,0,value.length-1,key);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public static&lt;T&gt; int binarySearch(Comparable&lt;T&gt;[] value,int begin,int end,T key)&#123;</div><div class="line">		if(key!=null)</div><div class="line">			while(begin&lt;=end)&#123;    //边界有效</div><div class="line">				int mid=(begin+end)/2;  //中间位置，当前比较元素位置</div><div class="line">		System.out.println(value[mid]+"?");</div><div class="line">		if(value[mid].compareTo(key)==0) //对象比较大小</div><div class="line">			return mid;                  //查找成功</div><div class="line">		if(value[mid].compareTo(key)&gt;0)  </div><div class="line">			end=mid-1;                    //缩小到前半段</div><div class="line">		else</div><div class="line">			begin=mid+1;                 //缩小到后半段</div><div class="line">	&#125; </div><div class="line">	return -1;                           //查找不成功</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;查找操作，通俗的讲，就是给定一个值key，在一个数据结构中找出关键字为key的元素。而基于线性表的查找算法有顺序查找（O（n）），二分查找和
-    
-    </summary>
-    
-      <category term="数据结构" scheme="http://www.myzwl.win/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
-    
-      <category term="数据结构" scheme="http://www.myzwl.win/source/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hash散列表</title>
-    <link href="http://www.myzwl.win/2017/07/14/sjjg_9/"/>
-    <id>http://www.myzwl.win/2017/07/14/sjjg_9/</id>
-    <published>2017-07-14T05:48:51.000Z</published>
-    <updated>2017-07-27T11:02:40.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>散列（hash）表是一种支持高效的查找、插入和删除操作的数据结构，它是针对查找效率接近O（1）而专门设计的。它根据元素的关键字确定元素的存储位置，而其中主要解决两个问题，设计散列函数和处理冲突</p>
-<h4 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h4><p>在数据元素的关键字和该元素的存储位置之间建立一种对应关系，称为散列函数，而由散列函数决定元素存储位置的存储结构称为散列表，散列函数声明为</p>
-<blockquote>
-<p>public int hash(int key) //散列函数，确定关键字为key元素的散列地址</p>
-</blockquote>
-<p>散列函数实质上是关键字集合到地址集合的映射，如果这种映射是一一对应的，则查找效率是O（1），但是由于散列表是一个压缩映射，即存储容量有限，即映射关系是多对一的映射，所以会产生冲突<br><img src="/images/imgs4/9.gif" alt="Alt text"></p>
-<h4 id="冲突"><a href="#冲突" class="headerlink" title="冲突"></a>冲突</h4><p>设两个关键字k1和k2（k1！=k2），如果有hash（k1）=hash（k2），即它们的散列值相同，表示不同关键字的多个元素映射到同一个存储位置，称为冲突，如图，所设的关键字序列是（1,4,3,11,12,6,14,74,16,96），元素个数是10，关键字范围是0~99，如果散列值的容量是100，很明显是一对一不会产生冲突，但是空间利用率此时只有10%，如果容量是10或者20，冲突差生的频率会减少</p>
-<h4 id="除留余数法"><a href="#除留余数法" class="headerlink" title="除留余数法"></a>除留余数法</h4><p>该散列函数定义为hash（k）=k%p，函数结果范围为0~p-1，图示就是采用这种方法，而p取值为小于散列表长度的最大素数，如散列表长度分别为8,16,128，则对应的p（最大素数）分别为7,13,127</p>
-<h4 id="冲突处理"><a href="#冲突处理" class="headerlink" title="冲突处理"></a>冲突处理</h4><p><strong>开放定址法</strong><br>当产生冲突时，开放定址法在散列表内寻找另一个位置存储冲突的元素，如利用线性探查发实现，即设一个元素关键字为k，其散列地址为i=hash（k），若散列表中i位置已存储元素，则产生冲突，探测下一个位置i+1是否为空，。。直到找到一个空位置，但是它的缺陷就是在散列表内处理冲突，使得一个存储地址i可被任意一个元素抢占，这样就破坏了散列函数i=hash（k）的规则</p>
-<p><strong>链地址法</strong><br><img src="/images/imgs4/12.jpg" alt="Alt text"><br>该方法是将多个冲突的元素存储在一条单链表中（称为同义词单链表），如图示<br>而对链地址法表进行插入、删除、查找等操作主要分两步完成<br>1.计算元素的散列函数值<br>2.根据元素的散列函数值，对某一条同义词单链表进行插入、删除和查找操作<br>规定查找成功的平均查找长度为（根据图示）ASL=(9<em>1+3</em>2)/12<br>并且有如下结论：<br>1.查找操作的时间复杂度为O（m），其中m为一条痛一次单链表的长度，插入操作为O(1),删除操作为O(m)</p>
-<h4 id="模拟HashSet类"><a href="#模拟HashSet类" class="headerlink" title="模拟HashSet类"></a>模拟HashSet类</h4><p>这里同义词单链表采用单链表<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">public class HashSet&lt;T&gt; &#123;</div><div class="line"></div><div class="line">	private SinglyLinkenList&lt;T&gt;[] table;    //散列表，同义词单链表对象数组</div><div class="line">	public HashSet(int size)&#123;               //构造指定容量的散列表</div><div class="line">		this.table=new SinglyLinkenList[Math.abs(size)];</div><div class="line">		for(int i=0;i&lt;table.length;i++)</div><div class="line">			table[i]=new SinglyLinkenList&lt;T&gt;();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public HashSet()&#123; //构造最大质数为97的容量</div><div class="line">		this(97);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	private int hash(T x)&#123;  //散列函数，确定关键字为key元素的散列地址</div><div class="line">		int key=Math.abs(x.hashCode()); //每个对象的hashcode（）方法返回散列码，并且每个对象不同</div><div class="line">		return key%table.length; //出留余数法，除数是散列表长度</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void insert(T x)&#123;//插入x元素</div><div class="line">		table[hash(x)].insert(0, x);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void remove(T x)&#123; //删除x元素</div><div class="line">		table[hash(x)].remove((Integer) x);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public T search(T key)&#123; //返回查找到的关键字为key元素，查找不成功返回null</div><div class="line">		return table[hash(key)].search(key);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public boolean contain(T key)&#123; //判断散列表是否包含关键字为key元素</div><div class="line">		return this.search(key)!=null;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public String toString()&#123;</div><div class="line">		String str="";</div><div class="line">		for(int i=0;i&lt;table.length;i++)  //遍历各同义词单链表</div><div class="line">			if(!table[i].isEmpty())</div><div class="line">				str+=table[i].toString()+"\n";</div><div class="line">		return str;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;散列（hash）表是一种支持高效的查找、插入和删除操作的数据结构，它是针对查找效率接近O（1）而专门设计的。它根据元素的关键字确定元素的存储
-    
-    </summary>
-    
-      <category term="数据结构" scheme="http://www.myzwl.win/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
-    
-      <category term="数据结构" scheme="http://www.myzwl.win/source/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
     
   </entry>
   
