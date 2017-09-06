@@ -113,7 +113,7 @@
 <meta property="og:site_name" content="秒西">
 <meta property="og:description" content="前言出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力
 题型一说说String s">
-<meta property="og:updated_time" content="2017-09-04T15:30:18.000Z">
+<meta property="og:updated_time" content="2017-09-05T14:36:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常见面试题之三">
 <meta name="twitter:description" content="前言出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力
@@ -631,6 +631,29 @@ var _hmt = _hmt || [];
 <blockquote>
 <p>数据库管理系统（DBMS）中的并发控制的任务是确保在多个事务同时存取数据库中同一数据时不破坏事务的隔离性和统一性以及数据库的统一性。<br>悲观锁:<br>简单来说悲观锁认什么操作都可以改变数据，所以在改数据就锁住（在sql语句中加上for update就可以了）<br>MySQL InnoDB中使用悲观锁<br>要使用悲观锁，我们必须关闭mysql数据库的自动提交属性，因为MySQL默认使用autocommit模式，也就是说，当你执行一个更新操作后，MySQL会立刻将结果进行提交。 set autocommit=0;<br>//0.开始事务<br>begin;/begin work;/start transaction; (三者选一就可以)<br>//1.查询出商品信息<br>select status from t_goods where id=1 for update;<br>//2.根据商品信息生成订单<br>insert into t_orders (id,goods_id) values (null,1);<br>//3.修改商品status为2<br>update t_goods set status=2;<br>//4.提交事务<br>commit;/commit work;<br>上面的查询语句中，我们使用了 select…for update 的方式，这样就通过开启排他锁的方式实现了悲观锁。此时在t_goods表中，id为1的 那条数据就被我们锁定了，其它的事务必须等本次事务提交之后才能执行。这样我们可以保证当前的数据不会被其它事务修改。<br>优点与不足：<br>悲观并发控制实际上是“先取锁再访问”的保守策略，为数据处理的安全提供了保证。但是在效率方面，处理加锁的机制会让数据库产生额外的开销，还有增加产生死锁的机会；另外，在只读型事务处理中由于不会产生冲突，也没必要使用锁，这样做只能增加系统负载；还有会降低了并行性，一个事务如果锁定了某行数据，其他事务就必须等待该事务处理完才可以处理那行数<br>乐观锁：<br>简单来说乐观锁很乐观 所以修改数据库后锁住 （一般在数据库中加上一个字段区别历史版本和当前版本）<br>1.查询出商品信息<br>select (status,status,version) from t_goods where id=#{id}<br>2.根据商品信息生成订单<br>3.修改商品status为2<br>update t_goods<br>set status=2,version=version+1<br>where id=#{id} and version=#{version};<br>使用版本号时，可以在数据初始化时指定一个版本号，每次对数据的更新操作都对版本号执行+1操作。并判断当前版本号是不是该数据的最新的版本号。<br>优点与不足<br>乐观并发控制相信事务之间的数据竞争(data race)的概率是比较小的，因此尽可能直接做下去，直到提交的时候才去锁定，所以不会产生任何锁和死锁。但如果直接简单这么做，还是有可能会遇到不可预期的结果，例如两个事务都读取了数据库的某一行，经过修改以后写回数据库，这时就遇到了问题。</p>
 </blockquote>
+<h4 id="mysql实现分页的sql语句"><a href="#mysql实现分页的sql语句" class="headerlink" title="mysql实现分页的sql语句"></a>mysql实现分页的sql语句</h4><p>面试思路：数据库分页的简单实现&gt;数据量变大时的优化方案</p>
+<blockquote>
+<p>sql语句是LIMIT m,n其中m是当前页，n是从当前页数n个记录，如果参数为一个就是数n个记录<br>一般我们都会这样写:当数据达到百万级的时候会慢死<br>SELECT <em> FROM table ORDER BY id LIMIT 1000000, 10;<br>优化一：<br>SELECT </em> FROM table WHERE id &gt;= (SELECT id FROM table LIMIT 1000000, 1) LIMIT 10;<br>速度可以提升到0.x秒了<br>优化二：<br>SELECT <em> FROM table WHERE id BETWEEN 1000000 AND 1000010;<br>比上面提升5到10倍<br>另外，如果需要查询 id 不是连续的一段，最佳的方法就是先找出 id ，然后用 in 查询<br>SELECT </em> FROM table WHERE id IN(10000, 100000, 1000000…); </p>
+</blockquote>
+<h4 id="内部类的种类，接口中可否有内部类"><a href="#内部类的种类，接口中可否有内部类" class="headerlink" title="内部类的种类，接口中可否有内部类"></a>内部类的种类，接口中可否有内部类</h4><p>四种内部类,接口中可以定义内部类</p>
+<blockquote>
+<p>静态内部类：<br>必须以static关键字标注<br>只能访问外部类中的静态的成员变量或者是静态的方法<br>访问一个内部类使应该这样outerClass.innerClass inter = new outerClass.innerClass();不能直接实例化内部类<br>成员内部类：<br>定义在一个类的内部，但是没有static关键字修饰<br>生成示例的方法outerClass.innerClass inter = (new outerClass()).new innerClass()<br>对外部类变量的引用outClass.this.variale<br>可以访问外部类的静态与非静态方法<br>局部内部类<br>匿名内部类</p>
+</blockquote>
+<h4 id="谈谈对gc的认识"><a href="#谈谈对gc的认识" class="headerlink" title="谈谈对gc的认识"></a>谈谈对gc的认识</h4><blockquote>
+<p>gc是jvm的垃圾回收机制 程序里有一个System.gc(); 但这个不能说是调用jvm的回收系统，而是请求jvm回收。 jvm的回收机制不受代码控制，只能设置jvm的堆的常量 Xmx3550m Xms3550m Xmn2g Xss128k</p>
+</blockquote>
+<h4 id="什么是事务"><a href="#什么是事务" class="headerlink" title="什么是事务"></a>什么是事务</h4><p>回答思路：事务是干什么的&gt;事务的ACID特性&gt;事务的隔离级别</p>
+<blockquote>
+<p>事务是访问数据库的一个操作序列，数据库应用系统通过事务集来完成对数据库的存取。事务的正确执行使得数据库从一种状态转换成另一种状态<br>原子性。即不可分割性，事务要么全部被执行，要么就全部不被执行。如果事务的所有子事务全部提交成功，则所有的数据库操作被提交，数据库状态发生转换；如果有子事务失败，则其他子事务的数据库操作被回滚，即数据库回到事务执行前的状态，不会发生状态转换<br>一致性或可串性。事务的执行使得数据库从一种正确状态转换成另一种正确状态<br>隔离性。在事务正确提交之前，不允许把该事务对数据的任何改变提供给任何其他事务，即在事务正确提交之前，它可能的结果不应显示给任何其他事务<br>持久性。事务正确提交后，其结果将永久保存在数据库中，即使在事务提交后有了其他故障，事务的处理结果也会得到保存<br>对于同时运行的多个事务，当这些事务访问数据库中相同的数据时，如果没有采取必要的隔离机制，就会导致各种并发问题，这些并发问题可归纳为以下几类<br>第一类丢失更新：撤销一个事务时，把其他事务已提交的更新数据覆盖。　<br>脏读：一个事务读到另一个事务为提交的更新数据。<br>虚读：一个事务读到另一个事务已提交的新插入的数据。<br>不可重复读：一个事务读到另一个事务已提交的更新数据。<br>第二类丢失更新：这是不可重复读中的特例，一个事务覆盖另一个事务已提交的更新数据。</p>
+</blockquote>
+<p>隔离级别</p>
+<blockquote>
+<p>Serializable(串行化)：一个事务在执行过程中完全看不到其他事务对数据库所做的更新。<br>    Repeatable Read(可重复读)：一个事务在执行过程中可以看到其他事务已经提交的新插入的记录，但是不能看到其他事务对已有记录的更新。<br>    Read Commited（读已提交数据）：一个事务在执行过程中可以看到其他事务已经提交的新插入的记录，而且能看到其他事务已经提交的对已有记录的更新<br>    Read Uncomitted（读未提交数据）：一个事务在执行过程中可以拷打其他事务没有提交的新插入的记录，而且能看到其他事务没有提交的对已有记录的更新。<br>    悲观锁<br>    .乐观锁</p>
+</blockquote>
+<h4 id="数据库设计三范式是什么"><a href="#数据库设计三范式是什么" class="headerlink" title="数据库设计三范式是什么"></a>数据库设计三范式是什么</h4><p>为了建立冗余较小、结构合理的数据库，设计数据库时必须遵循一定的规则。在关系型数据库中这种规则就称为范式。范式是符合某一种设计要求的总结。要想设计一个结构合理的关系型数据库，必须满足一定的范式。</p>
+<blockquote>
+<p>第一范式：1NF是对属性的原子性约束，要求属性具有原子性，不可再分解；<br>通俗的理解是，字段还可以再分吗？如过不能，则是符合1NF的设计。<br>第二范式：2NF是对记录的惟一性约束，要求记录有惟一标识，即实体的惟一性；<br>也就是说主键列与非主键列遵循完全函数依赖关系<br>第三范式：3NF是对字段冗余性的约束，即任何字段不能由其他字段派生出来，它要求字段没有冗余。<br>也就是说非主键列之间没有传递函数依赖关系<br>打个比方，比如评论表，如果你将用户ID，用户头像都放在这留言表中，就是不合适的了。用户头像是依赖于用户ID，而不依赖该评论。</p>
+</blockquote>
 
       
     </div>
@@ -693,6 +716,10 @@ var _hmt = _hmt || [];
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/02/face_4/" rel="prev" title="常见面试题之四">
+                常见面试题之四 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -803,7 +830,7 @@ Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">113</span>
+                <span class="site-state-item-count">115</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -881,7 +908,7 @@ Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true)
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题型一"><span class="nav-text">题型一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SpringMVC的工作流程"><span class="nav-text">SpringMVC的工作流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#myBatis中-和-的区别"><span class="nav-text">myBatis中$和#的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#悲观锁和乐观锁的比较"><span class="nav-text">悲观锁和乐观锁的比较</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题型一"><span class="nav-text">题型一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SpringMVC的工作流程"><span class="nav-text">SpringMVC的工作流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#myBatis中-和-的区别"><span class="nav-text">myBatis中$和#的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#悲观锁和乐观锁的比较"><span class="nav-text">悲观锁和乐观锁的比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql实现分页的sql语句"><span class="nav-text">mysql实现分页的sql语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内部类的种类，接口中可否有内部类"><span class="nav-text">内部类的种类，接口中可否有内部类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#谈谈对gc的认识"><span class="nav-text">谈谈对gc的认识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是事务"><span class="nav-text">什么是事务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库设计三范式是什么"><span class="nav-text">数据库设计三范式是什么</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

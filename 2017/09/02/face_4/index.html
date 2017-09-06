@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="剑指offer," />
+  <meta name="keywords" content="学习效果检验," />
 
 
 
@@ -105,22 +105,19 @@
 
 
 
-<meta name="description" content="问题描述不分行的从上到下打印二叉树的每个节点，同一层的结点按照从左到右的顺序打印
-思路分析其实也就是树的层次遍历，而层次遍历的通法就是构造一个队列或者其他容器集合，按照从上到下依次加进结点，每次删除一个结点，就把它的左右孩子结点加入队列，依次类推，这里使用list模拟层序遍历
-码上有戏123456789101112131415161718192021222324252627282930313233">
+<meta name="description" content="前言出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力
+如何去除多表查询产生重复的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="从上到下打印二叉树">
-<meta property="og:url" content="http://www.myzwl.win/2017/04/26/offer_16/index.html">
+<meta property="og:title" content="常见面试题之四">
+<meta property="og:url" content="http://www.myzwl.win/2017/09/02/face_4/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="问题描述不分行的从上到下打印二叉树的每个节点，同一层的结点按照从左到右的顺序打印
-思路分析其实也就是树的层次遍历，而层次遍历的通法就是构造一个队列或者其他容器集合，按照从上到下依次加进结点，每次删除一个结点，就把它的左右孩子结点加入队列，依次类推，这里使用list模拟层序遍历
-码上有戏123456789101112131415161718192021222324252627282930313233">
-<meta property="og:updated_time" content="2017-09-03T11:54:28.000Z">
+<meta property="og:description" content="前言出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力
+如何去除多表查询产生重复的">
+<meta property="og:updated_time" content="2017-09-06T13:25:04.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="从上到下打印二叉树">
-<meta name="twitter:description" content="问题描述不分行的从上到下打印二叉树的每个节点，同一层的结点按照从左到右的顺序打印
-思路分析其实也就是树的层次遍历，而层次遍历的通法就是构造一个队列或者其他容器集合，按照从上到下依次加进结点，每次删除一个结点，就把它的左右孩子结点加入队列，依次类推，这里使用list模拟层序遍历
-码上有戏123456789101112131415161718192021222324252627282930313233">
+<meta name="twitter:title" content="常见面试题之四">
+<meta name="twitter:description" content="前言出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力
+如何去除多表查询产生重复的">
 
 
 
@@ -148,13 +145,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/04/26/offer_16/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2017/09/02/face_4/"/>
 
 
 
 
 
-  <title> 从上到下打印二叉树 | 秒西 </title>
+  <title> 常见面试题之四 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -500,7 +497,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/04/26/offer_16/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/09/02/face_4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -521,7 +518,7 @@ var _hmt = _hmt || [];
             
             
               
-                从上到下打印二叉树
+                常见面试题之四
               
             
           </h1>
@@ -536,8 +533,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-26T14:48:51+08:00">
-                2017-04-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-02T15:48:51+08:00">
+                2017-09-02
               </time>
             
 
@@ -564,8 +561,8 @@ var _hmt = _hmt || [];
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
+                  <a href="/categories/面试题/" itemprop="url" rel="index">
+                    <span itemprop="name">面试题</span>
                   </a>
                 </span>
 
@@ -582,7 +579,7 @@ var _hmt = _hmt || [];
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a class="cloud-tie-join-count" href="/2017/04/26/offer_16/#comments" itemprop="discussionUrl">
+                <a class="cloud-tie-join-count" href="/2017/09/02/face_4/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count join-count" itemprop="commentCount"></span>
                 </a>
               </span>
@@ -614,9 +611,52 @@ var _hmt = _hmt || [];
       
 
       
-        <h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>不分行的从上到下打印二叉树的每个节点，同一层的结点按照从左到右的顺序打印</p>
-<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>其实也就是树的层次遍历，而层次遍历的通法就是构造一个队列或者其他容器集合，按照从上到下依次加进结点，每次删除一个结点，就把它的左右孩子结点加入队列，依次类推，这里使用list模拟层序遍历</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line">class TreeNode&#123;</div><div class="line">	int data;</div><div class="line">	TreeNode left;</div><div class="line">	TreeNode right;</div><div class="line">	</div><div class="line">	TreeNode(int data)&#123;</div><div class="line">		this.data=data;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public List&lt;Integer&gt; printFromToptoButtom(TreeNode root)&#123;</div><div class="line">		List&lt;TreeNode&gt; node=new ArrayList&lt;TreeNode&gt;();</div><div class="line">		 List&lt;Integer&gt; treeDate=new ArrayList&lt;Integer&gt;();</div><div class="line">		  int index=1;</div><div class="line">		   if(root==null)</div><div class="line">			   return null;</div><div class="line">		      node.add(root);</div><div class="line">		     while(node.size()&gt;0)&#123;</div><div class="line">		    	 TreeNode front=node.remove(0);</div><div class="line">		    	   index--;</div><div class="line">		    	   treeDate.add(front.data);</div><div class="line">		    	   if(front.left!=null)</div><div class="line">		    	   &#123;</div><div class="line">		    		   node.add(index++,front.left);</div><div class="line">		    		  </div><div class="line">		    	   &#125;</div><div class="line">		    	   if(front.right!=null)&#123;</div><div class="line">		    		   node.add(index++,front.right);		  </div><div class="line">		    	   &#125;</div><div class="line">		     &#125;</div><div class="line">		     return treeDate;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">       TreeNode a=new TreeNode(1);</div><div class="line">       TreeNode b=new TreeNode(2);</div><div class="line">       TreeNode c=new TreeNode(3);</div><div class="line">       TreeNode d=new TreeNode(4);</div><div class="line">       TreeNode e=new TreeNode(5);</div><div class="line">       a.left=b;</div><div class="line">       a.right=c;</div><div class="line">       b.left=e;</div><div class="line">       b.right=null;</div><div class="line">       c.right=d;</div><div class="line">       c.left=null;</div><div class="line">       d.left=null;</div><div class="line">       d.right=null;</div><div class="line">       e.left=null;</div><div class="line">       e.right=null;</div><div class="line">      List&lt;Integer&gt; data= new ConstructBinaryTree().printFromToptoButtom(a);</div><div class="line">       for(Integer h:data)&#123;</div><div class="line">    	   System.out.print(h+" ");</div><div class="line">       &#125;</div><div class="line">   </div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力</p>
+<h4 id="如何去除多表查询产生重复的数据-连接查询"><a href="#如何去除多表查询产生重复的数据-连接查询" class="headerlink" title="如何去除多表查询产生重复的数据(连接查询)"></a>如何去除多表查询产生重复的数据(连接查询)</h4><p>如果一个查询需要对多个表进行操作就称为连接查询,连接查询的结果集或结果称为表之间的连接.<br>连接查询实际上是通过各个表之间共同列的关联性来查询数据的,它是关系数据库查询最主要的特征.<br>连接查询分类：<br>1.自连接查询，对同一个表进行连接操作<br>2.内连接查询，&lt;又分为：自然连接、等值连接、不等值连接三种&gt;<br>3.外连接查询，&lt;又分为：左外连接、右外连接、全外连接三种&gt;<br>4.交叉连接查询，也作无条件查询。<br>5.联合查询</p>
+<h4 id="自连接查询"><a href="#自连接查询" class="headerlink" title="自连接查询"></a>自连接查询</h4><p>一个表自己与自己建立连接称为自连接或自身连接，如：</p>
+<blockquote>
+<p>select x.* from sclass x,sclass y<br>where x.cno=’’101’’ and x.degree&gt;y.degree and y.sno=’’9505201’’ and y.cno=’’101’’<br>order by x.degree desc</p>
+</blockquote>
+<h4 id="内连接-INNER-JOIN"><a href="#内连接-INNER-JOIN" class="headerlink" title="内连接(INNER JOIN)"></a>内连接(INNER JOIN)</h4><p>它只返回两个数据集合之间匹配关系的那些行.<br>将位于两个互相交叉的数据集合中重叠部分以内的那些数据行连接起来.<br>语法：<br>select 字段名列表 from 表名 [inner] join 表名 on 连接条件 [where 条件表达式]<br>select x.sno,x.sname,y.cno,y.degree from student x<br>INNER join sclass y on x.sno=y.sno where x.sclass=’’xx’’</p>
+<blockquote>
+<p>等值连接：<br>所谓等值连接，是指表之间通过“等于”关系连接起来，产生一个临时表，<br>然后对该临时表进行处理后生成最终结果。其查询结果中列出被连接表中的所有列，<br>包括其中的重复列。<br>如：SELECT x.sno,y.cname,x.degree<br>FROM score x,course y<br>WHERE x.cno=y.cno<br>不等值连接：<br>是指表之间的连接关系不是“等于”，而是其它关系。<br>这些运算符包括&gt;、&gt;=、&lt;=、&lt;、!&gt;、!&lt;和&lt;&gt;<br>select x.sno,x.sname,y.cno,y.degree<br>from student x,score y<br>where x.sno!=y.sno<br>自然连接：<br>在等值连接中消除重复列就是自然连接。<br>关键词 DISTINCT 用于返回唯一不同的值。<br>SELECT DISTINCT 列名称 FROM 表名称</p>
+</blockquote>
+<h4 id="jre和jdk的区别"><a href="#jre和jdk的区别" class="headerlink" title="jre和jdk的区别"></a>jre和jdk的区别</h4><blockquote>
+<p>JDK：Java Development Kit，java的开发和运行环境，java的开发工具和jre。<br>JRE：Java Runtime Environment，java程序的运行环境，java运行的所需的类库+JVM(java</p>
+</blockquote>
+<h4 id="java基本数据类型"><a href="#java基本数据类型" class="headerlink" title="java基本数据类型"></a>java基本数据类型</h4><blockquote>
+<p>byte、short、int、long、float、double、char、boolean</p>
+</blockquote>
+<h4 id="能否重写构造方法"><a href="#能否重写构造方法" class="headerlink" title="能否重写构造方法"></a>能否重写构造方法</h4><p>重载构造方法是可以的。<br>但是重写则不可以，因为被重写的前提是被继承，而构造方法根本就不能被继承，所以谈不上被重写。只能调用父类的构造方法</p>
+<h4 id="依赖注入的底层实现方式"><a href="#依赖注入的底层实现方式" class="headerlink" title="依赖注入的底层实现方式"></a>依赖注入的底层实现方式</h4><p>依赖注入（Dependency Injection）是用于实现控制反转（Inversion of Control）的最常见的方式之一<br>为什么需要依赖注入？<br>比如下面这段模拟代码</p>
+<blockquote>
+<p>public class MovieLister {<br>    private MovieFinder finder;<br>    public MovieLister() {<br>        finder = new MovieFinderImpl();<br>    }<br>    public Movie[] moviesDirectedBy(String arg) {<br>    }<br>    …<br>}<br>public interface MovieFinder {<br>    List findAll();<br>}</p>
+</blockquote>
+<p>我们创建了一个名为MovieLister的类来提供需要的电影列表，它moviesDirectedBy方法提供根据导演名来搜索电影的方式。真正负责搜索电影的是实现了MovieFinder接口的MovieFinderImpl，我们的MovieLister类在构造函数中创建了一个MovieFinderImpl的对象<br>当我们希望修改finder，将finder替换为一种新的实现时（比如为MovieFinder增加一个参数表明Movie数据的来源是哪个数据库），我们不仅需要修改MovieFinderImpl类，还需要修改我们MovieLister中创建MovieFinderImpl的代码。<br>这就是依赖注入要处理的耦合。这种在MovieLister中创建MovieFinderImpl的方式，使得MovieLister不仅仅依赖于MovieFinder这个接口，它还依赖于MovieListImpl这个实现<br>依赖注入的实现方式</p>
+<blockquote>
+<p>构造函数注入<br>setter注入<br>接口注入(接口注入使用接口来提供setter方法)</p>
+</blockquote>
+<h4 id="父类能否调用子类方法"><a href="#父类能否调用子类方法" class="headerlink" title="父类能否调用子类方法"></a>父类能否调用子类方法</h4><p>能.把子类传递到父类的有参构造中，然后调用。<br>使用反射的方式调用<br>如下模拟</p>
+<blockquote>
+<p>package com.zwl.test;<br>public class exam {<br>    private examson son;<br>    public exam(examson son){<br>        this.son=son;<br>    }<br>    public exam(){<br>    }<br>    public void Reflaction() throws InstantiationException, IllegalAccessException{<br>        try {<br>            Class ref=Class.forName(“com.zwl.test.examson”);<br>            examson s=(examson) ref.newInstance();<br>            s.method();<br>            s.staMethod();<br>        } catch (ClassNotFoundException e) {<br>            e.printStackTrace();<br>        }<br>    }<br>    public void showByDI(){<br>        son.staMethod();<br>        son.method();<br>    }<br>    public static void main(String[] args)  {<br>         try {<br>             exam e=new exam(new examson());<br>              e.showByDI();<br>              e.Reflaction();<br>        } catch (InstantiationException e1) {<br>            e1.printStackTrace();<br>        } catch (IllegalAccessException e1) {<br>            e1.printStackTrace();<br>        }<br>    }<br>}<br>class examson extends exam{<br>        public static void staMethod(){<br>        System.out.println(“it is a static method”);<br>    }</p>
+</blockquote>
+<pre><code>public void method(){
+    System.out.println(&quot;ok&quot;);
+}
+</code></pre><p>}</p>
+<h4 id="构造代码块和构造方法的执行顺序"><a href="#构造代码块和构造方法的执行顺序" class="headerlink" title="构造代码块和构造方法的执行顺序"></a>构造代码块和构造方法的执行顺序</h4><p>父类静态块-自身静态块-父类块-父类构造器-自身块-自身构造器</p>
+<h4 id="接口属性为什么定义为final"><a href="#接口属性为什么定义为final" class="headerlink" title="接口属性为什么定义为final"></a>接口属性为什么定义为final</h4><p>interface中的变量是当作常量来设计的，它不但是final，而且还是public static的，也即interface中的变量一定是public static final的</p>
+<ol>
+<li>接口中的数据对所有实现类只有一份,所以是static<br>2.要使实现类为了向上转型成功,所以必须是final的，这样不用关心你到底是通过社么方式实现实现类的，进而统一了</li>
+</ol>
+<h4 id="类变量有没有默认值，局部变量呢？"><a href="#类变量有没有默认值，局部变量呢？" class="headerlink" title="类变量有没有默认值，局部变量呢？"></a>类变量有没有默认值，局部变量呢？</h4><p>静态成员变量和非静态成员变量jvm都会赋初值，而局部变量不会，如果局部变量没有被初始化，并且在方法中一直没有被使用，则编译和运行都会通过，但是用了，会在编译器报错</p>
+<h4 id="内部类能否调用外部类方法"><a href="#内部类能否调用外部类方法" class="headerlink" title="内部类能否调用外部类方法"></a>内部类能否调用外部类方法</h4><p>内部类可以看成一个外部类的方法或成员属性，直接 方法();<br>或者 外部类名称.this.方法()</p>
+<h4 id="静态方法能否调用非静态方法"><a href="#静态方法能否调用非静态方法" class="headerlink" title="静态方法能否调用非静态方法"></a>静态方法能否调用非静态方法</h4><p>不能直接调用，但可以通过将一个对象的引用传入static方法中，再去调用该对象的non-static方法<br>类的静态成员(变量和方法)属于类本身，在类加载的时候就会分配内存，可以通过类名直接去访问；非静态成员（变量和方法）属于类的对象，所以只有在类的对象产生（创建类的实例）时才会分配内存，然后通过类的对象（实例）去访问。</p>
+<h4 id="sleep和wait的区别"><a href="#sleep和wait的区别" class="headerlink" title="sleep和wait的区别"></a>sleep和wait的区别</h4><blockquote>
+<p>这两个方法来自不同的类分别是，sleep来自Thread类，和wait来自Object类。<br>sleep是Thread的静态类方法，谁调用的谁去睡觉，即使在a线程里调用b的sleep方法，实际上还是a去睡觉，要让b线程睡觉要在b的代码中调用sleep。<br>锁: 最主要是sleep方法没有释放锁，而wait方法释放了锁，使得其他线程可以使用同步控制块或者方法。<br>sleep不出让系统资源；wait是进入线程等待池等待，出让系统资源，其他线程可以占用CPU。一般wait不会加时间限制，因为如果wait线程的运行资源不够，再出来也没用，要等待其他线程调用notify/notifyAll唤醒等待池中的所有线程，才会进入就绪队列等待OS分配系统资源。sleep(milliseconds)可以用时间指定使它自动唤醒过来，如果时间不到只能调用interrupt()强行打断。<br>使用范围：wait，notify和notifyAll只能在同步控制方法或者同步控制块里面使用，而sleep可以在任何地方使用。<br>synchronized(x){<br>      x.notify()<br>     //或者wait()<br>   }</p>
+</blockquote>
+<h4 id="内存溢出和内存泄露的区别"><a href="#内存溢出和内存泄露的区别" class="headerlink" title="内存溢出和内存泄露的区别"></a>内存溢出和内存泄露的区别</h4><p>内存溢出 out of memory，是指程序在申请内存时，没有足够的内存空间供其使用，出现out of memory；比如申请了一个integer,但给它存了long才能存下的数，那就是内存溢出。<br>内存泄露 memory leak，是指程序在申请内存后，无法释放已申请的内存空间，一次内存泄露危害可以忽略，但内存泄露堆积后果很严重，无论多少内存,迟早会被占光。<br>memory leak会最终会导致out of memory！<br>内存溢出就是你要求分配的内存超出了系统能给你的，系统不能满足需求，于是产生溢出</p>
+
       
     </div>
 
@@ -656,7 +696,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/剑指offer/" rel="tag"># 剑指offer</a>
+            <a href="/source/tags/学习效果检验/" rel="tag"># 学习效果检验</a>
           
         </div>
       
@@ -669,8 +709,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/25/offer_15/" rel="next" title="二叉树的镜像">
-                <i class="fa fa-chevron-left"></i> 二叉树的镜像
+              <a href="/2017/09/02/face_3/" rel="next" title="常见面试题之三">
+                <i class="fa fa-chevron-left"></i> 常见面试题之三
               </a>
             
           </div>
@@ -679,8 +719,8 @@ var _hmt = _hmt || [];
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/27/offer_17/" rel="prev" title="包含min函数的栈">
-                包含min函数的栈 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/03/face_5/" rel="prev" title="常见面试题之五">
+                常见面试题之五 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -870,7 +910,7 @@ Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true)
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题描述"><span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思路分析"><span class="nav-text">思路分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#码上有戏"><span class="nav-text">码上有戏</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何去除多表查询产生重复的数据-连接查询"><span class="nav-text">如何去除多表查询产生重复的数据(连接查询)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自连接查询"><span class="nav-text">自连接查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内连接-INNER-JOIN"><span class="nav-text">内连接(INNER JOIN)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jre和jdk的区别"><span class="nav-text">jre和jdk的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#java基本数据类型"><span class="nav-text">java基本数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#能否重写构造方法"><span class="nav-text">能否重写构造方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖注入的底层实现方式"><span class="nav-text">依赖注入的底层实现方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#父类能否调用子类方法"><span class="nav-text">父类能否调用子类方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构造代码块和构造方法的执行顺序"><span class="nav-text">构造代码块和构造方法的执行顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口属性为什么定义为final"><span class="nav-text">接口属性为什么定义为final</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类变量有没有默认值，局部变量呢？"><span class="nav-text">类变量有没有默认值，局部变量呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内部类能否调用外部类方法"><span class="nav-text">内部类能否调用外部类方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态方法能否调用非静态方法"><span class="nav-text">静态方法能否调用非静态方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sleep和wait的区别"><span class="nav-text">sleep和wait的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存溢出和内存泄露的区别"><span class="nav-text">内存溢出和内存泄露的区别</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
