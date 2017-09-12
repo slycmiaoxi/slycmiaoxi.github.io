@@ -5,17 +5,192 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-09-06T15:19:30.000Z</updated>
+  <updated>2017-09-12T14:16:54.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>常见面试题八之javaweb基础</title>
+    <link href="http://www.myzwl.win/2017/09/04/face_8/"/>
+    <id>http://www.myzwl.win/2017/09/04/face_8/</id>
+    <published>2017-09-04T09:48:51.000Z</published>
+    <updated>2017-09-12T14:16:54.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力</p>
+<h4 id="使用spring框架的好处是什么"><a href="#使用spring框架的好处是什么" class="headerlink" title="使用spring框架的好处是什么"></a>使用spring框架的好处是什么</h4><p>轻量级、控制反转、面向切面编程（AOP）、容器（包含并管理应用中对象的生命周期和配置）、mvc框架、事务管理、异常处理</p>
+<h4 id="applicationContext通常的实现是什么"><a href="#applicationContext通常的实现是什么" class="headerlink" title="applicationContext通常的实现是什么"></a>applicationContext通常的实现是什么</h4><p>FileSystemXmlApplicationContext（从一个xml文件中加载beans的定义）<br>classPathXmlApplicationContext：（也是从一个xml文件中加载beans文件，但是在classpath里找bean配置）<br>WebXmlApplicationContext：定义一个web应用的所有bean</p>
+<h4 id="什么是spring的依赖注入？有哪些方法进行依赖注入？"><a href="#什么是spring的依赖注入？有哪些方法进行依赖注入？" class="headerlink" title="什么是spring的依赖注入？有哪些方法进行依赖注入？"></a>什么是spring的依赖注入？有哪些方法进行依赖注入？</h4><p>你不在代码里直接组装你的组件和服务，但是要在配置文件里描述哪些组件和服务，之后一个容器负责把他们组装起来<br>构造器依赖注入、setter方法注入</p>
+<h4 id="解释spring支持的几种bean的作用域"><a href="#解释spring支持的几种bean的作用域" class="headerlink" title="解释spring支持的几种bean的作用域"></a>解释spring支持的几种bean的作用域</h4><blockquote>
+<p>singleton：bean在每个spring ioc容器中只有一个实例<br>prototype： 一个bean的定义可以有多个实例<br>request： 每次http请求都会创建一个bean，改作用域仅在web的spring applicationContext情形下有效<br>session、global-session</p>
+</blockquote>
+<h4 id="解释spring框架中bean的生命周期"><a href="#解释spring框架中bean的生命周期" class="headerlink" title="解释spring框架中bean的生命周期"></a>解释spring框架中bean的生命周期</h4><blockquote>
+<p>1.spring容器从XML文件中读取bean的定义，并实例化bean<br>2.spring根据bean的定义填充所有的属性<br>3.如果bean实现了beanNameAware接口，spring传递bean的ID到setBeanName方法<br>4.如果Bean实现了BeanFactoryAware接口，spring传递beanfactory给setBeanFactory<br>5.如果有任何与bean相关联的beanpostprocessors，spring会在postprocesserBeforeInitalzation（）方法内部调用他们<br>6.如果bean实现了intialzingBean了，调用它的afterPropertySet方法，如果bean声明初始化方法，调用此初始化方法<br>7.如果bean实现了disposableBean，它将调用destroy（）方法</p>
+</blockquote>
+<h4 id="spring中如何注入一个java集合"><a href="#spring中如何注入一个java集合" class="headerlink" title="spring中如何注入一个java集合"></a>spring中如何注入一个java集合</h4><p><list>、<set>,<map>,<props></props></map></set></list></p>
+<h4 id="有哪些不同方式的自动装配"><a href="#有哪些不同方式的自动装配" class="headerlink" title="有哪些不同方式的自动装配"></a>有哪些不同方式的自动装配</h4><p>有五种自动装配的方式</p>
+<blockquote>
+<p>no:默认方式，通过显示设置ref属性来进行装配<br>byName：通过参数名自动装配<br>byType：通过参数类型自动装配<br>constructor ： 类似于bytype，但是要提供构造器参数<br>autodetect：首次尝试construc，其次是bytype</p>
+</blockquote>
+<h4 id="hibernate中sessionFactory是线程安全吗？session是线程安全的吗"><a href="#hibernate中sessionFactory是线程安全吗？session是线程安全的吗" class="headerlink" title="hibernate中sessionFactory是线程安全吗？session是线程安全的吗"></a>hibernate中sessionFactory是线程安全吗？session是线程安全的吗</h4><p>sessionfactory对应一个数据存储的概念，它是线程安全的，可以被多个线程并发访问。一般在启动的时候通过单例模式进行封装便于访问<br>session是一个轻量级的非线程安全的对象，线程间不能共享session，session默认会延迟获取数据库连接</p>
+<h4 id="mybatis中的动态SQL是什么意思"><a href="#mybatis中的动态SQL是什么意思" class="headerlink" title="mybatis中的动态SQL是什么意思"></a>mybatis中的动态SQL是什么意思</h4><p>动态sql主要包括if、choose、when、otherwise、trim、where、set、foreach</p>
+<h4 id="简单说一下mybatis的一级缓存和二级缓存"><a href="#简单说一下mybatis的一级缓存和二级缓存" class="headerlink" title="简单说一下mybatis的一级缓存和二级缓存"></a>简单说一下mybatis的一级缓存和二级缓存</h4><p>mybatis首先去缓存中查询结果集，如果没有则查询数据库，如果有则从从缓存取出返回结果集。mybatis内部缓存使用一个hashmap，key为hashcode+sqlid+sql语句。value从查询出来映射生成java对象<br>mybatis的二级缓存即查询缓存，它的作用域是一个mapper的namespace，即在同一个namespace中查询sql可以从缓存中存取数据，二级缓存是可以跨sqlsession的</p>
+<h4 id="什么是泛型是如何工作？什么是类型擦除？如何工作？"><a href="#什么是泛型是如何工作？什么是类型擦除？如何工作？" class="headerlink" title="什么是泛型是如何工作？什么是类型擦除？如何工作？"></a>什么是泛型是如何工作？什么是类型擦除？如何工作？</h4><blockquote>
+<p>1类型检查：在生成字节码之前提供类型检查<br>2.类型擦除：所有的类型参数都用他们的限定类型替换，包括类、变量和方法<br>3：如果调用类型擦除和多态性发生冲突时，则在调用该方法时插入强制类型转换<br>类型擦除：<br>所有类型参数都用他们的限定类型替换：比如T,Object</p>
+</blockquote>
+<p>如何工作</p>
+<blockquote>
+<p>泛型通过类型擦除来实现的，编译器在编译时期擦除了所有类型相关的信息，所有在运行时不存在任何类型相关的信息</p>
+</blockquote>
+<h4 id="Ajax的实现流程是主怎样的"><a href="#Ajax的实现流程是主怎样的" class="headerlink" title="Ajax的实现流程是主怎样的"></a>Ajax的实现流程是主怎样的</h4><blockquote>
+<p>1创建XMLHttpRequest对象，也就是创建一个异步调用对象<br>2.创建一个新的HTTp请求，并指定该HTTP请求的方法，url及验证信息<br>3设置http请求状态变化的函数<br>4.发送HTTp请求<br>5获取异步调用返回的数据<br>6.使用javascript和DOM实现局部刷新</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己
+    
+    </summary>
+    
+      <category term="面试题" scheme="http://www.myzwl.win/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    
+    
+      <category term="学习效果检验" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E6%A3%80%E9%AA%8C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常见面试题七之javaweb基础</title>
+    <link href="http://www.myzwl.win/2017/09/04/face_7/"/>
+    <id>http://www.myzwl.win/2017/09/04/face_7/</id>
+    <published>2017-09-04T08:48:51.000Z</published>
+    <updated>2017-09-12T07:30:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力</p>
+<h4 id="说一说servlet的生命周期"><a href="#说一说servlet的生命周期" class="headerlink" title="说一说servlet的生命周期"></a>说一说servlet的生命周期</h4><p>包括加载和实例化、初始化、处理请求及服务结束，有javax.servlet.Servlet接口的相关方法实现<br>web容器加载servlet，生命周期开始。通过调用servlet的init（）方法进入初始化，通过service（）方法实现，根据不同的请求调用do<em>*</em>（）方法，服务结束，web容器调用servlet的destroy（）方法</p>
+<h4 id="servlet-API中forward（）与redirect（）区别？"><a href="#servlet-API中forward（）与redirect（）区别？" class="headerlink" title="servlet API中forward（）与redirect（）区别？"></a>servlet API中forward（）与redirect（）区别？</h4><blockquote>
+<p>从地址栏显示来说：<br>forward是服务器请求的地址资源，通过内部转发方式最后只返回一次内容，而redirect是重新转发，也就是需要经过两次请求与响应<br>从数据共享来说<br>forward可以共享request里的数据，而redirect不行，forward是服务器内部的一种操作，而redirect是服务器通知客户端，然后客户端重新发起请求<br>从运用地方<br>forward一般用于用户登录的时候，根据角色转发到相应的模块<br>redirect一般用于用户注销登录时返回主页和跳转到其它的网站<br>从效率上<br>forward高，redirect低</p>
+</blockquote>
+<h4 id="request-getAttribute-和request-getParameter-有什么区别"><a href="#request-getAttribute-和request-getParameter-有什么区别" class="headerlink" title="request.getAttribute()和request.getParameter()有什么区别"></a>request.getAttribute()和request.getParameter()有什么区别</h4><blockquote>
+<p>后者取得通过容器的实现来取得通过类似post，get等方式传入的数据<br>前者返回对象，后者返回字符串</p>
+</blockquote>
+<h4 id="jsp有哪些内置对象？作用分别是什么"><a href="#jsp有哪些内置对象？作用分别是什么" class="headerlink" title="jsp有哪些内置对象？作用分别是什么"></a>jsp有哪些内置对象？作用分别是什么</h4><p>总共有九大内置对象</p>
+<blockquote>
+<p>request、reponse、pageContext、session、application、out、config、page、exception</p>
+</blockquote>
+<h4 id="Http中，get和post方法区别"><a href="#Http中，get和post方法区别" class="headerlink" title="Http中，get和post方法区别"></a>Http中，get和post方法区别</h4><blockquote>
+<p>1.get请求的数据会被浏览器缓存起来，并以明文方式出现在url中，不太安全而post则更安全<br>2get传输数据有大小限制get请求的参数会跟在url后进行传递</p>
+</blockquote>
+<h4 id="jdbc访问数据库的基本步骤是什么？"><a href="#jdbc访问数据库的基本步骤是什么？" class="headerlink" title="jdbc访问数据库的基本步骤是什么？"></a>jdbc访问数据库的基本步骤是什么？</h4><blockquote>
+<p>1.加载驱动<br>2.通过driverManager对象获取连接对象Connection<br>3.通过连接对象获取会话<br>4.通过会话进行数据的增删改查，封装对象<br>5。关闭数据库</p>
+</blockquote>
+<h4 id="什么是幻读"><a href="#什么是幻读" class="headerlink" title="什么是幻读"></a>什么是幻读</h4><p>幻读是指一个事务多次执行一条查询语句返回的确是不同的值。假设一个事务正根据某个条件进行数据库查询，然后另一个事务插入了一行满足这个查询条件的数据，之后这个事务再次执行了这条查询，返回的结果集中包含在刚插入的那条数据</p>
+<h4 id="谈谈你对struts的理解"><a href="#谈谈你对struts的理解" class="headerlink" title="谈谈你对struts的理解"></a>谈谈你对struts的理解</h4><blockquote>
+<p>1.structs本质就是一个servlet，而这个servlet就是ActionServlet或是其子类，即将所有请求都交给servlet去处理，而该servlet参考配置文件将请求分发给不同action处理<br>2.在把请求交给action之前，会将参数封装成一个frombean对象，而该对象只有通过validate方法，才能将对象传递给execute方法，否则将返回一个错误页面，并且这个页面由input属性指定<br>3.action执行完之后要返回显示的结果视图，这个结果一个actionForward来表示，而其是通过在struts配置文件中配置获得返回页面</p>
+</blockquote>
+<h4 id="谈谈你对hibernate的理解"><a href="#谈谈你对hibernate的理解" class="headerlink" title="谈谈你对hibernate的理解"></a>谈谈你对hibernate的理解</h4><blockquote>
+<p>1.使用hibernate的基本流程：配置Configuration对象、产生sessionfactory、创建session对象、启动事务，完成CRUD操作，提交事务，关闭session<br>2.使用hibernate时，先要配置hibernate.cfg.xml文件，其中配置数据库连接信息和方言，还要为每个实体配置相应的hbm.xml文件<br>3.在应用hibernate时，重点要了解session的缓存原理，级联，延迟加载和hql语句</p>
+</blockquote>
+<h4 id="谈谈你对spring的理解"><a href="#谈谈你对spring的理解" class="headerlink" title="谈谈你对spring的理解"></a>谈谈你对spring的理解</h4><blockquote>
+<p>1.spring是实现了工厂模式的工厂类，这个类为beanFactory，通常为其子类applicationContext，spring相当于一个大的工厂类，在其配置文件中通过<bean>元素配置用于创建实例对象名和实例对象的属性<br>2.spring提供了对IOC的良好支持，利用IOC可以很好的实现模块间的解耦<br>3.spring提供了对AOP技术的良好封装，即把系统中很多不相干的类的方法，在这些众多的方法中加入某种系统功能的代码，例如，加入日志，权限判断，异常处理等等，称为AOP<br>4实现AOP采用代理类，在jdk中采用proxy类产生动态代理的方式为某个接口生成实现类，</bean></p>
+</blockquote>
+<h4 id="谈谈struts的优缺点"><a href="#谈谈struts的优缺点" class="headerlink" title="谈谈struts的优缺点"></a>谈谈struts的优缺点</h4><p>优点：</p>
+<blockquote>
+<p>1.实现mvc模式，结构清晰，使开发者只关注业务逻辑的实现<br>2有丰富的tag可以使用，大大提高开发效率<br>3.页面导航使系统的脉络更加清晰<br>4.提供Exception处理机制</p>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<p>1.structs的action是一种thread-safe方式，它仅仅允许一个实例处理所有的请求。容易引起线程安全问题<br>2 测试不方便。struts的每个action都同web层耦合在一起，这样它的测试依赖于web容器，单元测试很难实现<br>3.对servlet的依赖性过强，struts处理action时必须依赖servletRequest和servletRespouse，所以它摆脱不了servlet容器</p>
+</blockquote>
+<h4 id="mybatis和hibernate有什么不同"><a href="#mybatis和hibernate有什么不同" class="headerlink" title="mybatis和hibernate有什么不同"></a>mybatis和hibernate有什么不同</h4><p>相同点：</p>
+<blockquote>
+<p>都屏蔽了jdbc api底层访问细节，编程流程固定，还将sql语句与java代码混杂在一起</p>
+</blockquote>
+<p>不同点</p>
+<blockquote>
+<p>半自动，将sql语句与代码进行分离，提供了将结果集自动封装成为实体对象和对象集合的功能<br>全自动，hibernate，提供hql语句</p>
+</blockquote>
+<h4 id="介绍一下hibernate的二级缓存"><a href="#介绍一下hibernate的二级缓存" class="headerlink" title="介绍一下hibernate的二级缓存"></a>介绍一下hibernate的二级缓存</h4><p>回答思路：1.首先说清楚什么是缓存<br>2.再说有了hibernate的session就是一级缓存，即有了一级缓存，为什么还要有二级缓存<br>3.最后说如何配置hibernate的二级缓存</p>
+<blockquote>
+<p>1.缓存就是把以前从数据库中查询出来和使用过的对象保存在内存中，这个数据结构通常类似于hashmap，当以后要使用某个对象时，先查询缓存中是否有这个对象，如果有则使用缓存中的对象，如果没有则去查询数据库，并将查询出来的对象保存在缓存中，以便下次使用<br>2.hibernate的session就是一级缓存，当想要使用session从数据库中查询出的一个对象时，session也是先从自己内部查看是否存在这个对象，存在则直接返回，不存在则查询数据库<br>由于session代表依次会话，一个session与一个数据库连接的相关性，通常仅用一个事务，用完就关闭，由于一级缓存是线程不安全的，要被多个线程共享，而二级缓存是全局缓存，可以被多个线程和事务共享<br>3二级缓存是独立于hibernate的软件部件，如ehcache</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己
+    
+    </summary>
+    
+      <category term="面试题" scheme="http://www.myzwl.win/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    
+    
+      <category term="学习效果检验" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E6%A3%80%E9%AA%8C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常见面试题六之java基础</title>
+    <link href="http://www.myzwl.win/2017/09/03/face_6/"/>
+    <id>http://www.myzwl.win/2017/09/03/face_6/</id>
+    <published>2017-09-03T08:48:51.000Z</published>
+    <updated>2017-09-07T13:18:22.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力</p>
+<h4 id="说出math的取整函数及其意义"><a href="#说出math的取整函数及其意义" class="headerlink" title="说出math的取整函数及其意义"></a>说出math的取整函数及其意义</h4><p>提供了三种，分别为ceil（向上取整），如math.ceil（11.3）为12；<br>floor（向下取整），如math.floor（11.3），结果为11<br>round（四舍五入），如math.round（11.5）为12</p>
+<h4 id="Overload与Override的区别？Overload的方法是否可以改变返回值的类型？"><a href="#Overload与Override的区别？Overload的方法是否可以改变返回值的类型？" class="headerlink" title="Overload与Override的区别？Overload的方法是否可以改变返回值的类型？"></a>Overload与Override的区别？Overload的方法是否可以改变返回值的类型？</h4><p>Overload是重载，Overrride是覆盖，也就是重写</p>
+<blockquote>
+<p>重载表示方法名相同，但是参数个数或类型不同）<br>重写表示子类中的方法可以与父亲中某个方法的名称和参数完全相同，通过子类创建实例调用父类这个方法，也就是相当于覆盖了父类的这个方法，但是当父类是private时相当于子类增加了一个全新的方法，就不存在覆盖了。并且子类应该比父类抛出更少的异常或者拥有更大的权限<br>如果参数名不同会改变返回类型，但是如果都一样肯定不会改变返回类型</p>
+</blockquote>
+<h4 id="接口与抽象类"><a href="#接口与抽象类" class="headerlink" title="接口与抽象类"></a>接口与抽象类</h4><p>接口是否可继承接口？抽象类是否可实现接口？抽象类是否可继承具体类？抽象类是否可以有静态的main方法？</p>
+<blockquote>
+<p>接口可以继承接口，抽象类可以实现接口，抽象类可以继承具体类，抽象类可以有静态的main方法<br>抽象类和普通类唯一的区别就是不能创建实例对象和允许有abstract方法</p>
+</blockquote>
+<h4 id="java中实现多态的机制是什么？"><a href="#java中实现多态的机制是什么？" class="headerlink" title="java中实现多态的机制是什么？"></a>java中实现多态的机制是什么？</h4><p>靠的是父类或接口定义的引用变量可以指向子类或者具体实现类的实例对象，而程序调用的方法在运行期才动态绑定，就是引用变量所指向的具体实例对象的方法，也就是内存里正在运行的那个对象的方法，而不是引用变量类型中定义的方法</p>
+<h4 id="abstractclass和interface语法上有什么区别"><a href="#abstractclass和interface语法上有什么区别" class="headerlink" title="abstractclass和interface语法上有什么区别"></a>abstractclass和interface语法上有什么区别</h4><blockquote>
+<p>1.抽象类可以有构造方法，接口不能有构造方法<br>2.抽象类中可以有普通成员方法，接口中没有普通成员变量<br>3.抽象类中可以包含非抽象的普通方法，接口中的所有方法必须都是抽象的，不能有非抽象的方法。<br>4.抽象类中的抽象方法访问类型可以是public、protected，但接口中的抽象方法只能是public类型的，并且默认即为public abstract类型<br>5.抽象类中可以包含静态方法，接口中不能包含静态方法<br>6.抽象类和接口类中都可以包含静态成员变量，抽象类中的静态成员变量的访问类型可以是任意，但是接口中定义的变量只能是public static final类型<br>7一个类可以实现多个接口，但只能继承一个抽象类</p>
+</blockquote>
+<h4 id="abstract的method是否可同时是static，是否可同时是native，是否可同时是synchronized？"><a href="#abstract的method是否可同时是static，是否可同时是native，是否可同时是synchronized？" class="headerlink" title="abstract的method是否可同时是static，是否可同时是native，是否可同时是synchronized？"></a>abstract的method是否可同时是static，是否可同时是native，是否可同时是synchronized？</h4><blockquote>
+<p>abstract的method不可以是static的，因为抽象的方法是要被子类实现的，而static与子类扯不上关系<br>native方法表示该方法要用另外一种依赖平台的编程语言实现的，不存在被子类实现的问题，所以，它也不能为抽象的，<br>synchronized应该是作用在一个具体的方法上才有意义，而且，方法上的synchronized同步所使用的同步锁对象是this，而抽象方法无法确定this是什么</p>
+</blockquote>
+<h4 id="下面这条语句一共创建了多少个对象？"><a href="#下面这条语句一共创建了多少个对象？" class="headerlink" title="下面这条语句一共创建了多少个对象？"></a>下面这条语句一共创建了多少个对象？</h4><p>String s=”a”+”b”+”c”+”d”;<br>对于如下代码</p>
+<blockquote>
+<p>String s1=”a”;<br>String s2=s1+”b”;<br>String s3=”a”+”b”;<br>System.out.println(s2=”ab”);<br>System.out.println(s3=”ab”);<br>第一句打印为false，第二句为true，说明编译器对字符串常量直接进行了优化，所以产生了一个对象</p>
+</blockquote>
+<h4 id="java中堆和栈有什么区别？"><a href="#java中堆和栈有什么区别？" class="headerlink" title="java中堆和栈有什么区别？"></a>java中堆和栈有什么区别？</h4><p>jvm中堆和栈属于不同的内存区域，使用目的也不同。栈常用于保存方法和局部变量，而对象总是在堆上分配。栈通常都比堆小，也不会在多个线程之间共享，而堆被整个jvm的所有线程共享</p>
+<h4 id="什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？"><a href="#什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？" class="headerlink" title="什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？"></a>什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？</h4><p>将一个对象变成字节流的形式传出去或者从一个字节流中恢复成一个java对象，例如将一个java对象存储到硬盘或者送给网络上的其他计算机，可以用代码把一个java对象变成某个格式的字节流在传输<br>如果要让java自动帮我们做，就需要实现serializable接口，编译的类才被writeObject方法操作，例如，在web中，如果对象被保存在了session中，tomcat在重启时要把session对象序列化到硬盘</p>
+<h4 id="描述一下JVM加载class文件的原理机制？"><a href="#描述一下JVM加载class文件的原理机制？" class="headerlink" title="描述一下JVM加载class文件的原理机制？"></a>描述一下JVM加载class文件的原理机制？</h4><p>JVM中类的装载是由classLoader和它的子类来实现的，java classLoader是一个重要的运行时系统组件。他负责在运行时查找和装入文件的类</p>
+<h4 id="heap和stack有什么区别？"><a href="#heap和stack有什么区别？" class="headerlink" title="heap和stack有什么区别？"></a>heap和stack有什么区别？</h4><p>java的内存分为两类，栈内存和堆内存</p>
+<blockquote>
+<p>栈内存是指程序进入一个方法时，会为这个方法单独分配一块私有存储空间，用于存储这个方法内部的局部变量，当这个方法结束时，分配给这个方法的栈会释放，这个栈的变量也将随之释放<br>堆是用于存放不在当前方法栈中的那些数据，例如使用new创建的对象放在堆里，所以，它不会随方法结束而消失，局部变量使用final修饰后，放在堆中</p>
+</blockquote>
+<h4 id="GC是是什么？为什么要有GC？"><a href="#GC是是什么？为什么要有GC？" class="headerlink" title="GC是是什么？为什么要有GC？"></a>GC是是什么？为什么要有GC？</h4><p>GC是垃圾收集的意思，内存处理是编程人员容易出现问题的地方，忘记或者错误的内存回收会导致程序或系统的不稳定性甚至崩溃，java提供GC功能可以自动监测对象是否超过作用域从而达到自动回收内存的目的，java语言没有提供释放已分配内存的显示操作方法</p>
+<h4 id="垃圾回收的优点和原理，并考虑2种回收机制"><a href="#垃圾回收的优点和原理，并考虑2种回收机制" class="headerlink" title="垃圾回收的优点和原理，并考虑2种回收机制"></a>垃圾回收的优点和原理，并考虑2种回收机制</h4><p>垃圾回收可以有效的防止内存泄漏，有效的使用可以使用的内存。垃圾回收期是作为一个单独低级别的线程运行，不可预知的情况下对内存中已经死亡或者长时间没有使用的对象进行清除和回收，程序员不能实时调用垃圾回收器对某个对象或所有对象进行垃圾回收<br>回收机制有标记垃圾回收和增量垃圾回收</p>
+<h4 id="垃圾回收器基本原理，可以马上回收内存及有什么办法主动通知JVM进行垃圾回收"><a href="#垃圾回收器基本原理，可以马上回收内存及有什么办法主动通知JVM进行垃圾回收" class="headerlink" title="垃圾回收器基本原理，可以马上回收内存及有什么办法主动通知JVM进行垃圾回收"></a>垃圾回收器基本原理，可以马上回收内存及有什么办法主动通知JVM进行垃圾回收</h4><blockquote>
+<p>对于GC来说，当程序员创建对象时，GC就开始监控这个对象的地址、大小、及使用情况。通常，GC采用有向图的方式记录和管理堆里中的所有对象，通过这种方式确定哪些对象是可达的，哪些对象是不可达的。当GC确定一些对象不可达的，GC有责任回收这些内存空间<br>程序员可以手动执行System.gc（），通知gc运行，但是java语言规范并不保证GC一定会执行</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己
+    
+    </summary>
+    
+      <category term="面试题" scheme="http://www.myzwl.win/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    
+    
+      <category term="学习效果检验" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E6%A3%80%E9%AA%8C/"/>
+    
+  </entry>
   
   <entry>
     <title>常见面试题之五</title>
     <link href="http://www.myzwl.win/2017/09/03/face_5/"/>
     <id>http://www.myzwl.win/2017/09/03/face_5/</id>
     <published>2017-09-03T07:48:51.000Z</published>
-    <updated>2017-09-06T15:19:30.000Z</updated>
+    <updated>2017-09-07T02:37:32.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力</p>
 <h4 id="http协议的请求包含哪些内容"><a href="#http协议的请求包含哪些内容" class="headerlink" title="http协议的请求包含哪些内容"></a>http协议的请求包含哪些内容</h4><p>HTTP请求是指从客户端到服务器端的请求消息。包括：消息首行中，对资源的请求方法、资源的标识符及使用的协议。从客户端到服务器端的请求消息包括，消息首行中，对资源的请求方法、资源的标识符及使用的协议。<br>HTTP请求信息由3部分组成：<br>请求方法URI协议/版本<br>请求头(Request Header)<br>请求正文<br>如下</p>
@@ -61,6 +236,18 @@
 <p>多线程就是多个工作让CPU交互处理。java用Runnalbe接口实现或者继承Thread类就可以, 线程的生命周期是 创建》就绪（runnable）==》运行（running）==》死亡（dead） 在运行时也会有堵塞（blocked）的情况<br>线程是交互执行的，所以如果发现了一个线程一直在一个资源里执行，那么其他线程不能使用这个资源，就会一直停在那里，也就是死锁，解决线程安全的办法一般是让同一时刻，只能让一个线程访问该资源。也就是同步。 java实现同步的方法是用synchronized和Lock关键字。<br>线程池就相当于操作系统的缓冲区，把程序启动的若干线程存放在线程池中，等到程序收到请求了就唤醒某一个线程。 作用就是为了性能，让程序更能节省效率。</p>
 </blockquote>
 <h4 id="选择算法要考虑哪些因素，说说你熟悉的算法思想"><a href="#选择算法要考虑哪些因素，说说你熟悉的算法思想" class="headerlink" title="选择算法要考虑哪些因素，说说你熟悉的算法思想"></a>选择算法要考虑哪些因素，说说你熟悉的算法思想</h4><p>因素：时间、空间复杂度、稳定性、要操作数据的特点······<br>思想：递归、迭代、分治······</p>
+<h4 id="一个”-java”源文件中是否可以包括多个类（不是内部类）？有什么限制？"><a href="#一个”-java”源文件中是否可以包括多个类（不是内部类）？有什么限制？" class="headerlink" title="一个”.java”源文件中是否可以包括多个类（不是内部类）？有什么限制？"></a>一个”.java”源文件中是否可以包括多个类（不是内部类）？有什么限制？</h4><p>可以有多个类，但是只能有一个public的类，并且public的类名必须与文件名相一致</p>
+<h4 id="说说-amp-与-amp-amp-的区别"><a href="#说说-amp-与-amp-amp-的区别" class="headerlink" title="说说&amp;与&amp;&amp;的区别"></a>说说&amp;与&amp;&amp;的区别</h4><blockquote>
+<p>&amp;与&amp;&amp;都可以用作逻辑与（and）的运算符<br>&amp;&amp;具有短路的功能，即如果第一个表达式为false，则不再计算第二个表达式。而&amp;则会同时计算<br>&amp;可以作为位运算符，当&amp;两边表达式不是boolean时，&amp;表示按位与操作，通常使用Ox0f来与一个整数&amp;运算，来取该整数的最低4个bit位</p>
+</blockquote>
+<h4 id="switch语句能否作用在byte上，能否作用在long上，能否作用在String上？"><a href="#switch语句能否作用在byte上，能否作用在long上，能否作用在String上？" class="headerlink" title="switch语句能否作用在byte上，能否作用在long上，能否作用在String上？"></a>switch语句能否作用在byte上，能否作用在long上，能否作用在String上？</h4><blockquote>
+<p>在switch（e）中，e只能是一个整数表达式或者枚举常量，整数表达式可以是int基本类型或者Integer包装类型，而byte、short、char都可以隐含转换成int，所以可以，但long和String不符合</p>
+</blockquote>
+<h4 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h4><p>short s=1;s=s+1;有什么错？<br>等号左边s是short类型，而等号右边是int类型，需要强制转换否则报错，<br>而short s=1;s+=1；不会报错<br>因为+=是java语言规定的运算符，java编译器会对它进行特殊处理，因此可以正确处理</p>
+<h4 id="用最有效的方法算出2乘以8等于几？"><a href="#用最有效的方法算出2乘以8等于几？" class="headerlink" title="用最有效的方法算出2乘以8等于几？"></a>用最有效的方法算出2乘以8等于几？</h4><blockquote>
+<p>2&lt;&lt;3（左移三位），将一个数左移n位相当于乘以2的n次方，而位运算cpu是直接支持的，效率最高</p>
+</blockquote>
+<h4 id="使用final关键字修饰一个变量时，是引用不能变，还是引用的对象不能变？"><a href="#使用final关键字修饰一个变量时，是引用不能变，还是引用的对象不能变？" class="headerlink" title="使用final关键字修饰一个变量时，是引用不能变，还是引用的对象不能变？"></a>使用final关键字修饰一个变量时，是引用不能变，还是引用的对象不能变？</h4><p>当使用final关键字修饰一个变量时，是指引用变量不能变，引用变量所指向的对象中的内容还是可以改变的，例如<br>s xx=new s(“yy”),xx=new s(“”)(编译器会报错)，但是xx.add(“zz”)可以通过编译</p>
 ]]></content>
     
     <summary type="html">
@@ -876,200 +1063,6 @@
     
       &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;直接插入在本质上改良了之前的冒泡和选择排序，而希尔排序更是超越O（n^2)的传统排序的改良算法&lt;/p&gt;
 &lt;h4 id=&quot;直接插入排序&quot;&gt;&lt;a
-    
-    </summary>
-    
-      <category term="算法" scheme="http://www.myzwl.win/categories/%E7%AE%97%E6%B3%95/"/>
-    
-    
-      <category term="算法" scheme="http://www.myzwl.win/source/tags/%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>常用集合类简单总结</title>
-    <link href="http://www.myzwl.win/2017/07/21/jihes_1/"/>
-    <id>http://www.myzwl.win/2017/07/21/jihes_1/</id>
-    <published>2017-07-21T05:48:51.000Z</published>
-    <updated>2017-08-08T12:17:58.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在没有集合之前我们都是直接用数组存放对象，但是这样操作会很不方便，于是利用数据结构封装了一些列集合，而集合中不存放输几局的基本类型，只存放对象的引用，如图（部分集合源码分析在之前的总结中已经简单研究过）<br><img src="/images/imgs4/1.png" alt="Alt text"><br>java集合主要分为以下三种类型：<br>Set(集)：集合中的对象不按特定方式排序，且没有重复对象。它的有些实现类能对集合中的对象按照特地方式排序。<br>List(列表)：集合中的对象按照索引位置排序，可以有重复对象，允许使用索引检索对象。<br>Map(映射)：集合中的每一个元素都包含一对键对象和值对象（key-value），集合中的键对象是不能重复的,它的一些实现类能对集合中的键对象进行排序。</p>
-<p>注意这里的不能重复与比较hashcode和equals有关</p>
-<h4 id="集合底层概述"><a href="#集合底层概述" class="headerlink" title="集合底层概述"></a>集合底层概述</h4><p><strong>Collection接口</strong><br>Collection接口是Set、List、Queue接口的父接口，提供了多数集合常用的方法声明，包括 add()、remove()、contains() 、size() 、iterator() 等</p>
-<p><strong>List接口</strong><br>它的特点是有序可重复，使用此接口能够精确的控制每个元素插入的位置用户能够使用索引来访问List中的元素并且允许有可重复的元素</p>
-<p><strong>ArrayList</strong><br>底层实现是一个动态的数组，查询快，增删慢，线程不安全，效率高</p>
-<p><strong>LinkedList</strong><br>底层实现是一个双向循环链表，查询慢，增删快，线程不安全，效率较高</p>
-<p><strong>Vector</strong><br>是ArrlyList的线程安全版，底层同它基本一致，但是效率低，现在基本很少用</p>
-<p><strong>Set接口</strong><br>它的特点就是唯一性并且不允许出现重复元素和是无序的</p>
-<p><strong>hashSet</strong><br>底层是基于哈希表实现的，而其核心就是先比较hashCode（）值是否相同（相当于索引），然后在用equals比较是否相同，从而确定元素是否重复，所以当不希望集合中有重复值，并且不关心元素之间的顺序时可以使用此类</p>
-<p><strong>LinkedHashSet</strong><br>底层实现是使用链表和哈希表，它由链表保证元素有序，哈希表保证元素唯一，因此当不希望集合中有重复值，并且希望按照元素的插入顺序进行迭代遍历时可采用此类</p>
-<p><strong>TreeSet</strong><br>底层实现是红黑树，也就是一种平衡AVL树，通过比较返回值是否是0来保证元素唯一性，并且通过自然排序来保证元素的排序（自然排序也就是让元素所属的类实现Comparable接口，比如abc排在abd前面，总之就是和插入顺序无关，只和元素本身的内容和特质有关）</p>
-<p><strong>Queue接口</strong><br>它的特点就是队列，即用于保存将要执行的任务列表</p>
-<p><strong>LinkedList</strong><br>实现了该接口，可以实现先进先出的队列</p>
-<p><strong>PriorityQueue</strong><br>底层采用某种排序的单链表存储队列元素，用来创建自然排序的优先级队列</p>
-<p><strong>Map接口</strong><br>Map关心的是唯一的标识符，也就是将唯一的键映射到某个元素，以键值对形式存储，键唯一，值可重复</p>
-<p><strong>HashMap</strong><br>底层实现是基于哈希表依赖于hashCode（）和equals（）方法，线程不安全，允许key和value为NULL，效率高</p>
-<p><strong>Hashtable</strong><br>HashMap的线程安全版，效率低，不允许key和value为NULL</p>
-<p><strong>LinkedHashMap</strong><br>底层是由链表和哈希表组成，链表保证元素有序，哈希表保证元素唯一，所以当需要键值对，并且关心插入顺序时可采用它</p>
-<p><strong>TreeMap</strong><br>底层是由红黑树实现，当需要键值对，并关心元素的自然排序时可采用它</p>
-<p><strong>Collections</strong><br>内置了一些常见的集合算法，像排序，查找算法等</p>
-<h4 id="如何选择哪种集合"><a href="#如何选择哪种集合" class="headerlink" title="如何选择哪种集合"></a>如何选择哪种集合</h4><p>1 首先看是否是键值对形式<br>  是的话就选择Map<br>   然后再看是否需要排序：<br>     是的话就是TreeMap<br>     不是的话就是HashMap<br>     一般情况下都使用HashMap<br>   不是键值对的话就选择Collection<br>     再看元素是否唯一：<br>       是的话就选set<br>         元素是否需要排序<br>           是的话就选TreeSet<br>           反之选择HashSet<br>          一般情况选择HashSet<br>        不是元素唯一就选List<br>          再看是否是否需要线程安全：<br>           是的话就选Vector<br>            不是的话就选择ArrayList或者LinkedList<br>             增删选择：LinkedList<br>              查询选择ArrayList<br>              一般情况下都选择ArrayList</p>
-<h4 id="集合常见方法"><a href="#集合常见方法" class="headerlink" title="集合常见方法"></a>集合常见方法</h4><p><strong>Collection的常见方法</strong></p>
-<blockquote>
-<p>1，添加。<br>    boolean add(Object obj):<br>    boolean addAll(Collection coll):<br>2，删除。<br>    boolean remove(object obj):<br>    boolean removeAll(Collection coll);<br>    void clear();<br>3，判断：<br>    boolean contains(object obj):<br>    boolean containsAll(Colllection coll);<br>    boolean isEmpty():判断集合中是否有元素。<br>4，获取：<br>    int size():<br>    Iterator iterator():取出元素的方式：迭代器。<br> 5，其他：<br>    boolean retainAll(Collection coll);取交集。<br>    Object[] toArray():将集合转成数组。 </p>
-</blockquote>
-<p><strong>Map的常见方法</strong></p>
-<blockquote>
-<p> 1，添加。<br>          value put(key,value):返回前一个和key关联的值，如果没有返回null.<br> 2，删除。<br>            void  clear():清空map集合。<br>            value remove(key):根据指定的key翻出这个键值对。<br> 3，判断。<br>                boolean containsKey(key):<br>                boolean containsValue(value):<br>                boolean isEmpty();<br> 4，获取。<br>                value get(key):通过键获取值，如果没有该键返回null。                        当然可以通过返回null，来判断是否包含指定键。<br>                int size(): 获取键值对的个数。<br>5.特殊方法： Collection<v> values() 包含的值的 Collection 视图。<br>             Set<map.entry<k,v>&gt; entrySet()方法：返回一个set集合，里面装的是Map.Entry接口类型的键值对象</map.entry<k,v></v></p>
-</blockquote>
-<p><strong>Map遍历方法</strong></p>
-<blockquote>
-<p>  第一种遍历的方法<br>  Set<k> keySet()：返回键的set集合<br> 取出map中的所有元素。<br> 原理，通过keySet方法获取map中所有的键所在的Set集合，在通过Set的迭代器获取到每一个键，<br>  在对每一个键通过map集合的get方法获取其对应的值即可。<br>    Set<integer> keySet = map.keySet();<br>        System.out.println(keySet);//键的set集合<br>        Iterator<integer> it = keySet.iterator();//迭代keySet<br>        while(it.hasNext()){<br>            Integer key = it.next();<br>            String value = map.get(key);<br>            System.out.println(key+”:”+value);<br>        }</integer></integer></k></p>
-<p>第二种遍历map的方式：通过看API:Set<map.entry<k,v>&gt; entrySet()：Map.Entry<k,v>接口类型，<br>  里面有K getKey() 返回与此项对应的键。 V getValue()  返回与此项对应的值。<br>  Set<map.entry<integer, string="">&gt;entrySet = map.entrySet();<br>        System.out.println(entrySet);//键值对对象<br>        Iterator<map.entry<integer, string="">&gt;it = entrySet.iterator();<br>        while(it.hasNext()){<br>            Map.Entry<integer, string=""> entryMap = it.next();<br>            Integer key = entryMap.getKey();//获取键<br>            String value = entryMap.getValue();//获取值<br>            System.out.println(key+”:”+value);<br>  }</integer,></map.entry<integer,></map.entry<integer,></k,v></map.entry<k,v></p>
-</blockquote>
-<h4 id="collections常用方法"><a href="#collections常用方法" class="headerlink" title="collections常用方法"></a>collections常用方法</h4><p>由于该集合工具类方法太多，只总结出部分<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">sort</span><span class="params">(Collection)</span></span>：对集合进行自然排序</div><div class="line"><span class="function"><span class="title">reverse</span><span class="params">()</span></span>：反转集合中元素的顺序</div><div class="line"><span class="function"><span class="title">shuffle</span><span class="params">(Collection)</span></span>：对集合进行随机排序</div><div class="line"><span class="function"><span class="title">fill</span><span class="params">(List list,Object o)</span></span>：用对象o替换集合list中的所有元素</div><div class="line"><span class="function"><span class="title">copy</span><span class="params">(List m,List n)</span></span>：将集合n中的元素全部复制到m中,并且覆盖相应索引的元素</div><div class="line"><span class="function"><span class="title">min</span><span class="params">(Collection)</span></span>,min(Collection,Comparator)：前者采用Collection内含自然比较法，后者采用Comparator进行比较</div><div class="line"><span class="function"><span class="title">max</span><span class="params">(Collection)</span></span>,max(Collection,Comparator)：同上</div><div class="line"><span class="function"><span class="title">indexOfSubList</span><span class="params">(List list,List subList)</span></span>：查找subList在list中首次出现位置的索引</div><div class="line"><span class="function"><span class="title">swap</span><span class="params">(List list,int i,int j)</span></span>：交换集合中指定元素索引的位置</div><div class="line">.binarySearch(Collection,Object)：查找指定集合中的元素，返回所查找元素的索引</div><div class="line"><span class="function"><span class="title">replaceAll</span><span class="params">(List list,Object old,Object new)</span></span>：替换批定元素为某元素,若要替换的值存在刚返回true,反之返回false</div></pre></td></tr></table></figure></p>
-<p>最后不得不说集合容器是在太复杂了，它包装了许许多多的数据结构和算法，也正是因为如此，才大大简化了难度，但同时也说明了数据结构与算法的重要性，只有我们真正理解了算法和数据结构，才能更好的驾驭集合类</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在没有集合之前我们都是直接用数组存放对象，但是这样操作会很不方便，于是利用数据结构封装了一些列集合，而集合中不存放输几局的基本类型，只存放对
-    
-    </summary>
-    
-      <category term="java基础" scheme="http://www.myzwl.win/categories/java%E5%9F%BA%E7%A1%80/"/>
-    
-    
-      <category term="java基础" scheme="http://www.myzwl.win/source/tags/java%E5%9F%BA%E7%A1%80/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>String与StringBuffer常用方法总结</title>
-    <link href="http://www.myzwl.win/2017/07/20/StringBuf_1/"/>
-    <id>http://www.myzwl.win/2017/07/20/StringBuf_1/</id>
-    <published>2017-07-20T05:48:51.000Z</published>
-    <updated>2017-08-07T06:24:50.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>String与StringBuffer的区别，简单地说，就是一个变量和常量的关系。StringBuffer对象的内容可以修改；而String对象一旦产生后就不可以被修改，重新赋值其实是两个对象。</p>
-<h4 id="String常用方法"><a href="#String常用方法" class="headerlink" title="String常用方法"></a>String常用方法</h4><p>在之前的数据结构与算法中已经模拟了部分String常用的方法</p>
-<blockquote>
-<p>public final class Stringextends Objectimplements Serializable, Comparable<string>, CharSequence</string></p>
-</blockquote>
-<p><strong>构造方法</strong></p>
-<blockquote>
-<p>public String()：初始化一个新创建的 String 对象，使其表示一个空字符序列。注意，由于 String 是不可变的，所以无需使用此构造方法。<br> public String(String original）：创建一个String对象为original的拷贝<br> public String(char[] value)：用一个字符数组创建一个String对象<br> public String(char[] value, int offset,int count)：用一个字符数组从offset项开始的count个字符序列创建一个String对象</p>
-</blockquote>
-<p><strong>普通方法</strong></p>
-<blockquote>
-<p>public char charAt(int index):返回字符串中第index个字符<br> public int length():返回字符串的长度<br> public int indexOf(String str):返回字符串中出现str的第一个位置<br> public int indexOf(String str,int fromIndex):返回字符串中从fromIndex开始起出现str的第一个位置<br> public boolean equalsIgnoreCase(String another):比较字符串与another是否一样（忽略大小写）<br> public String replace(char oldChar,char newChar):在字符串中用newChar替换oldChar<br> public boolean startWith(String prefix):判断字符串是否以prefix字符串开头<br> public boolean endsWith(String suffix):判断字符串是否以suffix为结尾<br> public String toLowerCase():返回一个字符串为该字符串的小写形式<br> public String substring(int beginIndex):返回该字符串从beginIndex开始到结尾的字符串<br> public String substring(int beginIndex,int endIndex):返回该字符串从beginIndex开始到endIndex结尾的字符串<br> public String trim():返回将该字符串去掉开头和结尾空格后的字符串</p>
-</blockquote>
-<p><strong>静态重载方法</strong></p>
-<blockquote>
-<p>public static String valueOf(..):将基本类型数据转化为字符串，如<br> public static String valueOf(double d)</p>
-</blockquote>
-<p><strong>其它常用方法</strong></p>
-<blockquote>
-<p>public String[] split(String regix):可以将一个字符串按照指定的分隔符分隔，返回分隔后的字符串数组<br>public String concat(String str)//将参数中的字符串str连接到当前字符串的后面，效果等价于”+”；<br>contains(String str)//判断参数s是否被包含在字符串中，并返回一个布尔类型的值。<br>字符串转换为基本类型<br>java.lang包中有Byte、Short、Integer、Float、Double类的调用方法：<br>1)public static byte parseByte(String s)<br>2)public static short parseShort(String s)<br>3)public static short parseInt(String s)<br>4)public static long parseLong(String s)<br>5)public static float parseFloat(String s)<br>6)public static double parseDouble(String s)</p>
-</blockquote>
-<p><strong>字符串比较</strong></p>
-<blockquote>
-<p>1)public int compareTo(String anotherString)//该方法是对字符串内容按字典顺序进行大小比较，通过返回的整数值指明当前字符串与参数字符串的大小关系。若当前对象比参数大则返回正整数，反之返回负整数，相等返回0。<br>2)public int compareToIgnore(String anotherString)//与compareTo方法相似，但忽略大小写。<br>3)public boolean equals(Object anotherObject)//比较当前字符串和参数字符串，在两个字符串相等的时候返回true，否则返回false。<br>4)public boolean equalsIgnoreCase(String anotherString)//与equals方法相似，但忽略大小写。</p>
-</blockquote>
-<h4 id="StringBuffer常用方法"><a href="#StringBuffer常用方法" class="headerlink" title="StringBuffer常用方法"></a>StringBuffer常用方法</h4><p><strong>构造方法</strong></p>
-<blockquote>
-<p>StringBuffer() ：构造一个没有任何字符的StringBuffer类。<br>StringBuffer(int length) ：：构造一个没有任何字符的StringBuffer类，并且，其长度为length。<br>StringBuffer(String str) ：以str为初始值构造一个StringBuffer类。</p>
-</blockquote>
-<p><strong>append方法</strong><br>为该对象添加字符序列，返回添加后的该对象引用，同时是调用了toString方法转化为字符串</p>
-<blockquote>
-<ol>
-<li>StringBuffer append(boolean b)</li>
-<li>StringBuffer append(char c)</li>
-<li>StringBuffer append(char[] str)</li>
-<li>StringBuffer append(char[] str, int offset, int len)</li>
-<li>StringBuffer append(double d)</li>
-<li>StringBuffer append(float f)</li>
-<li>StringBuffer append(int i)</li>
-<li>StringBuffer append(long l)</li>
-<li>StringBuffer append(Object obj)</li>
-<li>StringBuffer append(String str)</li>
-<li>StringBuffer append(StringBuffer sb)</li>
-</ol>
-</blockquote>
-<p><strong>其他方法</strong></p>
-<blockquote>
-<p>12.int capacity() ：返回当前StringBuffer对象（字符串缓冲区）的总空间，而非字符号串的长度。</p>
-<ol>
-<li>char charAt(int index) ：在当前StringBuffer对象中取索引号为index的字符。第一个字符的索引为“0”</li>
-<li>StringBuffer delete(int start, int end) ：删除当前StringBuffer对象中以索引号start开始，到end结束的子串。</li>
-<li>StringBuffer deleteCharAt(int index) ：删除当前StringBuffer对象中索引号为index的字符。</li>
-<li>void ensureCapacity(int minimumCapacity) ：重新设置字符号串缓冲区的总空间。如果minimumCapacity大于当前的总空间，则新的空间被设置：一种结果是minimumCapacity；另一种结果是{“老空间”乘2加2}<br>17.void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) ：从当前StringBuffer对象的索引号srcBegin开始，到srcEnd结束的子串，赋值到字符数组dst中，并且从dst的索引号dstBegin开始</li>
-<li>int indexOf(String str) ：返回当前StringBuffer对象中，第一个满足str子串的位置。</li>
-<li>int indexOf(String str, int fromIndex) ：从当前StringBuffer对象的fromIndex开始查找，返回第一个满足str子串的位置。</li>
-<li>StringBuffer insert(int offset, boolean b)</li>
-<li>StringBuffer insert(int offset, char c)</li>
-<li>StringBuffer insert(int offset, char[] str)</li>
-<li>StringBuffer insert(int index, char[] str, int offset, int len)</li>
-<li>StringBuffer insert(int offset, double d)</li>
-<li>StringBuffer insert(int offset, float f)</li>
-<li>StringBuffer insert(int offset, int i)</li>
-<li>StringBuffer insert(int offset, long l)</li>
-<li>StringBuffer insert(int offset, Object obj)</li>
-<li>StringBuffer insert(int offset, String str)</li>
-<li>int lastIndexOf(String str) ：返回当前StringBuffer对象中，最后一个满足str子串的位置。</li>
-<li>int lastIndexOf(String str, int fromIndex) ：从当前StringBuffer对象的fromIndex开始查找，返回最后一个满足str子串的位置。</li>
-<li>int length() ：返回当前StringBuffer对象（字符缓冲区）中，字符串的长度。注意：此方法与capacity() 不同。</li>
-<li>StringBuffer replace(int start, int end, String str) ：替换当前StringBuffer对象的字符串。从start开始，到end结束的位置替换成str。</li>
-<li>StringBuffer reverse() ：将字符串翻转。</li>
-<li>void setCharAt(int index, char ch) ：设置索引号index的字符为ch。</li>
-<li>void setLength(int newLength) ：重新设置字符串缓冲区中字符串的长度，如果newLength小于当前的字符串长度，将截去多余的字符。</li>
-<li>String substring(int start) ：取当前StringBuffer对象中，从start开始到结尾的子串。</li>
-<li>String substring(int start, int end) ：取当前StringBuffer对象中，从start开始到end的子串。</li>
-<li>String toString() ：将当前StringBuffer对象转换成String对象。</li>
-</ol>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;String与StringBuffer的区别，简单地说，就是一个变量和常量的关系。StringBuffer对象的内容可以修改；而String
-    
-    </summary>
-    
-      <category term="java基础" scheme="http://www.myzwl.win/categories/java%E5%9F%BA%E7%A1%80/"/>
-    
-    
-      <category term="java基础" scheme="http://www.myzwl.win/source/tags/java%E5%9F%BA%E7%A1%80/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Brute-Force与KMP算法</title>
-    <link href="http://www.myzwl.win/2017/07/19/suanfa_2/"/>
-    <id>http://www.myzwl.win/2017/07/19/suanfa_2/</id>
-    <published>2017-07-19T05:48:51.000Z</published>
-    <updated>2017-08-07T05:25:30.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>设有两个串：目标串target和模式串pattern，在目标串中查找与模式串pattern相等得一个子串并确定孩子串位置的操作称为串的模式匹配。而匹配的结果有两种，如果target中存在等于pattern的子串，则匹配成功，给出孩子串在target中的位置，否则匹配失败</p>
-<h4 id="Brute-Force算法"><a href="#Brute-Force算法" class="headerlink" title="Brute-Force算法"></a>Brute-Force算法</h4><p><img src="/images/imgs4/16.gif" alt="Alt text"><br>算法描述：如图，该算法的核心就是在target中从begin位置，这里begin=0开始，比较ti与pi是否相等，如果有一个不相等，则begin开始从之前的下一个字符开始匹配，同时pattern中退回到第一个字符，在依次比较，知道存在相等字符，返回相应位置，可以发现该算法是一个回溯算法。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">//模式匹配，pattern为待匹配子串，begin为起始匹配位置</div><div class="line">public int indexOf(MyString pattern,int begin)&#123;</div><div class="line">	//待匹配子串不为空并且长度大于0和目标串大于等于带匹配子串</div><div class="line">	if(pattern!=null&amp;&amp;pattern.length()&gt;0&amp;&amp;this.length()&gt;=pattern.length())</div><div class="line">	&#123;</div><div class="line">		int i=begin,j=0; //记录i为开始位置，j为待匹配子串计数器</div><div class="line">		while(i&gt;this.length())&#123; //目标串全部匹配完，退出</div><div class="line">			if(this.charAt(i)==pattern.charAt(j))//如果，有字符相等</div><div class="line">			&#123;</div><div class="line">				i++; //计数器都加1，并且开始比较后一个字符</div><div class="line">				j++;</div><div class="line">			&#125;</div><div class="line">			else&#123;</div><div class="line">				i=i+j+1; //i回溯，变成上一个目标串匹配字符的下一个字符</div><div class="line">				j=0;    //待匹配字符，回溯为0</div><div class="line">			&#125;</div><div class="line">			if(j==pattern.length())</div><div class="line">				return i-j; //返回匹配到的位置</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	           return -1; //匹配失败</div><div class="line">&#125;</div><div class="line"></div><div class="line">//返回当前目标串的首次位置，从第一个位置开始</div><div class="line">public int indexOf(MyString pattern)&#123;</div><div class="line">	return this.indexOf(pattern, 0);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h4 id="模式匹配应用"><a href="#模式匹配应用" class="headerlink" title="模式匹配应用"></a>模式匹配应用</h4><p>一般我们要替换或者删除相关子串时，首先就是查找是否存在此串，然后在进行相关操作<br>首先是替换操作<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">//返回当前串替换之后的串</div><div class="line">public MyString replaceFirst(MyString pattern,MyString replacement)&#123;</div><div class="line">	int i=this.indexOf(pattern, 0);//找到要替换串的下标</div><div class="line">	 if(i==-1)</div><div class="line">		 return this; //不存在要替换的部分，返回当前串</div><div class="line">	 //连接三个串</div><div class="line">	 return this.substring(0, i).concat(replacement).concat(this.substring(i+pattern.length()));		 </div><div class="line">&#125;</div><div class="line"></div><div class="line">public MyString replaceAll(MyString pattern,MyString replacement)&#123;</div><div class="line">	MyString temp=new MyString(this);</div><div class="line">	 int i=this.indexOf(pattern, 0);</div><div class="line">	  while(1!=-1)</div><div class="line">	  &#123;</div><div class="line">		  temp=temp.substring(0, i).concat(replacement).concat(this.substring(i+pattern.length()));</div><div class="line">		  i=temp.indexOf(pattern, i+replacement.length());//从下一个字符开始继续寻找匹配</div><div class="line">	  &#125;</div><div class="line">	  return temp;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>注意，String是不变类型，也就是一个新的字符串是在堆栈上又开辟了一个新空间，不是原来的对象<br>下面是删除操作<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public MyString deleteFirst(MyString target,MyString pattern)&#123;</div><div class="line">	int i=target.indexOf(pattern);</div><div class="line">	 if(i==-1)</div><div class="line">		 return target;</div><div class="line">	  return target.substring(0, i)+target.substring(i+pattern.length());</div><div class="line">&#125;</div><div class="line"></div><div class="line">public MyString deleteAll(MyString target,MyString pattern)&#123;</div><div class="line">	int i=target.indexOf(pattern);</div><div class="line">	 while(i!=-1)</div><div class="line">	 &#123;</div><div class="line">		 target=target.substring(0, i)+target.substring(i+pattern.length());</div><div class="line">		  i=target.indexOf(pattern, i);</div><div class="line">	 &#125;</div><div class="line">	 return target;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>核心思想就是先模式匹配，然后在构造一个新的串</p>
-<p>最后分析一下该模式匹配算法，假设模式串长度为m，可以发现他的时间复杂度为O(m);并且匹配中存在很多重复，所以算法效率是很低的</p>
-<h4 id="KMP算法"><a href="#KMP算法" class="headerlink" title="KMP算法"></a>KMP算法</h4><p>由之前的算法我们知道，它存在重复匹配，如之前的pattern=abc，此时p的各个字符都不相等，而在匹配时target=ababdabcd中，第一次从a匹配，到第三位不等，开始从第二位匹配，但由于第一次已经知道pi各位不等，所以第二位就不用匹配了，他肯定与第一位不等，所以可省略，而这恰恰是KMP算法的核心</p>
-<p><strong>next数组</strong><br>next数组的作用就是研究pattern串，依次确定如果不匹配下一次target串从哪一位开始匹配。并且这样定义next数组</p>
-<blockquote>
-<p>next[J]=-1，当j=0；<br>next[j]=k 当0&lt;=k&lt;f时且使p_0..p_k-1=p_j-k..p_j-1的最大整数</p>
-</blockquote>
-<p><img src="/images/imgs4/17.gif" alt="Alt text"><br>如图：pattern=”abcabc”，当j=0时，next[0]=-1；当j=1,2,3时，”a”,”ab”,”abc”都没有相同前缀子串和后缀子串next[j]=k=0；当j=4时，”abca”钟相同的前缀子串和后缀子串是”a”，所以k=1；当j=5时，为”ab”，所以k=2，依次类推<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">private int[] getNext(String pattern)&#123;  //求next</div><div class="line">		int j=0,k=-1;                   //初始化j，k，next</div><div class="line">		int[] next=new int[pattern.length()];</div><div class="line">		next[0]=-1;</div><div class="line">		while(j&lt;pattern.length()-1)    //当j遍历完pattern字符串，结束</div><div class="line">		&#123;</div><div class="line">			if(k==-1||pattern.charAt(j)==pattern.charAt(k)) //k为初始值或者pattern的后缀字符与前缀相同</div><div class="line">			&#123; </div><div class="line">				j++;           //j后移，k加一，同时第j个字符的next值为k</div><div class="line">				k++;</div><div class="line">				next[j]=k;</div><div class="line">			&#125; </div><div class="line">			else              //否则，k重新回到前缀值，继续比较</div><div class="line">				k=next[k];</div><div class="line">			return next;</div><div class="line">		&#125;</div><div class="line">		return next;</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>下面是KMP的算法<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public int indexOf(String target,String pattern,int begin)&#123;</div><div class="line">		if(pattern!=null&amp;&amp;pattern.length()&gt;0&amp;&amp;this.length()&gt;=pattern.length())</div><div class="line">		&#123;</div><div class="line">		int i=begin,j=0;</div><div class="line">		int[] next=getNext(pattern); //求得next数组，这样就可以避免一些重复比较了</div><div class="line">		while(i&lt;target.length())&#123;</div><div class="line">			if(j==-1||target.charAt(i)==pattern.charAt(j))</div><div class="line">			&#123;</div><div class="line">				i++;</div><div class="line">				j++;</div><div class="line">			&#125;</div><div class="line">			else</div><div class="line">				j=next[j]; //退回到next[J]个字符开始比较</div><div class="line">			if(j==pattern.length())</div><div class="line">				return i-j;</div><div class="line">		&#125;</div><div class="line">		&#125;</div><div class="line">		return -1;</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<h4 id="改进的KMP算法"><a href="#改进的KMP算法" class="headerlink" title="改进的KMP算法"></a>改进的KMP算法</h4><p>当target=”aaaabcde”时，pattern=”aaaax”时，发现，a重复了，按照之前的算法，当i=5时，有重复比较四个a，所以可改进<br><img src="/images/imgs4/18.gif" alt="Alt text"><br>如图：改进的nextval是在next数组基础上，这里约定的next初始值为-1，所以如j=3，与next[j]+1比较，如果相等，则其值等于next[j]+1的next值，否则，保持原next值不变<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">private int[] getNext(String pattern)&#123;</div><div class="line">		int j=0,k=-1;</div><div class="line">		int[] next=new int[pattern.length()];</div><div class="line">		next[0]=-1;</div><div class="line">		while(j&lt;pattern.length()-1)</div><div class="line">		&#123;</div><div class="line">			if(k==-1||pattern.charAt(j)==pattern.charAt(k))</div><div class="line">			&#123;</div><div class="line">				j++;</div><div class="line">				k++;</div><div class="line">				if(pattern.charAt(j)!=pattern.charAt(k))//改进之处</div><div class="line">				next[j]=k;</div><div class="line">				else</div><div class="line">					next[j]=next[k];</div><div class="line">			&#125;</div><div class="line">			else</div><div class="line">				k=next[k];</div><div class="line">			return next;</div><div class="line">		&#125;</div><div class="line">		return next;</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>由此发现KMP算法的时间复杂度为O(n);</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;设有两个串：目标串target和模式串pattern，在目标串中查找与模式串pattern相等得一个子串并确定孩子串位置的操作称为串的模式匹
     
     </summary>
     
