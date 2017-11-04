@@ -5,10 +5,93 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-09-13T05:39:28.000Z</updated>
+  <updated>2017-11-04T11:54:54.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>数字在排序数组中出现的次数</title>
+    <link href="http://www.myzwl.win/2017/10/09/offer_31/"/>
+    <id>http://www.myzwl.win/2017/10/09/offer_31/</id>
+    <published>2017-10-09T06:48:51.000Z</published>
+    <updated>2017-11-04T11:54:54.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>统计一个数字在排序数组中出现的次数。</p>
+<h4 id="思路分析-解法一"><a href="#思路分析-解法一" class="headerlink" title="思路分析(解法一)"></a>思路分析(解法一)</h4><p>最直观的想法就是通过顺序查找，即依次比较数组与给定元素大小，然后设置一个计数变量，又由于数组是排序的，所以直接当比较的数大于给定数时，结束</p>
+<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public int GetNumberOfK(int [] array , int k) &#123;</div><div class="line">         if(array==null)return 0;</div><div class="line">         int count=0;</div><div class="line">         for(int i=0;i&lt;array.length;i++)&#123;</div><div class="line">           if(array[i]==k)&#123;</div><div class="line">             count++;</div><div class="line">           &#125;</div><div class="line">           if(array[i]&gt;k)</div><div class="line">             return count;</div><div class="line">         &#125;</div><div class="line">         return count;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h4 id="思路分析-解法二"><a href="#思路分析-解法二" class="headerlink" title="思路分析(解法二)"></a>思路分析(解法二)</h4><p>由于是已排序的，所以查找最好的就是通过二分查找，即先找出第一次出现和最后一次出现该数即可，但是由于当我们找到该数时，比如第一次找到该数时，先比较在他前面是否有重复该数，如果是，这说明据需向前面比较，知道找到第一次出现该数，同理，最后一次出现该数也是比较后面是否有该数重复</p>
+<h4 id="码上有戏-1"><a href="#码上有戏-1" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">public int GetNumberOfK(int [] array , int k) &#123;</div><div class="line">    int length = array.length;</div><div class="line">         if(length == 0)&#123;</div><div class="line">             return 0;</div><div class="line">         &#125;</div><div class="line">         int firstK = getFirstK(array, k, 0, length-1);</div><div class="line">         int lastK = getLastK(array, k, 0, length-1);</div><div class="line">         if(firstK != -1 &amp;&amp; lastK != -1)&#123;</div><div class="line">              return lastK - firstK + 1;</div><div class="line">         &#125;</div><div class="line">         return 0;</div><div class="line"> &#125;</div><div class="line"> </div><div class="line"> private int getFirstK(int array[],int k,int start,int end)&#123;</div><div class="line">   if(start&gt;end)return -1;</div><div class="line">    int mid=(start+end)&gt;&gt;1;</div><div class="line">   if(array[mid]&gt;k)return getFirstK(array,k,start,mid-1);</div><div class="line">   else if(array[mid]&lt;k) return getFirstK(array,k,mid+1,end);</div><div class="line">       else if(mid-1 &gt;=0 &amp;&amp; array[mid-1] == k)&#123;</div><div class="line">           return getFirstK(array, k, start, mid-1);</div><div class="line">       &#125;</div><div class="line">   else return mid;</div><div class="line"> &#125;</div><div class="line"> </div><div class="line"> private int getLastK(int array[],int k,int start,int end)&#123;</div><div class="line">       int length = array.length;</div><div class="line">   int mid=(start+end)&gt;&gt;1;</div><div class="line">   while(start&lt;=end)&#123;</div><div class="line">     if(array[mid]&lt;k)</div><div class="line">       start=mid+1;</div><div class="line">     else if(array[mid]&gt;k)</div><div class="line">       end=mid-1;</div><div class="line">           else if(mid+1 &lt; length &amp;&amp; array[mid+1] == k)&#123;</div><div class="line">               start = mid+1;</div><div class="line">           &#125;</div><div class="line">     else </div><div class="line">       return mid;</div><div class="line">     mid=(start+end)&gt;&gt;1;</div><div class="line">   &#125;</div><div class="line">   return -1;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h4&gt;&lt;p&gt;统计一个数字在排序数组中出现的次数。&lt;/p&gt;
+&lt;h4 id=&quot;思路分析-解法一&quot;&gt;&lt;a href=&quot;#思路分析-解法一&quot; c
+    
+    </summary>
+    
+      <category term="剑指offer" scheme="http://www.myzwl.win/categories/%E5%89%91%E6%8C%87offer/"/>
+    
+    
+      <category term="剑指offer" scheme="http://www.myzwl.win/source/tags/%E5%89%91%E6%8C%87offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>滑动窗口的最大值</title>
+    <link href="http://www.myzwl.win/2017/10/08/offer_30/"/>
+    <id>http://www.myzwl.win/2017/10/08/offer_30/</id>
+    <published>2017-10-08T06:48:51.000Z</published>
+    <updated>2017-11-04T10:49:20.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>给定一个数组和滑动窗口的大小，找出所有滑动窗口里数值的最大值。例如，如果输入数组{2,3,4,2,6,2,5,1}及滑动窗口的大小3，那么一共存在6个滑动窗口，他们的最大值分别为{4,4,6,6,6,5}； 针对数组{2,3,4,2,6,2,5,1}的滑动窗口有以下6个： {[2,3,4],2,6,2,5,1}， {2,[3,4,2],6,2,5,1}， {2,3,[4,2,6],2,5,1}， {2,3,4,[2,6,2],5,1}， {2,3,4,2,[6,2,5],1}， {2,3,4,2,6,[2,5,1]}。</p>
+<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>我的想法是先设置一个变量k用来记录每个滑动窗口的起始位置，如第一个滑动窗口k=0；然后取出数组中相应滑动窗口大小的数组的最大值，目前用选择排序思想取出每个滑动窗口最大值，如第一个[2,3,4]最大值为4，然后通过循环条件k与size，当k+size大于数组长度，也就是遍历完所有滑动窗口，每次都将每个窗口最大值保存起来即可</p>
+<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">import java.util.ArrayList;</div><div class="line">public class Solution &#123;</div><div class="line">   public ArrayList&lt;Integer&gt; maxInWindows(int [] num, int size)</div><div class="line">    &#123;</div><div class="line">        ArrayList&lt;Integer&gt; array=new ArrayList&lt;Integer&gt;();</div><div class="line">        if(num==null||size&lt;=0)return array;</div><div class="line">        int len=num.length;</div><div class="line">        int k=0;</div><div class="line">       while(k+size&lt;=len)&#123;</div><div class="line">          array.add(maxInWindow(num,k,size));</div><div class="line">          k++;</div><div class="line">       &#125;</div><div class="line">   return array;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    private int maxInWindow(int[] num,int k,int size)&#123;</div><div class="line">        int i=k;</div><div class="line">        int top=num[k];</div><div class="line">        for(;i&lt;k+size;i++)&#123;</div><div class="line">            if(num[i]&gt;top)</div><div class="line">                top=num[i];</div><div class="line">        &#125;</div><div class="line">            return top;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h4&gt;&lt;p&gt;给定一个数组和滑动窗口的大小，找出所有滑动窗口里数值的最大值。例如，如果输入数组{2,3,4,2,6,2,5,1}及滑动窗口
+    
+    </summary>
+    
+      <category term="剑指offer" scheme="http://www.myzwl.win/categories/%E5%89%91%E6%8C%87offer/"/>
+    
+    
+      <category term="剑指offer" scheme="http://www.myzwl.win/source/tags/%E5%89%91%E6%8C%87offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>魔法币_网易2018校招编程题</title>
+    <link href="http://www.myzwl.win/2017/09/17/face_9/"/>
+    <id>http://www.myzwl.win/2017/09/17/face_9/</id>
+    <published>2017-09-17T09:48:51.000Z</published>
+    <updated>2017-09-19T15:59:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>小易准备去魔法王国采购魔法神器,购买魔法神器需要使用魔法币,但是小易现在一枚魔法币都没有,但是小易有两台魔法机器可以通过投入x(x可以为0)个魔法币产生更多的魔法币。<br>魔法机器1:如果投入x个魔法币,魔法机器会将其变为2x+1个魔法币<br>魔法机器2:如果投入x个魔法币,魔法机器会将其变为2x+2个魔法币<br>小易采购魔法神器总共需要n个魔法币,所以小易只能通过两台魔法机器产生恰好n个魔法币,小易需要你帮他设计一个投入方案使他最后恰好拥有n个魔法币。<br>输入描述:<br>输入包括一行,包括一个正整数n(1 ≤ n ≤ 10^9),表示小易需要的魔法币数量。<br>输出描述:<br>输出一个字符串,每个字符表示该次小易选取投入的魔法机器。其中只包含字符’1’和’2’。<br>输入例子1:<br>10<br>输出例子1:<br>122</p>
+<h4 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h4><p>除了内存超出规定外，其余都符合算法要求<br><img src="/images/imgs4/34.jpg" alt="Alt text"><br>思路如下:</p>
+<blockquote>
+<p>1.先构造并初始化一个完全二叉树，如图所示<br>2.然后从左子树开始遍历二叉树，同时将遍历的结点放到一个集合中，并且将该集合也就是到该节点的路径放到另一个集合中，如果没有找到该节点，则向上（父节点）开始遍历，同时删掉向下遍历的结点和路径，然后右递归<br>3.找到指定结点后，对应也找到对应的结点路径，剩下就是观察发现，如果路径中结点的值为偶数（右子树）对应2，左子树对应1，放在一个可变字符串中<br>4.本地测试（不考虑内存消耗过大），ok</p>
+</blockquote>
+<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line">public class Main&#123;</div><div class="line">    </div><div class="line">	  public static class TreeNode&#123;</div><div class="line">	        int val;</div><div class="line">	        TreeNode left;</div><div class="line">	        TreeNode right;</div><div class="line">	        </div><div class="line">	        public TreeNode(int val)&#123;</div><div class="line">	            this.val=val;</div><div class="line">	        &#125;</div><div class="line">	    &#125;</div><div class="line">	     </div><div class="line">    public static void main(String[] args) throws Exception&#123;</div><div class="line">        Main m=new Main();</div><div class="line">        BufferedReader br = new BufferedReader(new InputStreamReader(System.in ));</div><div class="line">       int n=Integer.parseInt(br.readLine());</div><div class="line">        String s=m.getpa(n,new ArrayList&lt;Integer&gt;(),new ArrayList&lt;List&lt;Integer&gt;&gt;());</div><div class="line">        System.out.println(s);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">     public String  getpa(int n,List&lt;Integer&gt;  nodes,List&lt;List&lt;Integer&gt;&gt; paths)&#123;</div><div class="line">          TreeNode root=new TreeNode(0);</div><div class="line">         if(n&lt;=0)return null;</div><div class="line">         paths=getPath(root,n,nodes,paths);      </div><div class="line">          List&lt;Integer&gt; target=paths.get(0);</div><div class="line">          StringBuilder s=new StringBuilder(); </div><div class="line">          target.remove(0);</div><div class="line">         for(Integer val:target)&#123;</div><div class="line">        	 if((val&amp;0x1)==0)    &#123;       	 </div><div class="line">                 s.append("2");             </div><div class="line">             &#125;</div><div class="line">              else&#123;            	</div><div class="line">                  s.append("1");</div><div class="line">              &#125;</div><div class="line">            </div><div class="line">         &#125;</div><div class="line">          return s.toString();</div><div class="line">      &#125;</div><div class="line">    </div><div class="line">    List&lt;List&lt;Integer&gt;&gt; getPath(TreeNode root,int n,List&lt;Integer&gt; nodes,List&lt;List&lt;Integer&gt;&gt; paths)&#123;</div><div class="line">          if(root==null)</div><div class="line">            return paths;</div><div class="line">              init(root,n);</div><div class="line">            nodes.add(root.val);</div><div class="line">         if(root.val==n)&#123;</div><div class="line">             List&lt;Integer&gt; temp=new ArrayList&lt;Integer&gt;();</div><div class="line">              for(Integer t:nodes)&#123;</div><div class="line">                  temp.add(t);</div><div class="line">              &#125;</div><div class="line">               paths.add(temp);           </div><div class="line">         &#125;</div><div class="line">        if(root.left!=null)</div><div class="line">            getPath(root.left,n,nodes,paths);</div><div class="line">        if(root.right!=null)</div><div class="line">            getPath(root.right,n,nodes,paths);        </div><div class="line">        Integer tt=nodes.remove(nodes.size()-1);</div><div class="line">         return paths;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    </div><div class="line">    </div><div class="line">    void init(TreeNode root,int n)&#123;</div><div class="line">        if(root==null)</div><div class="line">            return;</div><div class="line">        if(root.val&lt;n)</div><div class="line">            &#123;</div><div class="line">            if(2*root.val+1&lt;=n)</div><div class="line">                root.left=new TreeNode(2*root.val+1);</div><div class="line">            if(2*root.val+2&lt;=n)</div><div class="line">                root.right=new TreeNode(2*root.val+2);</div><div class="line">        &#125;</div><div class="line">        init(root.left,n);</div><div class="line">        init(root.right,n);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="奇偶倒退法"><a href="#奇偶倒退法" class="headerlink" title="奇偶倒退法"></a>奇偶倒退法</h4><p>核心思路就是从最后一个数，通过判断最后一个数是否是奇偶，来倒推，直至为0为止</p>
+<blockquote>
+<p>public class Main{<br>   public static void main(String[] args) {<br>        Scanner in = new Scanner(System.in);<br>        while (in.hasNext()) {<br>            int Count = in.nextInt();<br>            StringBuilder sb = new StringBuilder();<br>            while (Count &gt; 0) {<br>                if (Count % 2 == 0) {<br>                    Count = (Count - 2) / 2;<br>                    sb.append(“2”);<br>                } else {<br>                    Count = (Count - 1) / 2;<br>                    sb.append(“1”);<br>                }<br>            }<br>            System.out.println(sb.reverse().toString());<br>        }<br>    }<br>}</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h4&gt;&lt;p&gt;小易准备去魔法王国采购魔法神器,购买魔法神器需要使用魔法币,但是小易现在一枚魔法币都没有,但是小易有两台魔法机器可以通过投入
+    
+    </summary>
+    
+      <category term="笔试题" scheme="http://www.myzwl.win/categories/%E7%AC%94%E8%AF%95%E9%A2%98/"/>
+    
+    
+      <category term="校招笔试" scheme="http://www.myzwl.win/source/tags/%E6%A0%A1%E6%8B%9B%E7%AC%94%E8%AF%95/"/>
+    
+  </entry>
   
   <entry>
     <title>我的大学书单</title>
@@ -980,122 +1063,6 @@
     <summary type="html">
     
       &lt;h4 id=&quot;死锁&quot;&gt;&lt;a href=&quot;#死锁&quot; class=&quot;headerlink&quot; title=&quot;死锁&quot;&gt;&lt;/a&gt;死锁&lt;/h4&gt;&lt;p&gt;线程同步操作的是同一个线程对象，所以可能造成线程不安全，出现非数据的原子操作，所以，需要加锁，同时线程是程序的执行顺序，也就是cpu根据不同
-    
-    </summary>
-    
-      <category term="java基础" scheme="http://www.myzwl.win/categories/java%E5%9F%BA%E7%A1%80/"/>
-    
-    
-      <category term="java基础" scheme="http://www.myzwl.win/source/tags/java%E5%9F%BA%E7%A1%80/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>快速排序</title>
-    <link href="http://www.myzwl.win/2017/07/25/quick_1/"/>
-    <id>http://www.myzwl.win/2017/07/25/quick_1/</id>
-    <published>2017-07-25T05:48:51.000Z</published>
-    <updated>2017-08-10T04:46:14.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>快速排序被列为20世纪十大算法之一，正如其名一样，排序的速度非常快。<br>而它的基本思想就是通过一趟排序将待排序的记录分割成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续排序，最终达到有序的目的<br><img src="/images/imgs4/22.gif" alt="Alt text"></p>
-<h4 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h4><p>采取同样的策略，从计算机的角度看看程序是怎么执行的<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">void QuickSort(SqList *L)&#123;</div><div class="line">  QSort(L,1,L-&gt;length);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void QSort(SqList *L,int low,int high)&#123;</div><div class="line">  int pivot;</div><div class="line">   if(low&lt;high)&#123;</div><div class="line">    pivot=Partition(L,low,high);//将L-&gt;r[low..high]一分为二</div><div class="line">     QSort(L,low,pivor-1); //对低子表递归排序</div><div class="line">      QSort(L,pivot+1,high); //对高子表递归排序</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>里面有个函数Partition(L,low,high),和归并排序一样，暂时先不管它，初始化数组为{50,10,90,30,70,40,80,60,20}，初始low=1，high=9；<br>pivot为选择其中一个关键字，比pivot小的排到左边，比pivot大的排到右边，显然此时pivot=5，然后执行 QSort(L，1,4）直至排好序，同样右边也是递归调用QSort（L，6,9），这里的核心算法也就是Partition(L,low,high)如何排序的了<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">int Partition(SqList *L,int low,int high)&#123;</div><div class="line">  int pivotkey;</div><div class="line">   pivotkey=L-&gt;[low]; //用子表的第一个记录做关键字</div><div class="line">    while(low&lt;high)</div><div class="line">    &#123;</div><div class="line">      while(low&lt;high&amp;&amp;L-&gt;r[high]&gt;=pivotkey)</div><div class="line">        high--;</div><div class="line">      swap(L,low,high);//交换low和high的记录</div><div class="line">      while(low&lt;high&amp;&amp;L-&gt;r[low]&lt;=pivotkey)</div><div class="line">         low++;</div><div class="line">       swap(L,low,high);</div><div class="line">    &#125;</div><div class="line">    return low;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>同样一行一行的看，这里默认选取子表的第一个记录作为关键字pivotkey=L-&gt;[low];接下来，由于low=1<high=9，执行内部程序，然后比较l->r[high]=L-&gt;r[9]=20与pivotkey=50大小，显然前者小于后者，不满足，将high与low交换，也就是说小的在左边，此时为{20,10,90.。。50},；然后明显20<50，所以low++；得low=2；并且10<50，在循环，得low=3，此时90>50,退出循环，在此交换位置，得{20,10,50.。。。90}；<br>最后low=3<9在循环，90>50,满足，high–，high=8，有L-&gt;high[8]=60&gt;50;high–;有80&gt;50;high–,有40&lt;50,退出循环，此时high=6，交换，依次类推，最终low=high=5，退出整个循环<br>最后在分别递归低和高的子表，最后我们发现他的规律如此只简单，遇到比关键字小的，依次递增比较，直到有比它大的，在换另一边比较，不得不说快速排序实在是太精妙了</9在循环，90></50，所以low++；得low=2；并且10<50，在循环，得low=3，此时90></high=9，执行内部程序，然后比较l-></p>
-<p>最后再来看一下快速排序的时间复杂度，在最优的情况下为O（nlogn);</p>
-<h4 id="排序算法间的比较"><a href="#排序算法间的比较" class="headerlink" title="排序算法间的比较"></a>排序算法间的比较</h4><p><img src="/images/imgs4/2.png" alt="Alt text"><br>分类<br><img src="/images/imgs4/15.jpg" alt="Alt text"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;快速排序被列为20世纪十大算法之一，正如其名一样，排序的速度非常快。&lt;br&gt;而它的基本思想就是通过一趟排序将待排序的记录分割成独立的两部分，
-    
-    </summary>
-    
-      <category term="算法" scheme="http://www.myzwl.win/categories/%E7%AE%97%E6%B3%95/"/>
-    
-    
-      <category term="算法" scheme="http://www.myzwl.win/source/tags/%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>归并排序</title>
-    <link href="http://www.myzwl.win/2017/07/24/guibin_1/"/>
-    <id>http://www.myzwl.win/2017/07/24/guibin_1/</id>
-    <published>2017-07-24T05:48:51.000Z</published>
-    <updated>2017-08-10T08:34:02.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>归并的意思就是将两个或者两个以上的有序数组合成一个有序表。而归并排序就是将含有n个记录的子序列，每个子序列长度为1，然后两两归并，得到[n/2]个长度为2或者1的有序子序列，在两两归并，。。。。，如此重复，直到得到一个长度为n的有序序列为止<br><img src="/images/imgs4/14.jpg" alt="Alt text"></p>
-<h4 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h4><p>不妨先看代码，在从计算机角度去看看是如何执行代码过程的<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">void MergeSort(SqList *L)&#123;</div><div class="line">  MSort(L-&gt;r,L-&gt;r,1,L-&gt;length);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//将SR[s..t]归并到TR1[s..t]</div><div class="line">void MSort(int SR[],int TR1[],int s,int t)&#123;</div><div class="line">  int m;</div><div class="line">  int TR2[MAXSIZE+1];</div><div class="line">  if(s==t)</div><div class="line">    TR1[s]=SR[s];</div><div class="line">  else</div><div class="line">  &#123;</div><div class="line">    m=(s+t)/2;</div><div class="line">    MSort(SR,TR2,s,m);</div><div class="line">    MSort(SR,TR2,m+1,t);</div><div class="line">    Merge(TR2,TR1,s,m,t);//将TR2[s..m]和TR2[m+1..t]归并到TR1[s..t]</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>里面有个递归 Merge(TR2,TR1,s,m,t);暂时先不管它，假设模拟的数组为{50,10,90,30,70,40,80,60,20}，所以知道初始化时SR和TR1都是该数组，s=1，t-9；由于s！=t，所以执行else中的语句。此时m=5，也就是正中间下标，所以开始先执行递归MSort(SR,TR2,1,5)，递归过程如下所示<br><img src="/images/imgs4/21.gif" alt="Alt text"><br>其核心部分就是最后都变成叶子结点，递归结束，然后执行if里语句，不过此时TR1[s]=SR[s]，注意这里s是元素下标，所以第一次TR2={50,10}，然后就要执行Merge(TR2,TR1,s,m,t);前面是50与10已结归并了，暂时我们知道它就是把无需归并为有序就行了，即TR2={10,50}后面在详细分析它，<br>接下来同理，依次向上归并，最后得到{10,30,50,70,90}，同理，根结点右子树也一样，最终完成了归并</p>
-<p>再来看看Merge(TR2,TR1,s,m,t)函数<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">void Merge(int SR[],int TR[],int i,int m,int n)</div><div class="line">&#123;</div><div class="line">  int j,k,l;</div><div class="line">   for(j=m+1,k=i;i&lt;=m&amp;&amp;j&lt;=n;k++)</div><div class="line">   &#123;</div><div class="line">    if(SR[i]&lt;SR[j])</div><div class="line">      TR[k]=SR[i++];</div><div class="line">    else</div><div class="line">      TR[k]=SR[j++];</div><div class="line">   &#125;</div><div class="line">   if(i&lt;=m)&#123;  //将剩余元素归并</div><div class="line">    for(l=0;l&lt;=m-1;l++)</div><div class="line">      TR[k+1]=SR[i+1];</div><div class="line">  &#125;</div><div class="line"> if(j&lt;=n)</div><div class="line"> &#123;</div><div class="line">  for(l=0;l&lt;n-j;l++)</div><div class="line">    TR[k+1]=SR[j+1];</div><div class="line"> &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>就拿{10,30,50,70,90}和{20,40,60,80}归并为有序序列来说，此时i=1，m=5,n=9；进入for循环，此时j从6到9，i由1到5，k由1开始每次加1，并且k就是TR数组的下标，然后开始归并，左右子树的SR[i]=SR[1]=10与SR[j]=SR[6]=20开始比较，将较小数放入到一个初始化时空的TR[]中，比如是10，然后i++；否则j++，这样就可以得到有序序列了，但是最终当j=10时退出循环，而后面还有一些元素未归并，将执行后面if语句，将最后的90复制到最后，最终完成了归并</p>
-<p>最后再来看看归并排序的时间复杂度，由于其与完全二叉树有关，最终得到其为O（nlogn)，而它也是比较占用内存但是很稳定的一种算法</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;归并的意思就是将两个或者两个以上的有序数组合成一个有序表。而归并排序就是将含有n个记录的子序列，每个子序列长度为1，然后两两归并，得到[n/
-    
-    </summary>
-    
-      <category term="算法" scheme="http://www.myzwl.win/categories/%E7%AE%97%E6%B3%95/"/>
-    
-    
-      <category term="算法" scheme="http://www.myzwl.win/source/tags/%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>java IO简单总结</title>
-    <link href="http://www.myzwl.win/2017/07/23/IO_1/"/>
-    <id>http://www.myzwl.win/2017/07/23/IO_1/</id>
-    <published>2017-07-23T05:48:51.000Z</published>
-    <updated>2017-08-09T07:01:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在涉及IO流之前需要知道文件的概念。文件是数据源（保存数据的的地方）的一种，比如word文件、txt文件。他既可以保存一张图片，也可以保存视频、声音。。。等等<br><strong>文件流</strong><br><img src="/images/imgs4/19.gif" alt="Alt text"><br>文件在程序中是以流的形式来操作的<br>流：数据在数据源（文件）和程序（内存）之间经历的路径<br>输入流：数据从数据源到内存的路径<br>输出流：数据从内存到数据源的路径</p>
-<h4 id="IO流分类"><a href="#IO流分类" class="headerlink" title="IO流分类"></a>IO流分类</h4><p>1.根据处理数据类型的不同分为：字符流和字节流<br>字节流：可以用于读写二进制文件及任何类型的byte，也就是一个字节一个的读<br>字符流：可以用于读写文本文件，不能操作二进制文件，也就是两个字节两个字节的读<br>2.根据数据流向不同分为：输入流和输出流<br>3。节点流和处理流<br>节点流：直接与数据源相连，读入或读出，可以发现使用该流过于频繁操作硬件，从而使读写很不方便<br>常用的结点流：</p>
-<blockquote>
-<p>父类：InputStream、OutputStream、Reader、Writer<br>文件 ：FileInputStream 、 FileOutputStrean 、FileReader、FileWriter 文件进行处理的节点流<br>数　组 ：ByteArrayInputStream、 ByteArrayOutputStream、 CharArrayReader 、CharArrayWriter 对数组进行处理的节点流（对应的不再是文件，而是内存中的一个数组）<br>字符串 ：StringReader、 StringWriter 对字符串进行处理的节点流<br>管　道 ：PipedInputStream 、PipedOutputStream 、PipedReader 、PipedWriter 对管道进行处理的节点流</p>
-</blockquote>
-<p>处理流：处理流和节点流一块使用，在节点流的基础上，再套接一层，套接在节点流上的就是处理流。如BufferedReader.处理流的构造方法总是要带一个其他的流对象做参数。一个流对象经过其他流的多次包装，称为流的链接。<br><img src="/images/imgs4/20.gif" alt="Alt text"><br>常用的处理流：</p>
-<blockquote>
-<p>缓冲流：BufferedInputStrean 、BufferedOutputStream、 BufferedReader、 BufferedWriter 增加缓冲功能，避免频繁读写硬盘<br>转换流：InputStreamReader 、OutputStreamReader实现字节流和字符流之间的转换<br>数据流： DataInputStream 、DataOutputStream 等-提供将基础数据类型写入到文件中，或者读取出来</p>
-</blockquote>
-<p><img src="/images/imgs4/13.jpg" alt="Alt text"></p>
-<h4 id="文件File类"><a href="#文件File类" class="headerlink" title="文件File类"></a>文件File类</h4><p><strong>File常用方法</strong></p>
-<blockquote>
-<p>创建：<br>createNewFile()在指定位置创建一个空文件，成功就返回true，如果已存在就不创建，然后返回false。<br>mkdir()  在指定位置创建一个单级文件夹。<br>mkdirs()  在指定位置创建一个多级文件夹。<br>renameTo(File dest)如果目标文件与源文件是在同一个路径下，那么renameTo的作用是重命名， 如果目标文件与源文件不是在同一个路径下，那么renameTo的作用就是剪切，而且还不能操作文件夹。<br>删除：<br>delete()  删除文件或者一个空文件夹，不能删除非空文件夹，马上删除文件，返回一个布尔值。<br>deleteOnExit()jvm退出时删除文件或者文件夹，用于删除临时文件，无返回值。<br> 判断：<br>exists()  文件或文件夹是否存在。<br>isFile()  是否是一个文件，如果不存在，则始终为false。<br>isDirectory()  是否是一个目录，如果不存在，则始终为false。<br>isHidden()  是否是一个隐藏的文件或是否是隐藏的目录。<br>isAbsolute()  测试此抽象路径名是否为绝对路径名。<br> 获取：<br>getName()  获取文件或文件夹的名称，不包含上级路径。<br>getAbsolutePath()获取文件的绝对路径，与文件是否存在没关系<br>length()  获取文件的大小（字节数），如果文件不存在则返回0L，如果是文件夹也返回0L。<br>getParent()  返回此抽象路径名父目录的路径名字符串；如果此路径名没有指定父目录，则返回null。<br>lastModified()获取最后一次被修改的时间。<br>文件夹相关：<br>static File[] listRoots()列出所有的根目录（Window中就是所有系统的盘符）<br>list()  返回目录下的文件或者目录名，包含隐藏文件。对于文件这样操作会返回null。<br>listFiles()  返回目录下的文件或者目录对象（File类实例），包含隐藏文件。对于文件这样操作会返回null。<br>list(FilenameFilter filter)返回指定当前目录中符合过滤条件的子文件或子目录。对于文件这样操作会返回null。<br>listFiles(FilenameFilter filter)返回指定当前目录中符合过滤条件的子文件或子目录。对于文件这样操作会返回null。</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"> //创建一个文件对象</div><div class="line">  File f1=new File("e:\\aa.txt");</div><div class="line">  //得到文件的路径</div><div class="line">  System.out.println("文件路径"+f1.getAbsolutePath());</div><div class="line">//得到文件的大小,字节数</div><div class="line">  System.out.println("文件的大小"+f1.length());</div><div class="line">//创建文件夹</div><div class="line">		File f3=new File("e:\\ff");</div><div class="line">		//判断文件夹是否存在</div><div class="line">		if(f3.isDirectory())&#123;</div><div class="line">			System.out.println("文件夹存在，不能创建!");</div><div class="line">		&#125;else&#123;</div><div class="line">			//创建文件夹</div><div class="line">			f3.mkdir();</div><div class="line">		&#125;</div><div class="line">		//创建文件和创建文件夹</div><div class="line">		File f2=new File("e:\\ff\\zwl.txt");</div><div class="line">		//判断文件是否存在</div><div class="line">		if(!f2.exists())//可以创建</div><div class="line">			try &#123;</div><div class="line">				f2.createNewFile();//创建一个新文件</div><div class="line">			&#125; catch (Exception e) &#123;</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">		else&#123;</div><div class="line">			System.out.println("文件存在，不能创建!");</div><div class="line">		&#125;</div><div class="line">		//列出一个文件夹下面的所有文件</div><div class="line">		File f4=new File("e:\\ff");</div><div class="line">		//判断文件夹是事存在</div><div class="line">		if(f4.isDirectory())&#123;</div><div class="line">			//将文件夹的文件，传给lists数组</div><div class="line">			//将文件夹的文件，传给lists数组</div><div class="line">			File lists[]=f4.listFiles();</div><div class="line">			//遍历数组</div><div class="line">			for(int i=0;i&lt;lists.length;i++)&#123;</div><div class="line">				//输出文件夹下所有文件文件名</div><div class="line">				System.out.println("显示出文件名是"+lists[i].getName());</div><div class="line">			&#125;</div><div class="line">		&#125;</div></pre></td></tr></table></figure>
-<p>对应的结果：</p>
-<blockquote>
-<p>文件路径e:\aa.txt<br>文件的大小0<br>显示出文件名是zwl.txt</p>
-</blockquote>
-<h4 id="文件字节与字符流"><a href="#文件字节与字符流" class="headerlink" title="文件字节与字符流"></a>文件字节与字符流</h4><p><strong>InputStream常用方法</strong></p>
-<blockquote>
-<p>public abstract int read() throws IOException:从输入流中读取数据的下一个字节,到达末尾，返回-1；<br> public int read(byte[] b)throws IOException：从输入流中读取一定数量的字节，并将其存储在缓冲区数组 b 中<br> public int read(byte[] b,int off,int len)throws IOException：将输入流中最多 len 个数据字节读入 byte 数组<br> public void close() throws IOException：关闭此输入流并释放与该流关联的所有系统资源</p>
-</blockquote>
-<p><strong>OutputStream常用方法</strong></p>
-<blockquote>
-<p>public void flush()throws IOException:刷新此输出流并强制写出所有缓冲的输出字节<br> public abstract void write(int b)throws IOException:将 b.length 个字节从指定的 byte 数组写入此输出流。<br> public void write(byte[] b, int off, int len)throws IOException:将指定 byte 数组中从偏移量 off 开始的 len 个字节写入此输出流<br> public void write(byte[] b)throws IOException:将指定的字节写入此输出流。</p>
-</blockquote>
-<p> Reader与Writer和上述方法基本类似，只不过它操作的是字符。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">int b=0;</div><div class="line">  //FileInputStream in=null;</div><div class="line">  FileReader in=null;</div><div class="line">   FileOutputStream out=null;</div><div class="line">    try &#123;</div><div class="line">		in=new FileReader("E:\\php练习\\readmeFirst.txt");</div><div class="line">		out=new FileOutputStream("E:\\php练习\\ttl.txt");</div><div class="line">	&#125; catch (Exception e) &#123;</div><div class="line">		System.out.println("not file");</div><div class="line">		 System.exit(-1);</div><div class="line">	&#125;</div><div class="line">    try &#123;</div><div class="line">		long num=0;</div><div class="line">		while((b=in.read())!=-1)&#123;</div><div class="line">			System.out.print((char)b);</div><div class="line">			//out.write(b);;</div><div class="line">			num++;</div><div class="line">		&#125;</div><div class="line">		in.close();</div><div class="line">		out.close();</div><div class="line">		System.out.println();</div><div class="line">		System.out.println("共读取了"+num+"个字符");</div><div class="line">	&#125; catch (Exception e) &#123;</div><div class="line">		System.out.println("error!");</div><div class="line">		 System.exit(-1);</div><div class="line">	&#125;</div><div class="line">    System.out.println("copy ok");</div></pre></td></tr></table></figure></p>
-<p>上面程序是将已存在的一个文件复制到另一个文件中</p>
-<p><strong>缓冲字节与字符流</strong><br>它是在原来节点流基础上增加了一根管道，用于缓存数据，用法基本类似，但是它的构造函数必须是结点流，同时在字符缓冲流中有一个可以读取或存取字符串的方法如：</p>
-<blockquote>
-<p>public String readLine()throws IOException:读取一个文本行</p>
-</blockquote>
-<p><strong>Object流</strong><br>Object流的意思将是像一根节点流插入一根Object流管道，专门操作Object，而它必须实现Serializable接口，该接口的意思是可序列化，就是说将一个对象流序列化成子节流写进网络或者文件，比如说游戏存盘，有各个游戏的记录，如果以面向对象来写进管道，它的各个成员变量，会在内存中被序列化成二进制写进去，而Serializable接口无方法，它只是个标记接口，编译器看到实现该接口的类就知道它应该被序列化，同样有一个transient关键字，是使可序列化的某个属性变成透明，也就是它不能变成字节写进去，那个属性只能为默认属性写进去<br>ok，接下来就来看看Object流相关常用方法</p>
-<blockquote>
-<p>ObjectOutput:有一个void writeObject(Object obj) throws IOException：将对象写入底层存储或流。<br>ObjectInput：Object readObject()throws ClassNotFoundException,IOException：读取并返回对象</p>
-</blockquote>
-<p>最后不得不说IO流是在太复杂，就是一根管道不断套接着另一根管道，但是IO流是非常有用的，不仅能帮助我们了解计算机底层，而且涉及到数据传输都离不开它。。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在涉及IO流之前需要知道文件的概念。文件是数据源（保存数据的的地方）的一种，比如word文件、txt文件。他既可以保存一张图片，也可以保存视
     
     </summary>
     
