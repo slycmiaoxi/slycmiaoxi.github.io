@@ -5,10 +5,112 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-11-07T10:09:32.000Z</updated>
+  <updated>2017-11-30T05:20:58.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>腾讯云linux服务器上搭建javaweb站点</title>
+    <link href="http://www.myzwl.win/2017/11/03/linux_2/"/>
+    <id>http://www.myzwl.win/2017/11/03/linux_2/</id>
+    <published>2017-11-03T06:48:51.000Z</published>
+    <updated>2017-11-30T05:20:58.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>我一直坚信没有过程就不会有好的结果。回顾大学期间的学习历程，关于别人访问自己的站点，从刚开始的基于swing的cs系统，到基于socket的聊天框，再到局域网访问的web与在分别虚拟机和双系统的linux下搭建web，到后来基于nat123的p2p访问，再到后来阿里云的window8 server服务器搭建java web站点，到最后的腾讯云linux服务器集成，每一次的探索，都是与踩坑做斗战，也是进步最快的方法。不多说，这里记录一下之前搭建的步骤</p>
+<h4 id="远程连接工具"><a href="#远程连接工具" class="headerlink" title="远程连接工具"></a>远程连接工具</h4><p>故名思议，举世通过远程的方式去连接Linux并操作它，Linux远程的操作工具有很多。像xshell、Puttty、secureCRT、SSH Secure等，一般情况下习惯用命令去控制，所以这里选择了SSH Secure。该工具是免费的图形化界面及命令行窗口集一身的远程工具，具体可以去网上下载。</p>
+<h4 id="JDK安装"><a href="#JDK安装" class="headerlink" title="JDK安装"></a>JDK安装</h4><p>步骤：<br>1）查看当前Linux系统是否已经安装java<br>输入 rpm -qa | grep java<br>2）卸载两个openJDK<br>输入rpm -e –nodeps 要卸载的软件<br>如果未安装直接跳过前面两个步骤<br>3）上传jdk到linux（我的是Ubuntu Server 16.04.1 LTS 64位注意版本问题）<br>4.解压jdk到/usr/local下 tar –xvf jdk-7u71-linux-i586.tar.gz –C /usr/local<br>5 配置jdk环境变量，打开/etc/profile配置文件，将下面配置拷贝进去，这个一定要用vi打开，gedit可能会不行</p>
+<blockquote>
+<p>#set java environment<br>    JAVA_HOME=/usr/local/jdk1.7.0_71<br>    CLASSPATH=.:$JAVA_HOME/lib.tools.jar<br>    PATH=$JAVA_HOME/bin:$PATH<br>    export JAVA_HOME CLASSPATH PATH</p>
+</blockquote>
+<p>6）重新加载/etc/profile配置文件 source /etc/profile</p>
+<h4 id="安装Tomcat"><a href="#安装Tomcat" class="headerlink" title="安装Tomcat"></a>安装Tomcat</h4><p>必选要先安装jdk<br>1）上传Tomcat到linux上<br>2）解压Tomcat到/usr/local下<br>3.cd 到/usr/local下，将apache-tomcat-7.0.57改名成tomcat，为了方便，可自定义名<br>mv apache-tomcat-7.0.57 tomcat<br>4.开放Linux的对外访问的端口8080<br>/sbin/iptables -I INPUT -p tcp –dport 8080 -j ACCEPT<br>/etc/rc.d/init.d/iptables save 关闭防火墙，这里不成功没关系，我的没成功但是可以正常运行<br>5）启动关闭Tomcat<br>进入tomcat的bin下启动：./startup.sh<br>进入tomcat的bin下关闭：./shutdown.sh</p>
+<h4 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h4><p>1 sudo apt-get install mysql-server<br>运行完这句命令后，不是root的话会要你输入root密码，密码输入正确后，系统就自动给你下载MySQL了<br>2.授权用户，并允许远程登录<br>mysql -u root -p<br>系统会要你输入密码，密码输入无误后，进入MySQL<br>远程登录mysql的权限<br>登录mysql后输入如下命令：<br>grant all privileges on <em>.</em> to ‘账户名称’ @’%’ identified by ‘密码’;<br>然后更新数据库<br>flush privileges;<br>用管理员权限编辑一下文件<br>sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf<br>添加’#’注释掉其中的”bind-address = 127.0.0.1”<br>注释后:wq保存，重启MySQL服务：<br>service mysql restart<br>但是这里仍然不能远程连接，后来找到了解决办法<br>更改 “mysql” 数据库里的 “user” 表里的 “host” 项，从”localhost”改称”%”:<br>切换数据库,<br>mysql&gt;use mysql;<br>查看root账号的登录权限,<br>mysql&gt;select host, user from user;<br>修改登录权限<br>mysql&gt;update user set host = ‘%’ where user = ‘root’;<br>刷新,生效,最后一步,至关重要<br>mysql&gt;flush   privileges;</p>
+<p>最后解决了</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>有时候别人的步骤不一定适合你，造成很多时候都需要自己去踩坑，去探索。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;我一直坚信没有过程就不会有好的结果。回顾大学期间的学习历程，关于别人访问自己的站点，从刚开始的基于swing的cs系统，到基于socket的
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.myzwl.win/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://www.myzwl.win/source/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux命令小结</title>
+    <link href="http://www.myzwl.win/2017/11/02/linux_1/"/>
+    <id>http://www.myzwl.win/2017/11/02/linux_1/</id>
+    <published>2017-11-02T06:48:51.000Z</published>
+    <updated>2017-11-29T07:43:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h4><p><img src="/images/imgs5/5.jpg" alt="Alt text"></p>
+<h4 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h4><p>cd 进入某个目录。 如cd use<br>cd ../    切换到上一层目录<br>cd /    切换到系统根目录<br>cd ~    切换到用户主目录<br>cd -    切换到上一个所在目录</p>
+<h4 id="文件夹"><a href="#文件夹" class="headerlink" title="文件夹"></a>文件夹</h4><p>mkdir 创建文件夹<br>rmdir 删除文件夹 文件夹有内容时不可删</p>
+<h4 id="查看目录"><a href="#查看目录" class="headerlink" title="查看目录"></a>查看目录</h4><p>ls 看到该目录下的所有的目录和文件<br>ls -a 可以看到该目录下的所有文件和目录，包括隐藏的<br>ls -l或者ll或者ls -alh 可以看到该目录下的所有目录和文件的详细信息<br>ls z* 显示所有文件名以z开头的文件<br>ls z? 显示文件名只有两个字母且第一个字符为z的文件<br>ls &gt;2.txt 重定向 将ls的内容显示在2.txt中<br>ls &gt;&gt;2.txt 将ls的内容追加在2.txt中</p>
+<h4 id="寻找目录"><a href="#寻找目录" class="headerlink" title="寻找目录"></a>寻找目录</h4><p>find ./ -name ‘zw*’ 显示当前目录下文件名以zw的开头的文件</p>
+<h4 id="修改目录的名称"><a href="#修改目录的名称" class="headerlink" title="修改目录的名称"></a>修改目录的名称</h4><p>mv 目录名称 新目录名称<br>如 mv zwl zwlzwl<br>注意：mv的语法不仅可以对目录进行重命名而且也可以对各种文件，压缩包等进重命名的操作</p>
+<h4 id="移动目录的位置—剪切"><a href="#移动目录的位置—剪切" class="headerlink" title="移动目录的位置—剪切"></a>移动目录的位置—剪切</h4><p>mv 目录名称 目录的新位置<br>如 mv 1.txt ../<br>注意：mv语法不仅可以对目录进行剪切操作，对文件和压缩包等都可执行剪切操作</p>
+<h4 id="拷贝与删除目录"><a href="#拷贝与删除目录" class="headerlink" title="拷贝与删除目录"></a>拷贝与删除目录</h4><p>cp 复制文件，格式：cp 源文件 目标文件<br>rm 删除文件 （rm 文件夹 -r 递归删除文件夹内所有内容，并删除文件夹）<br>强制删除，使用rm -rf newTest</p>
+<h4 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h4><p>touch 1.txt 创建1.txt文件<br>cat 1.txt 查看1.txt里的内容<br>more 1.txt 1.txt内容过多时，分页显示<br>less 1.txt，可以使用键盘上的PgUp和PgDn向上    和向下翻页，q结束查看<br>tail -10 1.txt 查看后10行，Ctrl+C结束</p>
+<h4 id="解压打包"><a href="#解压打包" class="headerlink" title="解压打包"></a>解压打包</h4><p>Linux中的打包文件一般是以.tar结尾的，压缩的命令一般是以.gz结尾的。<br>而一般情况下打包和压缩是一起进行的，打包并压缩后的文件的后缀名一般.tar.gz。<br>命令：tar -zcvf 打包压缩后的文件名 要打包压缩的文件<br>tar -zcvf xxx.tar.gz aaa.txt bbb.txt ccc.txt<br>或：tar -zcvf xxx.tar.gz /test/*<br>解压压缩包<br>tar -zxvf FileName.tar.gz 压缩到本目录<br>tar -zxvf xxx.tar.gz -C /usr——C代表指定解压的位置</p>
+<h4 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h4><p>pwd 显示当前所在位置<br>grep 要搜索的字符串 要搜索的文件 –color（搜索命令）<br>ps -ef 查看当前系统中运行的进程<br>kill -9 进程的pid 强制杀死某进程<br>命令：|   将前一个命令的输出作为本次目录的输入<br>如 ps -ef | grep system 查看当前系统中所有的进程中包括system字符串的进程<br>ifconfig  查看当前系统的网卡信息<br>ping 查看与某台机器的连接情况<br>netstat -an 查看当前系统的端口使用</p>
+<h4 id="Linux的权限命令"><a href="#Linux的权限命令" class="headerlink" title="Linux的权限命令"></a>Linux的权限命令</h4><p>之前用ll的命令可以查看文件的详细信息<br><img src="/images/imgs5/6.jpg" alt="Alt text"><br>d：代表目录<br>-：代表文件<br>l：代表链接（可以认为是window中的快捷方式）<br>后面的9位分为3组，每3位置一组，分别代表属主的权限，与当前用户同组的    用户的权限，其他用户的权限<br>r：代表权限是可读，r也可以用数字4表示<br>w：代表权限是可写，w也可以用数字2表示<br>x：代表权限是可执行，x也可以用数字1表示<br><img src="/images/imgs5/7.jpg" alt="Alt text"><br>修改文件/目录的权限的命令：chmod<br>chmod u=rwx，g=rw，o=r 1.txt<br>或者 chmod 764 2.txt</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;目录结构&quot;&gt;&lt;a href=&quot;#目录结构&quot; class=&quot;headerlink&quot; title=&quot;目录结构&quot;&gt;&lt;/a&gt;目录结构&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;/images/imgs5/5.jpg&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
+&lt;h4 id=&quot;cd&quot;
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.myzwl.win/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://www.myzwl.win/source/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>浅谈lucene</title>
+    <link href="http://www.myzwl.win/2017/11/01/lucene_1/"/>
+    <id>http://www.myzwl.win/2017/11/01/lucene_1/</id>
+    <published>2017-11-01T06:48:51.000Z</published>
+    <updated>2017-11-27T05:10:14.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>不知不觉，从九月份后就已经很少写博总结了，有点小颓废了。好吧，回到正题，本着应用为主，了解原理为辅的原则总结。<br>以我的微型论坛中的文章内容检索为例作为应用<a href="http://www.slycmiaoxi.xyz" target="_blank" rel="external">网站链接</a></p>
+<h4 id="全文检索定义"><a href="#全文检索定义" class="headerlink" title="全文检索定义"></a>全文检索定义</h4><p>全文检索首先对要搜索的文档进行分词，然后形成索引，通过查询索引来查询文档，比如：字典<br>字典的偏旁部首页，就类似于luence的索引<br>字典的具体内容，就类似于luence的文档内容<br>同时，Lucene是一个工具包，它不能独立运行，不能单独对外提供服务。说白了，就是几个jar包</p>
+<h4 id="Lucene实现全文检索的流程"><a href="#Lucene实现全文检索的流程" class="headerlink" title="Lucene实现全文检索的流程"></a>Lucene实现全文检索的流程</h4><p><img src="/images/imgs5/1.jpg" alt="Alt text"><br>其主要分为索引流程和搜索流程<br>索引流程：采集数据—文档处理-存储到索引库中<br>搜索流程：输入查询条件—通过lucene的查询器查询索引—从索引库中取出结果</p>
+<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><p>需求：对进入论坛的所有文章进行全文检索<br>首先我们利用jdbc采集数据库，为了方便直接利用中文查询器，只贴出核心代码<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">public interface LuceneService &#123;</div><div class="line">	    //初始化采集本地数据</div><div class="line">		public void getIndex() throws Exception;</div><div class="line">		//增加一个term到本地数据</div><div class="line">		public void addIndex(Comment bc)  throws Exception ;</div><div class="line">		//删除一个term</div><div class="line">		public void deleteIndex(String blogId) throws Exception;</div><div class="line">		//更新本地数据</div><div class="line">		public void updateIndex(Blogcomment bc) throws Exception;</div><div class="line">		//根据条件查询数据		</div><div class="line">		public List&lt;Comment&gt; findAllIndex(String q)throws Exception;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 评论实体类</div><div class="line"> * @author zwl</div><div class="line"> *</div><div class="line"> */</div><div class="line">public class Comment &#123;</div><div class="line">	</div><div class="line">    private Date commentDate;</div><div class="line">    </div><div class="line">	private String content;</div><div class="line">	</div><div class="line">	private int id;</div><div class="line">	</div><div class="line">	private String title;</div><div class="line">	</div><div class="line">	private String userIp;</div><div class="line">	</div><div class="line">	private String username;</div><div class="line">	</div><div class="line">	private int hasread;    //访问量</div><div class="line">	</div><div class="line">	private int state;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下面是其实现类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div></pre></td><td class="code"><pre><div class="line">@Service("luceneService")</div><div class="line">public class LuceneServiceImpl implements LuceneService &#123;</div><div class="line"></div><div class="line">	@Resource</div><div class="line">	private CommentMapper commentMapper;</div><div class="line">	</div><div class="line">	private Directory dir;</div><div class="line">	</div><div class="line">	//得到索引维护核心对象</div><div class="line">	private IndexWriter getWriter() throws Exception &#123;</div><div class="line">		File indexFile = new File("C:\\lucene\\");</div><div class="line">		Directory d=FSDirectory.open(indexFile);</div><div class="line">		 Analyzer analyzer =new IKAnalyzer();</div><div class="line">		 IndexWriterConfig conf=new IndexWriterConfig(Version.LUCENE_4_9_1, analyzer);</div><div class="line">			IndexWriter write=new IndexWriter(d, conf);</div><div class="line">			return write;</div><div class="line">&#125;</div><div class="line">	</div><div class="line">	public void addIndex(Comment bc)  throws Exception &#123;</div><div class="line">		IndexWriter write=getWriter();</div><div class="line">		Document document=new Document();</div><div class="line">		</div><div class="line">		// store:如果是yes，则说明存储到文档域中</div><div class="line">		Field id=new TextField("id",String.valueOf(bc.getId()), Store.YES);</div><div class="line">		Field username=new TextField("username",bc.getUsername(),Store.YES);</div><div class="line">		Field blogCommentDate=new TextField("commentDate",bc.getCommentDate().toLocaleString(),Store.YES);</div><div class="line">		Field content=new TextField("content",bc.getContent(),Store.YES);</div><div class="line">		Field title=new TextField("title",bc.getTitle(),Store.YES);</div><div class="line">		Field hasread=new TextField("hasread",bc.getHasread()+"",Store.YES);</div><div class="line">		Field state=new TextField("state",bc.getState()+"",Store.YES);	</div><div class="line">	             </div><div class="line">     // 将field域设置到Document对象中</div><div class="line">		document.add(id);</div><div class="line">		document.add(username);</div><div class="line">		document.add(blogCommentDate);</div><div class="line">		document.add(content);</div><div class="line">		document.add(title);</div><div class="line">		document.add(hasread);</div><div class="line">		document.add(state);</div><div class="line">					</div><div class="line">					write.addDocument(document);</div><div class="line">	             write.close();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public List&lt;Comment&gt; findAllIndex(String q)throws Exception&#123;</div><div class="line">		File indexFile = new File("C:\\lucene\\");</div><div class="line">		dir=FSDirectory.open(indexFile);</div><div class="line">		IndexReader reader = DirectoryReader.open(dir);</div><div class="line">		IndexSearcher searcher = new IndexSearcher(reader);</div><div class="line">		QueryParser parser = new QueryParser("content",</div><div class="line">				 new IKAnalyzer());</div><div class="line">		Query query = parser.parse(q);</div><div class="line">		TopDocs topDocs = searcher.search(query, 5);</div><div class="line">		List&lt;Comment&gt; list=new ArrayList&lt;Comment&gt;();</div><div class="line">		Comment cc=null;</div><div class="line">		// 根据查询条件匹配出的记录总数</div><div class="line">		int count = topDocs.totalHits;</div><div class="line">		System.out.println("匹配出的记录总数:" + count);</div><div class="line">		// 根据查询条件匹配出的记录</div><div class="line">		ScoreDoc[] scoreDocs = topDocs.scoreDocs;</div><div class="line">		for (ScoreDoc scoreDoc : scoreDocs) &#123;</div><div class="line">			// 获取文档的ID</div><div class="line">			int docId = scoreDoc.doc;</div><div class="line">			// 通过ID获取文档</div><div class="line">			Document doc = searcher.doc(docId);</div><div class="line">			cc=new Comment();</div><div class="line">			cc.setId(Integer.parseInt(doc.get("id")));</div><div class="line">			cc.setUsername( doc.get("username"));</div><div class="line">			cc.setTitle(doc.get("title"));</div><div class="line">			cc.setCommentDate(DateUtil.formatString(doc.get("commentDate"),"yyyy-MM-dd HH:mm"));</div><div class="line">			cc.setHasread(Integer.parseInt(doc.get("hasread")));	 </div><div class="line">		    cc.setContent(doc.get("content"));</div><div class="line">		    list.add(cc);</div><div class="line">		&#125;</div><div class="line">		// 关闭资源</div><div class="line">		reader.close();</div><div class="line">	return list;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//删除指定博客的索引</div><div class="line">			public void deleteIndex(String blogId) throws Exception &#123;</div><div class="line">				IndexWriter write=getWriter();</div><div class="line">				write.deleteDocuments(new Term("id",blogId));</div><div class="line">				write.commit();</div><div class="line">				write.close();</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">			//更新博客索引</div><div class="line">			public void updateIndex(Blogcomment bc) throws Exception &#123;</div><div class="line">				IndexWriter write=getWriter();</div><div class="line">				Document document=new Document();</div><div class="line">				</div><div class="line">				// store:如果是yes，则说明存储到文档域中</div><div class="line">							Field id=new TextField("id",String.valueOf(bc.getId()), Store.YES);</div><div class="line">							Field username=new TextField("username",bc.getUsername(),Store.YES);</div><div class="line">							Field blogCommentDate=new TextField("blogCommentDate",bc.getBlogCommentDate().toLocaleString(),Store.YES);</div><div class="line">							Field comments=new TextField("comments",bc.getComments(),Store.YES);</div><div class="line">							Field title=new TextField("title",bc.getComment().getTitle(),Store.YES);</div><div class="line">							Field hasread=new TextField("hasread",bc.getComment().getHasread()+"",Store.YES);</div><div class="line">							Field cid=new TextField("cid",bc.getComment().getId()+"",Store.YES);	</div><div class="line">			             </div><div class="line">							// 将field域设置到Document对象中</div><div class="line">							document.add(id);</div><div class="line">							document.add(username);</div><div class="line">							document.add(blogCommentDate);</div><div class="line">							document.add(comments);</div><div class="line">							document.add(title);</div><div class="line">							document.add(hasread);</div><div class="line">							document.add(cid);</div><div class="line">							</div><div class="line">							write.updateDocument(new Term("id",bc.getId()+""), document);</div><div class="line">			               write.close();</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	//初始化采集本地数据</div><div class="line">	public void getIndex() throws Exception&#123;</div><div class="line">	</div><div class="line">		// 采集数据</div><div class="line">				List&lt;Comment&gt; list=commentMapper.readAll();</div><div class="line">				</div><div class="line">				// 将采集到的数据封装到Document对象中</div><div class="line">				List&lt;Document&gt; docList=new ArrayList&lt;Document&gt;();</div><div class="line">				Document document=null;</div><div class="line">				for(Comment bc:list)&#123;</div><div class="line">					document=new Document();</div><div class="line">					// store:如果是yes，则说明存储到文档域中</div><div class="line">					Field id=new TextField("id",String.valueOf(bc.getId()), Store.YES);</div><div class="line">					Field username=new TextField("username",bc.getUsername(),Store.YES);</div><div class="line">					Field blogCommentDate=new TextField("commentDate",bc.getCommentDate().toLocaleString(),Store.YES);</div><div class="line">					Field content=new TextField("content",bc.getContent(),Store.YES);</div><div class="line">					Field title=new TextField("title",bc.getTitle(),Store.YES);</div><div class="line">					Field hasread=new TextField("hasread",bc.getHasread()+"",Store.YES);</div><div class="line">					Field state=new TextField("state",bc.getState()+"",Store.YES);</div><div class="line">					</div><div class="line">					</div><div class="line">					// 将field域设置到Document对象中</div><div class="line">					document.add(id);</div><div class="line">					document.add(username);</div><div class="line">					document.add(blogCommentDate);</div><div class="line">					document.add(content);</div><div class="line">					document.add(title);</div><div class="line">					document.add(hasread);</div><div class="line">					document.add(state);</div><div class="line">					</div><div class="line">					docList.add(document);			</div><div class="line">				&#125;</div><div class="line">				</div><div class="line">				IndexWriter write=this.getWriter();</div><div class="line">				// 通过IndexWriter对象将Document写入到索引库中</div><div class="line">				for(Document doc:docList)&#123;</div><div class="line">					write.addDocument(doc);</div><div class="line">				&#125;</div><div class="line">				// 关闭writer</div><div class="line">				write.close();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="索引文件的逻辑结构"><a href="#索引文件的逻辑结构" class="headerlink" title="索引文件的逻辑结构"></a>索引文件的逻辑结构</h4><p><img src="/images/imgs5/2.jpg" alt="Alt text"><br>通过图示，可以发现最重要的就是文档域和索引域<br>文档域存储的信息就是采集到的信息，通过Document对象来存储，具体说是通过Document对象中field域来存储数据。<br>比如：数据库中一条记录会存储一个一个Document对象，数据库中一列会存储成Document中一个field域。<br>索引域主要是为了搜索使用的。索引域内容是经过lucene分词之后存储的（这里的分词根据所引入的分词器不同，分词效果不一样）<br>传统方法是先找到文件，如何在文件中找内容，在文件内容中匹配搜索关键字，这种方法是顺序扫描方法，数据量大就搜索慢<br>但是lucene采用倒排索引结构，它是在索引中匹配搜索关键字，由于索引内容量有限并且采用固定优化算法搜索速度很快，找到了索引中的词汇，词汇与文档关联，从而最终找到了文档。</p>
+<h4 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h4><p><img src="/images/imgs5/3.jpg" alt="Alt text"><br>其中，IndexWriter是索引过程的核心组件，通过IndexWriter可以创建新索引、更新索引、删除索引操作。IndexWriter需要通过Directory对索引进行存储操作。<br>Directory描述了索引的存储位置，底层封装了I/O操作，负责对索引进行存储。它是一个抽象类，它的子类常用的包括FSDirectory（在文件系统存储索引）、RAMDirectory（在内存存储索引）。</p>
+<h4 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h4><p>Lucene中分词主要分为两个步骤：分词、过滤<br>分词：将field域中的内容一个个的分词。<br>过滤：将分好的词进行过滤，比如去掉标点符号、大写转小写、词的型还原（复数转单数、过去式转成现在式）、停用词过滤<br>停用词：单独应用没有特殊意义的词。比如的、啊、等，英文中的this is a the等等。</p>
+<h4 id="搜索流程"><a href="#搜索流程" class="headerlink" title="搜索流程"></a>搜索流程</h4><p><img src="/images/imgs5/4.jpg" alt="Alt text"><br>Field的属性，主要有三个<br>是否分词（Tokenized）<br>是：对该field存储的内容进行分词，分词的目的，就是为了索引。<br>是否索引（Indexed）<br>是：将分好的词进行索引，索引的目的，就是为了搜索<br>是否存储（Stored）<br>是：将field域中的内容存储到文档域中。存储的目的，就是为了搜索页面显示取值用的。</p>
+<h4 id="创建查询对象的方式"><a href="#创建查询对象的方式" class="headerlink" title="创建查询对象的方式"></a>创建查询对象的方式</h4><p>通过QueryParser来创建查询对象（其他方式就不介绍了）<br>通过QueryParser来创建query对象，可以指定分词器，搜索时的分词器和创建该索引的分词器一定要一致。还可以输入查询语句。<br>查询语法<br>1、基础的查询语法，关键词查询：<br>域名+“：”+搜索的关键字<br>例如：content:java<br>2、范围查询<br>域名+“:”+[最小值 TO 最大值]<br>例如：size:[1 TO 1000]<br>3、组合条件查询<br>条件1 AND 条件2<br>条件1 OR 条件2<br>条件1 NOT 条件2</p>
+<h4 id="TopDocs"><a href="#TopDocs" class="headerlink" title="TopDocs"></a>TopDocs</h4><p>Lucene搜索结果可通过TopDocs遍历<br>earch方法需要指定匹配记录数量n：indexSearcher.search(query, n)<br>TopDocs.totalHits：是匹配索引库中所有记录的数量<br>TopDocs.scoreDocs：匹配相关度高的前边记录数组，scoreDocs的长度小于等于search方法指定的参数n</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>当然lucene的知识体系远不止这些，这里只是通过应用主导学习来浅尝全文检索。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;不知不觉，从九月份后就已经很少写博总结了，有点小颓废了。好吧，回到正题，本着应用为主，了解原理为辅的原则总结。&lt;br&gt;以我的微型论坛中的文章
+    
+    </summary>
+    
+      <category term="全文检索" scheme="http://www.myzwl.win/categories/%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2/"/>
+    
+    
+      <category term="全文检索" scheme="http://www.myzwl.win/source/tags/%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2/"/>
+    
+  </entry>
   
   <entry>
     <title>丑数</title>
@@ -482,181 +584,6 @@
     
     
       <category term="学习历程" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E5%8E%86%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>常见面试题八之javaweb基础</title>
-    <link href="http://www.myzwl.win/2017/09/04/face_8/"/>
-    <id>http://www.myzwl.win/2017/09/04/face_8/</id>
-    <published>2017-09-04T09:48:51.000Z</published>
-    <updated>2017-09-12T14:16:54.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力</p>
-<h4 id="使用spring框架的好处是什么"><a href="#使用spring框架的好处是什么" class="headerlink" title="使用spring框架的好处是什么"></a>使用spring框架的好处是什么</h4><p>轻量级、控制反转、面向切面编程（AOP）、容器（包含并管理应用中对象的生命周期和配置）、mvc框架、事务管理、异常处理</p>
-<h4 id="applicationContext通常的实现是什么"><a href="#applicationContext通常的实现是什么" class="headerlink" title="applicationContext通常的实现是什么"></a>applicationContext通常的实现是什么</h4><p>FileSystemXmlApplicationContext（从一个xml文件中加载beans的定义）<br>classPathXmlApplicationContext：（也是从一个xml文件中加载beans文件，但是在classpath里找bean配置）<br>WebXmlApplicationContext：定义一个web应用的所有bean</p>
-<h4 id="什么是spring的依赖注入？有哪些方法进行依赖注入？"><a href="#什么是spring的依赖注入？有哪些方法进行依赖注入？" class="headerlink" title="什么是spring的依赖注入？有哪些方法进行依赖注入？"></a>什么是spring的依赖注入？有哪些方法进行依赖注入？</h4><p>你不在代码里直接组装你的组件和服务，但是要在配置文件里描述哪些组件和服务，之后一个容器负责把他们组装起来<br>构造器依赖注入、setter方法注入</p>
-<h4 id="解释spring支持的几种bean的作用域"><a href="#解释spring支持的几种bean的作用域" class="headerlink" title="解释spring支持的几种bean的作用域"></a>解释spring支持的几种bean的作用域</h4><blockquote>
-<p>singleton：bean在每个spring ioc容器中只有一个实例<br>prototype： 一个bean的定义可以有多个实例<br>request： 每次http请求都会创建一个bean，改作用域仅在web的spring applicationContext情形下有效<br>session、global-session</p>
-</blockquote>
-<h4 id="解释spring框架中bean的生命周期"><a href="#解释spring框架中bean的生命周期" class="headerlink" title="解释spring框架中bean的生命周期"></a>解释spring框架中bean的生命周期</h4><blockquote>
-<p>1.spring容器从XML文件中读取bean的定义，并实例化bean<br>2.spring根据bean的定义填充所有的属性<br>3.如果bean实现了beanNameAware接口，spring传递bean的ID到setBeanName方法<br>4.如果Bean实现了BeanFactoryAware接口，spring传递beanfactory给setBeanFactory<br>5.如果有任何与bean相关联的beanpostprocessors，spring会在postprocesserBeforeInitalzation（）方法内部调用他们<br>6.如果bean实现了intialzingBean了，调用它的afterPropertySet方法，如果bean声明初始化方法，调用此初始化方法<br>7.如果bean实现了disposableBean，它将调用destroy（）方法</p>
-</blockquote>
-<h4 id="spring中如何注入一个java集合"><a href="#spring中如何注入一个java集合" class="headerlink" title="spring中如何注入一个java集合"></a>spring中如何注入一个java集合</h4><p><list>、<set>,<map>,<props></props></map></set></list></p>
-<h4 id="有哪些不同方式的自动装配"><a href="#有哪些不同方式的自动装配" class="headerlink" title="有哪些不同方式的自动装配"></a>有哪些不同方式的自动装配</h4><p>有五种自动装配的方式</p>
-<blockquote>
-<p>no:默认方式，通过显示设置ref属性来进行装配<br>byName：通过参数名自动装配<br>byType：通过参数类型自动装配<br>constructor ： 类似于bytype，但是要提供构造器参数<br>autodetect：首次尝试construc，其次是bytype</p>
-</blockquote>
-<h4 id="hibernate中sessionFactory是线程安全吗？session是线程安全的吗"><a href="#hibernate中sessionFactory是线程安全吗？session是线程安全的吗" class="headerlink" title="hibernate中sessionFactory是线程安全吗？session是线程安全的吗"></a>hibernate中sessionFactory是线程安全吗？session是线程安全的吗</h4><p>sessionfactory对应一个数据存储的概念，它是线程安全的，可以被多个线程并发访问。一般在启动的时候通过单例模式进行封装便于访问<br>session是一个轻量级的非线程安全的对象，线程间不能共享session，session默认会延迟获取数据库连接</p>
-<h4 id="mybatis中的动态SQL是什么意思"><a href="#mybatis中的动态SQL是什么意思" class="headerlink" title="mybatis中的动态SQL是什么意思"></a>mybatis中的动态SQL是什么意思</h4><p>动态sql主要包括if、choose、when、otherwise、trim、where、set、foreach</p>
-<h4 id="简单说一下mybatis的一级缓存和二级缓存"><a href="#简单说一下mybatis的一级缓存和二级缓存" class="headerlink" title="简单说一下mybatis的一级缓存和二级缓存"></a>简单说一下mybatis的一级缓存和二级缓存</h4><p>mybatis首先去缓存中查询结果集，如果没有则查询数据库，如果有则从从缓存取出返回结果集。mybatis内部缓存使用一个hashmap，key为hashcode+sqlid+sql语句。value从查询出来映射生成java对象<br>mybatis的二级缓存即查询缓存，它的作用域是一个mapper的namespace，即在同一个namespace中查询sql可以从缓存中存取数据，二级缓存是可以跨sqlsession的</p>
-<h4 id="什么是泛型是如何工作？什么是类型擦除？如何工作？"><a href="#什么是泛型是如何工作？什么是类型擦除？如何工作？" class="headerlink" title="什么是泛型是如何工作？什么是类型擦除？如何工作？"></a>什么是泛型是如何工作？什么是类型擦除？如何工作？</h4><blockquote>
-<p>1类型检查：在生成字节码之前提供类型检查<br>2.类型擦除：所有的类型参数都用他们的限定类型替换，包括类、变量和方法<br>3：如果调用类型擦除和多态性发生冲突时，则在调用该方法时插入强制类型转换<br>类型擦除：<br>所有类型参数都用他们的限定类型替换：比如T,Object</p>
-</blockquote>
-<p>如何工作</p>
-<blockquote>
-<p>泛型通过类型擦除来实现的，编译器在编译时期擦除了所有类型相关的信息，所有在运行时不存在任何类型相关的信息</p>
-</blockquote>
-<h4 id="Ajax的实现流程是主怎样的"><a href="#Ajax的实现流程是主怎样的" class="headerlink" title="Ajax的实现流程是主怎样的"></a>Ajax的实现流程是主怎样的</h4><blockquote>
-<p>1创建XMLHttpRequest对象，也就是创建一个异步调用对象<br>2.创建一个新的HTTp请求，并指定该HTTP请求的方法，url及验证信息<br>3设置http请求状态变化的函数<br>4.发送HTTp请求<br>5获取异步调用返回的数据<br>6.使用javascript和DOM实现局部刷新</p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己
-    
-    </summary>
-    
-      <category term="面试题" scheme="http://www.myzwl.win/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
-    
-    
-      <category term="学习效果检验" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E6%A3%80%E9%AA%8C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>常见面试题七之javaweb基础</title>
-    <link href="http://www.myzwl.win/2017/09/04/face_7/"/>
-    <id>http://www.myzwl.win/2017/09/04/face_7/</id>
-    <published>2017-09-04T08:48:51.000Z</published>
-    <updated>2017-09-12T07:30:08.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力</p>
-<h4 id="说一说servlet的生命周期"><a href="#说一说servlet的生命周期" class="headerlink" title="说一说servlet的生命周期"></a>说一说servlet的生命周期</h4><p>包括加载和实例化、初始化、处理请求及服务结束，有javax.servlet.Servlet接口的相关方法实现<br>web容器加载servlet，生命周期开始。通过调用servlet的init（）方法进入初始化，通过service（）方法实现，根据不同的请求调用do<em>*</em>（）方法，服务结束，web容器调用servlet的destroy（）方法</p>
-<h4 id="servlet-API中forward（）与redirect（）区别？"><a href="#servlet-API中forward（）与redirect（）区别？" class="headerlink" title="servlet API中forward（）与redirect（）区别？"></a>servlet API中forward（）与redirect（）区别？</h4><blockquote>
-<p>从地址栏显示来说：<br>forward是服务器请求的地址资源，通过内部转发方式最后只返回一次内容，而redirect是重新转发，也就是需要经过两次请求与响应<br>从数据共享来说<br>forward可以共享request里的数据，而redirect不行，forward是服务器内部的一种操作，而redirect是服务器通知客户端，然后客户端重新发起请求<br>从运用地方<br>forward一般用于用户登录的时候，根据角色转发到相应的模块<br>redirect一般用于用户注销登录时返回主页和跳转到其它的网站<br>从效率上<br>forward高，redirect低</p>
-</blockquote>
-<h4 id="request-getAttribute-和request-getParameter-有什么区别"><a href="#request-getAttribute-和request-getParameter-有什么区别" class="headerlink" title="request.getAttribute()和request.getParameter()有什么区别"></a>request.getAttribute()和request.getParameter()有什么区别</h4><blockquote>
-<p>后者取得通过容器的实现来取得通过类似post，get等方式传入的数据<br>前者返回对象，后者返回字符串</p>
-</blockquote>
-<h4 id="jsp有哪些内置对象？作用分别是什么"><a href="#jsp有哪些内置对象？作用分别是什么" class="headerlink" title="jsp有哪些内置对象？作用分别是什么"></a>jsp有哪些内置对象？作用分别是什么</h4><p>总共有九大内置对象</p>
-<blockquote>
-<p>request、reponse、pageContext、session、application、out、config、page、exception</p>
-</blockquote>
-<h4 id="Http中，get和post方法区别"><a href="#Http中，get和post方法区别" class="headerlink" title="Http中，get和post方法区别"></a>Http中，get和post方法区别</h4><blockquote>
-<p>1.get请求的数据会被浏览器缓存起来，并以明文方式出现在url中，不太安全而post则更安全<br>2get传输数据有大小限制get请求的参数会跟在url后进行传递</p>
-</blockquote>
-<h4 id="jdbc访问数据库的基本步骤是什么？"><a href="#jdbc访问数据库的基本步骤是什么？" class="headerlink" title="jdbc访问数据库的基本步骤是什么？"></a>jdbc访问数据库的基本步骤是什么？</h4><blockquote>
-<p>1.加载驱动<br>2.通过driverManager对象获取连接对象Connection<br>3.通过连接对象获取会话<br>4.通过会话进行数据的增删改查，封装对象<br>5。关闭数据库</p>
-</blockquote>
-<h4 id="什么是幻读"><a href="#什么是幻读" class="headerlink" title="什么是幻读"></a>什么是幻读</h4><p>幻读是指一个事务多次执行一条查询语句返回的确是不同的值。假设一个事务正根据某个条件进行数据库查询，然后另一个事务插入了一行满足这个查询条件的数据，之后这个事务再次执行了这条查询，返回的结果集中包含在刚插入的那条数据</p>
-<h4 id="谈谈你对struts的理解"><a href="#谈谈你对struts的理解" class="headerlink" title="谈谈你对struts的理解"></a>谈谈你对struts的理解</h4><blockquote>
-<p>1.structs本质就是一个servlet，而这个servlet就是ActionServlet或是其子类，即将所有请求都交给servlet去处理，而该servlet参考配置文件将请求分发给不同action处理<br>2.在把请求交给action之前，会将参数封装成一个frombean对象，而该对象只有通过validate方法，才能将对象传递给execute方法，否则将返回一个错误页面，并且这个页面由input属性指定<br>3.action执行完之后要返回显示的结果视图，这个结果一个actionForward来表示，而其是通过在struts配置文件中配置获得返回页面</p>
-</blockquote>
-<h4 id="谈谈你对hibernate的理解"><a href="#谈谈你对hibernate的理解" class="headerlink" title="谈谈你对hibernate的理解"></a>谈谈你对hibernate的理解</h4><blockquote>
-<p>1.使用hibernate的基本流程：配置Configuration对象、产生sessionfactory、创建session对象、启动事务，完成CRUD操作，提交事务，关闭session<br>2.使用hibernate时，先要配置hibernate.cfg.xml文件，其中配置数据库连接信息和方言，还要为每个实体配置相应的hbm.xml文件<br>3.在应用hibernate时，重点要了解session的缓存原理，级联，延迟加载和hql语句</p>
-</blockquote>
-<h4 id="谈谈你对spring的理解"><a href="#谈谈你对spring的理解" class="headerlink" title="谈谈你对spring的理解"></a>谈谈你对spring的理解</h4><blockquote>
-<p>1.spring是实现了工厂模式的工厂类，这个类为beanFactory，通常为其子类applicationContext，spring相当于一个大的工厂类，在其配置文件中通过<bean>元素配置用于创建实例对象名和实例对象的属性<br>2.spring提供了对IOC的良好支持，利用IOC可以很好的实现模块间的解耦<br>3.spring提供了对AOP技术的良好封装，即把系统中很多不相干的类的方法，在这些众多的方法中加入某种系统功能的代码，例如，加入日志，权限判断，异常处理等等，称为AOP<br>4实现AOP采用代理类，在jdk中采用proxy类产生动态代理的方式为某个接口生成实现类，</bean></p>
-</blockquote>
-<h4 id="谈谈struts的优缺点"><a href="#谈谈struts的优缺点" class="headerlink" title="谈谈struts的优缺点"></a>谈谈struts的优缺点</h4><p>优点：</p>
-<blockquote>
-<p>1.实现mvc模式，结构清晰，使开发者只关注业务逻辑的实现<br>2有丰富的tag可以使用，大大提高开发效率<br>3.页面导航使系统的脉络更加清晰<br>4.提供Exception处理机制</p>
-</blockquote>
-<p>缺点：</p>
-<blockquote>
-<p>1.structs的action是一种thread-safe方式，它仅仅允许一个实例处理所有的请求。容易引起线程安全问题<br>2 测试不方便。struts的每个action都同web层耦合在一起，这样它的测试依赖于web容器，单元测试很难实现<br>3.对servlet的依赖性过强，struts处理action时必须依赖servletRequest和servletRespouse，所以它摆脱不了servlet容器</p>
-</blockquote>
-<h4 id="mybatis和hibernate有什么不同"><a href="#mybatis和hibernate有什么不同" class="headerlink" title="mybatis和hibernate有什么不同"></a>mybatis和hibernate有什么不同</h4><p>相同点：</p>
-<blockquote>
-<p>都屏蔽了jdbc api底层访问细节，编程流程固定，还将sql语句与java代码混杂在一起</p>
-</blockquote>
-<p>不同点</p>
-<blockquote>
-<p>半自动，将sql语句与代码进行分离，提供了将结果集自动封装成为实体对象和对象集合的功能<br>全自动，hibernate，提供hql语句</p>
-</blockquote>
-<h4 id="介绍一下hibernate的二级缓存"><a href="#介绍一下hibernate的二级缓存" class="headerlink" title="介绍一下hibernate的二级缓存"></a>介绍一下hibernate的二级缓存</h4><p>回答思路：1.首先说清楚什么是缓存<br>2.再说有了hibernate的session就是一级缓存，即有了一级缓存，为什么还要有二级缓存<br>3.最后说如何配置hibernate的二级缓存</p>
-<blockquote>
-<p>1.缓存就是把以前从数据库中查询出来和使用过的对象保存在内存中，这个数据结构通常类似于hashmap，当以后要使用某个对象时，先查询缓存中是否有这个对象，如果有则使用缓存中的对象，如果没有则去查询数据库，并将查询出来的对象保存在缓存中，以便下次使用<br>2.hibernate的session就是一级缓存，当想要使用session从数据库中查询出的一个对象时，session也是先从自己内部查看是否存在这个对象，存在则直接返回，不存在则查询数据库<br>由于session代表依次会话，一个session与一个数据库连接的相关性，通常仅用一个事务，用完就关闭，由于一级缓存是线程不安全的，要被多个线程共享，而二级缓存是全局缓存，可以被多个线程和事务共享<br>3二级缓存是独立于hibernate的软件部件，如ehcache</p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己
-    
-    </summary>
-    
-      <category term="面试题" scheme="http://www.myzwl.win/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
-    
-    
-      <category term="学习效果检验" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E6%A3%80%E9%AA%8C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>常见面试题六之java基础</title>
-    <link href="http://www.myzwl.win/2017/09/03/face_6/"/>
-    <id>http://www.myzwl.win/2017/09/03/face_6/</id>
-    <published>2017-09-03T08:48:51.000Z</published>
-    <updated>2017-09-07T13:18:22.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己总结，有的已给出答案。下面是我整理搜集的面试题（虽然，很不甘心以这种方式来获取面试资格，但是没办法，毕竟机会都没，何来发展），有些经过自己的语言转换，有些是参考原文给出，有些自己做实验进行验证，总之通过学习记录。来给自己一个动力</p>
-<h4 id="说出math的取整函数及其意义"><a href="#说出math的取整函数及其意义" class="headerlink" title="说出math的取整函数及其意义"></a>说出math的取整函数及其意义</h4><p>提供了三种，分别为ceil（向上取整），如math.ceil（11.3）为12；<br>floor（向下取整），如math.floor（11.3），结果为11<br>round（四舍五入），如math.round（11.5）为12</p>
-<h4 id="Overload与Override的区别？Overload的方法是否可以改变返回值的类型？"><a href="#Overload与Override的区别？Overload的方法是否可以改变返回值的类型？" class="headerlink" title="Overload与Override的区别？Overload的方法是否可以改变返回值的类型？"></a>Overload与Override的区别？Overload的方法是否可以改变返回值的类型？</h4><p>Overload是重载，Overrride是覆盖，也就是重写</p>
-<blockquote>
-<p>重载表示方法名相同，但是参数个数或类型不同）<br>重写表示子类中的方法可以与父亲中某个方法的名称和参数完全相同，通过子类创建实例调用父类这个方法，也就是相当于覆盖了父类的这个方法，但是当父类是private时相当于子类增加了一个全新的方法，就不存在覆盖了。并且子类应该比父类抛出更少的异常或者拥有更大的权限<br>如果参数名不同会改变返回类型，但是如果都一样肯定不会改变返回类型</p>
-</blockquote>
-<h4 id="接口与抽象类"><a href="#接口与抽象类" class="headerlink" title="接口与抽象类"></a>接口与抽象类</h4><p>接口是否可继承接口？抽象类是否可实现接口？抽象类是否可继承具体类？抽象类是否可以有静态的main方法？</p>
-<blockquote>
-<p>接口可以继承接口，抽象类可以实现接口，抽象类可以继承具体类，抽象类可以有静态的main方法<br>抽象类和普通类唯一的区别就是不能创建实例对象和允许有abstract方法</p>
-</blockquote>
-<h4 id="java中实现多态的机制是什么？"><a href="#java中实现多态的机制是什么？" class="headerlink" title="java中实现多态的机制是什么？"></a>java中实现多态的机制是什么？</h4><p>靠的是父类或接口定义的引用变量可以指向子类或者具体实现类的实例对象，而程序调用的方法在运行期才动态绑定，就是引用变量所指向的具体实例对象的方法，也就是内存里正在运行的那个对象的方法，而不是引用变量类型中定义的方法</p>
-<h4 id="abstractclass和interface语法上有什么区别"><a href="#abstractclass和interface语法上有什么区别" class="headerlink" title="abstractclass和interface语法上有什么区别"></a>abstractclass和interface语法上有什么区别</h4><blockquote>
-<p>1.抽象类可以有构造方法，接口不能有构造方法<br>2.抽象类中可以有普通成员方法，接口中没有普通成员变量<br>3.抽象类中可以包含非抽象的普通方法，接口中的所有方法必须都是抽象的，不能有非抽象的方法。<br>4.抽象类中的抽象方法访问类型可以是public、protected，但接口中的抽象方法只能是public类型的，并且默认即为public abstract类型<br>5.抽象类中可以包含静态方法，接口中不能包含静态方法<br>6.抽象类和接口类中都可以包含静态成员变量，抽象类中的静态成员变量的访问类型可以是任意，但是接口中定义的变量只能是public static final类型<br>7一个类可以实现多个接口，但只能继承一个抽象类</p>
-</blockquote>
-<h4 id="abstract的method是否可同时是static，是否可同时是native，是否可同时是synchronized？"><a href="#abstract的method是否可同时是static，是否可同时是native，是否可同时是synchronized？" class="headerlink" title="abstract的method是否可同时是static，是否可同时是native，是否可同时是synchronized？"></a>abstract的method是否可同时是static，是否可同时是native，是否可同时是synchronized？</h4><blockquote>
-<p>abstract的method不可以是static的，因为抽象的方法是要被子类实现的，而static与子类扯不上关系<br>native方法表示该方法要用另外一种依赖平台的编程语言实现的，不存在被子类实现的问题，所以，它也不能为抽象的，<br>synchronized应该是作用在一个具体的方法上才有意义，而且，方法上的synchronized同步所使用的同步锁对象是this，而抽象方法无法确定this是什么</p>
-</blockquote>
-<h4 id="下面这条语句一共创建了多少个对象？"><a href="#下面这条语句一共创建了多少个对象？" class="headerlink" title="下面这条语句一共创建了多少个对象？"></a>下面这条语句一共创建了多少个对象？</h4><p>String s=”a”+”b”+”c”+”d”;<br>对于如下代码</p>
-<blockquote>
-<p>String s1=”a”;<br>String s2=s1+”b”;<br>String s3=”a”+”b”;<br>System.out.println(s2=”ab”);<br>System.out.println(s3=”ab”);<br>第一句打印为false，第二句为true，说明编译器对字符串常量直接进行了优化，所以产生了一个对象</p>
-</blockquote>
-<h4 id="java中堆和栈有什么区别？"><a href="#java中堆和栈有什么区别？" class="headerlink" title="java中堆和栈有什么区别？"></a>java中堆和栈有什么区别？</h4><p>jvm中堆和栈属于不同的内存区域，使用目的也不同。栈常用于保存方法和局部变量，而对象总是在堆上分配。栈通常都比堆小，也不会在多个线程之间共享，而堆被整个jvm的所有线程共享</p>
-<h4 id="什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？"><a href="#什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？" class="headerlink" title="什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？"></a>什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？</h4><p>将一个对象变成字节流的形式传出去或者从一个字节流中恢复成一个java对象，例如将一个java对象存储到硬盘或者送给网络上的其他计算机，可以用代码把一个java对象变成某个格式的字节流在传输<br>如果要让java自动帮我们做，就需要实现serializable接口，编译的类才被writeObject方法操作，例如，在web中，如果对象被保存在了session中，tomcat在重启时要把session对象序列化到硬盘</p>
-<h4 id="描述一下JVM加载class文件的原理机制？"><a href="#描述一下JVM加载class文件的原理机制？" class="headerlink" title="描述一下JVM加载class文件的原理机制？"></a>描述一下JVM加载class文件的原理机制？</h4><p>JVM中类的装载是由classLoader和它的子类来实现的，java classLoader是一个重要的运行时系统组件。他负责在运行时查找和装入文件的类</p>
-<h4 id="heap和stack有什么区别？"><a href="#heap和stack有什么区别？" class="headerlink" title="heap和stack有什么区别？"></a>heap和stack有什么区别？</h4><p>java的内存分为两类，栈内存和堆内存</p>
-<blockquote>
-<p>栈内存是指程序进入一个方法时，会为这个方法单独分配一块私有存储空间，用于存储这个方法内部的局部变量，当这个方法结束时，分配给这个方法的栈会释放，这个栈的变量也将随之释放<br>堆是用于存放不在当前方法栈中的那些数据，例如使用new创建的对象放在堆里，所以，它不会随方法结束而消失，局部变量使用final修饰后，放在堆中</p>
-</blockquote>
-<h4 id="GC是是什么？为什么要有GC？"><a href="#GC是是什么？为什么要有GC？" class="headerlink" title="GC是是什么？为什么要有GC？"></a>GC是是什么？为什么要有GC？</h4><p>GC是垃圾收集的意思，内存处理是编程人员容易出现问题的地方，忘记或者错误的内存回收会导致程序或系统的不稳定性甚至崩溃，java提供GC功能可以自动监测对象是否超过作用域从而达到自动回收内存的目的，java语言没有提供释放已分配内存的显示操作方法</p>
-<h4 id="垃圾回收的优点和原理，并考虑2种回收机制"><a href="#垃圾回收的优点和原理，并考虑2种回收机制" class="headerlink" title="垃圾回收的优点和原理，并考虑2种回收机制"></a>垃圾回收的优点和原理，并考虑2种回收机制</h4><p>垃圾回收可以有效的防止内存泄漏，有效的使用可以使用的内存。垃圾回收期是作为一个单独低级别的线程运行，不可预知的情况下对内存中已经死亡或者长时间没有使用的对象进行清除和回收，程序员不能实时调用垃圾回收器对某个对象或所有对象进行垃圾回收<br>回收机制有标记垃圾回收和增量垃圾回收</p>
-<h4 id="垃圾回收器基本原理，可以马上回收内存及有什么办法主动通知JVM进行垃圾回收"><a href="#垃圾回收器基本原理，可以马上回收内存及有什么办法主动通知JVM进行垃圾回收" class="headerlink" title="垃圾回收器基本原理，可以马上回收内存及有什么办法主动通知JVM进行垃圾回收"></a>垃圾回收器基本原理，可以马上回收内存及有什么办法主动通知JVM进行垃圾回收</h4><blockquote>
-<p>对于GC来说，当程序员创建对象时，GC就开始监控这个对象的地址、大小、及使用情况。通常，GC采用有向图的方式记录和管理堆里中的所有对象，通过这种方式确定哪些对象是可达的，哪些对象是不可达的。当GC确定一些对象不可达的，GC有责任回收这些内存空间<br>程序员可以手动执行System.gc（），通知gc运行，但是java语言规范并不保证GC一定会执行</p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;出于时间紧张和需要找实习的压力，所以这段时间开始疯狂通过面试题来检验自己的大学的学习效果。以下面试题主要来自贴吧、论坛，有的没有答案需要自己
-    
-    </summary>
-    
-      <category term="面试题" scheme="http://www.myzwl.win/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
-    
-    
-      <category term="学习效果检验" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E6%95%88%E6%9E%9C%E6%A3%80%E9%AA%8C/"/>
     
   </entry>
   
