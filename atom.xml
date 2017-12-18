@@ -5,10 +5,219 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-12-08T08:12:44.000Z</updated>
+  <updated>2017-12-18T10:29:32.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>solr笔记之二</title>
+    <link href="http://www.myzwl.win/2017/11/10/solr_2/"/>
+    <id>http://www.myzwl.win/2017/11/10/solr_2/</id>
+    <published>2017-11-10T06:48:51.000Z</published>
+    <updated>2017-12-18T10:29:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="solrj的基本使用"><a href="#solrj的基本使用" class="headerlink" title="solrj的基本使用"></a>solrj的基本使用</h4><p>环境准备<br>新建一个java工程，然后添加如下jar包<br><img src="/images/imgs5/27.jpg" alt="Alt text"><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">//远程连接的solr服务器地址</div><div class="line">private static final String URL="http://111.230.246.33:8080/solr";</div><div class="line">	</div><div class="line">	public void search()throws Exception&#123;</div><div class="line">		//solr服务</div><div class="line">		SolrServer solr=new HttpSolrServer(URL);</div><div class="line">		//查询对象</div><div class="line">		SolrQuery query=new SolrQuery();</div><div class="line">		//设置查询条件,名称“q”是固定的且必须的</div><div class="line">		query.set("q", "title:zwl");</div><div class="line">		// 请求查询</div><div class="line">		QueryResponse res=solr.query(query);</div><div class="line">		// 查询结果</div><div class="line">		SolrDocumentList list=res.getResults();</div><div class="line">		// 查询文档总数</div><div class="line">		long num=list.getNumFound();</div><div class="line">		System.out.println(num);</div><div class="line">		for(SolrDocument sd :list)&#123;</div><div class="line">			String id=(String)sd.get("id");</div><div class="line">			//String title=(String)sd.get("title");</div><div class="line">			System.out.println(id);</div><div class="line">		//	System.out.println(title);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void del()throws Exception&#123;</div><div class="line">		SolrServer solr=new HttpSolrServer(URL);</div><div class="line">		solr.deleteById("5");</div><div class="line">		solr.commit();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void add() throws Exception&#123;</div><div class="line">		//实例化solr对象</div><div class="line">		SolrServer solr=new HttpSolrServer(URL);</div><div class="line">		SolrInputDocument doc1=new SolrInputDocument();</div><div class="line">		doc1.setField("id", "5");</div><div class="line">		doc1.setField("title", "dx");</div><div class="line">		solr.add(doc1);</div><div class="line">		solr.commit();</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>注意：以上的索引都是在配置文件中已声明了，如：<br><!--IKAnalyzer Field--></p>
+<p><field name="title_ik" type="text_ik" indexed="true" stored="true"></field></p>
+<p><field name="content_ik" type="text_ik" indexed="true" stored="false" multivalued="true"><br>type可以为具体类型，也可以为一个分词器</field></p>
+<h4 id="查询语法"><a href="#查询语法" class="headerlink" title="查询语法"></a>查询语法</h4><ol>
+<li>q - 查询字符串，必须的，如果查询所有使用<em>:</em></li>
+<li>fq - （filter<br>query）过虑查询，作用：在q查询符合结果中同时是fq查询符合的，例如product_price:[1 TO 20]<br>过滤查询价格从1到20的记录<br>3.sort - 排序，格式：sort=<field name="">+<desc|asc>[,<field name="">+<desc|asc>]…<br>如 product_price desc 按价格降序排序</desc|asc></field></desc|asc></field></li>
+<li>start - 分页显示使用，开始记录下标，从0开始</li>
+<li>rows - 指定返回结果最多有多少条记录，配合start来实现分页。</li>
+<li>fl - 指定返回那些字段内容，用逗号或空格分隔多个<br>7.df-指定一个搜索Field</li>
+<li>wt - (writer type)指定输出格式，可以有xml, json, php, phps, 后面solr<br>1.3增加的，要用通知我们，因为默认没有打开。</li>
+<li>hl 是否高亮,设置高亮Field，设置格式前缀和后缀。<br>10 组合查询：使用and or等等</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;solrj的基本使用&quot;&gt;&lt;a href=&quot;#solrj的基本使用&quot; class=&quot;headerlink&quot; title=&quot;solrj的基本使用&quot;&gt;&lt;/a&gt;solrj的基本使用&lt;/h4&gt;&lt;p&gt;环境准备&lt;br&gt;新建一个java工程，然后添加如下jar包&lt;br&gt;&lt;img 
+    
+    </summary>
+    
+      <category term="solr" scheme="http://www.myzwl.win/categories/solr/"/>
+    
+    
+      <category term="solr" scheme="http://www.myzwl.win/source/tags/solr/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>solr笔记之一</title>
+    <link href="http://www.myzwl.win/2017/11/09/solr_1/"/>
+    <id>http://www.myzwl.win/2017/11/09/solr_1/</id>
+    <published>2017-11-09T06:48:51.000Z</published>
+    <updated>2017-12-18T05:16:44.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>使用传统的数据库查询方式实现搜索无法满足一些高级需求，比如：搜索速度要快、搜索结果按相关度排序、搜索内容不固定，一般可以单独使用Lucene或者使用google或者百度接口或者使用solr实现全文检索。而solr是基于lucene，是一个服务器，在各方面都相对优越<br><img src="/images/imgs5/24.jpg" alt="Alt text"></p>
+<h4 id="redis环境搭建"><a href="#redis环境搭建" class="headerlink" title="redis环境搭建"></a>redis环境搭建</h4><p>有如下步骤</p>
+<blockquote>
+<p>1.上传solr压缩包solr-4.10.3.tgz.tar到linux上<br>2.解压到/usr/local下，tar -zxvf solr-4.10.3.tgz.tar -C /usr/local/<br>3.进入目录: cd solr-4.10.3/example/webapps/<br>4.拷贝其下的war文件到tomcat的webapps中：cp solr.war /usr/local/tomcat/webapps/(tomcat启动，自动解压war包)<br>5.进入solr文件，修改其中一些文件: vim solr/WEB-INF/web.xml 找到nv-entry内容，解开注释，并修改solr/home的地址：我的是/usr/local/solr-4.10.3/example/solr<br>6.拷贝相关jar包到tomcat下 cd /usr/local/solr-4.10.3/example/lib/ext &amp;&amp; cp * /usr/local/tomcat/lib/<br>7.重启tomcat</p>
+</blockquote>
+<p>然后通过浏览器访问，如看到下面的solr主页即可<br><img src="/images/imgs5/25.jpg" alt="Alt text"><br>至此我们可以通过可视化页面对数据进行增删改查操作，其中solr是以id为标识的，并且根据不同的分词器进行分词，而索引字段是在服务器配置文件中已定义好的（可自定义）</p>
+<h4 id="相关文件说明"><a href="#相关文件说明" class="headerlink" title="相关文件说明"></a>相关文件说明</h4><p>solrhome：目录中包括了运行solr实例的所有的配置文件和数据文件，是运行的主目录，可包括多个solrcore<br>solrcore：提供单独的搜索和索引服务<br>如可视化界面中的collection1</p>
+<h4 id="solr索引"><a href="#solr索引" class="headerlink" title="solr索引"></a>solr索引</h4><p>schema.xml，在solrcore的conf目录下，它是solr数据表配置文件，它定义了加入索引的数据的数据类型。主要包括FiledTypes、Filed和其他的一些缺省设置<br><img src="/images/imgs5/26.jpg" alt="Alt text"><br>FieldType域类型<br>text_general是solr默认的域类型<br>子节点<br>name：是这个FieldType的名称<br>class：是Solr提供的包solr.TextField，solr.TextField<br>允许用户通过分析器来定制索引和查询，分析器包括一个分词器（tokenizer）<br>和多个过滤器（filter）<br>positionIncrementGap：可选属性，定义在同一个文档中此类型数据的空白<br>间隔，避免短语匹配错误，此值相当于Lucene的短语查询设置slop值，根据经<br>验设置为100。<br>在FieldType定义的时候最重要的就是定义这个类型的数据在建立索引和进<br>行查询的时候要使用的分析器analyzer,包括分词和过滤<br>索引分析器中：使用solr.StandardTokenizerFactory标准分词器，solr.StopFilte<br>rFactory停用词过滤器，solr.LowerCaseFilterFactory小写过滤器。<br>搜索分析器中：使用solr.StandardTokenizerFactory标准分词器，solr.StopFilte<br>rFactory停用词过滤器，这里还用到了solr.SynonymFilterFactory同义词过滤器</p>
+<p>Field定义<br>在fields结点内定义具体的Field，filed定义包括name,type（为之前定义过的<br>各种FieldType）,indexed（是否被索引）,stored（是否被储存），multiValued（<br>是否存储多个值）等属性。<br>如下：</p>
+<p><field name="name" type="text_general" indexed="true" stored="true"></field></p>
+<p><field name="features" type="text_general" indexed="true" stored="true" multivalued="true"><br>multiValued：该Field如果要存储多个值时设置为true，solr允许一个Field存<br>储多个值，比如存储一个用户的好友id（多个），商品的图片（多个，大图和<br>小图），通过使用solr查询要看出返回给客户端是数组</field></p>
+<p>uniqueKey<br>Solr中默认定义唯一主键key为id域，如下：<br>Solr在删除、更新索引时使用id域进行判断，也可以自定义唯一主键</p>
+<p>copyField复制域<br>copyField复制域，可以将多个Field复制到一个Field中，以便进行统一的检索</p>
+<p>dynamicField（动态字段）<br>动态字段就是不用指定具体的名称，只要定义字段名称的规则，例如定义<br>一个dynamicField，name<br>为*_i，定义它的type为text，那么在使用这个字段的时候，任何以_i结尾的字段<br>都被认为是符合这个定义的，例如：name_i，gender_i，school_i等</p>
+<h4 id="配置中文分词器"><a href="#配置中文分词器" class="headerlink" title="配置中文分词器"></a>配置中文分词器</h4><p>具体步骤如下</p>
+<blockquote>
+<p>1.下载并解压IKAnalyzer<br>2.将IKAnalyzer2012FF_u1.jar拷贝到Tomcat的webapps/solr/WEB-INF/lib 下。<br>3在Tomcat的webapps/solr/WEB-INF/下创建classes目录<br>4.将IKAnalyzer.cfg.xml、ext_stopword.dic mydict.dic copy到Tomcat的webapps/solr/WEB-INF/classes<br>5.修改solr core的schema文件添加FieldType：<br><!-- IKAnalyzer--></p>
+<p><fieldtype name="text_ik" class="solr.TextField"></fieldtype></p>
+<p><analyzer type="index" ismaxwordlength="false" class="org.wltea.analyzer.lucene.IKAnalyzer"></analyzer></p>
+<p><analyzer type="query" ismaxwordlength="true" class="org.wltea.analyzer.lucene.IKAnalyzer"><br><br>6.重启tomcat</analyzer></p>
+</blockquote>
+<p>这样配置后，中文分词就会有很好的分词效果</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;使用传统的数据库查询方式实现搜索无法满足一些高级需求，比如：搜索速度要快、搜索结果按相关度排序、搜索内容不固定，一般可以单独使用Lucene
+    
+    </summary>
+    
+      <category term="solr" scheme="http://www.myzwl.win/categories/solr/"/>
+    
+    
+      <category term="solr" scheme="http://www.myzwl.win/source/tags/solr/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>FreeMarker笔记之基础知识</title>
+    <link href="http://www.myzwl.win/2017/11/08/freemarker_1/"/>
+    <id>http://www.myzwl.win/2017/11/08/freemarker_1/</id>
+    <published>2017-11-08T06:48:51.000Z</published>
+    <updated>2017-12-17T12:45:16.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>FreeMarker是一个模板引擎，一个基于模板生成文本输出的通用工具。简单比如来说，html作为只关心前台，无后台数据，而后台数据通过freemarker模板来定义数据，然后在html中取出数据</p>
+<h4 id="入门程序"><a href="#入门程序" class="headerlink" title="入门程序"></a>入门程序</h4><p>不妨以一个hello world程序作为入门，然后在研究它<br>1.建立一个普通的java项目<br>2.引入freemarker.jar包<br>3.在项目目录下建立模板目录：templates<br>4.在templates目录下，建立一个xx.ftl文件，内容如下</p>
+<blockquote>
+<p>hello，${msg}</p>
+</blockquote>
+<p>5.然后建立一个测试类：</p>
+<blockquote>
+<p>public static void main(String[] args) throws Exception {<br>        //创建Freemarker配置实例<br>        Configuration cfg = new Configuration();<br>        cfg.setDirectoryForTemplateLoading(new File(“templates”));<br>        //创建数据模型<br>        Map root = new HashMap();<br>        root.put(“msg”, “world”);<br>        //加载模板文件<br>        Template t1 = cfg.getTemplate(“a.ftl”);<br>        //显示生成的数据,//将合并后的数据打印到控制台<br>        Writer out = new OutputStreamWriter(System.out);<br>        t1.process(root, out);<br>        out.flush();<br>    }</p>
+</blockquote>
+<p>输出结果：<br>hello，world</p>
+<h4 id="if指令"><a href="#if指令" class="headerlink" title="if指令"></a>if指令</h4><p>不妨先看例子<br>测试类中添加如下语句<br>root.put(“random”, new Random().nextInt(100));</p>
+<p>模板文件添加如下语句</p>
+<blockquote>
+<p>if语句测试：</p>
+<h2 id="msg-是-lt-if-msg-”world”-gt-is-right-lt-if-gt"><a href="#msg-是-lt-if-msg-”world”-gt-is-right-lt-if-gt" class="headerlink" title="${msg}是&lt;#if msg==”world”&gt;is right&lt;/#if&gt;"></a>${msg}是&lt;#if msg==”world”&gt;is right&lt;/#if&gt;</h2><p>if else 语句测试：<br>&lt;#if random gt 60&gt;<br>    及格！<br>&lt;#else&gt;<br>    不及格！</p>
+<h2 id="lt-if-gt"><a href="#lt-if-gt" class="headerlink" title="&lt;/#if&gt;"></a>&lt;/#if&gt;</h2><p>if else if else语句测试：<br>&lt;#if random gte 90&gt;<br>    优秀！<br>&lt;#elseif random gte 80&gt;<br>    良好！<br>&lt;#else&gt;<br>    一般！<br>&lt;/#if&gt;</p>
+</blockquote>
+<p>随机输出结果:<br>if语句测试：</p>
+<h2 id="gt-world是is-right"><a href="#gt-world是is-right" class="headerlink" title="&gt;world是is right"></a>&gt;world是is right</h2><p>if else 语句测试：</p>
+<pre><code>及格！
+</code></pre><hr>
+<p>if else if else语句测试：<br>    优秀！</p>
+<p>其中运用了比较运算符</p>
+<ol>
+<li>=（或者==）： 判断两个值是否相等；</li>
+<li>!=： 判断两个值是否不相等；<br>注： =和!=可以用作字符串、数值和日期的比较，但两边的数据类型必须相同。而且FreeMarker的比较是精确比较，不会忽略大小写及空格。</li>
+<li><blockquote>
+<p>（或者gt）： 大于</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>=（或者gte）： 大于等于</p>
+</blockquote>
+</li>
+<li>&lt;（或者lt）： 小于</li>
+<li>&lt;=（或者lte）： 小于等于<br>注： 上面这些比较运算符可以用于数字和日期，但不能用于字符串。大部分时候，使用gt比&gt;有更好的效果，因为FreeMarker会把&gt;解释成标签的结束字符。可以使用括号来避免这种情况，如：&lt;#if (x&gt;y)&gt;。</li>
+</ol>
+<h4 id="list指令"><a href="#list指令" class="headerlink" title="list指令"></a>list指令</h4><p>首先添加一个address类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">public class Address &#123;</div><div class="line"></div><div class="line">	</div><div class="line">	private String country;</div><div class="line">	public String getCountry() &#123;</div><div class="line">		return country;</div><div class="line">	&#125;</div><div class="line">	public void setCountry(String country) &#123;</div><div class="line">		this.country = country;</div><div class="line">	&#125;</div><div class="line">	public String getCity() &#123;</div><div class="line">		return city;</div><div class="line">	&#125;</div><div class="line">	public void setCity(String city) &#123;</div><div class="line">		this.city = city;</div><div class="line">	&#125;</div><div class="line">	public Address(String country, String city) &#123;</div><div class="line">		super();</div><div class="line">		this.country = country;</div><div class="line">		this.city = city;</div><div class="line">	&#125;</div><div class="line">	private String city;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后测试类中添加如下语句</p>
+<blockquote>
+<p>List list = new ArrayList();<br>        list.add(new Address(“中国”,”北京”));<br>        list.add(new Address(“中国”,”上海”));<br>        list.add(new Address(“美国”,”纽约”));<br>        root.put(“lst”, list);</p>
+</blockquote>
+<p>模板文件添加如下</p>
+<blockquote>
+<p>测试list指令：<br>&lt;#list lst as temp &gt;<br>    <b>${temp.country}</b> <br><br>&lt;/#list&gt;</p>
+</blockquote>
+<h4 id="include指令"><a href="#include指令" class="headerlink" title="include指令"></a>include指令</h4><p>在templates目录下随便写一个文件，比如tt.txt，里面目前只有test字符<br>模板文件增加如下：<br>&lt;#include “tt.txt” /&gt;<br>将增加tt.txt里面的文本内容到该模板文件中</p>
+<h4 id="macro指令"><a href="#macro指令" class="headerlink" title="macro指令"></a>macro指令</h4><p>该指令为宏指令，相当于定义函数和参数<br>第一个为函数名，后面为参数可有可无<br>如：</p>
+<blockquote>
+<p>&lt;#macro tt&gt;<br>hello<br>world<br>&lt;/#macro&gt;</p>
+</blockquote>
+<p>引用&lt;@tt /&gt;<br>输出结果<br>hello<br>world</p>
+<p>定义待参宏指令<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-id">#macro</span> func <span class="selector-tag">a</span> b&gt;</div><div class="line">$&#123;a&#125;,$&#123;b&#125;</div><div class="line">&lt;/#macro&gt;</div><div class="line"></div><div class="line">&lt;@func a=<span class="string">'hello'</span> b=<span class="string">'world'</span>/&gt;</div></pre></td></tr></table></figure></p>
+<p>输出结果为hello，world</p>
+<p>nested指令<br>该指定是插入引入的内容到相应位置如：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-id">#macro</span> <span class="attribute">border</span>&gt; </div><div class="line"> before </div><div class="line">    &lt;#nested&gt; </div><div class="line">    after</div><div class="line">&lt;/#macro&gt;</div><div class="line"></div><div class="line">&lt;@<span class="attribute">border</span> &gt;now&lt;/@border&gt;</div></pre></td></tr></table></figure></p>
+<p>输出结果为<br>before now after</p>
+<p>命名空间<br>当运行 FTL 模板时，就会有使用 assign 和 macro 指令创建的变量的集合，当引用不同的模板，就需要使用import指令<br>比如创建如下b.ftl<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-id">#macro</span> copyright date&gt;</div><div class="line">  &lt;p&gt;Copyright (C) $&#123;date&#125; &lt;/p&gt; </div><div class="line">&lt;/#macro&gt; </div><div class="line">&lt;<span class="selector-id">#assign</span> mail = <span class="string">"zwl"</span>&gt;</div><div class="line"></div><div class="line">在测试模板中</div><div class="line">测试命名空间：</div><div class="line">&lt;<span class="selector-id">#import</span> <span class="string">"b.ftl"</span> as bb  /&gt;</div><div class="line">&lt;@bb<span class="selector-class">.copyright</span> date=<span class="string">"2013-2017"</span> /&gt;</div><div class="line">$&#123;bb.mail&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><p>一、直接指定值<br>直接指定值可以是字符串、数值、布尔值、集合及Map对象。</p>
+<ol>
+<li><p>字符串<br>直接指定字符串值使用单引号或双引号限定。字符串中可以使用转义字符”\”。如果字符串内有大量的特殊字符，则可以在引号的前面加上一个字母r，则字符串内的所有字符都将直接输出。</p>
+</li>
+<li><p>数值<br>数值可以直接输入，不需要引号。FreeMarker不支持科学计数法。</p>
+</li>
+<li><p>布尔值<br>直接使用true或false，不使用引号。</p>
+</li>
+<li><p>集合<br>集合用中括号包括，集合元素之间用逗号分隔。<br>使用数字范围也可以表示一个数字集合，如1..5等同于集合[1, 2, 3, 4, 5]；同样也可以用5..1来表示[5, 4, 3, 2, 1]。</p>
+</li>
+<li><p>Map对象<br>Map对象使用花括号包括，Map中的key-value对之间用冒号分隔，多组key-value对之间用逗号分隔。<br>注意：Map对象的key和value都是表达式，但key必须是字符串</p>
+</li>
+</ol>
+<p>6.时间对象<br>如：root.put(“date1”, new Date());<br>输出:${date1?string(“yyyy-MM-dd HH:mm”)}<br>其中后面的为日期输出格式</p>
+<ol>
+<li>JAVABEAN的处理<br>Freemarker中对于javabean的处理跟EL表达式一致，类型可自动转化</li>
+</ol>
+<p>二、输出变量值<br>FreeMarker的表达式输出变量时，这些变量可以是顶层变量，也可以是Map对象的变量，还可以是集合中的变量，并可以使用点（.）语法来访问Java对象的属性。</p>
+<ol>
+<li>顶层变量<br>所谓顶层变量就是直接放在数据模型中的值。输出时直接用${variableName}即可</li>
+</ol>
+<p>输出集合元素<br>可 以根据集合元素的索引来输出集合元素，索引用中括号包括。如： 输出[“1”， “2”， “3”]这个名为number的集合，可以用${number[0]}来输出第一个数字。FreeMarker还支持用number[1..2]来表示原 集合的子集合[“2”， “3”]。</p>
+<ol>
+<li><p>输出Map元素<br>对于JavaBean实例，FreeMarker一样把它看作属性为key，属性值为value的Map对象。<br>输出Map对象时，可以使用点语法或中括号语法，如下面的几种写法的效果是一样的：</p>
+<pre><code>book.author.name                                                                                book.author[&quot;name&quot;]                                                                              book[&quot;author&quot;].name                                                                            book[&quot;author&quot;][&quot;name&quot;]                                            
+</code></pre><p>字符串操作</p>
+</li>
+<li>字符串连接<br>直接使用+连接<br>截取子串<br>截取子串可以根据字符串的索引来进行，如果指定一个索引值，则取得字符串该索引处的字符；如果指定两个索引值，则截取两个索引中间的字符串子串。如：<pre><code>&lt;#assign number=&quot;01234&quot;&gt;
+${number[0]} &lt;#-- 输出字符0 --&gt;
+${number[0..3]} &lt;#-- 输出子串“0123” --&gt;
+</code></pre></li>
+</ol>
+<p>内建函数<br>FreeMarker提供了一些内建函数来转换输出，可以在任何变量后紧跟?，?后紧跟内建函数，就可以通过内建函数来转换输出变量。</p>
+<p>字符串相关常用的内建函数：</p>
+<ol>
+<li>html： 对字符串进行HTML编码；</li>
+<li>cap_first： 使字符串第一个字母大写；</li>
+<li>lower_case： 将字符串转成小写；</li>
+<li>upper_case： 将字符串转成大写；</li>
+</ol>
+<p>集合相关常用的内建函数：</p>
+<ol>
+<li>size： 获得集合中元素的个数；</li>
+</ol>
+<p>数字值相关常用的内建函数：</p>
+<ol>
+<li>int： 取得数字的整数部分。</li>
+</ol>
+<p>举例：<br>root.put(“htm2”, “<b>粗体</b>“);<br>内建函数：<br>${htm2?html}</p>
+<p>其它类型<br>集合连接操作<br>Map连接操作<br>算术运算符<br>比较运算符<br>逻辑运算符<br>空值处理运算符</p>
+<p>数据类型常见示例<br> 直接指定值<br>   字符串 ： “Foo”或 者’Foo’或”It’s \”quoted\””或r”C:\raw\string”<br>   数字：123.45<br>   布尔值：true, false<br>   序列：[“foo”, “bar”, 123.45], 1..100<br>   哈希表：{“name”:”green mouse”, “price”:150}<br>   检索变量    顶层变量：user<br>   从哈希表中检索数据：user.name, user[“name”]<br>   从序列中检索：products[5]<br>   特殊变量：.main<br>   字符串操作<br>   插值（或连接）：”Hello ${user}!”（或”Free” + “Marker”）<br>   获取一个字符：name[0]<br>   序列操作<br>   连接：users + [“guest”]<br>   序列切分：products[10..19]  或  products[5..]<br>   哈希表操作<br>   连接：passwords + {“joe”:”secret42”}<br>   算数运算: (x * 1.5 + 10) / 2 - y % 100<br>   比 较 运 算 ： x == y,   x != y,   x &lt; y,   x &gt; y,   x &gt;= y,   x &lt;= y,<br>x &lt; y,  等等<br>    逻辑操作：!registered &amp;&amp; (firstVisit || fromEurope)<br>    内建函数：name?upper_case<br>    方法调用：repeat(“What”, 3)<br>   处理不存在的值<br>   默认值：name!”unknown”  或者(user.name)!”unknown”  或者<br>name!  或者  (user.name)!<br>   检测不存在的值：name?? 或者(user.name)??</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;FreeMarker是一个模板引擎，一个基于模板生成文本输出的通用工具。简单比如来说，html作为只关心前台，无后台数据，而后台数据通过fr
+    
+    </summary>
+    
+      <category term="FreeMarker" scheme="http://www.myzwl.win/categories/FreeMarker/"/>
+    
+    
+      <category term="FreeMarker" scheme="http://www.myzwl.win/source/tags/FreeMarker/"/>
+    
+  </entry>
   
   <entry>
     <title>redis笔记四之搭建伪集群</title>
@@ -48,47 +257,6 @@
     <summary type="html">
     
       &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;在redis3.0之前，提供了哨兵的机制，即如果主服务器down掉，哨兵会监听到并且通知一个从服务器使其成为主服务器。但是可以通过集群解决这
-    
-    </summary>
-    
-      <category term="分布式" scheme="http://www.myzwl.win/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
-    
-    
-      <category term="redis" scheme="http://www.myzwl.win/source/tags/redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>redis笔记之三</title>
-    <link href="http://www.myzwl.win/2017/11/06/redis_3/"/>
-    <id>http://www.myzwl.win/2017/11/06/redis_3/</id>
-    <published>2017-11-06T06:48:51.000Z</published>
-    <updated>2017-12-07T06:56:40.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="redis高级命令及特性"><a href="#redis高级命令及特性" class="headerlink" title="redis高级命令及特性"></a>redis高级命令及特性</h4><p>1.返回满足的所有键keys <em>（可以模糊匹配）<br>2.exists是否存在指定的key<br>3.expire设置某个key的过期时间，使用ttl查看剩余时间<br>4.persist取消过期时间<br><img src="/images/imgs5/19.jpg" alt="Alt text"><br>5.select 选择数据库 数据库为0到15（一共16个数据库）默认进入的是0数据库<br>6 move key [数据库下标]将当前数据库中的key转移到其他数据库中<br>7.randomkey 随机返回数据库里的一个key<br>8.rename 重命名key<br><img src="/images/imgs5/20.jpg" alt="Alt text"><br>9.dbsize 查看数据库的key数量<br>10.info获取数据库信息<br>11.config get </em>返回所有配置<br>12 flushdb清空当前数据库，flushall清空所有数据库</p>
-<h4 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h4><p>通俗的讲就是一个用户访问一台服务器，该服务器假设为主服务器，具有读写功能，而在该主服务器下关联了一台从服务器，该从服务只具有读功能不具有写功能，并且数据是从主服务器经过一些列同步算法到该服务器上<br>配置过程</p>
-<blockquote>
-<p>1.修改redis.conf文件下<br>找到slaveof <masterip> <masterport><br>该服务器为从服务器</masterport></masterip></p>
-</blockquote>
-<p>主从复制对比<br><img src="/images/imgs5/21.jpg" alt="Alt text"><br>分析：<br>1.master可以拥有多个slave<br>2.多个slave可以连接同一个master外，还可以连接其他的slave<br>3.主从复制不会阻塞master在同步数据时，master可以据需处理client请求<br>4提供系统的伸缩性<br>主从复制过程<br>1.slave与master建立连接，发送sync同步命令<br>2.master会开启一个后台进程，将数据库快照保存到文件中，同时master主进程会开始收集新的写命令并缓存<br>3.后台完成保存后，就将文件发送给slave<br>4.slave将此文件保存在硬盘上</p>
-<h4 id="redis持久化机制"><a href="#redis持久化机制" class="headerlink" title="redis持久化机制"></a>redis持久化机制</h4><p>redis需要经常将内存中的数据同步到硬盘来保证持久化<br>1.快照（默认方式）<br>将内存中以快照的方式写入到二进制文件中，默认为dump.rdb，可以通过配置设置自动做快照持久化的方式。可以配置redis在n秒内如果超过m个key则修改就自动做快照<br>具体配置如下</p>
-<blockquote>
-<p>save 900 1 #900秒内如果超过1个key被修改 则发起快照保存<br>save 300 10<br>save 60 10000</p>
-</blockquote>
-<p>2.aof（日志方式）<br>由于快照方式是在一定时间间隔做一次，所以可能发生redis意外down的情况就会丢失最后一次快照后的所有修改的数据。使用aof时，redis会将每一个收到的写命令都通过write函数追加到命令中<br>aof设置</p>
-<blockquote>
-<p>appendonly yes //启动aof，有三种修改方式</p>
-<p>#appendfsync always//收到命令就立即写入到磁盘，效率最慢，但是保证完全的持久化</p>
-<p>#appendysync everysec//每秒钟写入磁盘一次，在性能和持久化方面做了很好的折中</p>
-<p>#appendysync no //完全依赖os性能，持久化没保证</p>
-</blockquote>
-<p>如图<br><img src="/images/imgs5/22.jpg" alt="Alt text"><br>有了aof我们就可以利用主从复制保证数据的完整性了</p>
-<h4 id="发布与订阅消息"><a href="#发布与订阅消息" class="headerlink" title="发布与订阅消息"></a>发布与订阅消息</h4><p>使用subscribe [频道] 进行订阅监听<br>使用publish [频道] [发布内容] 进行发布消息广播<br><img src="/images/imgs5/23.jpg" alt="Alt text"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;redis高级命令及特性&quot;&gt;&lt;a href=&quot;#redis高级命令及特性&quot; class=&quot;headerlink&quot; title=&quot;redis高级命令及特性&quot;&gt;&lt;/a&gt;redis高级命令及特性&lt;/h4&gt;&lt;p&gt;1.返回满足的所有键keys &lt;em&gt;（可以模糊匹配）&lt;br
     
     </summary>
     
@@ -155,6 +323,47 @@
     
     
       <category term="nginx" scheme="http://www.myzwl.win/source/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>redis笔记之三</title>
+    <link href="http://www.myzwl.win/2017/11/06/redis_3/"/>
+    <id>http://www.myzwl.win/2017/11/06/redis_3/</id>
+    <published>2017-11-06T06:48:51.000Z</published>
+    <updated>2017-12-07T06:56:40.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="redis高级命令及特性"><a href="#redis高级命令及特性" class="headerlink" title="redis高级命令及特性"></a>redis高级命令及特性</h4><p>1.返回满足的所有键keys <em>（可以模糊匹配）<br>2.exists是否存在指定的key<br>3.expire设置某个key的过期时间，使用ttl查看剩余时间<br>4.persist取消过期时间<br><img src="/images/imgs5/19.jpg" alt="Alt text"><br>5.select 选择数据库 数据库为0到15（一共16个数据库）默认进入的是0数据库<br>6 move key [数据库下标]将当前数据库中的key转移到其他数据库中<br>7.randomkey 随机返回数据库里的一个key<br>8.rename 重命名key<br><img src="/images/imgs5/20.jpg" alt="Alt text"><br>9.dbsize 查看数据库的key数量<br>10.info获取数据库信息<br>11.config get </em>返回所有配置<br>12 flushdb清空当前数据库，flushall清空所有数据库</p>
+<h4 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h4><p>通俗的讲就是一个用户访问一台服务器，该服务器假设为主服务器，具有读写功能，而在该主服务器下关联了一台从服务器，该从服务只具有读功能不具有写功能，并且数据是从主服务器经过一些列同步算法到该服务器上<br>配置过程</p>
+<blockquote>
+<p>1.修改redis.conf文件下<br>找到slaveof <masterip> <masterport><br>该服务器为从服务器</masterport></masterip></p>
+</blockquote>
+<p>主从复制对比<br><img src="/images/imgs5/21.jpg" alt="Alt text"><br>分析：<br>1.master可以拥有多个slave<br>2.多个slave可以连接同一个master外，还可以连接其他的slave<br>3.主从复制不会阻塞master在同步数据时，master可以据需处理client请求<br>4提供系统的伸缩性<br>主从复制过程<br>1.slave与master建立连接，发送sync同步命令<br>2.master会开启一个后台进程，将数据库快照保存到文件中，同时master主进程会开始收集新的写命令并缓存<br>3.后台完成保存后，就将文件发送给slave<br>4.slave将此文件保存在硬盘上</p>
+<h4 id="redis持久化机制"><a href="#redis持久化机制" class="headerlink" title="redis持久化机制"></a>redis持久化机制</h4><p>redis需要经常将内存中的数据同步到硬盘来保证持久化<br>1.快照（默认方式）<br>将内存中以快照的方式写入到二进制文件中，默认为dump.rdb，可以通过配置设置自动做快照持久化的方式。可以配置redis在n秒内如果超过m个key则修改就自动做快照<br>具体配置如下</p>
+<blockquote>
+<p>save 900 1 #900秒内如果超过1个key被修改 则发起快照保存<br>save 300 10<br>save 60 10000</p>
+</blockquote>
+<p>2.aof（日志方式）<br>由于快照方式是在一定时间间隔做一次，所以可能发生redis意外down的情况就会丢失最后一次快照后的所有修改的数据。使用aof时，redis会将每一个收到的写命令都通过write函数追加到命令中<br>aof设置</p>
+<blockquote>
+<p>appendonly yes //启动aof，有三种修改方式</p>
+<p>#appendfsync always//收到命令就立即写入到磁盘，效率最慢，但是保证完全的持久化</p>
+<p>#appendysync everysec//每秒钟写入磁盘一次，在性能和持久化方面做了很好的折中</p>
+<p>#appendysync no //完全依赖os性能，持久化没保证</p>
+</blockquote>
+<p>如图<br><img src="/images/imgs5/22.jpg" alt="Alt text"><br>有了aof我们就可以利用主从复制保证数据的完整性了</p>
+<h4 id="发布与订阅消息"><a href="#发布与订阅消息" class="headerlink" title="发布与订阅消息"></a>发布与订阅消息</h4><p>使用subscribe [频道] 进行订阅监听<br>使用publish [频道] [发布内容] 进行发布消息广播<br><img src="/images/imgs5/23.jpg" alt="Alt text"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;redis高级命令及特性&quot;&gt;&lt;a href=&quot;#redis高级命令及特性&quot; class=&quot;headerlink&quot; title=&quot;redis高级命令及特性&quot;&gt;&lt;/a&gt;redis高级命令及特性&lt;/h4&gt;&lt;p&gt;1.返回满足的所有键keys &lt;em&gt;（可以模糊匹配）&lt;br
+    
+    </summary>
+    
+      <category term="分布式" scheme="http://www.myzwl.win/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+    
+      <category term="redis" scheme="http://www.myzwl.win/source/tags/redis/"/>
     
   </entry>
   
@@ -549,79 +758,6 @@
     <summary type="html">
     
       &lt;h4 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h4&gt;&lt;p&gt;请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串”+100”,”5e2”,”-123”,”3.141
-    
-    </summary>
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/categories/%E5%89%91%E6%8C%87offer/"/>
-    
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/source/tags/%E5%89%91%E6%8C%87offer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>字符流中第一个不重复的字符</title>
-    <link href="http://www.myzwl.win/2017/10/13/offer_35/"/>
-    <id>http://www.myzwl.win/2017/10/13/offer_35/</id>
-    <published>2017-10-13T06:48:51.000Z</published>
-    <updated>2017-11-07T03:57:24.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>请实现一个函数用来找出字符流中第一个只出现一次的字符。例如，当从字符流中只读出前两个字符”go”时，第一个只出现一次的字符是”g”。当从该字符流中读出前六个字符“google”时，第一个只出现一次的字符是”l”。<br>如果当前字符流没有存在出现一次的字符，返回#字符。</p>
-<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>核心思想就是创建一个map用来记录每个字符出现的次数，而list则记录只出现一次的字符集合，遍历字符，如果map中不存在说明是第一次，则把字符作为key加入，然后在放到list中，如果map中包含了该键，一方面记录该字符次数，另一方面看list中是否包含该元素，在删除，最后list中只保留出现一次的字符</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">import java.util.ArrayList;</div><div class="line">import java.util.HashMap;</div><div class="line">import java.util.List;</div><div class="line">import java.util.Map;</div><div class="line"></div><div class="line">public class Solution &#123;</div><div class="line">private Map&lt;Character, Integer&gt; map=new HashMap&lt;Character, Integer&gt;();</div><div class="line">  private List&lt;Character&gt; list=new ArrayList&lt;Character&gt;();</div><div class="line">  </div><div class="line">  //Insert one char from stringstream</div><div class="line">  public void Insert(char ch)</div><div class="line">  &#123;</div><div class="line">      if(!map.containsKey(ch))&#123;</div><div class="line">          map.put(ch, 1);</div><div class="line">          list.add(ch);</div><div class="line">      &#125;else&#123;</div><div class="line">          map.put(ch, map.get(ch)+1);</div><div class="line">          if(list.contains(ch))</div><div class="line">              list.remove(Character.valueOf(ch));</div><div class="line">      &#125;</div><div class="line">      </div><div class="line">  &#125;</div><div class="line">//return the first appearence once char in current stringstream</div><div class="line">  public char FirstAppearingOnce()</div><div class="line">  &#123;</div><div class="line">  if(list.isEmpty())return '#';</div><div class="line">  return list.get(0);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h4&gt;&lt;p&gt;请实现一个函数用来找出字符流中第一个只出现一次的字符。例如，当从字符流中只读出前两个字符”go”时，第一个只出现一次的字符是
-    
-    </summary>
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/categories/%E5%89%91%E6%8C%87offer/"/>
-    
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/source/tags/%E5%89%91%E6%8C%87offer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>数组中只出现一次的数字</title>
-    <link href="http://www.myzwl.win/2017/10/12/offer_34/"/>
-    <id>http://www.myzwl.win/2017/10/12/offer_34/</id>
-    <published>2017-10-12T06:48:51.000Z</published>
-    <updated>2017-11-07T03:45:50.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>一个整型数组里除了两个数字之外，其他的数字都出现了两次。请写程序找出这两个只出现一次的数字。</p>
-<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>核心思想就是如果数组中元素是第一次出现，则加入集合中，继续往后遍历，如果包含该元素，则删除那个元素，最后通过筛选只剩下出现一次的元素了</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">//num1,num2分别为长度为1的数组。传出参数</div><div class="line">//将num1[0],num2[0]设置为返回结果</div><div class="line">import java.util.List;</div><div class="line">import java.util.ArrayList;</div><div class="line">public class Solution &#123;</div><div class="line">   public void FindNumsAppearOnce(int [] array,int num1[] , int num2[]) &#123;</div><div class="line">          ArrayList&lt;Integer&gt; list=new ArrayList&lt;Integer&gt;();</div><div class="line">        for(int i=0;i&lt;array.length;i++)&#123;</div><div class="line">            if(list.contains(array[i]))&#123;</div><div class="line">                list.remove((Integer)array[i]);</div><div class="line">            &#125;else&#123;</div><div class="line">                list.add(array[i]);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        num1[0]=list.get(0);</div><div class="line">        num2[0]=list.get(1);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h4&gt;&lt;p&gt;一个整型数组里除了两个数字之外，其他的数字都出现了两次。请写程序找出这两个只出现一次的数字。&lt;/p&gt;
-&lt;h4 id=&quot;思路分
-    
-    </summary>
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/categories/%E5%89%91%E6%8C%87offer/"/>
-    
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/source/tags/%E5%89%91%E6%8C%87offer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>和为S的两个数字</title>
-    <link href="http://www.myzwl.win/2017/10/11/offer_33/"/>
-    <id>http://www.myzwl.win/2017/10/11/offer_33/</id>
-    <published>2017-10-11T06:48:51.000Z</published>
-    <updated>2017-11-05T04:26:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>输入一个递增排序的数组和一个数字S，在数组中查找两个数，是的他们的和正好是S，如果有多对数字的和等于S，输出两个数的乘积最小的。</p>
-<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>核心思想就是设置两个变量，起始变量start和指向尾的变量end，刚开始先比较和cur=start+end与s的和，如果比s大说明最后的end数较大，end应前移，直至小于等于，反之则是start较小，start应后移。直至最后等于为止，此时因为end处于最大的情况，所以start处于最小，也是所要找的两个数。但是如果不存在，则返回空</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">public ArrayList&lt;Integer&gt; FindNumbersWithSum(int [] array,int sum) &#123;</div><div class="line">        ArrayList&lt;Integer&gt; list=new ArrayList&lt;Integer&gt;();</div><div class="line">         ArrayList&lt;Integer&gt; lists=new ArrayList&lt;Integer&gt;();</div><div class="line">        if(array==null||sum&lt;=0) return list;</div><div class="line">        int start=0;</div><div class="line">        int end=array.length-1;</div><div class="line">        int curSum=array[start]+array[end];</div><div class="line">        while(start&lt;end)&#123;</div><div class="line">            if(curSum==sum)&#123;</div><div class="line">                    list.add(array[start]);</div><div class="line">                    list.add(array[end]);</div><div class="line">                &#125;</div><div class="line">            while(curSum&gt;sum)&#123;</div><div class="line">                end--;</div><div class="line">                 curSum=array[start]+array[end];</div><div class="line">                if(curSum==sum)&#123;</div><div class="line">                    list.add(array[start]);</div><div class="line">                    list.add(array[end]);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            start++;  </div><div class="line">            curSum=array[start]+array[end];</div><div class="line">        &#125;</div><div class="line">        if(list.size()==0)return list;</div><div class="line">        lists.add(list.get(0));</div><div class="line">        lists.add(list.get(1));</div><div class="line">        return lists;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h4&gt;&lt;p&gt;输入一个递增排序的数组和一个数字S，在数组中查找两个数，是的他们的和正好是S，如果有多对数字的和等于S，输出两个数的乘积最小
     
     </summary>
     
