@@ -1,0 +1,1179 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="学习总结," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言不知不觉新的一年将开始，也意味着6月份之后美好的大学生活和学生时代即将结束。年后无论是实习或者是在公司端茶倒水或者是干全栈或者是违背良心干的职位，都干了（没办法，没钱生活，以前觉得庸俗兴趣大于一切，现在后悔了，现实点才顺应生活，插一段抱怨）回顾这三年多生活，大学前一年基本迷迷茫茫，太多的课程，让人不知道如何去选择一个方向学习，基本很迷茫，有一次为了表示对物理的尊敬和兴趣，特地网上买了物理上下答">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的大学自学java体系一">
+<meta property="og:url" content="http://www.myzwl.win/2017/12/30/study_01/index.html">
+<meta property="og:site_name" content="秒西">
+<meta property="og:description" content="前言不知不觉新的一年将开始，也意味着6月份之后美好的大学生活和学生时代即将结束。年后无论是实习或者是在公司端茶倒水或者是干全栈或者是违背良心干的职位，都干了（没办法，没钱生活，以前觉得庸俗兴趣大于一切，现在后悔了，现实点才顺应生活，插一段抱怨）回顾这三年多生活，大学前一年基本迷迷茫茫，太多的课程，让人不知道如何去选择一个方向学习，基本很迷茫，有一次为了表示对物理的尊敬和兴趣，特地网上买了物理上下答">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs5/33.jpg">
+<meta property="og:image" content="http://www.myzwl.win/images/imgs5/34.jpg">
+<meta property="og:updated_time" content="2018-01-22T08:12:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我的大学自学java体系一">
+<meta name="twitter:description" content="前言不知不觉新的一年将开始，也意味着6月份之后美好的大学生活和学生时代即将结束。年后无论是实习或者是在公司端茶倒水或者是干全栈或者是违背良心干的职位，都干了（没办法，没钱生活，以前觉得庸俗兴趣大于一切，现在后悔了，现实点才顺应生活，插一段抱怨）回顾这三年多生活，大学前一年基本迷迷茫茫，太多的课程，让人不知道如何去选择一个方向学习，基本很迷茫，有一次为了表示对物理的尊敬和兴趣，特地网上买了物理上下答">
+<meta name="twitter:image" content="http://www.myzwl.win/images/imgs5/33.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":true,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.myzwl.win/2017/12/30/study_01/"/>
+
+
+
+
+
+  <title> 我的大学自学java体系一 | 秒西 </title>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"   background="imags/bg.jpg" style="opacity: 0.7;background-color: transparent;">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秒西</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+	
+	<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+    function c() {
+        var e = document.createElement("link");
+        e.setAttribute("type", "text/css");
+        e.setAttribute("rel", "stylesheet");
+        e.setAttribute("href", f);
+        e.setAttribute("class", l);
+        document.body.appendChild(e)
+    }
+
+    function h() {
+        var e = document.getElementsByClassName(l);
+        for (var t = 0; t < e.length; t++) {
+            document.body.removeChild(e[t])
+        }
+    }
+
+    function p() {
+        var e = document.createElement("div");
+        e.setAttribute("class", a);
+        document.body.appendChild(e);
+        setTimeout(function() {
+            document.body.removeChild(e)
+        }, 100)
+    }
+
+    function d(e) {
+        return {
+            height : e.offsetHeight,
+            width : e.offsetWidth
+        }
+    }
+
+    function v(i) {
+        var s = d(i);
+        return s.height > e && s.height < n && s.width > t && s.width < r
+    }
+
+    function m(e) {
+        var t = e;
+        var n = 0;
+        while (!!t) {
+            n += t.offsetTop;
+            t = t.offsetParent
+        }
+        return n
+    }
+
+    function g() {
+        var e = document.documentElement;
+        if (!!window.innerWidth) {
+            return window.innerHeight
+        } else if (e && !isNaN(e.clientHeight)) {
+            return e.clientHeight
+        }
+        return 0
+    }
+
+    function y() {
+        if (window.pageYOffset) {
+            return window.pageYOffset
+        }
+        return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+    }
+
+    function E(e) {
+        var t = m(e);
+        return t >= w && t <= b + w
+    }
+
+    function S() {
+        var e = document.createElement("audio");
+        e.setAttribute("class", l);
+        e.src = i;
+        e.loop = false;
+        e.addEventListener("canplay", function() {
+            setTimeout(function() {
+                x(k)
+            }, 500);
+            setTimeout(function() {
+                N();
+                p();
+                for (var e = 0; e < O.length; e++) {
+                    T(O[e])
+                }
+            }, 15500)
+        }, true);
+        e.addEventListener("ended", function() {
+            N();
+            h()
+        }, true);
+        e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+        document.body.appendChild(e);
+        e.play()
+    }
+
+    function x(e) {
+        e.className += " " + s + " " + o
+    }
+
+    function T(e) {
+        e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+    }
+
+    function N() {
+        var e = document.getElementsByClassName(s);
+        var t = new RegExp("\\b" + s + "\\b");
+        for (var n = 0; n < e.length; ) {
+            e[n].className = e[n].className.replace(t, "")
+        }
+    }
+
+    var e = 30;
+    var t = 30;
+    var n = 350;
+    var r = 350;
+    var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+    var s = "mw-harlem_shake_me";
+    var o = "im_first";
+    var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+    var a = "mw-strobe_light";
+    var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+    var l = "mw_added_css";
+    var b = g();
+    var w = y();
+    var C = document.getElementsByTagName("*");
+    var k = null;
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            if (E(A)) {
+                k = A;
+                break
+            }
+        }
+    }
+    if (A === null) {
+        console.warn("Could not find a node of the right size. Please try a different page.");
+        return
+    }
+    c();
+    S();
+    var O = [];
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            O.push(A)
+        }
+    }
+})()    '>让标题抖起来</a> </li>
+	
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/12/30/study_01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                我的大学自学java体系一
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-30T14:48:51+08:00">
+                2017-12-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/个人感想/" itemprop="url" rel="index">
+                    <span itemprop="name">个人感想</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>不知不觉新的一年将开始，也意味着6月份之后美好的大学生活和学生时代即将结束。年后无论是实习或者是在公司端茶倒水或者是干全栈或者是违背良心干的职位，都干了（没办法，没钱生活，以前觉得庸俗兴趣大于一切，现在后悔了，现实点才顺应生活，插一段抱怨）<br>回顾这三年多生活，大学前一年基本迷迷茫茫，太多的课程，让人不知道如何去选择一个方向学习，基本很迷茫，有一次为了表示对物理的尊敬和兴趣，特地网上买了物理上下答案，晚上或者周末一有时间就去自习室刷题，刷完一本后，突然发现除了内心的满足感，到现在再也没碰过物理了，从上中学开始就一直对数学情由独钟，也因此错过很多很多机会和干过很多愚蠢的事，自己当时心里就想着干自己喜欢的事，于是乎，除了几门极个别的课，基本上全在研究数学，看大学老师录的数学视频，刷奥数题，上头时为了手写和推出一元三次和四次方程的含复根求根公式，连续好几天乐此不疲，然后一次很重要的人生考试被自己的糊涂和幼稚错过了（除了那两张象征荣誉的奥数证书，后来已经撕了，现在觉得当时太傻，太傻，太傻，也成为了自己的一个警醒），后来大学填报专业时，第一志愿写了数学专业，家里也希望当个数学老师算了，后来阴差阳错的调剂到软件工程专业，慢慢的，慢慢地也就淡忘了对数学的热情。大学里，也迷茫过，包夜上网玩游戏已达上百次，也是因为兴趣上头，后来想想身体健康才是最主要的，娱乐要有度。<br>大学真正开始学习是从c、c++开始，当时第一次接触c语言，真的很兴奋，基本上就一直做数学程序题，后来接触了c++，用vc6.0做mfc程序，然后就是一直对着c++ primer plus学习，当时也算是有了一个目标。后来，也是改变了我的学习方向的一个时间，到现在都记忆犹新。有一次室友有事，让我代替他上一节php公选课（时间2015-10-20），第一次接触web，服务器，突然发现这才是自己喜欢做的，自己被深深的震撼到了，当时他也布置了一个任务，做一个简单的网页含后台，回去后，就像发现新大陆一样，通过百度搭建了php环境和wampserver服务器，然后就是着了迷一样的弄，几天后弄出来了一个个人主页网站<br><img src="/images/imgs5/33.jpg" alt="Alt text"><br><img src="/images/imgs5/34.jpg" alt="Alt text"></p>
+<p>突然之间感觉自己有了学习兴趣和方向，像着了迷一样的学习。后来2016年初做的几次兼职深深的意识到了，学习比干苦力看重眼前利益有用些，后来听说了java（学校是在2016年10月才开设的唯一一门java基础课，后续没了java相关了），开始一脚踏进了深深的深渊，开始疯狂的自学中至今</p>
+<h4 id="感谢韩顺平老师"><a href="#感谢韩顺平老师" class="headerlink" title="感谢韩顺平老师"></a>感谢韩顺平老师</h4><p>刚开始在图书馆借了一本<21天学通java>,因为之前有c和数据结构等基础，所以学习起来也轻松，没几天就看完和动手码完了<br>，后来无意中接触了java吧，看到了传播智客韩顺平老师的视频分享，于是一口气下完了，不得不说韩老师是我的java启蒙老师，也很荣幸他的视频讲的很细致，每集时间很长，他的视频我连续花了四个多月才消化完，其中java se搞了两个月（到现在仍然觉得java基础仍不足），而每天像打了鸡血一样，一天真的12小时以上，哪也不去，就是对着电脑先仔细听他说完一级，然后看着笔记认真动手操作每一集的每一个代码（当时，真的不复制，就是自己从头敲到尾，遇到卡住的，回头再看视频回顾细节），然后按照自己的想法把它的功能改成自己的，一直都记着韩老师的一句话（把别人的知识通过自己的语言描述出来就是自己的知识，一定要实践），记得三月底的一次运动会，宿舍人要么回家了，要么出去玩了。当时自己选择留在宿舍学习(也就是为了完成韩顺平老师的项目)，就这样连续五天在各种情形下度过了，也许当时会感觉很孤独，但是总觉得在一个目标和兴趣下，一切都是那么充实。每天晚上，总会在睡觉前在手机上观看韩顺平老师的笔记到一两年，就这样早上7点起来，晚上2点睡，持续了大半年。这期间（现在想来）有些技术踩坑了，比如swing当时要求自己手写所有的，很认真的花很多时间学习struts1.xml四种解析情况自己手写模拟（现在忘光了），而最多最多的就是自己踩坑，抗压学习，遇到问题，然后通过耐心的百度，谷歌解决，每个学习的知识和技能都要转化为自己的语言应用，哪怕花时间去网站上找相关辅助代码，一定要还原真实情况。正是这段时间的学习，让我对软件开发有一个很深很深的认识，唯一的代价就是失眠和孤独。后来在四月初，数据库老师布置了一个任务，让我们做一个的数据库课程设计，事实上就不说了，后来也许是兴趣或者正好可以用上，自己花了一个星期（事实上每天就睡4,5个小时）自己一行一行的敲，做了一个基于swing的宿舍管理系统，这是自己第一次进行设计和编码，不知道当时拿给老师是有多兴奋~，后来老师说功能写的可以，就是太乱。当时也不懂软件工程，于是回去后又花了一个星期改了一个基于socket的宿舍管理系统，也许是当时太想把网络知识应用上，后来老师说我回去得看看软件工程。后来发现的确，盲目编码很不规范，然后当时就有一个心愿写一个网站的宿舍系统，而当时也是参考了韩老师的学生管理系统，又是一个月的努力，在五月份的时候，第一次写了一个基于纯servlet和mvc模式的宿舍系统，当时也许是太单纯了，自己拿了四张A4纸把每个类和流程都手写出来，然后去验收，然后向同学借了几台电脑去验收，也许是老师看我太认真了，说了一句（学校没几个像你这样的，然后让我帮她帮一个学校做一个网站），当时因为着迷技术，推掉了（直到2017年2月帮做另一个项目，已完成），后来也许就是这句话，自己越学越有劲，总之韩顺平老师的课程帮助了我许多许多</21天学通java></p>
+<h4 id="那些充实的日子"><a href="#那些充实的日子" class="headerlink" title="那些充实的日子"></a>那些充实的日子</h4><p>后来6月初，有个达内来的ios七天校内实训，然后做一个tom猫小程序。当时，真的很兴奋，从一开始就抱着不学ios，自己做一个基于web的tom动画程序，然后后来就各种jsdom做了一个，后来演示时，他直接说我私底下给他看了过了（贼笑），期间也和他聊了聊，从java se聊到ssh和自己的项目，他说我这样可以去实习和然后工作了，当时，仍然以兴趣和沉迷技术，根本没有想那么多（现在后悔了，早点实习，早点有工作经验真的很有益，而且有明确的学习方向）。学完韩顺平老师的以后，也陆续发现还有许多优秀的讲师，像马士兵老师，于是以同样的方式学习，突然发现马老师，彻底改变了我的学习方式，而且他的课程讲的很深，像jdk源码，设计模式等等，总之马士兵老师的视频将近花了三个多月，也是收获最多的，在16年五月初的时候自己就有种打算写一个个人博客，于是乎花了将近两个月时间，写了第一个基于s2sh的个人博客，过程就不说了，也第一次接触到了外网访问，当时用的是nat123，将服务器架在自己电脑上，而且刚上限就被黑客黑了，自己机子成了肉鸡（贼笑），后来也许是自己太得意和想摆脱孤独，发在了空间，第一次感受到了温暖<br>当然，代价是很严重的，就是自己的精神很萎靡和严重缺少睡眠和每天都失眠，基本就是宅在房里，没有交流<br>再到后来，陆陆续续不断学习李炎灰老师的前端体系，easy ui创始人的视频（这个帮助真大），北风网的优秀视频，黑马东哥视频，和java123视频，最终以一个课程设计猎图网（按照软件工程编写文档）而结束了2016年的学习。<br>回忆起来，这一年真的很充实和苦有所得</p>
+<h4 id="持久以恒"><a href="#持久以恒" class="headerlink" title="持久以恒"></a>持久以恒</h4><p>2017年开始，自己就开始写博客来记录学习和知识，早在2015年3月，自己建了一个c++群，不过里面人很少，刚开始是用文档记录发到群里分享，后来直接用hexo博客写，自己也租了一台阿里云服务器，部署自己的网站。而之前也是利用业余时间看看经典书籍，而这一年更是如此，也很少看视频了，基本以经典书籍学习，像设计模式，多线程，数据结构与算法等等，也许是精力不行了，也没有了之前疯狂的学习热情，后来在3月到5月一直帮一个学校做项目（过程太累），第一次感受到真实项目的复杂合自己一个人做的挑战，最后改编成了毕业设计。然后到了7月，自己也许是爆发最后一次的能量，整个暑假出门不超过几十次，花了一个月终于完成了自己的个人论坛项目，带着渴望不孤独的心情第二次发到了空间，然而在之前，因为自己太痴迷于技术，错过了好多推荐的机会，现在后悔都来不及。到九月份，突然发现，自己投的简历都石沉大海，一次面试对方说出了详情，我们不需要有自己想法的人，就算你自己苦思冥想设计算法最后还是调用第三方库，如谷歌、百度。而且现在培训这么多，别人几个月会各种分布式技术，各种技术集群，而且只要基本的增删改查和基本操作就够了，而且我们只要有工作经验的，也许是自己之前的学习热情过头惹怒了面试官加上简历上写的0工作经验和找实习，要么是培训机构要么没有机会，加上自己又要考驾照和精神不够好胡思乱想，于是从十月份开始彻底废了，每天沉迷游戏，动漫，电影，自暴自弃，甚至考虑转行等等，期间也偶尔兴趣来了学习一下技术，后来慢慢的发现，自己太单纯了，自己的目标是一名工程师，技术会用和深入学习的时间性价比是天壤之别，而且这是一个很现实的社会</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>慢慢的，人总是会变的现实，很感激大学里陪伴我的严蔚敏老师、韩顺平老师、马士兵老师、李炎灰老师和其他免费开源的优秀老师以及那些经典书籍的作者，是他们陪伴我度过了最充实的大学生活。</p>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/学习总结/" rel="tag"># 学习总结</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/20/fastdfs_1/" rel="next" title="FastDFS+Nginx搭建分布式图片服务器">
+                <i class="fa fa-chevron-left"></i> FastDFS+Nginx搭建分布式图片服务器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/31/study_02/" rel="prev" title="我的大学自学java体系二">
+                我的大学自学java体系二 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+         <div id="uyan_frame"></div>
+    
+  </div>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description">try your best</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">157</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/slycmiaoxi" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/images/zwl.png" target="_blank" title="Weixin">
+                  
+                    <i class="fa fa-fw fa-weixin"></i>
+                  
+                  Weixin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+      
+        
+
+
+		
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#感谢韩顺平老师"><span class="nav-text">感谢韩顺平老师</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#那些充实的日子"><span class="nav-text">那些充实的日子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#持久以恒"><span class="nav-text">持久以恒</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=86 height=100 src="http://music.163.com/outchain/player?type=0&id=120897804&auto=0&height=90&auto=1&height=86&autoPlay=true" style="width:0px;height:0px;"></iframe>
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+
+
+
+
+
+
+<br/>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+    
+  
+ 
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2127192"></script>
+      <!-- UY END -->
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.min.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {          
+          jQuery("img").lazyload({
+            placeholder:"http://www.arao.me/loading.gif",
+              effect:"fadeIn"
+            });
+          });
+    </script>
+	<!-- 动态线条 -->
+	<script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+	
+
+
+
+</body>
+</html>

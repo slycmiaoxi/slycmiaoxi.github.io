@@ -5,10 +5,185 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2017-12-18T10:29:32.000Z</updated>
+  <updated>2018-01-22T08:24:04.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>我的大学自学java体系二</title>
+    <link href="http://www.myzwl.win/2017/12/31/study_02/"/>
+    <id>http://www.myzwl.win/2017/12/31/study_02/</id>
+    <published>2017-12-31T06:48:51.000Z</published>
+    <updated>2018-01-22T08:24:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>不知不觉新的一年将开始，也意味着6月份之后美好的大学生活和学生时代即将结束，趁着今年最后一天把大学学的关于java方面的知识总结一下，一方面是解放自己释放压力，另一方面激励自己尽快找到实习，稳定生活和压力</p>
+<p><img src="/images/imgs5/1.svg" alt="Alt text"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;不知不觉新的一年将开始，也意味着6月份之后美好的大学生活和学生时代即将结束，趁着今年最后一天把大学学的关于java方面的知识总结一下，一方面
+    
+    </summary>
+    
+      <category term="个人感想" scheme="http://www.myzwl.win/categories/%E4%B8%AA%E4%BA%BA%E6%84%9F%E6%83%B3/"/>
+    
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我的大学自学java体系一</title>
+    <link href="http://www.myzwl.win/2017/12/30/study_01/"/>
+    <id>http://www.myzwl.win/2017/12/30/study_01/</id>
+    <published>2017-12-30T06:48:51.000Z</published>
+    <updated>2018-01-22T08:12:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>不知不觉新的一年将开始，也意味着6月份之后美好的大学生活和学生时代即将结束。年后无论是实习或者是在公司端茶倒水或者是干全栈或者是违背良心干的职位，都干了（没办法，没钱生活，以前觉得庸俗兴趣大于一切，现在后悔了，现实点才顺应生活，插一段抱怨）<br>回顾这三年多生活，大学前一年基本迷迷茫茫，太多的课程，让人不知道如何去选择一个方向学习，基本很迷茫，有一次为了表示对物理的尊敬和兴趣，特地网上买了物理上下答案，晚上或者周末一有时间就去自习室刷题，刷完一本后，突然发现除了内心的满足感，到现在再也没碰过物理了，从上中学开始就一直对数学情由独钟，也因此错过很多很多机会和干过很多愚蠢的事，自己当时心里就想着干自己喜欢的事，于是乎，除了几门极个别的课，基本上全在研究数学，看大学老师录的数学视频，刷奥数题，上头时为了手写和推出一元三次和四次方程的含复根求根公式，连续好几天乐此不疲，然后一次很重要的人生考试被自己的糊涂和幼稚错过了（除了那两张象征荣誉的奥数证书，后来已经撕了，现在觉得当时太傻，太傻，太傻，也成为了自己的一个警醒），后来大学填报专业时，第一志愿写了数学专业，家里也希望当个数学老师算了，后来阴差阳错的调剂到软件工程专业，慢慢的，慢慢地也就淡忘了对数学的热情。大学里，也迷茫过，包夜上网玩游戏已达上百次，也是因为兴趣上头，后来想想身体健康才是最主要的，娱乐要有度。<br>大学真正开始学习是从c、c++开始，当时第一次接触c语言，真的很兴奋，基本上就一直做数学程序题，后来接触了c++，用vc6.0做mfc程序，然后就是一直对着c++ primer plus学习，当时也算是有了一个目标。后来，也是改变了我的学习方向的一个时间，到现在都记忆犹新。有一次室友有事，让我代替他上一节php公选课（时间2015-10-20），第一次接触web，服务器，突然发现这才是自己喜欢做的，自己被深深的震撼到了，当时他也布置了一个任务，做一个简单的网页含后台，回去后，就像发现新大陆一样，通过百度搭建了php环境和wampserver服务器，然后就是着了迷一样的弄，几天后弄出来了一个个人主页网站<br><img src="/images/imgs5/33.jpg" alt="Alt text"><br><img src="/images/imgs5/34.jpg" alt="Alt text"></p>
+<p>突然之间感觉自己有了学习兴趣和方向，像着了迷一样的学习。后来2016年初做的几次兼职深深的意识到了，学习比干苦力看重眼前利益有用些，后来听说了java（学校是在2016年10月才开设的唯一一门java基础课，后续没了java相关了），开始一脚踏进了深深的深渊，开始疯狂的自学中至今</p>
+<h4 id="感谢韩顺平老师"><a href="#感谢韩顺平老师" class="headerlink" title="感谢韩顺平老师"></a>感谢韩顺平老师</h4><p>刚开始在图书馆借了一本<21天学通java>,因为之前有c和数据结构等基础，所以学习起来也轻松，没几天就看完和动手码完了<br>，后来无意中接触了java吧，看到了传播智客韩顺平老师的视频分享，于是一口气下完了，不得不说韩老师是我的java启蒙老师，也很荣幸他的视频讲的很细致，每集时间很长，他的视频我连续花了四个多月才消化完，其中java se搞了两个月（到现在仍然觉得java基础仍不足），而每天像打了鸡血一样，一天真的12小时以上，哪也不去，就是对着电脑先仔细听他说完一级，然后看着笔记认真动手操作每一集的每一个代码（当时，真的不复制，就是自己从头敲到尾，遇到卡住的，回头再看视频回顾细节），然后按照自己的想法把它的功能改成自己的，一直都记着韩老师的一句话（把别人的知识通过自己的语言描述出来就是自己的知识，一定要实践），记得三月底的一次运动会，宿舍人要么回家了，要么出去玩了。当时自己选择留在宿舍学习(也就是为了完成韩顺平老师的项目)，就这样连续五天在各种情形下度过了，也许当时会感觉很孤独，但是总觉得在一个目标和兴趣下，一切都是那么充实。每天晚上，总会在睡觉前在手机上观看韩顺平老师的笔记到一两年，就这样早上7点起来，晚上2点睡，持续了大半年。这期间（现在想来）有些技术踩坑了，比如swing当时要求自己手写所有的，很认真的花很多时间学习struts1.xml四种解析情况自己手写模拟（现在忘光了），而最多最多的就是自己踩坑，抗压学习，遇到问题，然后通过耐心的百度，谷歌解决，每个学习的知识和技能都要转化为自己的语言应用，哪怕花时间去网站上找相关辅助代码，一定要还原真实情况。正是这段时间的学习，让我对软件开发有一个很深很深的认识，唯一的代价就是失眠和孤独。后来在四月初，数据库老师布置了一个任务，让我们做一个的数据库课程设计，事实上就不说了，后来也许是兴趣或者正好可以用上，自己花了一个星期（事实上每天就睡4,5个小时）自己一行一行的敲，做了一个基于swing的宿舍管理系统，这是自己第一次进行设计和编码，不知道当时拿给老师是有多兴奋~，后来老师说功能写的可以，就是太乱。当时也不懂软件工程，于是回去后又花了一个星期改了一个基于socket的宿舍管理系统，也许是当时太想把网络知识应用上，后来老师说我回去得看看软件工程。后来发现的确，盲目编码很不规范，然后当时就有一个心愿写一个网站的宿舍系统，而当时也是参考了韩老师的学生管理系统，又是一个月的努力，在五月份的时候，第一次写了一个基于纯servlet和mvc模式的宿舍系统，当时也许是太单纯了，自己拿了四张A4纸把每个类和流程都手写出来，然后去验收，然后向同学借了几台电脑去验收，也许是老师看我太认真了，说了一句（学校没几个像你这样的，然后让我帮她帮一个学校做一个网站），当时因为着迷技术，推掉了（直到2017年2月帮做另一个项目，已完成），后来也许就是这句话，自己越学越有劲，总之韩顺平老师的课程帮助了我许多许多</21天学通java></p>
+<h4 id="那些充实的日子"><a href="#那些充实的日子" class="headerlink" title="那些充实的日子"></a>那些充实的日子</h4><p>后来6月初，有个达内来的ios七天校内实训，然后做一个tom猫小程序。当时，真的很兴奋，从一开始就抱着不学ios，自己做一个基于web的tom动画程序，然后后来就各种jsdom做了一个，后来演示时，他直接说我私底下给他看了过了（贼笑），期间也和他聊了聊，从java se聊到ssh和自己的项目，他说我这样可以去实习和然后工作了，当时，仍然以兴趣和沉迷技术，根本没有想那么多（现在后悔了，早点实习，早点有工作经验真的很有益，而且有明确的学习方向）。学完韩顺平老师的以后，也陆续发现还有许多优秀的讲师，像马士兵老师，于是以同样的方式学习，突然发现马老师，彻底改变了我的学习方式，而且他的课程讲的很深，像jdk源码，设计模式等等，总之马士兵老师的视频将近花了三个多月，也是收获最多的，在16年五月初的时候自己就有种打算写一个个人博客，于是乎花了将近两个月时间，写了第一个基于s2sh的个人博客，过程就不说了，也第一次接触到了外网访问，当时用的是nat123，将服务器架在自己电脑上，而且刚上限就被黑客黑了，自己机子成了肉鸡（贼笑），后来也许是自己太得意和想摆脱孤独，发在了空间，第一次感受到了温暖<br>当然，代价是很严重的，就是自己的精神很萎靡和严重缺少睡眠和每天都失眠，基本就是宅在房里，没有交流<br>再到后来，陆陆续续不断学习李炎灰老师的前端体系，easy ui创始人的视频（这个帮助真大），北风网的优秀视频，黑马东哥视频，和java123视频，最终以一个课程设计猎图网（按照软件工程编写文档）而结束了2016年的学习。<br>回忆起来，这一年真的很充实和苦有所得</p>
+<h4 id="持久以恒"><a href="#持久以恒" class="headerlink" title="持久以恒"></a>持久以恒</h4><p>2017年开始，自己就开始写博客来记录学习和知识，早在2015年3月，自己建了一个c++群，不过里面人很少，刚开始是用文档记录发到群里分享，后来直接用hexo博客写，自己也租了一台阿里云服务器，部署自己的网站。而之前也是利用业余时间看看经典书籍，而这一年更是如此，也很少看视频了，基本以经典书籍学习，像设计模式，多线程，数据结构与算法等等，也许是精力不行了，也没有了之前疯狂的学习热情，后来在3月到5月一直帮一个学校做项目（过程太累），第一次感受到真实项目的复杂合自己一个人做的挑战，最后改编成了毕业设计。然后到了7月，自己也许是爆发最后一次的能量，整个暑假出门不超过几十次，花了一个月终于完成了自己的个人论坛项目，带着渴望不孤独的心情第二次发到了空间，然而在之前，因为自己太痴迷于技术，错过了好多推荐的机会，现在后悔都来不及。到九月份，突然发现，自己投的简历都石沉大海，一次面试对方说出了详情，我们不需要有自己想法的人，就算你自己苦思冥想设计算法最后还是调用第三方库，如谷歌、百度。而且现在培训这么多，别人几个月会各种分布式技术，各种技术集群，而且只要基本的增删改查和基本操作就够了，而且我们只要有工作经验的，也许是自己之前的学习热情过头惹怒了面试官加上简历上写的0工作经验和找实习，要么是培训机构要么没有机会，加上自己又要考驾照和精神不够好胡思乱想，于是从十月份开始彻底废了，每天沉迷游戏，动漫，电影，自暴自弃，甚至考虑转行等等，期间也偶尔兴趣来了学习一下技术，后来慢慢的发现，自己太单纯了，自己的目标是一名工程师，技术会用和深入学习的时间性价比是天壤之别，而且这是一个很现实的社会</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>慢慢的，人总是会变的现实，很感激大学里陪伴我的严蔚敏老师、韩顺平老师、马士兵老师、李炎灰老师和其他免费开源的优秀老师以及那些经典书籍的作者，是他们陪伴我度过了最充实的大学生活。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;不知不觉新的一年将开始，也意味着6月份之后美好的大学生活和学生时代即将结束。年后无论是实习或者是在公司端茶倒水或者是干全栈或者是违背良心干的
+    
+    </summary>
+    
+      <category term="个人感想" scheme="http://www.myzwl.win/categories/%E4%B8%AA%E4%BA%BA%E6%84%9F%E6%83%B3/"/>
+    
+    
+      <category term="学习总结" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>FastDFS+Nginx搭建分布式图片服务器</title>
+    <link href="http://www.myzwl.win/2017/12/20/fastdfs_1/"/>
+    <id>http://www.myzwl.win/2017/12/20/fastdfs_1/</id>
+    <published>2017-12-20T06:48:51.000Z</published>
+    <updated>2018-01-04T13:33:58.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>FastDFS是用c语言编写的一款开源的分布式文件系统。充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标，使用FastDFS很容易搭建一套高性能的文件服务器集群提供文件上传、下载等服务。其流程如下所示<br><img src="/images/imgs5/28.jpg" alt="Alt text"><br>其中tracker相当于一个管家，在storager与client之间进行交流，最终图片存在storager中。<br>而在传统图片存储中，一般都存在某个服务器的目录中，如果要集群的话，并发量大的话，另一台服务器就访问不到了，所以需要一个专门的图片服务器</p>
+<h4 id="上传与下载流程"><a href="#上传与下载流程" class="headerlink" title="上传与下载流程"></a>上传与下载流程</h4><p>上传<br><img src="/images/imgs5/29.jpg" alt="Alt text"><br>下载<br><img src="/images/imgs5/30.jpg" alt="Alt text"></p>
+<h4 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h4><p>一.上传需要的软件到linux上<br><img src="/images/imgs5/31.jpg" alt="Alt text"><br>二.linux上安装必要的环境<br>1.安装gcc sudo apt-get install gcc<br>2.安装libevent工具包(ubuntu 16.04不能直接使用命令安装，具体也是谷歌了很久绕一大串才能安装)<br>三.安装libfastcommon（这里将所有文件放在了/usr/local/fast目录下）<br>1.解压缩到相应目录下<br>2.进行编译和安装<br>./make.sh &amp;&amp; ./make.sh install<br>3.把/usr/lib64/libfastcommon.so文件向/usr/lib/下复制一份<br>四。安装Tracker服务<br>1、解压缩<br>2、./make.sh<br>3、./make.sh install<br>安装后在/usr/bin/目录下有以fdfs开头的文件都是编译出来的。<br>配置文件都放到/etc/fdfs文件夹<br>4、把/conf目录下的所有的配置文件都复制到/etc/fdfs下<br>5、配置tracker服务。修改/etc/fdfs/tracker.conf文件。<br>找到base_path=/home/yuqing/fastdfs<br>把后面的路径修改成你服务器上的路径，并且这个目录必须存在。我的是/usr/local/fast/fastdfs<br>6、启动tracker。/usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf<br>重启使用命令：/usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf restart<br>五。安装storage服务<br>1、如果是在不同的服务器安装，第四步的1~4需要重新执行。<br>2、配置storage服务。修改/etc/fdfs/storage.conf文件<br>需要修改几处。<br>base_path与store_path0改成自己的，我的是/usr/local/fast/storage<br>tracker_server改成自己主机的ip：22122<br>3、启动storage服务。<br>/usr/bin/fdfs_storaged /etc/fdfs/storage.conf restart<br>六。安装测试<br>1、修改配置文件/etc/fdfs/client.conf将其中的base_path与tracker_server修改<br>2、测试<br>/usr/bin/fdfs_test /etc/fdfs/client.conf upload anti-steal.jpg<br>如果成功的话会提示图片存储路径<br>七。搭建nginx提供http服务<br>上传fastdfs-nginx-module_v1.16.tar.gz<br>1、解压插件压缩包<br>2、修改/fastdfs-nginx-module/src/config文件，把其中的local去掉，同时如果你的是64位的把lib改成lib64<br>3、对nginx重新config<br>./configure \<br>–prefix=/usr/local/nginx \<br>–pid-path=/var/run/nginx/nginx.pid \<br>–lock-path=/var/lock/nginx.lock \<br>–error-log-path=/var/log/nginx/error.log \<br>–http-log-path=/var/log/nginx/access.log \<br>–with-http_gzip_static_module \<br>–http-client-body-temp-path=/var/temp/nginx/client \<br>–http-proxy-temp-path=/var/temp/nginx/proxy \<br>–http-fastcgi-temp-path=/var/temp/nginx/fastcgi \<br>–http-uwsgi-temp-path=/var/temp/nginx/uwsgi \<br>–http-scgi-temp-path=/var/temp/nginx/scgi \<br>–add-module=/usr/local/fast/fastdfs-nginx-module/src<br>注意最后一个是安装的路径，第一个是你自己的nginx路径<br>4、make<br>5、make install<br>6、把/fastdfs-nginx-module/src/mod_fastdfs.conf文件复制到/etc/fdfs目录下。修改<br>tracker_server=192.168.1.172:22122//改成自己的服务器ip地址<br>url_have_group_name = true //改为true，启动组<br>store_path0=/fastdfs/storage //改成自己的图片存储路径<br>7、nginx的配置<br>server {<br>        listen       80;<br>        server_name  localhost;</p>
+<pre><code>location /group1/M00/{
+        #root /home/FastDFS/fdfs_storage/data;
+        ngx_fastdfs_module;
+}
+</code></pre><p>}<br>8、将libfdfsclient.so拷贝至/usr/lib下<br>cp /usr/lib64/libfdfsclient.so /usr/lib/<br>9.启动nginx</p>
+<h4 id="遇到的错误"><a href="#遇到的错误" class="headerlink" title="遇到的错误"></a>遇到的错误</h4><p>事情并非一帆风顺的，其中有几个坑需要注意<br>1.如果你的是64位，一定要把上面说的lib改成lib64<br>2.主要上面修改的配置文件中有http.server_port=8888默认的，改成你在nginx中配置的，我配置的是80，就全部改成80，另外cliet那个配置文件是8080，页改成80，不然会出现404错误<br>3.增加权限，在nginx.conf中第一行增加user root；权限<br>最后利用上传时显示的图片地址在浏览器中进行访问即可<br><img src="/images/imgs5/32.jpg" alt="Alt text"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;FastDFS是用c语言编写的一款开源的分布式文件系统。充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标，使用Fas
+    
+    </summary>
+    
+      <category term="分布式" scheme="http://www.myzwl.win/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+    
+      <category term="FastDFS" scheme="http://www.myzwl.win/source/tags/FastDFS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>pythonDiary_01之map与reduce</title>
+    <link href="http://www.myzwl.win/2017/12/11/python_02/"/>
+    <id>http://www.myzwl.win/2017/12/11/python_02/</id>
+    <published>2017-12-11T06:48:51.000Z</published>
+    <updated>2018-01-04T12:40:02.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>map()函数接收两个参数，一个是函数，一个是Iterable，map将传入的函数依次作用到序列的每个元素，并把结果作为新的Iterator返回。<br>比如：list(map(str, [1, 2, 3, 4, 5, 6, 7, 8, 9]))<br>把这个list所有数字转为字符串</p>
+<p>reduce把一个函数作用在一个序列[x1, x2, x3, …]上，这个函数必须接收两个参数，reduce把结果继续和序列的下一个元素做累积计算，其效果就是：<br>reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)<br>比方说对一个序列求和</p>
+<blockquote>
+<p>from functools import reduce<br>  def add(x, y):<br>  return x + y<br>reduce(add, [1, 3, 5, 7, 9])</p>
+</blockquote>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>在一个有序集合，统计出现所有键的个数</p>
+<blockquote>
+<p>from functools import reduce<br>def func(lst):<br>  dic={}<br>  for k in lst:<br>   if not k in dic :<br>     dic[k]=1<br>   else :<br>     dic[k]+=1;<br>     return dic<br>lst=[1,1,2,3,2,3,3,5,6,7,7,6,5,5,5]<br>print(func(lst))<br>def func1(lst):<br> m=set(lst)<br> dic={}<br> for x in m:<br>    dic[x]=lst.count(x)<br> return dic<br>ls=[1,1,2,3,2,3,3,5,6,7,7,6,5,5,5]<br>print(func1(ls))<br>def func2(dic,p):<br>   if not p in dic :<br>     dic[p]=1<br>   else :<br>     dic[p]+=1;<br>     return dic<br>print(reduce(func2,ls,{}))</p>
+</blockquote>
+<h4 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h4><p>filter()函数用于过滤序列。<br>和map()类似，filter()也接收一个函数和一个序列。和map()不同的是，filter()把传入的函数依次作用于每个元素，然后根据返回值是True还是False决定保留还是丢弃该元素。<br>在一个list中，删掉偶数，只保留奇数，可以这么写：</p>
+<blockquote>
+<p>def is_odd(n):<br>    return n % 2 == 1<br>list(filter(is_odd, [1, 2, 4, 5, 6, 9, 10, 15]))</p>
+<h1 id="结果-1-5-9-15"><a href="#结果-1-5-9-15" class="headerlink" title="结果: [1, 5, 9, 15]"></a>结果: [1, 5, 9, 15]</h1></blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;map()函数接收两个参数，一个是函数，一个是Iterable，map将传入的函数依次作用到序列的每个元素，并把结果作为新的Iterator
+    
+    </summary>
+    
+      <category term="python" scheme="http://www.myzwl.win/categories/python/"/>
+    
+    
+      <category term="python" scheme="http://www.myzwl.win/source/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>pythonDiary_01之数据类型</title>
+    <link href="http://www.myzwl.win/2017/12/10/python_01/"/>
+    <id>http://www.myzwl.win/2017/12/10/python_01/</id>
+    <published>2017-12-10T06:48:51.000Z</published>
+    <updated>2017-12-24T05:20:46.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>人生苦短，我用python。最近为了丰富自己的技术栈，开始学习这门神奇的语言。我的是在linux环境下进行学习，参考了廖雪峰先生的教程进行学习，不多说，下面将介绍python中几种不熟悉的数据元素：列表、元组、字典、set</p>
+<h4 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h4><p>列表list是一种有序的集合，可以随时添加和删除其中的元素<br>1.1初始化列表</p>
+<blockquote>
+<p>list=[‘java’,’php’,’c’,’python’]</p>
+</blockquote>
+<p>1.2访问列表中的值<br>列表引用[索引号]，如list[0],下标从0开始，-1表示最后一个，依次类推</p>
+<p>1.3更新列表<br>直接将列表中值重新赋值，如list[0]=‘c++’</p>
+<p>1.4删除列表元素<br>del list[0]</p>
+<p>1.5列表操作符</p>
+<blockquote>
+<p>[1,2]+[4,5]  #[1,2,4,5]<br>[‘h’]*4 #[‘h’,’h’,’h’,’h’]<br>1 in [1,2] #true<br>for yy in [‘x’,’y’] # ‘x’,’y’</p>
+</blockquote>
+<p>1.6列表截取</p>
+<blockquote>
+<p>list=[‘java’,’php’,’c’,’python’]<br>list[0] #java<br>list[-1] #python<br>list[1:3] # c python 其中list[：-1]默认第一个是从0开始，list[0:]最后一个不写默认是最后一个</p>
+</blockquote>
+<p>1.7列表函数与方法</p>
+<blockquote>
+<p>list.append(obj) #末尾添加新对象<br>list.count(obj)   #统计某个元素在列表中出现的次数<br>list.extend(seq)  #在列表末尾一次性追加里一个序列<br>list.index(obj)   #找出第一个匹配值的序列<br>list.insert(index,obj)  #指定索引位置插入<br>list.pop(index)       #按索引溢出列表中元素，默认最后一个<br>list.remove(obj)     #按值移除<br>list.reverse()      #倒转<br>list.sort()        #排序</p>
+</blockquote>
+<h4 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h4><p>元组tuple和list非常类似，但是tuple一旦初始化就不能修改，而且元组使用（）定义，列表使用[]<br>初始化<br>tuple=(‘java’,’python’,’c’,’php’)<br>只有一个元素需要添加逗号<br>tuple=(‘java’,)<br>空元组<br>tuple=()</p>
+<p>元组内置函数</p>
+<blockquote>
+<p>cmp(t1,t2) #比较两个元组元素<br>len(t)      #计算元组元素的个数<br>max(t)      #返回元组中元素最大值<br>min(t)      #。。最小值<br>tuple(seq)  #列表转化为元组</p>
+</blockquote>
+<p>其余操作和列表基本一致</p>
+<h4 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h4><p>Python内置了字典：dict的支持，dict全称dictionary，在其他语言中也称为map，使用键-值（key-value）存储，具有极快的查找速度<br>1.1初始化字典<br>如dict={‘java’:’hello’,’c’:’world’,’python’:’hi’}<br>1.2 访问字典的值<br>dict[‘java’] #hello<br>1.3修改字典</p>
+<blockquote>
+<p>dict[‘java’]=’we’ #修改<br>dict[‘c++’]=’lol’ #增加<br>del dict[‘java’] #删除键<br>dict.clear()    #清空字典<br>del dict        #删除词典</p>
+</blockquote>
+<p>1.4字典内置函数</p>
+<blockquote>
+<p>1.cmp(dict1, dict2)<br>比较两个字典元素<br>2    len(dict)<br>计算字典元素个数，即键的总数。<br>3    str(dict)<br>输出字典可打印的字符串表示。<br>4    type(variable)<br>返回输入的变量类型，如果变量是字典就返回字典类型。<br>Python字典包含了以下内置方法：<br>1    dict.clear()<br>删除字典内所有元素<br>2    dict.copy()<br>返回一个字典的浅复制<br>3    dict.fromkeys(seq[, val])<br>创建一个新字典，以序列 seq 中元素做字典的键，val 为字典所有键对应的初始值<br>4    dict.get(key, default=None)<br>返回指定键的值，如果值不在字典中返回default值<br>5    dict.has_key(key)<br>如果键在字典dict里返回true，否则返回false<br>6    dict.items()<br>以列表返回可遍历的(键, 值) 元组数组<br>7    dict.keys()<br>以列表返回一个字典所有的键<br>8    dict.setdefault(key, default=None)<br>和get()类似, 但如果键不存在于字典中，将会添加键并将值设为default<br>9    dict.update(dict2)<br>把字典dict2的键/值对更新到dict里<br>10    dict.values()<br>以列表返回字典中的所有值<br>11    pop(key[,default])<br>删除字典给定键 key 所对应的值，返回值为被删除的值。key值必须给出。 否则，返回default值。<br>12    popitem()<br>随机返回并删除字典中的一对键和值。</p>
+</blockquote>
+<h4 id="set"><a href="#set" class="headerlink" title="set"></a>set</h4><p>set和dict类似，也是一组key的集合，但不存储value。由于key不能重复，所以，在set中，没有重复的key。<br>要创建一个set，需要提供一个list作为输入集合：<br>s = set([1, 2, 3])<br>其余和字典差不多</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;人生苦短，我用python。最近为了丰富自己的技术栈，开始学习这门神奇的语言。我的是在linux环境下进行学习，参考了廖雪峰先生的教程进行学
+    
+    </summary>
+    
+      <category term="python" scheme="http://www.myzwl.win/categories/python/"/>
+    
+    
+      <category term="python" scheme="http://www.myzwl.win/source/tags/python/"/>
+    
+  </entry>
   
   <entry>
     <title>solr笔记之二</title>
@@ -637,127 +812,6 @@ ${number[0..3]} &lt;#-- 输出子串“0123” --&gt;
     <summary type="html">
     
       &lt;h4 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h4&gt;&lt;p&gt;LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2个大王,2个小王(一副牌原本是54张^_^)…他随机从中抽出了5
-    
-    </summary>
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/categories/%E5%89%91%E6%8C%87offer/"/>
-    
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/source/tags/%E5%89%91%E6%8C%87offer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>求1+2+3+...+n</title>
-    <link href="http://www.myzwl.win/2017/10/18/offer_40/"/>
-    <id>http://www.myzwl.win/2017/10/18/offer_40/</id>
-    <published>2017-10-18T06:48:51.000Z</published>
-    <updated>2017-11-07T09:00:54.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>求1+2+3+…+n，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。</p>
-<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>根据题目的约束，只能使用递归操作了。当n递归到最小值1时结束，并且每次递归调用一次，值就减少1，直至n为1为止</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">private int result=0;</div><div class="line">    public int Sum_Solution(int n) &#123;</div><div class="line">        cale(n);</div><div class="line">        return result;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    private boolean cale(int n)&#123;</div><div class="line">        result+=n;</div><div class="line">        return n!=0&amp;&amp;cale(n-1);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h4&gt;&lt;p&gt;求1+2+3+…+n，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（
-    
-    </summary>
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/categories/%E5%89%91%E6%8C%87offer/"/>
-    
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/source/tags/%E5%89%91%E6%8C%87offer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>不用加减乘除做加法</title>
-    <link href="http://www.myzwl.win/2017/10/17/offer_39/"/>
-    <id>http://www.myzwl.win/2017/10/17/offer_39/</id>
-    <published>2017-10-17T06:48:51.000Z</published>
-    <updated>2017-11-07T08:56:30.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>写一个函数，求两个整数之和，要求在函数体内不得使用+、-、*、/四则运算符号。</p>
-<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>核心思想是采用位运算，主要分为三步，比如5（101）+17（10001），第一步各位相加但不进位，得10100，第二部记下进位，的10，最后一步把前两部相加，得22（10110），根据异或和与逻辑与的运算规则，很容易知道第一步符合异或规则，第二部先与在左移一位进位即可</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public int Add(int num1,int num2) &#123;</div><div class="line">       int sum,carry;</div><div class="line">       do&#123;</div><div class="line">           sum=num1^num2;</div><div class="line">           carry=(num1&amp;num2)&lt;&lt;1;</div><div class="line">           num1=sum;</div><div class="line">           num2=carry;</div><div class="line">       &#125;while(num2!=0);</div><div class="line">       return num1;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h4&gt;&lt;p&gt;写一个函数，求两个整数之和，要求在函数体内不得使用+、-、*、/四则运算符号。&lt;/p&gt;
-&lt;h4 id=&quot;思路分析&quot;&gt;&lt;a h
-    
-    </summary>
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/categories/%E5%89%91%E6%8C%87offer/"/>
-    
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/source/tags/%E5%89%91%E6%8C%87offer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>数组中重复的数字</title>
-    <link href="http://www.myzwl.win/2017/10/16/offer_38/"/>
-    <id>http://www.myzwl.win/2017/10/16/offer_38/</id>
-    <published>2017-10-16T06:48:51.000Z</published>
-    <updated>2017-11-07T08:44:22.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>在一个长度为n的数组里的所有数字都在0到n-1的范围内。 数组中某些数字是重复的，但不知道有几个数字是重复的。也不知道每个数字重复几次。请找出数组中任意一个重复的数字。 例如，如果输入长度为7的数组{2,3,1,0,2,5,3}，那么对应的输出是第一个重复的数字2</p>
-<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>核心思想可以相对整个数组进行排序，这样如果相邻元素一样说明是重复的，只要遍历整个数组，找到第一个相同的就找到了第一个重复的数字</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public boolean duplicate(int numbers[],int length,int [] duplication) &#123;</div><div class="line">        if(length==0||numbers==null)</div><div class="line">        &#123;</div><div class="line">            duplication[0]=-1;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">           Arrays.sort(numbers);</div><div class="line">           for(int i=0;i&lt;numbers.length-1;i++)&#123;</div><div class="line">               if(numbers[i]==numbers[i+1])</div><div class="line">               &#123;</div><div class="line">                   duplication[0]=numbers[i];</div><div class="line">                   return true;</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">        return false;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h4&gt;&lt;p&gt;在一个长度为n的数组里的所有数字都在0到n-1的范围内。 数组中某些数字是重复的，但不知道有几个数字是重复的。也不知道每个数
-    
-    </summary>
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/categories/%E5%89%91%E6%8C%87offer/"/>
-    
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/source/tags/%E5%89%91%E6%8C%87offer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>正则表达式匹配</title>
-    <link href="http://www.myzwl.win/2017/10/15/offer_37/"/>
-    <id>http://www.myzwl.win/2017/10/15/offer_37/</id>
-    <published>2017-10-15T06:48:51.000Z</published>
-    <updated>2017-11-07T04:21:44.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>请实现一个函数用来匹配包括’.’和’<em>‘的正则表达式。模式中的字符’.’表示任意一个字符，而’</em>‘表示它前面的字符可以出现任意次（包含0次）。 在本题中，匹配是指字符串的所有字符匹配整个模式。例如，字符串”aaa”与模式”a.a”和”ab<em>ac</em>a”匹配，但是与”aa.a”和”ab*a”均不匹配</p>
-<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>先考虑模式串中有’<em>‘的情况，因为</em>可以匹配0个或多个，所以如果模式串的下一个字符是<em>的时候就有三种情况<br>1.匹配0个主串的字符，比如主串是abc，模式串是b</em>，那么下一步匹配的策略是主串保持不变，模式串跳到下两个字符重新比较，<br>2.匹配1个字符，比如主串是abc，模式串是a<em>，下一步比较策略是主串跳到下一个字符，模式串移动两个字符<br>3.匹配多个字符，比如主串aac，模式串是a</em>cb，因为只匹配aa两个字符，下一步策略是主串移动一个字符，模式串移动两个字符，如果当前字符与主串字符不能匹配，则主串不变，模式串移动两个位置<br>如果当前字符是’.’，直接按逐个字符进行比较</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">public boolean match(char[] str,char[] pattern)&#123;</div><div class="line">    if(str==null||pattern==null)</div><div class="line">      return false;</div><div class="line">    return matchRegCore(str,0,str.length,pattern,0,pattern.length);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  private boolean matchRegCore(char[] str,int i,int length1,char[] pattern,int j,int length2)&#123;</div><div class="line">    if(i==length1&amp;&amp;j==length2)&#123;</div><div class="line">      if(j==length2||pattern[j]=='*')</div><div class="line">        return true;</div><div class="line">      else</div><div class="line">        return false;</div><div class="line">    &#125;</div><div class="line">    if(i!=length1&amp;&amp;j==length2)</div><div class="line">      return false;</div><div class="line">    if(j+1&lt;length2&amp;&amp;pattern[j+1]=='*')&#123;</div><div class="line">      if(i&lt;length1&amp;&amp;(pattern[j]==str[i]||pattern[j]=='.'))&#123;</div><div class="line">        return matchRegCore(str,i+1,length1,pattern,j,length2)||</div><div class="line">            matchRegCore(str,i+1,length1,pattern,j+2,length2)||</div><div class="line">            matchRegCore(str,i,length1,pattern,j+2,length2);</div><div class="line">      &#125;else&#123;</div><div class="line">        return matchRegCore(str,i,length1,pattern,j+2,length2);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    if(i&lt;length1&amp;&amp;(str[i]==pattern[j]||pattern[j]=='.'))&#123;</div><div class="line">      return matchRegCore(str,i+1,length1,pattern,j+1,length2);</div><div class="line">    &#125;</div><div class="line">    return false;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h4&gt;&lt;p&gt;请实现一个函数用来匹配包括’.’和’&lt;em&gt;‘的正则表达式。模式中的字符’.’表示任意一个字符，而’&lt;/em&gt;‘表示它前面的
-    
-    </summary>
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/categories/%E5%89%91%E6%8C%87offer/"/>
-    
-    
-      <category term="剑指offer" scheme="http://www.myzwl.win/source/tags/%E5%89%91%E6%8C%87offer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>表示数值的字符串</title>
-    <link href="http://www.myzwl.win/2017/10/14/offer_36/"/>
-    <id>http://www.myzwl.win/2017/10/14/offer_36/</id>
-    <published>2017-10-14T06:48:51.000Z</published>
-    <updated>2017-11-07T04:07:46.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串”+100”,”5e2”,”-123”,”3.1416”和”-1E-16”都表示数值。 但是”12e”,”1a3.14”,”1.2.3”,”+-5”和”12e+4.3”都不是。</p>
-<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>核心思路就是分情况讨论，主要分为三类：整数、浮点数和科学计数法。<br>对于整数的判断，就是字符串中没有出现非0到9的字符即可，否则返回错误<br>对于浮点数，只要考虑整数后面出现一个小数点，而后面的判断与整数相同，<br>对于科学计数法，就是e和E后其后面的字符串与整数一样，同时如果后面没有数字是不被允许的</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">public boolean isNumeric(char[] str) &#123;</div><div class="line">        if(str==null||str.length==0)return false;</div><div class="line">        int index=0;</div><div class="line">        int length=str.length;</div><div class="line">        while(index&lt;length&amp;&amp;str[index]==' ')index++;</div><div class="line">        if(index&gt;=length)return false;</div><div class="line">        while(str[length-1]==' ')length--;</div><div class="line">        if(str[index]=='+'||str[index]=='-')index++;</div><div class="line">        if(index&gt;=length)return false;</div><div class="line">        </div><div class="line">        while(index&lt;length&amp;&amp;str[index]&gt;='0'&amp;&amp;str[index]&lt;='9')index++;</div><div class="line">        if(index==length) return true;</div><div class="line">        int index2=index;</div><div class="line">        </div><div class="line">        if(str[index]=='.')&#123;</div><div class="line">          index++;</div><div class="line">          if(index==length)return true;</div><div class="line">          index2=index;</div><div class="line">          while(index&lt;length&amp;&amp;str[index]&gt;='0'&amp;&amp;str[index]&lt;='9')index++;</div><div class="line">          if(index==index2) return false;</div><div class="line">          if(index==length) return true;</div><div class="line">        &#125;</div><div class="line">       </div><div class="line">        if(str[index]=='e'||str[index]=='E')&#123;</div><div class="line">          index++;</div><div class="line">          if(index==length)return false;</div><div class="line">          if(str[index]=='+'||str[index]=='-')index++;</div><div class="line">          index2=index;</div><div class="line">          while(index&lt;length&amp;&amp;str[index]&gt;='0'&amp;&amp;str[index]&lt;='9')index++;</div><div class="line">          if(index==index2) return false;</div><div class="line">          if(index==length) return true;</div><div class="line">        &#125;</div><div class="line">          return false;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h4&gt;&lt;p&gt;请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串”+100”,”5e2”,”-123”,”3.141
     
     </summary>
     
