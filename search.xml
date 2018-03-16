@@ -577,16 +577,16 @@
 
     
     <entry>
-      <title><![CDATA[最小的K个数]]></title>
-      <url>%2F2017%2F05%2F05%2Foffer_25%2F</url>
-      <content type="text"><![CDATA[问题描述输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。 思路分析(解法一)可先将整数数组进行排序，利用快排（nlogn）为从小到大，然后取出前k项 码上有戏123456789public ArrayList&lt;Integer&gt; GetLeastNumbers_Solution(int [] input, int k) &#123; ArrayList&lt;Integer&gt; list=new ArrayList&lt;Integer&gt;(); if(k&lt;0||k&gt;input.length) return list; Arrays.sort(input); for(int i=0;i&lt;k;i++) list.add(input[i]); return list; &#125; 思路分析(解法二)这里可进行海量数据的处理，先将前k个数据放在treeset中，这里数据不能重复，并且是按照红黑树从小到大存储，然后依次比较k之后的元素，如果小于最大的，就替换掉，最后遍历完成后就是所求的 码上有戏123456789101112131415161718192021public ArrayList&lt;Integer&gt; GetLeastNumbers_Solution(int [] input, int k) &#123; ArrayList&lt;Integer&gt; list=new ArrayList&lt;Integer&gt;(); if(k&lt;=0||k&gt;input.length||input.length==0||input==null) return list; TreeSet&lt;Integer&gt; s=new TreeSet&lt;Integer&gt;(); for(int i=0;i&lt;input.length;i++)&#123; if(s.size()&lt;k)&#123; s.add(input[i]); &#125;else&#123; if(input[i]&lt;s.last())&#123; s.remove(s.last()); s.add(input[i]); &#125; &#125; &#125; Iterator&lt;Integer&gt; it=s.iterator(); while(it.hasNext())&#123; list.add(it.next()); &#125; return list; &#125;]]></content>
+      <title><![CDATA[数组中出现次数超过一半的数字]]></title>
+      <url>%2F2017%2F05%2F05%2Foffer_26%2F</url>
+      <content type="text"><![CDATA[问题描述数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。 思路分析通过双重循环，先将第一个数开始，通过计数器，如果后面的书和计数的数一样，则计数器加一，直至计数器满足条件退出，然后依次从第二个数开始，因为到中位数时肯定后面不满足，所以可在这里终止 码上有戏12345678910111213141516171819public int MoreThanHalfNum_Solution(int [] array) &#123; int count=0; int temp=0; for(int j=0;j&lt;array.length;j++)&#123; for(int i=j;i&lt;array.length;i++)&#123; temp=array[j]; if(temp==array[i])&#123; count++; &#125; if(count&gt;array.length/2)&#123; return temp; &#125; if(j&gt;array.length/2) return 0; &#125; count=0; &#125; return 0; &#125;]]></content>
     </entry>
 
     
     <entry>
-      <title><![CDATA[数组中出现次数超过一半的数字]]></title>
-      <url>%2F2017%2F05%2F05%2Foffer_26%2F</url>
-      <content type="text"><![CDATA[问题描述数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。 思路分析通过双重循环，先将第一个数开始，通过计数器，如果后面的书和计数的数一样，则计数器加一，直至计数器满足条件退出，然后依次从第二个数开始，因为到中位数时肯定后面不满足，所以可在这里终止 码上有戏12345678910111213141516171819public int MoreThanHalfNum_Solution(int [] array) &#123; int count=0; int temp=0; for(int j=0;j&lt;array.length;j++)&#123; for(int i=j;i&lt;array.length;i++)&#123; temp=array[j]; if(temp==array[i])&#123; count++; &#125; if(count&gt;array.length/2)&#123; return temp; &#125; if(j&gt;array.length/2) return 0; &#125; count=0; &#125; return 0; &#125;]]></content>
+      <title><![CDATA[最小的K个数]]></title>
+      <url>%2F2017%2F05%2F05%2Foffer_25%2F</url>
+      <content type="text"><![CDATA[问题描述输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。 思路分析(解法一)可先将整数数组进行排序，利用快排（nlogn）为从小到大，然后取出前k项 码上有戏123456789public ArrayList&lt;Integer&gt; GetLeastNumbers_Solution(int [] input, int k) &#123; ArrayList&lt;Integer&gt; list=new ArrayList&lt;Integer&gt;(); if(k&lt;0||k&gt;input.length) return list; Arrays.sort(input); for(int i=0;i&lt;k;i++) list.add(input[i]); return list; &#125; 思路分析(解法二)这里可进行海量数据的处理，先将前k个数据放在treeset中，这里数据不能重复，并且是按照红黑树从小到大存储，然后依次比较k之后的元素，如果小于最大的，就替换掉，最后遍历完成后就是所求的 码上有戏123456789101112131415161718192021public ArrayList&lt;Integer&gt; GetLeastNumbers_Solution(int [] input, int k) &#123; ArrayList&lt;Integer&gt; list=new ArrayList&lt;Integer&gt;(); if(k&lt;=0||k&gt;input.length||input.length==0||input==null) return list; TreeSet&lt;Integer&gt; s=new TreeSet&lt;Integer&gt;(); for(int i=0;i&lt;input.length;i++)&#123; if(s.size()&lt;k)&#123; s.add(input[i]); &#125;else&#123; if(input[i]&lt;s.last())&#123; s.remove(s.last()); s.add(input[i]); &#125; &#125; &#125; Iterator&lt;Integer&gt; it=s.iterator(); while(it.hasNext())&#123; list.add(it.next()); &#125; return list; &#125;]]></content>
     </entry>
 
     

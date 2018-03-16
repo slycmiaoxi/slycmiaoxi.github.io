@@ -482,6 +482,47 @@ ${number[0..3]} &lt;#-- 输出子串“0123” --&gt;
   </entry>
   
   <entry>
+    <title>redis笔记之三</title>
+    <link href="http://www.myzwl.win/2017/11/06/redis_3/"/>
+    <id>http://www.myzwl.win/2017/11/06/redis_3/</id>
+    <published>2017-11-06T06:48:51.000Z</published>
+    <updated>2017-12-07T06:56:40.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="redis高级命令及特性"><a href="#redis高级命令及特性" class="headerlink" title="redis高级命令及特性"></a>redis高级命令及特性</h4><p>1.返回满足的所有键keys <em>（可以模糊匹配）<br>2.exists是否存在指定的key<br>3.expire设置某个key的过期时间，使用ttl查看剩余时间<br>4.persist取消过期时间<br><img src="/images/imgs5/19.jpg" alt="Alt text"><br>5.select 选择数据库 数据库为0到15（一共16个数据库）默认进入的是0数据库<br>6 move key [数据库下标]将当前数据库中的key转移到其他数据库中<br>7.randomkey 随机返回数据库里的一个key<br>8.rename 重命名key<br><img src="/images/imgs5/20.jpg" alt="Alt text"><br>9.dbsize 查看数据库的key数量<br>10.info获取数据库信息<br>11.config get </em>返回所有配置<br>12 flushdb清空当前数据库，flushall清空所有数据库</p>
+<h4 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h4><p>通俗的讲就是一个用户访问一台服务器，该服务器假设为主服务器，具有读写功能，而在该主服务器下关联了一台从服务器，该从服务只具有读功能不具有写功能，并且数据是从主服务器经过一些列同步算法到该服务器上<br>配置过程</p>
+<blockquote>
+<p>1.修改redis.conf文件下<br>找到slaveof <masterip> <masterport><br>该服务器为从服务器</masterport></masterip></p>
+</blockquote>
+<p>主从复制对比<br><img src="/images/imgs5/21.jpg" alt="Alt text"><br>分析：<br>1.master可以拥有多个slave<br>2.多个slave可以连接同一个master外，还可以连接其他的slave<br>3.主从复制不会阻塞master在同步数据时，master可以据需处理client请求<br>4提供系统的伸缩性<br>主从复制过程<br>1.slave与master建立连接，发送sync同步命令<br>2.master会开启一个后台进程，将数据库快照保存到文件中，同时master主进程会开始收集新的写命令并缓存<br>3.后台完成保存后，就将文件发送给slave<br>4.slave将此文件保存在硬盘上</p>
+<h4 id="redis持久化机制"><a href="#redis持久化机制" class="headerlink" title="redis持久化机制"></a>redis持久化机制</h4><p>redis需要经常将内存中的数据同步到硬盘来保证持久化<br>1.快照（默认方式）<br>将内存中以快照的方式写入到二进制文件中，默认为dump.rdb，可以通过配置设置自动做快照持久化的方式。可以配置redis在n秒内如果超过m个key则修改就自动做快照<br>具体配置如下</p>
+<blockquote>
+<p>save 900 1 #900秒内如果超过1个key被修改 则发起快照保存<br>save 300 10<br>save 60 10000</p>
+</blockquote>
+<p>2.aof（日志方式）<br>由于快照方式是在一定时间间隔做一次，所以可能发生redis意外down的情况就会丢失最后一次快照后的所有修改的数据。使用aof时，redis会将每一个收到的写命令都通过write函数追加到命令中<br>aof设置</p>
+<blockquote>
+<p>appendonly yes //启动aof，有三种修改方式</p>
+<p>#appendfsync always//收到命令就立即写入到磁盘，效率最慢，但是保证完全的持久化</p>
+<p>#appendysync everysec//每秒钟写入磁盘一次，在性能和持久化方面做了很好的折中</p>
+<p>#appendysync no //完全依赖os性能，持久化没保证</p>
+</blockquote>
+<p>如图<br><img src="/images/imgs5/22.jpg" alt="Alt text"><br>有了aof我们就可以利用主从复制保证数据的完整性了</p>
+<h4 id="发布与订阅消息"><a href="#发布与订阅消息" class="headerlink" title="发布与订阅消息"></a>发布与订阅消息</h4><p>使用subscribe [频道] 进行订阅监听<br>使用publish [频道] [发布内容] 进行发布消息广播<br><img src="/images/imgs5/23.jpg" alt="Alt text"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;redis高级命令及特性&quot;&gt;&lt;a href=&quot;#redis高级命令及特性&quot; class=&quot;headerlink&quot; title=&quot;redis高级命令及特性&quot;&gt;&lt;/a&gt;redis高级命令及特性&lt;/h4&gt;&lt;p&gt;1.返回满足的所有键keys &lt;em&gt;（可以模糊匹配）&lt;br
+    
+    </summary>
+    
+      <category term="分布式" scheme="http://www.myzwl.win/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+    
+      <category term="redis" scheme="http://www.myzwl.win/source/tags/redis/"/>
+    
+  </entry>
+  
+  <entry>
     <title>nginx笔记之一</title>
     <link href="http://www.myzwl.win/2017/11/06/Nginx_1/"/>
     <id>http://www.myzwl.win/2017/11/06/Nginx_1/</id>
@@ -537,47 +578,6 @@ ${number[0..3]} &lt;#-- 输出子串“0123” --&gt;
     
     
       <category term="nginx" scheme="http://www.myzwl.win/source/tags/nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>redis笔记之三</title>
-    <link href="http://www.myzwl.win/2017/11/06/redis_3/"/>
-    <id>http://www.myzwl.win/2017/11/06/redis_3/</id>
-    <published>2017-11-06T06:48:51.000Z</published>
-    <updated>2017-12-07T06:56:40.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="redis高级命令及特性"><a href="#redis高级命令及特性" class="headerlink" title="redis高级命令及特性"></a>redis高级命令及特性</h4><p>1.返回满足的所有键keys <em>（可以模糊匹配）<br>2.exists是否存在指定的key<br>3.expire设置某个key的过期时间，使用ttl查看剩余时间<br>4.persist取消过期时间<br><img src="/images/imgs5/19.jpg" alt="Alt text"><br>5.select 选择数据库 数据库为0到15（一共16个数据库）默认进入的是0数据库<br>6 move key [数据库下标]将当前数据库中的key转移到其他数据库中<br>7.randomkey 随机返回数据库里的一个key<br>8.rename 重命名key<br><img src="/images/imgs5/20.jpg" alt="Alt text"><br>9.dbsize 查看数据库的key数量<br>10.info获取数据库信息<br>11.config get </em>返回所有配置<br>12 flushdb清空当前数据库，flushall清空所有数据库</p>
-<h4 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h4><p>通俗的讲就是一个用户访问一台服务器，该服务器假设为主服务器，具有读写功能，而在该主服务器下关联了一台从服务器，该从服务只具有读功能不具有写功能，并且数据是从主服务器经过一些列同步算法到该服务器上<br>配置过程</p>
-<blockquote>
-<p>1.修改redis.conf文件下<br>找到slaveof <masterip> <masterport><br>该服务器为从服务器</masterport></masterip></p>
-</blockquote>
-<p>主从复制对比<br><img src="/images/imgs5/21.jpg" alt="Alt text"><br>分析：<br>1.master可以拥有多个slave<br>2.多个slave可以连接同一个master外，还可以连接其他的slave<br>3.主从复制不会阻塞master在同步数据时，master可以据需处理client请求<br>4提供系统的伸缩性<br>主从复制过程<br>1.slave与master建立连接，发送sync同步命令<br>2.master会开启一个后台进程，将数据库快照保存到文件中，同时master主进程会开始收集新的写命令并缓存<br>3.后台完成保存后，就将文件发送给slave<br>4.slave将此文件保存在硬盘上</p>
-<h4 id="redis持久化机制"><a href="#redis持久化机制" class="headerlink" title="redis持久化机制"></a>redis持久化机制</h4><p>redis需要经常将内存中的数据同步到硬盘来保证持久化<br>1.快照（默认方式）<br>将内存中以快照的方式写入到二进制文件中，默认为dump.rdb，可以通过配置设置自动做快照持久化的方式。可以配置redis在n秒内如果超过m个key则修改就自动做快照<br>具体配置如下</p>
-<blockquote>
-<p>save 900 1 #900秒内如果超过1个key被修改 则发起快照保存<br>save 300 10<br>save 60 10000</p>
-</blockquote>
-<p>2.aof（日志方式）<br>由于快照方式是在一定时间间隔做一次，所以可能发生redis意外down的情况就会丢失最后一次快照后的所有修改的数据。使用aof时，redis会将每一个收到的写命令都通过write函数追加到命令中<br>aof设置</p>
-<blockquote>
-<p>appendonly yes //启动aof，有三种修改方式</p>
-<p>#appendfsync always//收到命令就立即写入到磁盘，效率最慢，但是保证完全的持久化</p>
-<p>#appendysync everysec//每秒钟写入磁盘一次，在性能和持久化方面做了很好的折中</p>
-<p>#appendysync no //完全依赖os性能，持久化没保证</p>
-</blockquote>
-<p>如图<br><img src="/images/imgs5/22.jpg" alt="Alt text"><br>有了aof我们就可以利用主从复制保证数据的完整性了</p>
-<h4 id="发布与订阅消息"><a href="#发布与订阅消息" class="headerlink" title="发布与订阅消息"></a>发布与订阅消息</h4><p>使用subscribe [频道] 进行订阅监听<br>使用publish [频道] [发布内容] 进行发布消息广播<br><img src="/images/imgs5/23.jpg" alt="Alt text"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;redis高级命令及特性&quot;&gt;&lt;a href=&quot;#redis高级命令及特性&quot; class=&quot;headerlink&quot; title=&quot;redis高级命令及特性&quot;&gt;&lt;/a&gt;redis高级命令及特性&lt;/h4&gt;&lt;p&gt;1.返回满足的所有键keys &lt;em&gt;（可以模糊匹配）&lt;br
-    
-    </summary>
-    
-      <category term="分布式" scheme="http://www.myzwl.win/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
-    
-    
-      <category term="redis" scheme="http://www.myzwl.win/source/tags/redis/"/>
     
   </entry>
   
