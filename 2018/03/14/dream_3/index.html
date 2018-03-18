@@ -1,0 +1,1190 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="自我救赎," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="说说ioc与aopIOC 控制反转容器控制程序对象之间的关系，而不是传统实现中，有程序代码之间控制，又名依赖注入。All 类的创建，销毁都由Spring 来控制，也就是说控制对象生命周期的不是引用他的对象，而是Spring。对于某个对象而言，以前是他控制其他对象，现在是all 对象都被spring 控制，这就叫控制反转依赖注入的思想时通过反射机制实现的。在实例化一个类时，它通过反射调用类中的set">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式总结">
+<meta property="og:url" content="http://www.myzwl.win/2018/03/14/dream_3/index.html">
+<meta property="og:site_name" content="秒西">
+<meta property="og:description" content="说说ioc与aopIOC 控制反转容器控制程序对象之间的关系，而不是传统实现中，有程序代码之间控制，又名依赖注入。All 类的创建，销毁都由Spring 来控制，也就是说控制对象生命周期的不是引用他的对象，而是Spring。对于某个对象而言，以前是他控制其他对象，现在是all 对象都被spring 控制，这就叫控制反转依赖注入的思想时通过反射机制实现的。在实例化一个类时，它通过反射调用类中的set">
+<meta property="og:updated_time" content="2018-03-18T15:48:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="设计模式总结">
+<meta name="twitter:description" content="说说ioc与aopIOC 控制反转容器控制程序对象之间的关系，而不是传统实现中，有程序代码之间控制，又名依赖注入。All 类的创建，销毁都由Spring 来控制，也就是说控制对象生命周期的不是引用他的对象，而是Spring。对于某个对象而言，以前是他控制其他对象，现在是all 对象都被spring 控制，这就叫控制反转依赖注入的思想时通过反射机制实现的。在实例化一个类时，它通过反射调用类中的set">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":true,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.myzwl.win/2018/03/14/dream_3/"/>
+
+
+
+
+
+  <title> 设计模式总结 | 秒西 </title>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"   background="imags/bg.jpg" style="opacity: 0.7;background-color: transparent;">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秒西</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+	
+	<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+    function c() {
+        var e = document.createElement("link");
+        e.setAttribute("type", "text/css");
+        e.setAttribute("rel", "stylesheet");
+        e.setAttribute("href", f);
+        e.setAttribute("class", l);
+        document.body.appendChild(e)
+    }
+
+    function h() {
+        var e = document.getElementsByClassName(l);
+        for (var t = 0; t < e.length; t++) {
+            document.body.removeChild(e[t])
+        }
+    }
+
+    function p() {
+        var e = document.createElement("div");
+        e.setAttribute("class", a);
+        document.body.appendChild(e);
+        setTimeout(function() {
+            document.body.removeChild(e)
+        }, 100)
+    }
+
+    function d(e) {
+        return {
+            height : e.offsetHeight,
+            width : e.offsetWidth
+        }
+    }
+
+    function v(i) {
+        var s = d(i);
+        return s.height > e && s.height < n && s.width > t && s.width < r
+    }
+
+    function m(e) {
+        var t = e;
+        var n = 0;
+        while (!!t) {
+            n += t.offsetTop;
+            t = t.offsetParent
+        }
+        return n
+    }
+
+    function g() {
+        var e = document.documentElement;
+        if (!!window.innerWidth) {
+            return window.innerHeight
+        } else if (e && !isNaN(e.clientHeight)) {
+            return e.clientHeight
+        }
+        return 0
+    }
+
+    function y() {
+        if (window.pageYOffset) {
+            return window.pageYOffset
+        }
+        return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+    }
+
+    function E(e) {
+        var t = m(e);
+        return t >= w && t <= b + w
+    }
+
+    function S() {
+        var e = document.createElement("audio");
+        e.setAttribute("class", l);
+        e.src = i;
+        e.loop = false;
+        e.addEventListener("canplay", function() {
+            setTimeout(function() {
+                x(k)
+            }, 500);
+            setTimeout(function() {
+                N();
+                p();
+                for (var e = 0; e < O.length; e++) {
+                    T(O[e])
+                }
+            }, 15500)
+        }, true);
+        e.addEventListener("ended", function() {
+            N();
+            h()
+        }, true);
+        e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+        document.body.appendChild(e);
+        e.play()
+    }
+
+    function x(e) {
+        e.className += " " + s + " " + o
+    }
+
+    function T(e) {
+        e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+    }
+
+    function N() {
+        var e = document.getElementsByClassName(s);
+        var t = new RegExp("\\b" + s + "\\b");
+        for (var n = 0; n < e.length; ) {
+            e[n].className = e[n].className.replace(t, "")
+        }
+    }
+
+    var e = 30;
+    var t = 30;
+    var n = 350;
+    var r = 350;
+    var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+    var s = "mw-harlem_shake_me";
+    var o = "im_first";
+    var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+    var a = "mw-strobe_light";
+    var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+    var l = "mw_added_css";
+    var b = g();
+    var w = y();
+    var C = document.getElementsByTagName("*");
+    var k = null;
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            if (E(A)) {
+                k = A;
+                break
+            }
+        }
+    }
+    if (A === null) {
+        console.warn("Could not find a node of the right size. Please try a different page.");
+        return
+    }
+    c();
+    S();
+    var O = [];
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            O.push(A)
+        }
+    }
+})()    '>让标题抖起来</a> </li>
+	
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2018/03/14/dream_3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                设计模式总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-14T10:48:51+08:00">
+                2018-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/自我救赎/" itemprop="url" rel="index">
+                    <span itemprop="name">自我救赎</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="说说ioc与aop"><a href="#说说ioc与aop" class="headerlink" title="说说ioc与aop"></a>说说ioc与aop</h4><p>IOC 控制反转容器控制程序对象之间的关系，而不是传统实现中，有程序代码之间控制，<br>又名依赖注入。All 类的创建，销毁都由Spring 来控制，也就是说控制对象生命周期的不是<br>引用他的对象，而是Spring。对于某个对象而言，以前是他控制其他对象，现在是all 对象<br>都被spring 控制，这就叫控制反转<br>依赖注入的思想时通过反射机制实现的。在实例化一个类时，它通过反射调用类中的set<br>方法将事先保存在hashmap 中的类属性注入到类中<br>Spring 实现aop：<br>将那些与业务无关，却为业务模块所公共调用的逻辑或责任封装起来，称其<br>为aspect，便于减少系统的重复代码。使用模块技术，aop 把软件系统分为两个部分：核心<br>关注点和横切关注点。业务处理的主要流程是核心关注点，与之关系不大的部分是横切关注<br>点。实现aop 的两大技术：1）采用动态代理，利用截取消息的方式，对该消息进行装饰，<br>以获取原有对象行为的执行。2）采用静态织入，引入特定的语法创建切面，从而可以使编<br>译器可在编译期间织入有关切面的代码。<br>JDK 动态代理，cglib 动态代理。<br>JDK 动态代理：其代理对象必须是某个接口的实现，他是通过在运行期间创建一个接口<br>的实现类来完成对目标对象的代理。核心类有：InnovactionHandler，Proxy。<br>Cgib 动态代理：实现原理类似于jdk 动态代理，只是他在运行期间生成的代理对象是针<br>对目标类扩展的子类。MethodInterceptor</p>
+<h4 id="说说代理模式"><a href="#说说代理模式" class="headerlink" title="说说代理模式"></a><a href="https://www.myzwl.win/2017/03/14/dyproxy3/">说说代理模式</a></h4><p>静态代理与继承代理<br>动态代理，javac和反射取出动态类<br>反射<br>1）proxy 类：<br>类的静态方法用来生成动态代理的实例<br>2）innovationhandler 接口有一个invoke 方法，用来<br>集中处理在动态代理类对象的方法调用，通常在该方法中实现对委托类的代理访问，每次生<br>成动态代理对象时都要指定一个对应的调用处理器<br>CGlib 动态代理：jdk 代理机制只能代理<br>实现了接口的类，而没有实现接口的类不能用jdk 动态代理。CGlib 是针对类来实现代理，<br>他的原理是对指定的目标类生成一个子类，并且覆盖其中方法实现增强，因为采用的是继承，<br>所以不能对final 修饰的类进行代理，methodinterceptor </p>
+<h4 id="代理模式和装饰模式的区别？"><a href="#代理模式和装饰模式的区别？" class="headerlink" title="代理模式和装饰模式的区别？"></a>代理模式和装饰模式的区别？</h4><p>代理是<br>在内部生成一个代理对象，构造函数参数为空。装饰的构造函数参数有一个对象，就是对这<br>个对象进行装饰。</p>
+<h4 id="jdk-中的设计模式："><a href="#jdk-中的设计模式：" class="headerlink" title="jdk 中的设计模式："></a>jdk 中的设计模式：</h4><p>1）单例，比如Runtime 类；<br>2）静态工厂Interger a=Integer.valueOf(intor String);<br>3) 迭代器模式Collection.interator();<br>4) 原型设计模式,clone 方法；<br>5 ）适配器 inputStreamReader 和outputStreamWriter；<br>6）桥接模式，jdbc，抽象部分与实现相分离；<br>7）装饰模式Reader 和bufferedBeader；<br>8）代理，jdk 动态代理；<br>9）观察者observable 和observer；<br>10）责任链，classloader 的双亲委派模型；<br>11 ）组合，某个类型的方法同时也接收自身类型作为参数<br>java.util.list.addall(collection);<br>12)抽象工厂，一个创建新对象的方法，返回的是接口或抽象类<br>Connection c=DriverManager.getConnection();<br>13) 工厂方法，返回一个具体对象的方法Proxy.newProxyInstance;<br>14)解释器模式，该模式通常定义了一个语言的语法,java.util.pattern</p>
+<h4 id="单例设计模式"><a href="#单例设计模式" class="headerlink" title="单例设计模式"></a><a href="https://www.myzwl.win/2017/02/23/danli/">单例设计模式</a></h4><p>饿汉式、懒汉式<br>双锁机制<br>public static Singleton getInstance()<br> {<br>     if(singleton==null)<br>     {<br>         synchronized(Singleton.class)<br>         {<br>     if(singleton==null){<br>         singleton=new Singleton();<br>     }<br>         }<br>     }<br>     return singleton;<br> }</p>
+<h4 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a><a href="https://www.myzwl.win/2017/03/08/simplefactory/">简单工厂</a></h4><p> 数据库模型</p>
+<h4 id="工厂方法"><a href="#工厂方法" class="headerlink" title="工厂方法"></a><a href="https://www.myzwl.win/2017/03/09/factory/">工厂方法</a></h4><h4 id="抽象工厂"><a href="#抽象工厂" class="headerlink" title="抽象工厂"></a><a href="https://www.myzwl.win/2017/03/10/abstractfactory/">抽象工厂</a></h4><h4 id="观察者设计模式"><a href="#观察者设计模式" class="headerlink" title="观察者设计模式"></a><a href="https://www.myzwl.win/2017/03/10/observer/">观察者设计模式</a></h4><p> 推模型，也就是被观察者根据状态发生改变时将所有信息都主动通知观察者<br> 拉模型，即观察者主动向被观察者索要信息<br> 观察者模式应用场景<br>1、对一个对象状态的更新，需要其他对象同步更新，而且其他对象的数量动态可变<br>2、对象仅需要将自己的更新通知给其他对象而不需要知道其他对象的细节</p>
+<h4 id="职责链设计模式"><a href="#职责链设计模式" class="headerlink" title="职责链设计模式 "></a><a href="https://www.myzwl.win/2017/03/07/filter/">职责链设计模式 </a></h4><p>模拟过滤器</p>
+<h4 id="迭代器设计模式"><a href="#迭代器设计模式" class="headerlink" title="迭代器设计模式"></a><a href="https://www.myzwl.win/2017/03/06/iterator/">迭代器设计模式</a></h4><p>模拟集合Iterator</p>
+<h4 id="设计模式原则"><a href="#设计模式原则" class="headerlink" title="设计模式原则"></a>设计模式原则</h4><p>开闭原则：一个软件实体应当对开展开放，对修改关闭（玉帝招安美猴王）<br>面向对象解释： 不予以更改的是抽象层，但是可以扩展的是实现层<br>对可变性的封装原则： 找到一个系统的可变因素，将之封装起来<br>里氏代换原则： 任何基类可以出现的地方，子类一定可以出现<br>依赖倒转原则： 要依赖于抽象，不要依赖于实现<br>接口隔离原则： 应当为客户端提供尽可能小的单独的接口，而不要提供大的总接口</p>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/自我救赎/" rel="tag"># 自我救赎</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/13/dream_4/" rel="next" title="数据库总结">
+                <i class="fa fa-chevron-left"></i> 数据库总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/14/dream_2/" rel="prev" title="Java并发总结">
+                Java并发总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+         <div id="uyan_frame"></div>
+    
+  </div>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description">I believe my dream will come true</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">168</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://www.slycmiaoxi.xyz" target="_blank" title="微型论坛">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微型论坛
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/images/zwl.png" target="_blank" title="Weixin">
+                  
+                    <i class="fa fa-fw fa-weixin"></i>
+                  
+                  Weixin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+      
+        
+
+
+		
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#说说ioc与aop"><span class="nav-text">说说ioc与aop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说说代理模式"><span class="nav-text">说说代理模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代理模式和装饰模式的区别？"><span class="nav-text">代理模式和装饰模式的区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jdk-中的设计模式："><span class="nav-text">jdk 中的设计模式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单例设计模式"><span class="nav-text">单例设计模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简单工厂"><span class="nav-text">简单工厂</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#工厂方法"><span class="nav-text">工厂方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抽象工厂"><span class="nav-text">抽象工厂</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#观察者设计模式"><span class="nav-text">观察者设计模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#职责链设计模式"><span class="nav-text">职责链设计模式 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#迭代器设计模式"><span class="nav-text">迭代器设计模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设计模式原则"><span class="nav-text">设计模式原则</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=86 height=100 src="http://music.163.com/outchain/player?type=0&id=120897804&auto=0&height=90&auto=1&height=86&autoPlay=true" style="width:0px;height:0px;"></iframe>
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+
+
+
+
+
+
+<br/>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+    
+  
+ 
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2127192"></script>
+      <!-- UY END -->
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.min.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {          
+          jQuery("img").lazyload({
+            placeholder:"http://www.arao.me/loading.gif",
+              effect:"fadeIn"
+            });
+          });
+    </script>
+	<!-- 动态线条 -->
+	<script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+	
+
+
+
+</body>
+</html>

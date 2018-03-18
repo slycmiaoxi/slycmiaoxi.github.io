@@ -1,0 +1,1206 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="自我救赎," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="网络编程简单总结(https://www.myzwl.win/2017/07/29/socket_1/)tcp/ip分层链接层（ARP欺诈）-网络层（ip、icmp（ping））-传送层（tcp、udp）-应用层（POP3、Http、FTP，SSH、SMTP）ip协议ip层就是唯一确定了一台机器，就像我们住的房间地址一样，唯一确定了我们的住处这里需要注意的是，ip地址由四位字节组成，每个字节由8位">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络总结">
+<meta property="og:url" content="http://www.myzwl.win/2018/03/13/dream_7/index.html">
+<meta property="og:site_name" content="秒西">
+<meta property="og:description" content="网络编程简单总结(https://www.myzwl.win/2017/07/29/socket_1/)tcp/ip分层链接层（ARP欺诈）-网络层（ip、icmp（ping））-传送层（tcp、udp）-应用层（POP3、Http、FTP，SSH、SMTP）ip协议ip层就是唯一确定了一台机器，就像我们住的房间地址一样，唯一确定了我们的住处这里需要注意的是，ip地址由四位字节组成，每个字节由8位">
+<meta property="og:updated_time" content="2018-03-18T15:46:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机网络总结">
+<meta name="twitter:description" content="网络编程简单总结(https://www.myzwl.win/2017/07/29/socket_1/)tcp/ip分层链接层（ARP欺诈）-网络层（ip、icmp（ping））-传送层（tcp、udp）-应用层（POP3、Http、FTP，SSH、SMTP）ip协议ip层就是唯一确定了一台机器，就像我们住的房间地址一样，唯一确定了我们的住处这里需要注意的是，ip地址由四位字节组成，每个字节由8位">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":true,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.myzwl.win/2018/03/13/dream_7/"/>
+
+
+
+
+
+  <title> 计算机网络总结 | 秒西 </title>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"   background="imags/bg.jpg" style="opacity: 0.7;background-color: transparent;">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秒西</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+	
+	<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+    function c() {
+        var e = document.createElement("link");
+        e.setAttribute("type", "text/css");
+        e.setAttribute("rel", "stylesheet");
+        e.setAttribute("href", f);
+        e.setAttribute("class", l);
+        document.body.appendChild(e)
+    }
+
+    function h() {
+        var e = document.getElementsByClassName(l);
+        for (var t = 0; t < e.length; t++) {
+            document.body.removeChild(e[t])
+        }
+    }
+
+    function p() {
+        var e = document.createElement("div");
+        e.setAttribute("class", a);
+        document.body.appendChild(e);
+        setTimeout(function() {
+            document.body.removeChild(e)
+        }, 100)
+    }
+
+    function d(e) {
+        return {
+            height : e.offsetHeight,
+            width : e.offsetWidth
+        }
+    }
+
+    function v(i) {
+        var s = d(i);
+        return s.height > e && s.height < n && s.width > t && s.width < r
+    }
+
+    function m(e) {
+        var t = e;
+        var n = 0;
+        while (!!t) {
+            n += t.offsetTop;
+            t = t.offsetParent
+        }
+        return n
+    }
+
+    function g() {
+        var e = document.documentElement;
+        if (!!window.innerWidth) {
+            return window.innerHeight
+        } else if (e && !isNaN(e.clientHeight)) {
+            return e.clientHeight
+        }
+        return 0
+    }
+
+    function y() {
+        if (window.pageYOffset) {
+            return window.pageYOffset
+        }
+        return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+    }
+
+    function E(e) {
+        var t = m(e);
+        return t >= w && t <= b + w
+    }
+
+    function S() {
+        var e = document.createElement("audio");
+        e.setAttribute("class", l);
+        e.src = i;
+        e.loop = false;
+        e.addEventListener("canplay", function() {
+            setTimeout(function() {
+                x(k)
+            }, 500);
+            setTimeout(function() {
+                N();
+                p();
+                for (var e = 0; e < O.length; e++) {
+                    T(O[e])
+                }
+            }, 15500)
+        }, true);
+        e.addEventListener("ended", function() {
+            N();
+            h()
+        }, true);
+        e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+        document.body.appendChild(e);
+        e.play()
+    }
+
+    function x(e) {
+        e.className += " " + s + " " + o
+    }
+
+    function T(e) {
+        e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+    }
+
+    function N() {
+        var e = document.getElementsByClassName(s);
+        var t = new RegExp("\\b" + s + "\\b");
+        for (var n = 0; n < e.length; ) {
+            e[n].className = e[n].className.replace(t, "")
+        }
+    }
+
+    var e = 30;
+    var t = 30;
+    var n = 350;
+    var r = 350;
+    var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+    var s = "mw-harlem_shake_me";
+    var o = "im_first";
+    var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+    var a = "mw-strobe_light";
+    var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+    var l = "mw_added_css";
+    var b = g();
+    var w = y();
+    var C = document.getElementsByTagName("*");
+    var k = null;
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            if (E(A)) {
+                k = A;
+                break
+            }
+        }
+    }
+    if (A === null) {
+        console.warn("Could not find a node of the right size. Please try a different page.");
+        return
+    }
+    c();
+    S();
+    var O = [];
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            O.push(A)
+        }
+    }
+})()    '>让标题抖起来</a> </li>
+	
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2018/03/13/dream_7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                计算机网络总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T12:48:51+08:00">
+                2018-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/自我救赎/" itemprop="url" rel="index">
+                    <span itemprop="name">自我救赎</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="网络编程简单总结-https-www-myzwl-win-2017-07-29-socket-1"><a href="#网络编程简单总结-https-www-myzwl-win-2017-07-29-socket-1" class="headerlink" title="网络编程简单总结(https://www.myzwl.win/2017/07/29/socket_1/)"></a>网络编程简单总结(<a href="https://www.myzwl.win/2017/07/29/socket_1/">https://www.myzwl.win/2017/07/29/socket_1/</a>)</h4><p>tcp/ip分层<br>链接层（ARP欺诈）-网络层（ip、icmp（ping））-传送层（tcp、udp）-应用层（POP3、Http、FTP，SSH、SMTP）<br>ip协议<br>ip层就是唯一确定了一台机器，就像我们住的房间地址一样，唯一确定了我们的住处<br>这里需要注意的是，ip地址由四位字节组成，每个字节由8位二进制组成，同时有a，b，c三类地址，如图由网络号和主机号组成，当然这是公网，如果是局域网的话，就需要配网关和子网掩码了，如192.168.1.1和255.255.0.0那么255.255就是确定了ip地址哪几位字节是网络号，如192.168就是网络号<br>TCP与UDP协议<br>tcp协议<br>有65536个端口 0号是保留端口<br>1-1024是固定端口<br>又叫有名端口，即被某些程序固定使用，一般程序员不使用。<br>22：SSH远程登录协议 23：telnet使用 21：ftp使用<br>25：smtp服务使用 80：iis使用 7：echo服务<br>1025-65535是动态端口<br>UDP协议<br>UDP向应用程序提供了一种发送封装的原始IP数据报的方法，并且发送时无需建立连接，是一种不可靠的连接。<br>简单来说，就是只发一次数据，不管对方有没有接收到都不会再发了，但是有时候效率会很高，像网络拥堵时</p>
+<p>url<br>统一资源定义符也被称为网页地址。Internet上的每一个网页都具有一个唯一的名称标识，通常称之为URL地址，这种地址可以是本地磁盘，也可以是局域网上的某一台计算机，更多的是Internet上的站点，简单地说，URL就是Web地址，俗称“网址”，是用于完整地描述Internet上网页和其他资源的地址的一种标识方法，如：<br><a href="http://www.sina.com:8080/index.html" target="_blank" rel="external">http://www.sina.com:8080/index.html</a><br>1、协议；2、ip地址(32位)；3、端口号(16位)0-65535；4、资源名称。</p>
+<p>单工、半双工和全双工<br>Socket编程（模拟socket编程）</p>
+<h4 id="tcp-如何保证传输的可靠性"><a href="#tcp-如何保证传输的可靠性" class="headerlink" title="tcp 如何保证传输的可靠性"></a>tcp 如何保证传输的可靠性</h4><p>tcp 是面向连接，可靠的字节流服务<br>面向连接意味着两个使用tcp 的应用（通常是一个客户端和一个服务器）在彼此交换数<br>据之前必须先建立一个tcp 连接。在一个tcp 连接中，仅有两方进行彼此通信，广播和多播<br>不能用于tcp。<br>Tcp 通过下列方式提供可靠性：<br>1）将应用数据分割为tcp 认为最合适发送的数据块；<br>2）超时重传：当tcp 发出一个段后，他启动一个定时器，等待目的端确认收到这个报<br>文段。若不能及时收到一个确认，将重发这个报文段。<br>3）当tcp 收到发自tcp 链接另一端的数据时，它将发送一个确认（对于收到的请求，给<br>出确认响应）。这个确认不是立即发送，通常将推迟几分之一秒（之所以推迟，可能是要对<br>包做完校验）；<br>4）若tcp 收到包，校验出包有错，丢弃报文段，不给出响应，tcp 发送端会超时重传；<br>5）对于失序数据进行重新排序，然后交给应用层（tcp 报文段作为ip 数据报进行传输，<br>而ip 数据报的到达会失序，因此tcp 报文段的到达也可能失序。若必要，tcp 将对收到的数<br>据进行重新排列，以正确的顺序交给应用层）。<br>6）对于重复数据，直接丢弃。<br>7）tcp 可以进行流量控制，防止较快主机致使较慢主机的缓冲区溢出<br>字节流服务：两个应用程序通过tcp 连接，tcp 不在字节中插入记录标识符，我们将这<br>种为字节流服务。<br>Tcp 对字节流的内容不做任何解释，tcp 不知道传输的字节流数据是二进制数据还是ascii<br>字符或其他类型数据，对字节流的解释由tcp 连接双方的应用层。</p>
+<h4 id="简单描述一下https"><a href="#简单描述一下https" class="headerlink" title="简单描述一下https"></a>简单描述一下https</h4><p>https 其实是由两部分组成：http+ssl/tls，也就是在http 上又加了一层处理加密信息的<br>模块，服务端和客户端的信息传输都会通过tls 加密，传输的数据都是加密后的数据。加解<br>密过程：<br>1）客户端发起https 请求（就是用户在浏览器里输入一个https 网址，然后连接到server<br>的443 端口）<br>2）服务端的配置（采用https 协议的服务器必须要有一塔数字证书，可以自己制作，<br>也可以向组织申请，这套证书就是一对公钥和私钥）。<br>3）传输证书（这个证书就是公钥，只是包含了很多信息）<br>4）客户端解析证书（由客户端tls 完成，首先验证公钥是否有效，若发现异常，则弹出<br>一个警示框，提示证书存在问题，若无问题，则生成一个随机值，然后用证书对随机值进行<br>加密）<br>5）传输加密信息（这里传输的是加密后的随机值，目的是让服务端得到这个随机值，<br>以后客户端和服务端的通信就可以通过这个随机值来进行加密了）<br>6）服务端解密信息（服务端用私钥解密后得到了客户端传来的随机值，then 把内容通<br>过该值进行对称加密。所谓对称加密就是，将信息和私钥通过某种算法混在一起，这样除非<br>知道私钥，不然无法获取内容，而正好客户端和服务端都知道这个私钥，所以只要加密算法<br>够彪悍，私钥够复杂，数据就够安全）<br>7）传输加密的信息<br>8）客户端解密信息，用随机数来解。</p>
+<p>短链接一般只会在client/server 间传递一次读写操作。<br>Tcp 保活功能，主要为服务器应用程序提供，服务器应用程序需要知道客户主机是否崩<br>溃，从而可以代表客户使用资源.<br>tcp 保护功能是探测长连接存活状况。<br>Tcp 的keep-alive 是检查当前tcp 是否还活着；http 的keep-alive 是让一个tcp 连接活多<br>久，他们是不同层次的概念。</p>
+<p>a 发送给b 一个信息，但是a 不承认他发送了，防止这个可用数字签名<br>DNS 即使用tcp，又使用udp<br>https 若在浏览器端抓包，是可以看到数据的，并没有加密，抓到的是加密之前的</p>
+<h4 id="http-请求过程——当我们在浏览器输入www-baidu-com，然后回车之后的详解"><a href="#http-请求过程——当我们在浏览器输入www-baidu-com，然后回车之后的详解" class="headerlink" title="http 请求过程——当我们在浏览器输入www.baidu.com，然后回车之后的详解"></a>http 请求过程——当我们在浏览器输入www.baidu.com，然后回车之后的详解</h4><p>1）域名解析（域名www.baidu.com 变为ip 地址）。<br>2）发起tcp 的三次握手，建立tcp 连接。浏<br>览器会以一个随机端口（1024-65535）向服务端的web 程序80 端口发起tcp 的连接.这个请<br>求（原始的http 请求，经过原始的tcp/ip 四层模型层层封装），到达服务器端后，进入网<br>卡，然后进入内核的协议栈（一层一层拨开），然后到达web 应用程序，最终建立了tcp/ip<br>链接。<br>3）建立tcp 连接后发起http 请求。<br>4）服务器响应http 请求，客户端得到html 代码。<br>服务器web 应用程序收到http 请求后，就开始处理请求，处理之后就返回给浏览器html<br>文件。<br>5）浏览器解析html 代码，并请求html 中的资源。<br>6）浏览器对页面进行渲染，并呈现给用户。</p>
+<h4 id="什么是正向代理和反向代理"><a href="#什么是正向代理和反向代理" class="headerlink" title="什么是正向代理和反向代理"></a>什么是正向代理和反向代理</h4><p>正向代理：我是一个用户，我访问不了某网站，但是我能访问一个代理服务器，这个代<br>理服务器呢，他能访问那个我不能访问的网站，于是我先连上代理服务器，告诉他我需要哪<br>个无法访问的网站的内容，代理服务器取回来给我。server 不知道client。<br>反向代理：client 不知道server，并不是URL 中请求的那个资源，而是不知道从什么地方来<br>的。以代理服务器来接收internet 上的请求，然后将请求转发给内部网络的服务器，并将从<br>服务器上得到的结果返回给internet 上请求的客户，此时代理服务器对外就表现为一个服务<br>器。1）保证内网安全、2）负载均衡，nginx 通过proxy-pass-http 配置代理站点，upstream<br>实现负载均衡。</p>
+<h4 id="怎么用udp-实现tcp"><a href="#怎么用udp-实现tcp" class="headerlink" title="怎么用udp 实现tcp"></a>怎么用udp 实现tcp</h4><p>由于在传输层udp 已经是不可靠的，那就要在应用层自己实现一<br>些保证可靠传输的机制，简单来说，要使用udp 来构建可靠的面向连接的数据传输，就要<br>实现类似于tcp 的超时重传（定时器），拥塞控制（滑动窗口），有序接收（添加包序号），<br>应答确认（ack 和seq）。目前已经有了实现udp 可靠运输的机制——udt：主要目的高速广<br>域网海量数据传输，他是应用层协议</p>
+<p>Tcp：<br>1）流量控制：防止较快主机使较慢主机缓冲区溢出，是点对点；<br>2）拥塞控制：全局性，防止过多的数据注入网络。<br>tcp 采用滑动窗口进行流量控制，滑动窗口大小可变，窗口大小的单位是字节。</p>
+<h4 id="一致性哈希算法"><a href="#一致性哈希算法" class="headerlink" title="一致性哈希算法"></a>一致性哈希算法</h4><p>在分布式集群中，对机器的添加和删除或机器故障后自动脱离集群，这些操作是分布式<br>集群管理最基本的功能，若采用常用的hash(object)%N 算法，那么在有机器添加或删除以后，<br>很多原有的数据就无法找到，所以出现一致性哈希算法——<br>1）环形hash 空间：按照常用的<br>hash 算法来将对应的key 哈希到一个具有232 个桶的空间，即（0-232 -1）的数字空间中，现<br>在我们将这些数字头尾相连，想象成一个闭合的环形。<br>2）把数据通过一定的hash 算法映射到环上。<br>3）将机器通过一定的hash 算法映射到环上。<br>4）节点按顺时针转动，遇到的第一个机器，就把数据放在该机器上</p>
+<h4 id="Nginx负载均衡五种配置"><a href="#Nginx负载均衡五种配置" class="headerlink" title="Nginx负载均衡五种配置"></a>Nginx负载均衡五种配置</h4><p>1）轮询（默认），每个请求按时间顺序逐一分配到不同的后端服务器，如果后端<br>服务器down 掉，能自动剔除；<br>2）指定权重，指定轮询几率。权重越大，轮询几率越大，<br>用于后端服务器性能不均的情况。<br>3）ip 绑定ip_path，每个请求按访问ip 的哈希结果分配，<br>这样每个客户固定访问一个服务器，可以解决session 问题。<br>4）fair（第三方）按后端服务器的响应时间来分配请求，响应时间短的优先分配。<br>5）url_hash 按访问的url 结果来分配请<br>求，使每个url 定位到同一个后端服务器。后端服务器为缓存时比较有效</p>
+<h4 id="三次握手-手动画出图解"><a href="#三次握手-手动画出图解" class="headerlink" title="三次握手(手动画出图解)"></a>三次握手(手动画出图解)</h4><p> 第一次握手：建立连接时，客户端发送syn包（syn=j）到服务器，并进入SYN_SENT状态，等待服务器确认；SYN：同步序列编号（Synchronize Sequence Numbers）。</p>
+<p>第二次握手：服务器收到syn包，必须确认客户的SYN（ack=j+1），同时自己也发送一个SYN包（syn=k），即SYN+ACK包，此时服务器进入SYN_RECV状态；</p>
+<p>第三次握手：客户端收到服务器的SYN+ACK包，向服务器发送确认包ACK(ack=k+1），此包发送完毕，客户端和服务器进入ESTABLISHED（TCP连接成功）状态，完成三次握手。</p>
+<p>完成三次握手，客户端与服务器开始传送数据</p>
+<p> 关闭TCP连接：改进的三次握手</p>
+<p>对于一个已经建立的连接，TCP使用改进的三次握手来释放连接（使用一个带有FIN附加标记的报文段）。TCP关闭连接的步骤如下：</p>
+<p>第一步，当主机A的应用程序通知TCP数据已经发送完毕时，TCP向主机B发送一个带有FIN附加标记的报文段（FIN表示英文finish）。</p>
+<p>第二步，主机B收到这个FIN报文段之后，并不立即用FIN报文段回复主机A，而是先向主机A发送一个确认序号ACK，同时通知自己相应的应用程序：对方要求关闭连接（先发送ACK的目的是为了防止在这段时间内，对方重传FIN报文段）。</p>
+<p>第三步，主机B的应用程序告诉TCP：我要彻底的关闭连接，TCP向主机A送一个FIN报文段。</p>
+<p>第四步，主机A收到这个FIN报文段后，向主机B发送一个ACK表示连接彻底释放</p>
+<h4 id="两次握手不行吗"><a href="#两次握手不行吗" class="headerlink" title="两次握手不行吗"></a>两次握手不行吗</h4><p>A发送报文滞留过长导致失效，然后b发送链接请求，A不理睬</p>
+<h4 id="TIME-WAIT为什么是2MSL"><a href="#TIME-WAIT为什么是2MSL" class="headerlink" title="TIME-WAIT为什么是2MSL"></a>TIME-WAIT为什么是2MSL</h4><p>确保最后一个报文发到b，没有则重传<br>防止已失效的报文链接出现在本链接中</p>
+<h4 id="为什么TCP释放连接需要四次"><a href="#为什么TCP释放连接需要四次" class="headerlink" title="为什么TCP释放连接需要四次"></a>为什么TCP释放连接需要四次</h4><p>  TCP建立连接要进行三次握手，而断开连接要进行四次。这是由于TCP的半关闭造成的。因为TCP连接是全双工的(即数据可在两个方向上同时传递)所以进行关闭时每个方向上都要单独进行关闭。这个单方向的关闭就叫半关闭。当一方完成它的数据发送任务，就发送一个FIN来向另一方通告将要终止这个方向的连接</p>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/自我救赎/" rel="tag"># 自我救赎</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/10/sys_1/" rel="next" title="系统V1.0简单说明">
+                <i class="fa fa-chevron-left"></i> 系统V1.0简单说明
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/13/dream_6/" rel="prev" title="java基础总结">
+                java基础总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+         <div id="uyan_frame"></div>
+    
+  </div>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description">I believe my dream will come true</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">168</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://www.slycmiaoxi.xyz" target="_blank" title="微型论坛">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微型论坛
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/images/zwl.png" target="_blank" title="Weixin">
+                  
+                    <i class="fa fa-fw fa-weixin"></i>
+                  
+                  Weixin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+      
+        
+
+
+		
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#网络编程简单总结-https-www-myzwl-win-2017-07-29-socket-1"><span class="nav-text">网络编程简单总结(https://www.myzwl.win/2017/07/29/socket_1/)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tcp-如何保证传输的可靠性"><span class="nav-text">tcp 如何保证传输的可靠性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简单描述一下https"><span class="nav-text">简单描述一下https</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#http-请求过程——当我们在浏览器输入www-baidu-com，然后回车之后的详解"><span class="nav-text">http 请求过程——当我们在浏览器输入www.baidu.com，然后回车之后的详解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是正向代理和反向代理"><span class="nav-text">什么是正向代理和反向代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#怎么用udp-实现tcp"><span class="nav-text">怎么用udp 实现tcp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一致性哈希算法"><span class="nav-text">一致性哈希算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx负载均衡五种配置"><span class="nav-text">Nginx负载均衡五种配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三次握手-手动画出图解"><span class="nav-text">三次握手(手动画出图解)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两次握手不行吗"><span class="nav-text">两次握手不行吗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TIME-WAIT为什么是2MSL"><span class="nav-text">TIME-WAIT为什么是2MSL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么TCP释放连接需要四次"><span class="nav-text">为什么TCP释放连接需要四次</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=86 height=100 src="http://music.163.com/outchain/player?type=0&id=120897804&auto=0&height=90&auto=1&height=86&autoPlay=true" style="width:0px;height:0px;"></iframe>
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+
+
+
+
+
+
+<br/>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+    
+  
+ 
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2127192"></script>
+      <!-- UY END -->
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.min.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {          
+          jQuery("img").lazyload({
+            placeholder:"http://www.arao.me/loading.gif",
+              effect:"fadeIn"
+            });
+          });
+    </script>
+	<!-- 动态线条 -->
+	<script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+	
+
+
+
+</body>
+</html>

@@ -99,7 +99,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="jvm," />
+  <meta name="keywords" content="自我救赎," />
 
 
 
@@ -115,23 +115,16 @@
 
 
 
-<meta name="description" content="前言我们知道垃圾回收的主要内存区域是堆和方法区，因为这两块区域的内存分配相对于其他区域具有不确定性，而分配内存一般有两种方法，即指针碰撞和空闲列表
-堆内存在堆内存中主要分为年轻代和老年代（具体后面再说），先说一下年轻代如图，主要分为Eden（对象都会在该区域内创建）同时也会在s0或s1中随机一个进行创建，经过一次GC后在s0和s1中使用复制算法保留存活下来的对象，那么它是如何复制的了大概流程就是将">
+<meta name="description" content="异常处理从大的角度说主要分成两类：Error类代表了编译和系统的错误，不允许捕获，也就是我们自己无法主动去处理它；Exception类代表了我们可捕获并且可自己可处理异常，而Exception有包括两类，一个是你必须要处理的异常，如某个类有throws异常了，在未进入运行期就必须处理，另一类就是Runtime Exception（运行期异常），就是只有在运行时（也就是编译成class文件）时才知道">
 <meta property="og:type" content="article">
-<meta property="og:title" content="jvm总结之二:回收策略">
-<meta property="og:url" content="http://www.myzwl.win/2017/10/23/jvm_2/index.html">
+<meta property="og:title" content="java基础总结">
+<meta property="og:url" content="http://www.myzwl.win/2018/03/13/dream_6/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="前言我们知道垃圾回收的主要内存区域是堆和方法区，因为这两块区域的内存分配相对于其他区域具有不确定性，而分配内存一般有两种方法，即指针碰撞和空闲列表
-堆内存在堆内存中主要分为年轻代和老年代（具体后面再说），先说一下年轻代如图，主要分为Eden（对象都会在该区域内创建）同时也会在s0或s1中随机一个进行创建，经过一次GC后在s0和s1中使用复制算法保留存活下来的对象，那么它是如何复制的了大概流程就是将">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs5/37.jpg">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs5/38.jpg">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs5/39.jpg">
-<meta property="og:updated_time" content="2018-03-13T15:57:58.000Z">
+<meta property="og:description" content="异常处理从大的角度说主要分成两类：Error类代表了编译和系统的错误，不允许捕获，也就是我们自己无法主动去处理它；Exception类代表了我们可捕获并且可自己可处理异常，而Exception有包括两类，一个是你必须要处理的异常，如某个类有throws异常了，在未进入运行期就必须处理，另一类就是Runtime Exception（运行期异常），就是只有在运行时（也就是编译成class文件）时才知道">
+<meta property="og:updated_time" content="2018-03-18T15:44:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="jvm总结之二:回收策略">
-<meta name="twitter:description" content="前言我们知道垃圾回收的主要内存区域是堆和方法区，因为这两块区域的内存分配相对于其他区域具有不确定性，而分配内存一般有两种方法，即指针碰撞和空闲列表
-堆内存在堆内存中主要分为年轻代和老年代（具体后面再说），先说一下年轻代如图，主要分为Eden（对象都会在该区域内创建）同时也会在s0或s1中随机一个进行创建，经过一次GC后在s0和s1中使用复制算法保留存活下来的对象，那么它是如何复制的了大概流程就是将">
-<meta name="twitter:image" content="http://www.myzwl.win/images/imgs5/37.jpg">
+<meta name="twitter:title" content="java基础总结">
+<meta name="twitter:description" content="异常处理从大的角度说主要分成两类：Error类代表了编译和系统的错误，不允许捕获，也就是我们自己无法主动去处理它；Exception类代表了我们可捕获并且可自己可处理异常，而Exception有包括两类，一个是你必须要处理的异常，如某个类有throws异常了，在未进入运行期就必须处理，另一类就是Runtime Exception（运行期异常），就是只有在运行时（也就是编译成class文件）时才知道">
 
 
 
@@ -159,13 +152,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/10/23/jvm_2/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2018/03/13/dream_6/"/>
 
 
 
 
 
-  <title> jvm总结之二:回收策略 | 秒西 </title>
+  <title> java基础总结 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -511,7 +504,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/10/23/jvm_2/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2018/03/13/dream_6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -532,7 +525,7 @@ var _hmt = _hmt || [];
             
             
               
-                jvm总结之二:回收策略
+                java基础总结
               
             
           </h1>
@@ -547,8 +540,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-23T15:48:51+08:00">
-                2017-10-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T14:48:51+08:00">
+                2018-03-13
               </time>
             
 
@@ -575,8 +568,8 @@ var _hmt = _hmt || [];
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/jvm/" itemprop="url" rel="index">
-                    <span itemprop="name">jvm</span>
+                  <a href="/categories/自我救赎/" itemprop="url" rel="index">
+                    <span itemprop="name">自我救赎</span>
                   </a>
                 </span>
 
@@ -615,12 +608,18 @@ var _hmt = _hmt || [];
       
 
       
-        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>我们知道垃圾回收的主要内存区域是堆和方法区，因为这两块区域的内存分配相对于其他区域具有不确定性，而分配内存一般有两种方法，即指针碰撞和空闲列表</p>
-<h4 id="堆内存"><a href="#堆内存" class="headerlink" title="堆内存"></a>堆内存</h4><p>在堆内存中主要分为年轻代和老年代（具体后面再说），先说一下年轻代<br><img src="/images/imgs5/37.jpg" alt="Alt text"><br>如图，主要分为Eden（对象都会在该区域内创建）同时也会在s0或s1中随机一个进行创建，经过一次GC后在s0和s1中使用复制算法保留存活下来的对象，那么它是如何复制的了<br><img src="/images/imgs5/38.jpg" alt="Alt text"><br><img src="/images/imgs5/39.jpg" alt="Alt text"><br>大概流程就是将可回收的垃圾对象进行标记，然后复制存活的对象到另一块空白区域，依次类推<br>很显然这种复制方式很浪费空间，但是年轻代是生命周期很短的，换句话说，如果年轻代不够放了就会放到老年代，一般规定经过15次GC后的年轻代就会进入老年区（可通过-XX：MaxTenuringThreshold=15设置多少次为老年代），而老年区一般存放存活时间比较久的对象，通过标记-清除-整理进行垃圾回收，如果老年代内存不足就会触发FULL GC.默认是占用了68%后收集（可通过-XX:CMSInitiatingOccupancyFraction=68设置），该GC非常影响性能</p>
-<h4 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h4><p>我们知道垃圾回收算法可自行判断一个对象是否已经生命周期达到结束，从而将其视为垃圾进行回收。那么在此算法出现之前，出现过可达性分析算法进行垃圾回收<br>算法的基本思想就是通过一系列的称为“GC Roots”的对象作为起始点，从这些起始点开始向下搜索，所走过的路径称为引用链，如果一个对象到GC Roots没有任何引用链，那么这个对象是不可用的，就是说，程序中没有谁引用了这个对象，所以可以说从根节点到叶子结点是不可达的<br>而以下对象可作为GC Roots对象：<br>虚拟机栈（栈帧中本地变量表）中引用的对象<br>方法区中类静态属性引用的对象<br>方法区中常量引用的对象<br>本地方法栈中JNI（也就是native本地方法）引用的对象</p>
-<p>现在我们已经知道了通过可达性分析判断对象是否还可用，但是是不是不可达的对象都是不可用呢？答案是未必。原因在于要宣告一个对象的死亡，需要两次标记（为什么需要两次标记呢？原因是如果一个对象没有与GC Roots结点相连，就会被第一次标记，而如果对象覆盖了finalize方法，并且在finalize方法中与某个对象建立了引用关系，那么第二次标记会失败，那么这个对象就会被移出“即将回收”的对象列表，移出之后这个对象就“活”了下来，如果在finalize方法中这个对相关仍然没有与一个对象建立引用关系，那么这个对象就真正死亡了）。</p>
-<h4 id="回收方法区中的对象"><a href="#回收方法区中的对象" class="headerlink" title="回收方法区中的对象"></a>回收方法区中的对象</h4><p>方法区中的永久代的垃圾回收主要为两部分： 废弃常量和无用的类<br>废弃常量是指没有任何对象引用常量池中的某个对象，那么这个对象就会被回收，而对于常量池中的垃圾回收只要进行一次标记就可以进行判断<br>无用的类需要满足以下三个条件才可以宣判一个类的“死刑”：<br>    1.该类的所有实例都已经被回收，也就是Java堆中不存在该类的实例<br>    2.加载该类的ClassLoader已经被回收<br>    3.该类对应的java.lang.Class对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法</p>
-
+        <h4 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a><a href="https://www.myzwl.win/2017/07/16/yc_1/">异常处理</a></h4><p>从大的角度说主要分成两类：Error类代表了编译和系统的错误，不允许捕获，也就是我们自己无法主动去处理它；Exception类代表了我们可捕获并且可自己可处理异常，而Exception有包括两类，一个是你必须要处理的异常，如某个类有throws异常了，在未进入运行期就必须处理，另一类就是Runtime Exception（运行期异常），就是只有在运行时（也就是编译成class文件）时才知道，这个异常可处理或不处理</p>
+<p>try-catch-finally 规则<br>1）在finally语句块中发生了异常。<br>2）在前面的代码中用了System.exit()退出程序。<br>3）程序所在的线程死亡。<br>4）关闭CPU。</p>
+<h4 id="java-IO简单总结"><a href="#java-IO简单总结" class="headerlink" title="java IO简单总结 "></a><a href="https://www.myzwl.win/2017/07/23/IO_1/">java IO简单总结 </a></h4><p>流：数据在数据源（文件）和程序（内存）之间经历的路径<br>输入流：数据从数据源到内存的路径<br>输出流：数据从内存到数据源的路径<br>字节流：可以用于读写二进制文件及任何类型的byte，也就是一个字节一个的读<br>字符流：可以用于读写文本文件，不能操作二进制文件，也就是两个字节两个字节的读<br>2.根据数据流向不同分为：输入流和输出流<br>3。节点流和处理流<br>节点流：直接与数据源相连，读入或读出，可以发现使用该流过于频繁操作硬件，从而使读写很不方便<br>处理流：处理流和节点流一块使用，在节点流的基础上，再套接一层，套接在节点流上的就是处理流。如BufferedReader.处理流的构造方法总是要带一个其他的流对象做参数。一个流对象经过其他流的多次包装，称为流的链接。<br>Object流的意思将是像一根节点流插入一根Object流管道，专门操作Object，而它必须实现Serializable接口，该接口的意思是可序列化，就是说将一个对象流序列化成子节流写进网络或者文件，比如说游戏存盘，有各个游戏的记录，如果以面向对象来写进管道，它的各个成员变量，会在内存中被序列化成二进制写进去，而Serializable接口无方法，它只是个标记接口，编译器看到实现该接口的类就知道它应该被序列化，同样有一个transient关键字，是使可序列化的某个属性变成透明，也就是它不能变成字节写进去，那个属性只能为默认属性写进去</p>
+<h4 id="反射机制简单"><a href="#反射机制简单" class="headerlink" title="反射机制简单"></a>反射机制简单</h4><p>classLoad、Class、Methods</p>
+<h4 id="java基本数据类型"><a href="#java基本数据类型" class="headerlink" title="java基本数据类型"></a>java基本数据类型</h4><p>byte、short、int、long、float、double、char、boolean</p>
+<h4 id="能否重写构造方法"><a href="#能否重写构造方法" class="headerlink" title="能否重写构造方法"></a>能否重写构造方法</h4><p>重载构造方法是可以的。<br>但是重写则不可以，因为被重写的前提是被继承，而构造方法根本就不能被继承，所以谈不上被重写。只能调用父类的构造方法</p>
+<h4 id="构造代码块和构造方法的执行顺序"><a href="#构造代码块和构造方法的执行顺序" class="headerlink" title="构造代码块和构造方法的执行顺序"></a>构造代码块和构造方法的执行顺序</h4><p>父类静态块-自身静态块-父类块-父类构造器-自身块-自身构造器</p>
+<h4 id="说说-amp-与-amp-amp-的区别"><a href="#说说-amp-与-amp-amp-的区别" class="headerlink" title="说说&amp;与&amp;&amp;的区别"></a>说说&amp;与&amp;&amp;的区别</h4><p>&amp;与&amp;&amp;都可以用作逻辑与（and）的运算符<br>&amp;&amp;具有短路的功能，即如果第一个表达式为false，则不再计算第二个表达式。而&amp;则会同时计算<br>&amp;可以作为位运算符，当&amp;两边表达式不是boolean时，&amp;表示按位与操作，通常使用Ox0f来与一个整数&amp;运算，来取该整数的最低4个bit位</p>
+<h4 id="Overload与Override的区别？Overload的方法是否可以改变返回值的类型？"><a href="#Overload与Override的区别？Overload的方法是否可以改变返回值的类型？" class="headerlink" title="Overload与Override的区别？Overload的方法是否可以改变返回值的类型？"></a>Overload与Override的区别？Overload的方法是否可以改变返回值的类型？</h4><p>重载表示方法名相同，但是参数个数或类型不同）<br>重写表示子类中的方法可以与父亲中某个方法的名称和参数完全相同，通过子类创建实例调用父类这个方法，也就是相当于覆盖了父类的这个方法，但是当父类是private时相当于子类增加了一个全新的方法，就不存在覆盖了。并且子类应该比父类抛出更少的异常或者拥有更大的权限<br>如果参数名不同会改变返回类型，但是如果都一样肯定不会改变返回类型</p>
+<h4 id="abstractclass和interface语法上有什么区别？"><a href="#abstractclass和interface语法上有什么区别？" class="headerlink" title="abstractclass和interface语法上有什么区别？"></a>abstractclass和interface语法上有什么区别？</h4><p>1.抽象类可以有构造方法，接口不能有构造方法<br>2.抽象类中可以有普通成员方法，接口中没有普通成员变量<br>3.抽象类中可以包含非抽象的普通方法，接口中的所有方法必须都是抽象的，不能有非抽象的方法。<br>4.抽象类中的抽象方法访问类型可以是public、protected，但接口中的抽象方法只能是public类型的，并且默认即为public abstract类型<br>5.抽象类中可以包含静态方法，接口中不能包含静态方法<br>6.抽象类和接口类中都可以包含静态成员变量，抽象类中的静态成员变量的访问类型可以是任意，但是接口中定义的变量只能是public static final类型<br>7一个类可以实现多个接口，但只能继承一个抽象类</p>
+<h4 id="什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？"><a href="#什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？" class="headerlink" title="什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？"></a>什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？</h4><p>将一个对象变成字节流的形式传出去或者从一个字节流中恢复成一个java对象，例如将一个java对象存储到硬盘或者送给网络上的其他计算机，可以用代码把一个java对象变成某个格式的字节流在传输<br>如果要让java自动帮我们做，就需要实现serializable接口，编译的类才被writeObject方法操作，例如，在web中，如果对象被保存在了session中，tomcat在重启时要把session对象序列化到硬盘</p>
+<h4 id="hashcode与equals"><a href="#hashcode与equals" class="headerlink" title="hashcode与equals"></a><a href="https://www.cnblogs.com/jesonjason/p/5492208.html" target="_blank" rel="external">hashcode与equals</a></h4>
       
     </div>
 
@@ -655,7 +654,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/jvm/" rel="tag"># jvm</a>
+            <a href="/source/tags/自我救赎/" rel="tag"># 自我救赎</a>
           
         </div>
       
@@ -668,8 +667,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/23/jvm_1/" rel="next" title="jvm总结之一:java内存区域">
-                <i class="fa fa-chevron-left"></i> jvm总结之一:java内存区域
+              <a href="/2018/03/13/dream_7/" rel="next" title="计算机网络总结">
+                <i class="fa fa-chevron-left"></i> 计算机网络总结
               </a>
             
           </div>
@@ -678,8 +677,8 @@ var _hmt = _hmt || [];
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/10/24/jvm_3/" rel="prev" title="jvm总结之三:虚拟机堆参数">
-                jvm总结之三:虚拟机堆参数 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/13/dream_5/" rel="prev" title="数据结构总结">
+                数据结构总结 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -779,7 +778,7 @@ var _hmt = _hmt || [];
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">161</span>
+                <span class="site-state-item-count">168</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -790,7 +789,7 @@ var _hmt = _hmt || [];
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -801,7 +800,7 @@ var _hmt = _hmt || [];
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -857,7 +856,7 @@ var _hmt = _hmt || [];
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#堆内存"><span class="nav-text">堆内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可达性分析"><span class="nav-text">可达性分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#回收方法区中的对象"><span class="nav-text">回收方法区中的对象</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#异常处理"><span class="nav-text">异常处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#java-IO简单总结"><span class="nav-text">java IO简单总结 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#反射机制简单"><span class="nav-text">反射机制简单</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#java基本数据类型"><span class="nav-text">java基本数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#能否重写构造方法"><span class="nav-text">能否重写构造方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构造代码块和构造方法的执行顺序"><span class="nav-text">构造代码块和构造方法的执行顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说说-amp-与-amp-amp-的区别"><span class="nav-text">说说&与&&的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Overload与Override的区别？Overload的方法是否可以改变返回值的类型？"><span class="nav-text">Overload与Override的区别？Overload的方法是否可以改变返回值的类型？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#abstractclass和interface语法上有什么区别？"><span class="nav-text">abstractclass和interface语法上有什么区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？"><span class="nav-text">什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hashcode与equals"><span class="nav-text">hashcode与equals</span></a></li></ol></div>
             
 
           </div>

@@ -1,0 +1,1199 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="自我救赎," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="描述一下线程池ThreadPoolExecutorcorepoolsize：核心池的大小，默认情况下，在创建了线程池之后，线程池中线程数为0，当有任务来之后，就会创建一个线程去执行任务，当线程池中线程数达到corepoolsize 后，就把任务放在任务缓存队列中。Maximumpoolsize:线程池中最多创建多少个线程。Keeplivetime：线程没有任务执行时，最多保存多久的时间会终止，默认">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java并发总结">
+<meta property="og:url" content="http://www.myzwl.win/2018/03/14/dream_2/index.html">
+<meta property="og:site_name" content="秒西">
+<meta property="og:description" content="描述一下线程池ThreadPoolExecutorcorepoolsize：核心池的大小，默认情况下，在创建了线程池之后，线程池中线程数为0，当有任务来之后，就会创建一个线程去执行任务，当线程池中线程数达到corepoolsize 后，就把任务放在任务缓存队列中。Maximumpoolsize:线程池中最多创建多少个线程。Keeplivetime：线程没有任务执行时，最多保存多久的时间会终止，默认">
+<meta property="og:updated_time" content="2018-03-18T15:33:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java并发总结">
+<meta name="twitter:description" content="描述一下线程池ThreadPoolExecutorcorepoolsize：核心池的大小，默认情况下，在创建了线程池之后，线程池中线程数为0，当有任务来之后，就会创建一个线程去执行任务，当线程池中线程数达到corepoolsize 后，就把任务放在任务缓存队列中。Maximumpoolsize:线程池中最多创建多少个线程。Keeplivetime：线程没有任务执行时，最多保存多久的时间会终止，默认">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":true,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.myzwl.win/2018/03/14/dream_2/"/>
+
+
+
+
+
+  <title> Java并发总结 | 秒西 </title>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"   background="imags/bg.jpg" style="opacity: 0.7;background-color: transparent;">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秒西</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+	
+	<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+    function c() {
+        var e = document.createElement("link");
+        e.setAttribute("type", "text/css");
+        e.setAttribute("rel", "stylesheet");
+        e.setAttribute("href", f);
+        e.setAttribute("class", l);
+        document.body.appendChild(e)
+    }
+
+    function h() {
+        var e = document.getElementsByClassName(l);
+        for (var t = 0; t < e.length; t++) {
+            document.body.removeChild(e[t])
+        }
+    }
+
+    function p() {
+        var e = document.createElement("div");
+        e.setAttribute("class", a);
+        document.body.appendChild(e);
+        setTimeout(function() {
+            document.body.removeChild(e)
+        }, 100)
+    }
+
+    function d(e) {
+        return {
+            height : e.offsetHeight,
+            width : e.offsetWidth
+        }
+    }
+
+    function v(i) {
+        var s = d(i);
+        return s.height > e && s.height < n && s.width > t && s.width < r
+    }
+
+    function m(e) {
+        var t = e;
+        var n = 0;
+        while (!!t) {
+            n += t.offsetTop;
+            t = t.offsetParent
+        }
+        return n
+    }
+
+    function g() {
+        var e = document.documentElement;
+        if (!!window.innerWidth) {
+            return window.innerHeight
+        } else if (e && !isNaN(e.clientHeight)) {
+            return e.clientHeight
+        }
+        return 0
+    }
+
+    function y() {
+        if (window.pageYOffset) {
+            return window.pageYOffset
+        }
+        return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+    }
+
+    function E(e) {
+        var t = m(e);
+        return t >= w && t <= b + w
+    }
+
+    function S() {
+        var e = document.createElement("audio");
+        e.setAttribute("class", l);
+        e.src = i;
+        e.loop = false;
+        e.addEventListener("canplay", function() {
+            setTimeout(function() {
+                x(k)
+            }, 500);
+            setTimeout(function() {
+                N();
+                p();
+                for (var e = 0; e < O.length; e++) {
+                    T(O[e])
+                }
+            }, 15500)
+        }, true);
+        e.addEventListener("ended", function() {
+            N();
+            h()
+        }, true);
+        e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+        document.body.appendChild(e);
+        e.play()
+    }
+
+    function x(e) {
+        e.className += " " + s + " " + o
+    }
+
+    function T(e) {
+        e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+    }
+
+    function N() {
+        var e = document.getElementsByClassName(s);
+        var t = new RegExp("\\b" + s + "\\b");
+        for (var n = 0; n < e.length; ) {
+            e[n].className = e[n].className.replace(t, "")
+        }
+    }
+
+    var e = 30;
+    var t = 30;
+    var n = 350;
+    var r = 350;
+    var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+    var s = "mw-harlem_shake_me";
+    var o = "im_first";
+    var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+    var a = "mw-strobe_light";
+    var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+    var l = "mw_added_css";
+    var b = g();
+    var w = y();
+    var C = document.getElementsByTagName("*");
+    var k = null;
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            if (E(A)) {
+                k = A;
+                break
+            }
+        }
+    }
+    if (A === null) {
+        console.warn("Could not find a node of the right size. Please try a different page.");
+        return
+    }
+    c();
+    S();
+    var O = [];
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            O.push(A)
+        }
+    }
+})()    '>让标题抖起来</a> </li>
+	
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2018/03/14/dream_2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java并发总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-14T12:48:51+08:00">
+                2018-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/自我救赎/" itemprop="url" rel="index">
+                    <span itemprop="name">自我救赎</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="描述一下线程池ThreadPoolExecutor"><a href="#描述一下线程池ThreadPoolExecutor" class="headerlink" title="描述一下线程池ThreadPoolExecutor"></a>描述一下线程池ThreadPoolExecutor</h4><p>corepoolsize：核心池的大小，默认情况下，在创建了线程池之后，线程池中线程数为0，<br>当有任务来之后，就会创建一个线程去执行任务，当线程池中线程数达到corepoolsize 后，<br>就把任务放在任务缓存队列中。<br>Maximumpoolsize:线程池中最多创建多少个线程。<br>Keeplivetime：线程没有任务执行时，最多保存多久的时间会终止，默认情况下，当线程<br>池中线程数&gt;corepoolsize 时，Keeplivetime 才起作用，直到线程数不大于corepoolsize。<br>workQueue:阻塞队列，用来存放等待被执行的任务<br>threadFactory:线程工厂，用来创建线程。</p>
+<p>继承关系<br>Executor 接口<br>ExecutoServicer 接口<br>AbstractExecutoServicer 抽象类<br>ThreadPoolExecutor</p>
+<p>线程池的状态<br>1.当线程池创建后，初始为running 状态<br>2.调用shutdown 方法后，处shutdown 状态，此时不再接受新的任务，等待已有的任务执<br>行完毕<br>3.调用shutdownnow 方法后，进入stop 状态，不再接受新的任务，并且会尝试终止正在<br>执行的任务。<br>4.当处于shotdown 或stop 状态，并且所有工作线程已经销毁，任务缓存队列已清空，线<br>程池被设为terminated 状态</p>
+<p>当有任务提交到线程池之后的一些操作：<br>1.若当前线程池中线程数&lt;corepoolsize，则每来一个任务就创建一个线程去执行。</p>
+<ol>
+<li>若当前线程池中线程数&gt;=corepoolsize，会尝试将任务添加到任务缓存队列中去，若添<br>加成功，则任务会等待空闲线程将其取出执行，若添加失败，则尝试创建线程去执行这个任<br>务。</li>
+<li>若当前线程池中线程数&gt;= Maximumpoolsize，则采取拒绝策略（有4 种，1）abortpolicy 丢<br>弃任务，抛出RejectedExecutionException 2 ）discardpolicy 拒绝执行，不抛异常3 ）<br>discardoldestpolicy 丢弃任务缓存队列中最老的任务，并且尝试重新提交新的任务4）<br>callerrunspolicy 有反馈机制，使任务提交的速度变慢）。</li>
+</ol>
+<h4 id="什么是死锁，手撕代码模拟"><a href="#什么是死锁，手撕代码模拟" class="headerlink" title="什么是死锁，手撕代码模拟"></a>什么是死锁，手撕代码模拟</h4><p>如哲学家进餐问题，每个哲学家都在等右边哲学家方上筷子，处于僵持等待状态，称为死锁。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">public class LockTest implements Runnable&#123;</div><div class="line">	public int flag=1;</div><div class="line">	 static Object o1=new Object(),o2=new Object();</div><div class="line">	   </div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		System.out.println("flag="+flag);</div><div class="line">		 if(flag==1)&#123;</div><div class="line">		 synchronized (o1) &#123;</div><div class="line">			try &#123;</div><div class="line">				Thread.sleep(5000);</div><div class="line">			&#125; catch (Exception e) &#123;</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">			synchronized (o2) &#123;</div><div class="line">				System.out.println("1");</div><div class="line">			&#125;</div><div class="line">		 &#125;	 </div><div class="line">		&#125;</div><div class="line">		if(flag==0)&#123;</div><div class="line">			 synchronized (o2) &#123;</div><div class="line">					try &#123;</div><div class="line">						Thread.sleep(5000);</div><div class="line">					&#125; catch (Exception e) &#123;</div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;</div><div class="line">					synchronized (o1) &#123;</div><div class="line">						System.out.println("0");</div><div class="line">					&#125;</div><div class="line">				 &#125;	</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		LockTest lt1=new LockTest();</div><div class="line">		LockTest lt2=new LockTest();</div><div class="line">		 lt1.flag=1;</div><div class="line">		 lt2.flag=0;</div><div class="line">		  Thread t1=new Thread(lt1);</div><div class="line">		  Thread t2=new Thread(lt2);</div><div class="line">		  t1.start();</div><div class="line">		  t2.start();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="手撕模拟生产者"><a href="#手撕模拟生产者" class="headerlink" title="手撕模拟生产者"></a>手撕模拟生产者</h4><p>模拟一个生产者利用生产食物放到篮子里，而一个消费者从篮子里消费食物<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line">public class Food &#123; //食物类</div><div class="line"> int id;</div><div class="line"> public Food(int id)&#123;</div><div class="line">	 this.id=id;</div><div class="line"> &#125;</div><div class="line">&#125;</div><div class="line">public class UtilStack &#123;//工具，用来放食物</div><div class="line">	int index=0; //食物计数变量</div><div class="line">	Food[] arrFD=new Food[4]; //最多工具能放食物容量</div><div class="line">	</div><div class="line">	public synchronized void push(Food fd)&#123; //生产食物，必须加锁，保证生产过程不被打断</div><div class="line">		while(index==arrFD.length)</div><div class="line">		&#123;</div><div class="line">			try &#123;</div><div class="line">				System.out.println("full");</div><div class="line">				this.wait();  //生产满了，就去休息区休息，等待被唤醒</div><div class="line">			&#125; catch (InterruptedException e) &#123;</div><div class="line">				// TODO Auto-generated catch block</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		this.notify();//唤醒当前在休息区的线程</div><div class="line">		arrFD[index]=fd;</div><div class="line">		index++;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public synchronized Food pop()&#123; //消费</div><div class="line">		while(index==0) //消费完了，进休息区</div><div class="line">			try &#123;</div><div class="line">				System.out.println("empty");</div><div class="line">				this.wait();</div><div class="line">			&#125; catch (InterruptedException e) &#123;</div><div class="line">				// TODO Auto-generated catch block</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		this.notify();</div><div class="line">		index--;</div><div class="line">		return arrFD[index];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">public class Producer implements Runnable&#123;//生产者</div><div class="line">	UtilStack ss=null;</div><div class="line">	</div><div class="line">	Producer(UtilStack ss)&#123;</div><div class="line">		this.ss=ss;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		for(int i=0;i&lt;20;i++)</div><div class="line">		&#123;</div><div class="line">			Food fd=new Food(i);</div><div class="line">			ss.push(fd);</div><div class="line">			System.out.println("生产了"+fd.id);</div><div class="line">			try &#123;</div><div class="line">				Thread.sleep(1000);</div><div class="line">			&#125; catch (InterruptedException e) &#123;</div><div class="line">				// TODO Auto-generated catch block</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">public class Consumer implements Runnable&#123;//消费者</div><div class="line">	UtilStack ss=null;</div><div class="line">	</div><div class="line">	Consumer(UtilStack ss)&#123;</div><div class="line">		this.ss=ss;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		for(int i=0;i&lt;20;i++)</div><div class="line">		&#123;</div><div class="line">			Food fd=ss.pop();</div><div class="line">			System.out.println("消费了"+fd.id);</div><div class="line">		 try &#123;</div><div class="line">			Thread.sleep(2000);</div><div class="line">		&#125; catch (InterruptedException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="线程的状态是什么"><a href="#线程的状态是什么" class="headerlink" title="线程的状态是什么"></a>线程的状态是什么</h4><p>在任意一个时间点，一个线程只能有且只有其中的一种状态<br>1）新建：创建后尚未启动的线程处于这种状态。<br>2）运行：包括了OS 中Running 和Ready 状态，也就是处于次状态的线程可能正在运行，<br>也可能正在等待cpu 为他分配执行时间。<br>3）无限期等待:处于这种状态的线程不会被分配cpu 执行时间，要等待其他线程显示唤<br>醒。以下方法会让线程进入无限期等待：1.没有设置timeout 的object.wait()方法2.没有设<br>置timeout 参数的Thread.join()方法3.LockSupport.park();<br>4）有限期的等待：处于这种状态的线程也不会被分配cpu 执行时间，不过无需等待被<br>其他线程显示唤醒，而是在一定时间后，他们会由os 自动唤醒1.设置了timeout 的<br>object.wait() 方法2. 设置了timeout 参数的Thread.join() 3.LockSupport.parkNanos()<br>4.LockSupport.parkUnit()<br>5）阻塞：线程被阻塞了与“等待状态”的区别是：阻塞状态在等待获取一个排它锁，<br>这个事件将在另外一个线程放弃这个锁的时候发生。等待状态在等待一段时间或者唤醒动<br>作。<br>6）结束：已终止线程的线程状态，线程已经结束执行</p>
+<h4 id="synchronized（S）VS-lock（L）"><a href="#synchronized（S）VS-lock（L）" class="headerlink" title="synchronized（S）VS lock（L）"></a>synchronized（S）VS lock（L）</h4><p>1）L 是接口，S 是关键字<br>2）S 在发生异常时，会自动释放线程占有的锁，不会发生死锁。L 在发生异常时，若没<br>有主动通过unlock（）释放锁，则很有可能造成死锁。所以用lock 时要在finally 中释放锁。<br>3)L 可以当等待锁的线程响应中断，而S 不行，使用S 时，等待的线程将会一直等下去，<br>不能响应中断。<br>4）通过L 可以知道是否成功获得锁，S 不可以。<br>5）L 可以提高多个线程进行读写操作的效率。</p>
+<h4 id="简单并发中方法总结"><a href="#简单并发中方法总结" class="headerlink" title="简单并发中方法总结"></a>简单并发中方法总结</h4><p>继承thread或者Runnable，调用run方法，start启动<br>sleep：暂时停止线程当前的操作<br>wait-把线程放入休息室<br>notify方法-从休息区拿出线程<br>notifyAll从线程区中拿出所有线程<br>Lock lock=new ReentrantLock();读写锁<br>ReadWriteLock rwLock=new ReentrantReadWriteLock()；读-读不互斥，读-写互斥，写-写互斥，并发性提高<br>CountDownLatch: 倒数计时器<br>ReenTrantLock ：公平锁：线程先来，先得到锁，可在构造函数中设置<br>join方法。该方法主要作用是在该线程中的run方法结束后，才往下执行<br>yield方法。这个是线程本身的调度方法，使用时你可以在run方法执行完毕时，调用该方法，告知你已可以出让内存资源。<br>关键字volatile 是轻量级的同步机制。<br>Volatile 变量对于all 线程的可见性，指当一条线程修改了这个变量的值，新值对于其他<br>线程来说是可见的、立即得知的。</p>
+<h4 id="什么是同步与公平锁"><a href="#什么是同步与公平锁" class="headerlink" title="什么是同步与公平锁"></a>什么是同步与公平锁</h4><p>同步：多个线程并发访问共享数据时，保证共享数据在同一个时刻，只被一个（or 一<br>些，使用信号量）线程使用，而互斥是实现同步的一种手段，临界区，互斥量，信号量都是<br>主要的互斥实现方式。互斥是因，同步是果；互斥是方法，同步是目的</p>
+<p>公平锁：（先申请先得到）多个线程在等待同一个锁时，必须按照申请锁的时间顺序<br>来依次获取，而非公平锁则不保证这一点。Synchronized 不是公平锁，reetrantlock 默认下也<br>是非公平的，但是在构造函数中，可以设置为公平的。</p>
+<h4 id="描述一下java自带的锁机制"><a href="#描述一下java自带的锁机制" class="headerlink" title="描述一下java自带的锁机制"></a>描述一下java自带的锁机制</h4><p>在java 设计中，每一个对象自打娘胎里出来就带了一把看不见的锁，即monitor 锁,有一张记录表记录线程锁住状况，<br>锁主要有4 中状态：无锁状态、偏向状态、轻量级状态、重量级状态。他们会随着竞争<br>的激烈而逐渐升级，锁可以升级但不可以降级<br>轻量级锁：传统的锁是重量级锁，他是用系统的互斥量来实现。轻量级锁的本意是在没<br>有多线程竞争的前提下，减少传统的重量级锁使用操作系统互斥量产生的性能消耗<br>Synchronized 用的锁时存在java 对象头里。对象头包含标记字段和类型指针<br>JVM 可以通过对象的元数据信息确定对象的大小，但是无法从数组的元数据来确定数组<br>的大小</p>
+<h4 id="乐观锁VS-悲观锁"><a href="#乐观锁VS-悲观锁" class="headerlink" title="乐观锁VS 悲观锁"></a>乐观锁VS 悲观锁</h4><p>悲观锁：就是很悲观，每次去拿数据的时候都认为别人会修改，<br>所以每次在拿数据的时候都会上锁。这样别人想拿这个数据就会block 直到它拿到锁。传统<br>的关系型数据库就用到了很多这种机制，比如行锁，写锁等，都是在操作之前上锁<br>2）乐观锁：就是很乐观，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新<br>的时候会判断一下在此期间别人有没有去更新这个数据。适用于多读</p>
+<h4 id="解释一下同步阻塞，异步等"><a href="#解释一下同步阻塞，异步等" class="headerlink" title="解释一下同步阻塞，异步等"></a>解释一下同步阻塞，异步等</h4><p>同步阻塞，用户空间的应用程序执行一个系统调用，这意味着应用程序会一直阻塞，直<br>到系统调用完成为止（数据传输完成或者发生错误）<br>同步非阻塞，设备以非阻塞形式打开，这意味着io 操作不会立刻完成，需要应用程序<br>调用多次来等待完成<br>同步和异步1）同步：发出一个调用时，在没有得到结果前，该调用就不返回，一旦返<br>回就有结果。2）异步：调用在发出之后就直接返回，所以没有返回结果，换句话说，当一<br>个异步调用发生后，调用者不会立即得到结果，而是在调用发生后，被调用者通过状态通知<br>来通知调用者，或者通过回调函数来处理这个调用<br>阻塞和非阻塞1）阻塞：调用结果返回之前，当前线程会被挂起，调用线程只有在得到<br>结果之后才会返回。2）非阻塞：不能立刻得到结果之前，该调用不会阻塞当前线程</p>
+<p>BIO：同步并阻塞，一个连接一个线程，适用于链接数量小且固定的架构。<br>NIO：同步非阻塞：一个请求一个线程，客户端发送的链接请求都会注册到多路复用器<br>上，多路复用器轮训到链接有io 请求时才启动一个线程进行处理，适用于链接比较多，比<br>较短<br>AIO：异步非阻塞，一个有效请求一个线程，适用于链接数目多且长。</p>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/自我救赎/" rel="tag"># 自我救赎</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/14/dream_3/" rel="next" title="设计模式总结">
+                <i class="fa fa-chevron-left"></i> 设计模式总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/14/dream_1/" rel="prev" title="JVM总结">
+                JVM总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+         <div id="uyan_frame"></div>
+    
+  </div>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description">I believe my dream will come true</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">168</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://www.slycmiaoxi.xyz" target="_blank" title="微型论坛">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微型论坛
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/images/zwl.png" target="_blank" title="Weixin">
+                  
+                    <i class="fa fa-fw fa-weixin"></i>
+                  
+                  Weixin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+      
+        
+
+
+		
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#描述一下线程池ThreadPoolExecutor"><span class="nav-text">描述一下线程池ThreadPoolExecutor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是死锁，手撕代码模拟"><span class="nav-text">什么是死锁，手撕代码模拟</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手撕模拟生产者"><span class="nav-text">手撕模拟生产者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程的状态是什么"><span class="nav-text">线程的状态是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#synchronized（S）VS-lock（L）"><span class="nav-text">synchronized（S）VS lock（L）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简单并发中方法总结"><span class="nav-text">简单并发中方法总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是同步与公平锁"><span class="nav-text">什么是同步与公平锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#描述一下java自带的锁机制"><span class="nav-text">描述一下java自带的锁机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#乐观锁VS-悲观锁"><span class="nav-text">乐观锁VS 悲观锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解释一下同步阻塞，异步等"><span class="nav-text">解释一下同步阻塞，异步等</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=86 height=100 src="http://music.163.com/outchain/player?type=0&id=120897804&auto=0&height=90&auto=1&height=86&autoPlay=true" style="width:0px;height:0px;"></iframe>
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+
+
+
+
+
+
+<br/>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+    
+  
+ 
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2127192"></script>
+      <!-- UY END -->
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.min.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {          
+          jQuery("img").lazyload({
+            placeholder:"http://www.arao.me/loading.gif",
+              effect:"fadeIn"
+            });
+          });
+    </script>
+	<!-- 动态线条 -->
+	<script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+	
+
+
+
+</body>
+</html>

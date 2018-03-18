@@ -5,10 +5,295 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2018-03-16T01:50:14.000Z</updated>
+  <updated>2018-03-18T15:29:10.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JVM总结</title>
+    <link href="http://www.myzwl.win/2018/03/14/dream_1/"/>
+    <id>http://www.myzwl.win/2018/03/14/dream_1/</id>
+    <published>2018-03-14T07:48:51.000Z</published>
+    <updated>2018-03-18T15:29:10.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="jvm有哪些分区"><a href="#jvm有哪些分区" class="headerlink" title="jvm有哪些分区"></a><a href="https://www.myzwl.win/2017/10/23/jvm_1/">jvm有哪些分区</a></h4><p>类加载子系统、方法区、java堆、java虚拟机栈、本地方法栈、程序计数器、执行引擎</p>
+<h4 id="对象如何创建"><a href="#对象如何创建" class="headerlink" title="对象如何创建"></a>对象如何创建</h4><p>常量池中类符号引用<br>指针碰撞<br>把Java堆中的内存一分为二，一边是所有用过的内存（这部分内存不能被分配了），一边是空闲的内存，是可以被分配的，这样的话，在可用于不可用的内存之间会有一个分割点指示器，那么为对象分配内存实际上就是从这个分界点指示器往空闲内存的一边拨动一段空间就可以了</p>
+<p>空闲列表<br>已使用的内存与空闲内存可能是交叉在一起的，那么使用指针碰撞的方式分配内存就会产生问题，但是虚拟机维护着一张列表，这张列表记录了哪些区域的内存是可用的，那么在分配内存的时候就从选择可以容纳对象要求大小的内存区域分配给这个对象</p>
+<p>对象头设置一些必要信息，从虚拟机的角度看，一个对象已经构造完成，但是从开发人员的角度看，还需要进行new对象之后初始化，接着执行init方法，到这里一个对象才算真正创建完毕</p>
+<h4 id="jvm的内存布局"><a href="#jvm的内存布局" class="headerlink" title="jvm的内存布局"></a>jvm的内存布局</h4><p>对象头、实例数据和对齐填充<br>对象头又包括两部分信息，第一部分用于存储对象自身的运行时数据，比如哈希码、GC分代年龄，第二部分是类型指针，即对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象是哪个类的实例</p>
+<p>实例数据部分是对象真真好存储的有效信息，也是程序代码中所定义的各种类型的字段内容</p>
+<p>第三部分不是必然存在的，只是起到占位符的作用，因为HotspotVM规定对象的起始地址必须是8字节的整数倍。所以很有可能以上两部分的大小不够8字节的整数倍，那么这个字段就可以发挥作用了。</p>
+<h4 id="java如何进行对象访问"><a href="#java如何进行对象访问" class="headerlink" title="java如何进行对象访问"></a>java如何进行对象访问</h4><p>主要是通过Java栈中的reference数据，通过这个reference数据只是一个指向对象的引用，<br>目前主流的对象访问方式主要由句柄和直接指针两种<br>通过句柄访问的话，会在Java堆中划分出一块句柄池，句柄池中句柄存放了对象的实例数据和类型指针，而reference数据则存放了句柄的地址引用。使用直接指针访问对象，那么reference数据存放的就是对象的地址<br>使用句柄访问的最大好处是reference中存储的稳定的句柄地址，当对象的地址发生了改变可以不用去关心。而直接指针的最大好处是速度更快，在于节省了一次指针定位的时间</p>
+<h4 id="OOM是啥，分析及解决"><a href="#OOM是啥，分析及解决" class="headerlink" title="OOM是啥，分析及解决"></a>OOM是啥，分析及解决</h4><p>内存泄露：申请使用完的内存没有释放，导致虚拟机不能再次使用该内存，此时这段内存就泄露了，因为申请者不用了，而又不能被虚拟机分配给别人用。<br>内存溢出：申请的内存超出了JVM能提供的内存大小，此时称之为溢出</p>
+<p>java.lang.OutOfMemoryError: Java heap space ——&gt;java堆内存溢出，堆大小可以通过虚拟机参数-Xms,-Xmx等修改</p>
+<p>java.lang.OutOfMemoryError: PermGen space ——&gt;java永久代溢出，即方法区溢出了，一般出现于大量Class或者jsp页面，或者采用cglib等反射机制的情况使用类似-XX:PermSize=64m -XX:MaxPermSize=256m的形式修改。另外，过多的常量尤其是字符串也会导致方法区溢出。</p>
+<p>java.lang.StackOverflowError：一般是由于程序中存在死循环或者深度递归调用造成的，栈大小设置太小也会出现此种溢出。可以通过虚拟机参数-Xss来设置栈的大小</p>
+<h4 id="jvm堆内存情况"><a href="#jvm堆内存情况" class="headerlink" title="jvm堆内存情况"></a><a href="https://www.myzwl.win/2017/10/23/jvm_2/">jvm堆内存情况</a></h4><p>堆内存中主要分为年轻代和老年代,主要分为Eden（对象都会在该区域内创建）同时也会在s0或s1中随机一个进行创建，经过一次GC后在s0和s1中使用复制算法保留存活下来的对象<br>流程：年轻代:通过标记-复制-清除（15次GC，老年代）<br>老年区:通过标记-清除-整理进行垃圾回收，如果老年代内存不足就会触发FULL GC.默认是占用了68%后收集（可通过-XX:CMSInitiatingOccupancyFraction=68设置），该GC非常影响性能</p>
+<h4 id="什么是可达性分析"><a href="#什么是可达性分析" class="headerlink" title="什么是可达性分析"></a>什么是可达性分析</h4><p>是通过一系列的称为“GC Roots”的对象作为起始点，从这些起始点开始向下搜索，所走过的路径称为引用链，如果一个对象到GC Roots没有任何引用链，那么这个对象是不可用的，就是说，程序中没有谁引用了这个对象，所以可以说从根节点到叶子结点是不可达的<br>虚拟机栈（栈帧中本地变量表）中引用的对象<br>方法区中类静态属性引用的对象<br>方法区中常量引用的对象<br>本地方法栈中JNI（也就是native本地方法）引用的对象</p>
+<h4 id="为什么需要两次标记"><a href="#为什么需要两次标记" class="headerlink" title="为什么需要两次标记"></a>为什么需要两次标记</h4><p>原因是如果一个对象没有与GC Roots结点相连，就会被第一次标记，而如果对象覆盖了finalize方法，并且在finalize方法中与某个对象建立了引用关系，那么第二次标记会失败，那么这个对象就会被移出“即将回收”的对象列表，移出之后这个对象就“活”了下来，如果在finalize方法中这个对相关仍然没有与一个对象建立引用关系，那么这个对象就真正死亡了</p>
+<h4 id="方法区中的什么对象可以被回收"><a href="#方法区中的什么对象可以被回收" class="headerlink" title="方法区中的什么对象可以被回收"></a>方法区中的什么对象可以被回收</h4><p>方法区中的永久代的垃圾回收主要为两部分： 废弃常量和无用的类<br>废弃常量是指没有任何对象引用常量池中的某个对象，那么这个对象就会被回收，而对于常量池中的垃圾回收只要进行一次标记就可以进行判断<br>无用的类需要满足以下三个条件才可以宣判一个类的“死刑”：<br>1.该类的所有实例都已经被回收，也就是Java堆中不存在该类的实例<br>2.加载该类的ClassLoader已经被回收<br>3.该类对应的java.lang.Class对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法</p>
+<h4 id="jvm堆参数简单说明"><a href="#jvm堆参数简单说明" class="headerlink" title="jvm堆参数简单说明"></a>jvm堆参数简单说明</h4><p>-XX 对于系统级别的jvm配置 配置日志信息 垃圾回收器类型<br>非 -XX的 基本都是对 应用层面上的配置<br>    启用 - 禁用<br>    -XX :PrintGC 使用这个参数，虚拟机启动后，只要遇到GC就会打印日志<br>    -XX: +UserSerialGC 配置串行回收器<br>    -XX:+PrintGCDetails：可以查看详细信息，包括各个区的情况<br>    -Xms: 设置java程序启动时初始堆大小<br>    -Xmx: 设置java程序能获得的最大堆大小<br>    -Xloggc:路径 ：将打印出来的日志信息保存至指定的路径<br>    -Xmn：设置堆的内存大小<br>    -XX:SurvivorRatio=m:n调整Eden和Survivor的比例为m:n</p>
+<h4 id="有哪些垃圾收集器"><a href="#有哪些垃圾收集器" class="headerlink" title="有哪些垃圾收集器"></a>有哪些垃圾收集器</h4><p>Serial收集器: 它是一种单线程垃圾收集器，这就意味着在其进行垃圾收集的时候需要暂停其他的线程</p>
+<p>ParNew收集器: 为Serial收集器的多线程版本,能够与CMS收集器配合工作</p>
+<p>Parallel Scavenge收集器:<br>其使用的算法是复制算法，也是并行的多线程收集器（所谓”并行”，就是指多条垃圾收集线程同时工作，但是用户仍处于等待状态)<br>更关注可控制的吞吐量，吞吐量等于运行用户代码的时间/(运行用户代码的时间+垃圾收集时间)。</p>
+<p>Serial Old收集器:<br>Parallel Old收集器<br>CMS收集器:获取最短回收停顿时间。在注重服务器的响应速度，希望停顿时间最短<br>G1收集器: G1收集器将Java堆划分为多个大小相等的Region（独立区域），新生代与老年代都是一部分Region的集合，G1的收集范围则是这一个个Region</p>
+<h4 id="java类加载机制如何"><a href="#java类加载机制如何" class="headerlink" title="java类加载机制如何"></a><a href="https://www.myzwl.win/2017/07/31/reflaction_1/">java类加载机制如何</a></h4><p>1.并非一次性加载<br>2.需要的时候加载（运行期动态加载）<br>3.static语句块在加载后执行一次<br>4.dynamic语句块每次new新的对象都会执行（等同于构造方法中语句）</p>
+<p>jdk中有各种各样的ClassLoad将类加载进内存<br>一：bootstrap class loader<br>它是最核心的类用于加载java中核心的类<br>二:extesion class loader<br>三:application class loader<br>也就是说它是java的核心类用于加载用户自定义的类和其他类<br>四:other class loaders<br>SecureClassLoader、URLClassLoader等等，该类是其他加载类加载其它类</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;jvm有哪些分区&quot;&gt;&lt;a href=&quot;#jvm有哪些分区&quot; class=&quot;headerlink&quot; title=&quot;jvm有哪些分区&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://www.myzwl.win/2017/10/23/jvm_1/&quot;&gt;jvm有哪些分区&lt;/a&gt;
+    
+    </summary>
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/categories/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/source/tags/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java并发总结</title>
+    <link href="http://www.myzwl.win/2018/03/14/dream_2/"/>
+    <id>http://www.myzwl.win/2018/03/14/dream_2/</id>
+    <published>2018-03-14T04:48:51.000Z</published>
+    <updated>2018-03-18T15:33:06.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="描述一下线程池ThreadPoolExecutor"><a href="#描述一下线程池ThreadPoolExecutor" class="headerlink" title="描述一下线程池ThreadPoolExecutor"></a>描述一下线程池ThreadPoolExecutor</h4><p>corepoolsize：核心池的大小，默认情况下，在创建了线程池之后，线程池中线程数为0，<br>当有任务来之后，就会创建一个线程去执行任务，当线程池中线程数达到corepoolsize 后，<br>就把任务放在任务缓存队列中。<br>Maximumpoolsize:线程池中最多创建多少个线程。<br>Keeplivetime：线程没有任务执行时，最多保存多久的时间会终止，默认情况下，当线程<br>池中线程数&gt;corepoolsize 时，Keeplivetime 才起作用，直到线程数不大于corepoolsize。<br>workQueue:阻塞队列，用来存放等待被执行的任务<br>threadFactory:线程工厂，用来创建线程。</p>
+<p>继承关系<br>Executor 接口<br>ExecutoServicer 接口<br>AbstractExecutoServicer 抽象类<br>ThreadPoolExecutor</p>
+<p>线程池的状态<br>1.当线程池创建后，初始为running 状态<br>2.调用shutdown 方法后，处shutdown 状态，此时不再接受新的任务，等待已有的任务执<br>行完毕<br>3.调用shutdownnow 方法后，进入stop 状态，不再接受新的任务，并且会尝试终止正在<br>执行的任务。<br>4.当处于shotdown 或stop 状态，并且所有工作线程已经销毁，任务缓存队列已清空，线<br>程池被设为terminated 状态</p>
+<p>当有任务提交到线程池之后的一些操作：<br>1.若当前线程池中线程数&lt;corepoolsize，则每来一个任务就创建一个线程去执行。</p>
+<ol>
+<li>若当前线程池中线程数&gt;=corepoolsize，会尝试将任务添加到任务缓存队列中去，若添<br>加成功，则任务会等待空闲线程将其取出执行，若添加失败，则尝试创建线程去执行这个任<br>务。</li>
+<li>若当前线程池中线程数&gt;= Maximumpoolsize，则采取拒绝策略（有4 种，1）abortpolicy 丢<br>弃任务，抛出RejectedExecutionException 2 ）discardpolicy 拒绝执行，不抛异常3 ）<br>discardoldestpolicy 丢弃任务缓存队列中最老的任务，并且尝试重新提交新的任务4）<br>callerrunspolicy 有反馈机制，使任务提交的速度变慢）。</li>
+</ol>
+<h4 id="什么是死锁，手撕代码模拟"><a href="#什么是死锁，手撕代码模拟" class="headerlink" title="什么是死锁，手撕代码模拟"></a>什么是死锁，手撕代码模拟</h4><p>如哲学家进餐问题，每个哲学家都在等右边哲学家方上筷子，处于僵持等待状态，称为死锁。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">public class LockTest implements Runnable&#123;</div><div class="line">	public int flag=1;</div><div class="line">	 static Object o1=new Object(),o2=new Object();</div><div class="line">	   </div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		System.out.println("flag="+flag);</div><div class="line">		 if(flag==1)&#123;</div><div class="line">		 synchronized (o1) &#123;</div><div class="line">			try &#123;</div><div class="line">				Thread.sleep(5000);</div><div class="line">			&#125; catch (Exception e) &#123;</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">			synchronized (o2) &#123;</div><div class="line">				System.out.println("1");</div><div class="line">			&#125;</div><div class="line">		 &#125;	 </div><div class="line">		&#125;</div><div class="line">		if(flag==0)&#123;</div><div class="line">			 synchronized (o2) &#123;</div><div class="line">					try &#123;</div><div class="line">						Thread.sleep(5000);</div><div class="line">					&#125; catch (Exception e) &#123;</div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;</div><div class="line">					synchronized (o1) &#123;</div><div class="line">						System.out.println("0");</div><div class="line">					&#125;</div><div class="line">				 &#125;	</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		LockTest lt1=new LockTest();</div><div class="line">		LockTest lt2=new LockTest();</div><div class="line">		 lt1.flag=1;</div><div class="line">		 lt2.flag=0;</div><div class="line">		  Thread t1=new Thread(lt1);</div><div class="line">		  Thread t2=new Thread(lt2);</div><div class="line">		  t1.start();</div><div class="line">		  t2.start();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="手撕模拟生产者"><a href="#手撕模拟生产者" class="headerlink" title="手撕模拟生产者"></a>手撕模拟生产者</h4><p>模拟一个生产者利用生产食物放到篮子里，而一个消费者从篮子里消费食物<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line">public class Food &#123; //食物类</div><div class="line"> int id;</div><div class="line"> public Food(int id)&#123;</div><div class="line">	 this.id=id;</div><div class="line"> &#125;</div><div class="line">&#125;</div><div class="line">public class UtilStack &#123;//工具，用来放食物</div><div class="line">	int index=0; //食物计数变量</div><div class="line">	Food[] arrFD=new Food[4]; //最多工具能放食物容量</div><div class="line">	</div><div class="line">	public synchronized void push(Food fd)&#123; //生产食物，必须加锁，保证生产过程不被打断</div><div class="line">		while(index==arrFD.length)</div><div class="line">		&#123;</div><div class="line">			try &#123;</div><div class="line">				System.out.println("full");</div><div class="line">				this.wait();  //生产满了，就去休息区休息，等待被唤醒</div><div class="line">			&#125; catch (InterruptedException e) &#123;</div><div class="line">				// TODO Auto-generated catch block</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		this.notify();//唤醒当前在休息区的线程</div><div class="line">		arrFD[index]=fd;</div><div class="line">		index++;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public synchronized Food pop()&#123; //消费</div><div class="line">		while(index==0) //消费完了，进休息区</div><div class="line">			try &#123;</div><div class="line">				System.out.println("empty");</div><div class="line">				this.wait();</div><div class="line">			&#125; catch (InterruptedException e) &#123;</div><div class="line">				// TODO Auto-generated catch block</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		this.notify();</div><div class="line">		index--;</div><div class="line">		return arrFD[index];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">public class Producer implements Runnable&#123;//生产者</div><div class="line">	UtilStack ss=null;</div><div class="line">	</div><div class="line">	Producer(UtilStack ss)&#123;</div><div class="line">		this.ss=ss;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		for(int i=0;i&lt;20;i++)</div><div class="line">		&#123;</div><div class="line">			Food fd=new Food(i);</div><div class="line">			ss.push(fd);</div><div class="line">			System.out.println("生产了"+fd.id);</div><div class="line">			try &#123;</div><div class="line">				Thread.sleep(1000);</div><div class="line">			&#125; catch (InterruptedException e) &#123;</div><div class="line">				// TODO Auto-generated catch block</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">public class Consumer implements Runnable&#123;//消费者</div><div class="line">	UtilStack ss=null;</div><div class="line">	</div><div class="line">	Consumer(UtilStack ss)&#123;</div><div class="line">		this.ss=ss;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@Override</div><div class="line">	public void run() &#123;</div><div class="line">		for(int i=0;i&lt;20;i++)</div><div class="line">		&#123;</div><div class="line">			Food fd=ss.pop();</div><div class="line">			System.out.println("消费了"+fd.id);</div><div class="line">		 try &#123;</div><div class="line">			Thread.sleep(2000);</div><div class="line">		&#125; catch (InterruptedException e) &#123;</div><div class="line">			// TODO Auto-generated catch block</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="线程的状态是什么"><a href="#线程的状态是什么" class="headerlink" title="线程的状态是什么"></a>线程的状态是什么</h4><p>在任意一个时间点，一个线程只能有且只有其中的一种状态<br>1）新建：创建后尚未启动的线程处于这种状态。<br>2）运行：包括了OS 中Running 和Ready 状态，也就是处于次状态的线程可能正在运行，<br>也可能正在等待cpu 为他分配执行时间。<br>3）无限期等待:处于这种状态的线程不会被分配cpu 执行时间，要等待其他线程显示唤<br>醒。以下方法会让线程进入无限期等待：1.没有设置timeout 的object.wait()方法2.没有设<br>置timeout 参数的Thread.join()方法3.LockSupport.park();<br>4）有限期的等待：处于这种状态的线程也不会被分配cpu 执行时间，不过无需等待被<br>其他线程显示唤醒，而是在一定时间后，他们会由os 自动唤醒1.设置了timeout 的<br>object.wait() 方法2. 设置了timeout 参数的Thread.join() 3.LockSupport.parkNanos()<br>4.LockSupport.parkUnit()<br>5）阻塞：线程被阻塞了与“等待状态”的区别是：阻塞状态在等待获取一个排它锁，<br>这个事件将在另外一个线程放弃这个锁的时候发生。等待状态在等待一段时间或者唤醒动<br>作。<br>6）结束：已终止线程的线程状态，线程已经结束执行</p>
+<h4 id="synchronized（S）VS-lock（L）"><a href="#synchronized（S）VS-lock（L）" class="headerlink" title="synchronized（S）VS lock（L）"></a>synchronized（S）VS lock（L）</h4><p>1）L 是接口，S 是关键字<br>2）S 在发生异常时，会自动释放线程占有的锁，不会发生死锁。L 在发生异常时，若没<br>有主动通过unlock（）释放锁，则很有可能造成死锁。所以用lock 时要在finally 中释放锁。<br>3)L 可以当等待锁的线程响应中断，而S 不行，使用S 时，等待的线程将会一直等下去，<br>不能响应中断。<br>4）通过L 可以知道是否成功获得锁，S 不可以。<br>5）L 可以提高多个线程进行读写操作的效率。</p>
+<h4 id="简单并发中方法总结"><a href="#简单并发中方法总结" class="headerlink" title="简单并发中方法总结"></a>简单并发中方法总结</h4><p>继承thread或者Runnable，调用run方法，start启动<br>sleep：暂时停止线程当前的操作<br>wait-把线程放入休息室<br>notify方法-从休息区拿出线程<br>notifyAll从线程区中拿出所有线程<br>Lock lock=new ReentrantLock();读写锁<br>ReadWriteLock rwLock=new ReentrantReadWriteLock()；读-读不互斥，读-写互斥，写-写互斥，并发性提高<br>CountDownLatch: 倒数计时器<br>ReenTrantLock ：公平锁：线程先来，先得到锁，可在构造函数中设置<br>join方法。该方法主要作用是在该线程中的run方法结束后，才往下执行<br>yield方法。这个是线程本身的调度方法，使用时你可以在run方法执行完毕时，调用该方法，告知你已可以出让内存资源。<br>关键字volatile 是轻量级的同步机制。<br>Volatile 变量对于all 线程的可见性，指当一条线程修改了这个变量的值，新值对于其他<br>线程来说是可见的、立即得知的。</p>
+<h4 id="什么是同步与公平锁"><a href="#什么是同步与公平锁" class="headerlink" title="什么是同步与公平锁"></a>什么是同步与公平锁</h4><p>同步：多个线程并发访问共享数据时，保证共享数据在同一个时刻，只被一个（or 一<br>些，使用信号量）线程使用，而互斥是实现同步的一种手段，临界区，互斥量，信号量都是<br>主要的互斥实现方式。互斥是因，同步是果；互斥是方法，同步是目的</p>
+<p>公平锁：（先申请先得到）多个线程在等待同一个锁时，必须按照申请锁的时间顺序<br>来依次获取，而非公平锁则不保证这一点。Synchronized 不是公平锁，reetrantlock 默认下也<br>是非公平的，但是在构造函数中，可以设置为公平的。</p>
+<h4 id="描述一下java自带的锁机制"><a href="#描述一下java自带的锁机制" class="headerlink" title="描述一下java自带的锁机制"></a>描述一下java自带的锁机制</h4><p>在java 设计中，每一个对象自打娘胎里出来就带了一把看不见的锁，即monitor 锁,有一张记录表记录线程锁住状况，<br>锁主要有4 中状态：无锁状态、偏向状态、轻量级状态、重量级状态。他们会随着竞争<br>的激烈而逐渐升级，锁可以升级但不可以降级<br>轻量级锁：传统的锁是重量级锁，他是用系统的互斥量来实现。轻量级锁的本意是在没<br>有多线程竞争的前提下，减少传统的重量级锁使用操作系统互斥量产生的性能消耗<br>Synchronized 用的锁时存在java 对象头里。对象头包含标记字段和类型指针<br>JVM 可以通过对象的元数据信息确定对象的大小，但是无法从数组的元数据来确定数组<br>的大小</p>
+<h4 id="乐观锁VS-悲观锁"><a href="#乐观锁VS-悲观锁" class="headerlink" title="乐观锁VS 悲观锁"></a>乐观锁VS 悲观锁</h4><p>悲观锁：就是很悲观，每次去拿数据的时候都认为别人会修改，<br>所以每次在拿数据的时候都会上锁。这样别人想拿这个数据就会block 直到它拿到锁。传统<br>的关系型数据库就用到了很多这种机制，比如行锁，写锁等，都是在操作之前上锁<br>2）乐观锁：就是很乐观，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新<br>的时候会判断一下在此期间别人有没有去更新这个数据。适用于多读</p>
+<h4 id="解释一下同步阻塞，异步等"><a href="#解释一下同步阻塞，异步等" class="headerlink" title="解释一下同步阻塞，异步等"></a>解释一下同步阻塞，异步等</h4><p>同步阻塞，用户空间的应用程序执行一个系统调用，这意味着应用程序会一直阻塞，直<br>到系统调用完成为止（数据传输完成或者发生错误）<br>同步非阻塞，设备以非阻塞形式打开，这意味着io 操作不会立刻完成，需要应用程序<br>调用多次来等待完成<br>同步和异步1）同步：发出一个调用时，在没有得到结果前，该调用就不返回，一旦返<br>回就有结果。2）异步：调用在发出之后就直接返回，所以没有返回结果，换句话说，当一<br>个异步调用发生后，调用者不会立即得到结果，而是在调用发生后，被调用者通过状态通知<br>来通知调用者，或者通过回调函数来处理这个调用<br>阻塞和非阻塞1）阻塞：调用结果返回之前，当前线程会被挂起，调用线程只有在得到<br>结果之后才会返回。2）非阻塞：不能立刻得到结果之前，该调用不会阻塞当前线程</p>
+<p>BIO：同步并阻塞，一个连接一个线程，适用于链接数量小且固定的架构。<br>NIO：同步非阻塞：一个请求一个线程，客户端发送的链接请求都会注册到多路复用器<br>上，多路复用器轮训到链接有io 请求时才启动一个线程进行处理，适用于链接比较多，比<br>较短<br>AIO：异步非阻塞，一个有效请求一个线程，适用于链接数目多且长。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;描述一下线程池ThreadPoolExecutor&quot;&gt;&lt;a href=&quot;#描述一下线程池ThreadPoolExecutor&quot; class=&quot;headerlink&quot; title=&quot;描述一下线程池ThreadPoolExecutor&quot;&gt;&lt;/a&gt;描述一下线程池Thre
+    
+    </summary>
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/categories/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/source/tags/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>设计模式总结</title>
+    <link href="http://www.myzwl.win/2018/03/14/dream_3/"/>
+    <id>http://www.myzwl.win/2018/03/14/dream_3/</id>
+    <published>2018-03-14T02:48:51.000Z</published>
+    <updated>2018-03-18T15:48:46.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="说说ioc与aop"><a href="#说说ioc与aop" class="headerlink" title="说说ioc与aop"></a>说说ioc与aop</h4><p>IOC 控制反转容器控制程序对象之间的关系，而不是传统实现中，有程序代码之间控制，<br>又名依赖注入。All 类的创建，销毁都由Spring 来控制，也就是说控制对象生命周期的不是<br>引用他的对象，而是Spring。对于某个对象而言，以前是他控制其他对象，现在是all 对象<br>都被spring 控制，这就叫控制反转<br>依赖注入的思想时通过反射机制实现的。在实例化一个类时，它通过反射调用类中的set<br>方法将事先保存在hashmap 中的类属性注入到类中<br>Spring 实现aop：<br>将那些与业务无关，却为业务模块所公共调用的逻辑或责任封装起来，称其<br>为aspect，便于减少系统的重复代码。使用模块技术，aop 把软件系统分为两个部分：核心<br>关注点和横切关注点。业务处理的主要流程是核心关注点，与之关系不大的部分是横切关注<br>点。实现aop 的两大技术：1）采用动态代理，利用截取消息的方式，对该消息进行装饰，<br>以获取原有对象行为的执行。2）采用静态织入，引入特定的语法创建切面，从而可以使编<br>译器可在编译期间织入有关切面的代码。<br>JDK 动态代理，cglib 动态代理。<br>JDK 动态代理：其代理对象必须是某个接口的实现，他是通过在运行期间创建一个接口<br>的实现类来完成对目标对象的代理。核心类有：InnovactionHandler，Proxy。<br>Cgib 动态代理：实现原理类似于jdk 动态代理，只是他在运行期间生成的代理对象是针<br>对目标类扩展的子类。MethodInterceptor</p>
+<h4 id="说说代理模式"><a href="#说说代理模式" class="headerlink" title="说说代理模式"></a><a href="https://www.myzwl.win/2017/03/14/dyproxy3/">说说代理模式</a></h4><p>静态代理与继承代理<br>动态代理，javac和反射取出动态类<br>反射<br>1）proxy 类：<br>类的静态方法用来生成动态代理的实例<br>2）innovationhandler 接口有一个invoke 方法，用来<br>集中处理在动态代理类对象的方法调用，通常在该方法中实现对委托类的代理访问，每次生<br>成动态代理对象时都要指定一个对应的调用处理器<br>CGlib 动态代理：jdk 代理机制只能代理<br>实现了接口的类，而没有实现接口的类不能用jdk 动态代理。CGlib 是针对类来实现代理，<br>他的原理是对指定的目标类生成一个子类，并且覆盖其中方法实现增强，因为采用的是继承，<br>所以不能对final 修饰的类进行代理，methodinterceptor </p>
+<h4 id="代理模式和装饰模式的区别？"><a href="#代理模式和装饰模式的区别？" class="headerlink" title="代理模式和装饰模式的区别？"></a>代理模式和装饰模式的区别？</h4><p>代理是<br>在内部生成一个代理对象，构造函数参数为空。装饰的构造函数参数有一个对象，就是对这<br>个对象进行装饰。</p>
+<h4 id="jdk-中的设计模式："><a href="#jdk-中的设计模式：" class="headerlink" title="jdk 中的设计模式："></a>jdk 中的设计模式：</h4><p>1）单例，比如Runtime 类；<br>2）静态工厂Interger a=Integer.valueOf(intor String);<br>3) 迭代器模式Collection.interator();<br>4) 原型设计模式,clone 方法；<br>5 ）适配器 inputStreamReader 和outputStreamWriter；<br>6）桥接模式，jdbc，抽象部分与实现相分离；<br>7）装饰模式Reader 和bufferedBeader；<br>8）代理，jdk 动态代理；<br>9）观察者observable 和observer；<br>10）责任链，classloader 的双亲委派模型；<br>11 ）组合，某个类型的方法同时也接收自身类型作为参数<br>java.util.list.addall(collection);<br>12)抽象工厂，一个创建新对象的方法，返回的是接口或抽象类<br>Connection c=DriverManager.getConnection();<br>13) 工厂方法，返回一个具体对象的方法Proxy.newProxyInstance;<br>14)解释器模式，该模式通常定义了一个语言的语法,java.util.pattern</p>
+<h4 id="单例设计模式"><a href="#单例设计模式" class="headerlink" title="单例设计模式"></a><a href="https://www.myzwl.win/2017/02/23/danli/">单例设计模式</a></h4><p>饿汉式、懒汉式<br>双锁机制<br>public static Singleton getInstance()<br> {<br>     if(singleton==null)<br>     {<br>         synchronized(Singleton.class)<br>         {<br>     if(singleton==null){<br>         singleton=new Singleton();<br>     }<br>         }<br>     }<br>     return singleton;<br> }</p>
+<h4 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a><a href="https://www.myzwl.win/2017/03/08/simplefactory/">简单工厂</a></h4><p> 数据库模型</p>
+<h4 id="工厂方法"><a href="#工厂方法" class="headerlink" title="工厂方法"></a><a href="https://www.myzwl.win/2017/03/09/factory/">工厂方法</a></h4><h4 id="抽象工厂"><a href="#抽象工厂" class="headerlink" title="抽象工厂"></a><a href="https://www.myzwl.win/2017/03/10/abstractfactory/">抽象工厂</a></h4><h4 id="观察者设计模式"><a href="#观察者设计模式" class="headerlink" title="观察者设计模式"></a><a href="https://www.myzwl.win/2017/03/10/observer/">观察者设计模式</a></h4><p> 推模型，也就是被观察者根据状态发生改变时将所有信息都主动通知观察者<br> 拉模型，即观察者主动向被观察者索要信息<br> 观察者模式应用场景<br>1、对一个对象状态的更新，需要其他对象同步更新，而且其他对象的数量动态可变<br>2、对象仅需要将自己的更新通知给其他对象而不需要知道其他对象的细节</p>
+<h4 id="职责链设计模式"><a href="#职责链设计模式" class="headerlink" title="职责链设计模式 "></a><a href="https://www.myzwl.win/2017/03/07/filter/">职责链设计模式 </a></h4><p>模拟过滤器</p>
+<h4 id="迭代器设计模式"><a href="#迭代器设计模式" class="headerlink" title="迭代器设计模式"></a><a href="https://www.myzwl.win/2017/03/06/iterator/">迭代器设计模式</a></h4><p>模拟集合Iterator</p>
+<h4 id="设计模式原则"><a href="#设计模式原则" class="headerlink" title="设计模式原则"></a>设计模式原则</h4><p>开闭原则：一个软件实体应当对开展开放，对修改关闭（玉帝招安美猴王）<br>面向对象解释： 不予以更改的是抽象层，但是可以扩展的是实现层<br>对可变性的封装原则： 找到一个系统的可变因素，将之封装起来<br>里氏代换原则： 任何基类可以出现的地方，子类一定可以出现<br>依赖倒转原则： 要依赖于抽象，不要依赖于实现<br>接口隔离原则： 应当为客户端提供尽可能小的单独的接口，而不要提供大的总接口</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;说说ioc与aop&quot;&gt;&lt;a href=&quot;#说说ioc与aop&quot; class=&quot;headerlink&quot; title=&quot;说说ioc与aop&quot;&gt;&lt;/a&gt;说说ioc与aop&lt;/h4&gt;&lt;p&gt;IOC 控制反转容器控制程序对象之间的关系，而不是传统实现中，有程序代码之间控制，&lt;
+    
+    </summary>
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/categories/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/source/tags/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据库总结</title>
+    <link href="http://www.myzwl.win/2018/03/13/dream_4/"/>
+    <id>http://www.myzwl.win/2018/03/13/dream_4/</id>
+    <published>2018-03-13T11:48:51.000Z</published>
+    <updated>2018-03-18T15:39:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="mysql-使用的引擎"><a href="#mysql-使用的引擎" class="headerlink" title="mysql 使用的引擎"></a>mysql 使用的引擎</h4><p>A:1)MyIsam 不支持事务，适用于选择密集型，插入密集型，mysql 默认的引擎<br>2)innodb 使用于更新密集型，支持事务，自动灾难恢复，行级锁，外键约束<br>3）memory 出发点是速度采用的逻辑存储介质是内存<br>4）merge 一组myisam 表的组合</p>
+<h4 id="mysql-索引使用的是B-的数据结构"><a href="#mysql-索引使用的是B-的数据结构" class="headerlink" title="mysql 索引使用的是B+的数据结构"></a>mysql 索引使用的是B+的数据结构</h4><p>索引：用于提高数据访问速度的数据库对象。<br>优点：1）索引可以避免全表扫描；<br>2）对于非聚集索引，有些查询甚至可以不访问数据项；<br>3）聚集索引可以避免数据插入操作集中于表的最后一个数据页；<br>4）一些情况下，索引还可以避免排序。<br>虽然索引可以提高查询速度，但是他们也会导致数据库更新数据的性能下降，因为大部<br>分数据更新时需要同时更新索引。</p>
+<h4 id="连接关联"><a href="#连接关联" class="headerlink" title="连接关联"></a>连接关联</h4><p>A 的id 和b 的parent_id 关联<br>1）内连接<br>Select a.<em>,b.</em>from a inner join b on a.id=b. parent_id;<br>结果为：1 张三1 23 1<br>2 李四2 34 2<br>2）左外链接（左表all 元素都有）<br>Select a.<em>,b.</em>from a left join b on a.id=b. parent_id;<br>结果为：1 张三1 23 1<br>2 李四2 34 2<br>3 王五null<br>3）右外链接（右表all 元素都有）<br>Select a.<em>,b.</em>from a right join b on a.id=b. parent_id;<br>结果为：1 张三1 23 1<br>2 李四2 34 2<br>Null 3 34 2<br>4）完全链接（返回左边和右表中所有行，若某行在另外一个表中无匹配，则另一表的<br>选择列表列包含空值）<br>Select a.<em>,b.</em>from a full join b on a.id=b. parent_id;<br>结果为：1 张三1 23 1<br>2 李四2 34 2<br>Null 3 34 2<br>3 王五null<br>Not in 的例子：<br>Select emp_no from emplyees where emp_no not in (select emp_no from dept_manager)</p>
+<h4 id="共享锁VS-排他锁"><a href="#共享锁VS-排他锁" class="headerlink" title="共享锁VS 排他锁"></a>共享锁VS 排他锁</h4><p>1）共享锁，<br>又称读锁，若事务T 对数据对象A 加了S 锁，则是事务T 可以读A 但不能修改A，其它事务只能再对他加S 锁，而不能加X 锁，直到T 释放A 上的S 锁。这保证了其他事务可以读A，但在事务T 释放S 锁之前，不能对A 做任何操作<br>2）排他锁，<br>又称写锁，若事务T 对数据对象加X 锁，事务T 可以读A 也可以修改A，其他事务<br>不能对A 加任何锁，直到T 释放A 上的锁。这保证了，其他事务在T 释放A 上的锁之前不<br>能再读取和修改A。</p>
+<h4 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h4><p>Serializable(串行化)：一个事务在执行过程中完全看不到其他事务对数据库所做的更新。<br>Repeatable Read(可重复读)：一个事务在执行过程中可以看到其他事务已经提交的新插入的记录，但是不能看到其他事务对已有记录的更新。<br>Read Commited（读已提交数据）：一个事务在执行过程中可以看到其他事务已经提交的新插入的记录，而且能看到其他事务已经提交的对已有记录的更新<br>Read Uncomitted（读未提交数据）：一个事务在执行过程中可以拷打其他事务没有提交的新插入的记录，而且能看到其他事务没有提交的对已有记录的更新。</p>
+<h4 id="什么是事务"><a href="#什么是事务" class="headerlink" title="什么是事务"></a>什么是事务</h4><p>回答思路：事务是干什么的&gt;事务的ACID特性&gt;事务的隔离级别<br>事务是访问数据库的一个操作序列，数据库应用系统通过事务集来完成对数据库的存取。事务的正确执行使得数据库从一种状态转换成另一种状态<br>原子性、隔离性、持久性<br>脏读：一个事务读到另一个事务为提交的更新数据。<br>虚读：一个事务读到另一个事务已提交的新插入的数据。<br>不可重复读：一个事务读到另一个事务已提交的更新数据</p>
+<h4 id="数据库设计三范式是什么"><a href="#数据库设计三范式是什么" class="headerlink" title="数据库设计三范式是什么"></a>数据库设计三范式是什么</h4><p>第一范式：字段还可以再分吗？如过不能，则是符合1NF的设计。<br>第二范式：2NF是对记录的惟一性约束，要求记录有惟一标识，即实体的惟一性；<br>也就是说主键列与非主键列遵循完全函数依赖关系<br>第三范式：3NF是对字段冗余性的约束，即任何字段不能由其他字段派生出来，它要求字段没有冗余。<br>也就是说非主键列之间没有传递函数依赖关系<br>打个比方，比如评论表，如果你将用户ID，用户头像都放在这留言表中，就是不合适的了。用户头像是依赖于用户ID，而不依赖该评论。</p>
+<h4 id="悲观锁和乐观锁的比较"><a href="#悲观锁和乐观锁的比较" class="headerlink" title="悲观锁和乐观锁的比较"></a>悲观锁和乐观锁的比较</h4><p>面试思路：什么是锁，用来干什么&gt;悲观锁乐观锁各自特点&gt;优缺点比较和各自应用场景<br>数据库管理系统（DBMS）中的并发控制的任务是确保在多个事务同时存取数据库中同一数据时不破坏事务的隔离性和统一性以及数据库的统一性。<br>悲观锁:<br>简单来说悲观锁认什么操作都可以改变数据，所以在改数据就锁住（在sql语句中加上for update就可以了）<br>乐观锁：<br>简单来说乐观锁很乐观 所以修改数据库后锁住 （一般在数据库中加上一个字段区别历史版本和当前版本）<br>update t_goods<br>set status=2,version=version+1<br>where id=#{id} and version=#{version};<br>使用版本号时，可以在数据初始化时指定一个版本号，每次对数据的更新操作都对版本号执行+1操作。并判断当前版本号是不是该数据的最新的版本号。</p>
+<h4 id="mysql实现分页的优化sql语句"><a href="#mysql实现分页的优化sql语句" class="headerlink" title="mysql实现分页的优化sql语句"></a>mysql实现分页的优化sql语句</h4><p>面试思路：数据库分页的简单实现&gt;数据量变大时的优化方案<br>sql语句是LIMIT m,n其中m是当前页，n是从当前页数n个记录，如果参数为一个就是数n个记录<br>一般我们都会这样写:当数据达到百万级的时候会慢死<br>    SELECT FROM table ORDER BY id LIMIT 1000000, 10;<br>    优化一：<br>    SELECT FROM table WHERE id &gt;= (SELECT id FROM table LIMIT 1000000, 1) LIMIT 10;<br>    速度可以提升到0.x秒了<br>    优化二：<br>    SELECT FROM table WHERE id BETWEEN 1000000 AND 1000010;<br>    比上面提升5到10倍<br>    另外，如果需要查询 id 不是连续的一段，最佳的方法就是先找出 id ，然后用 in 查询<br>    SELECT FROM table WHERE id IN(10000, 100000, 1000000…);</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;mysql-使用的引擎&quot;&gt;&lt;a href=&quot;#mysql-使用的引擎&quot; class=&quot;headerlink&quot; title=&quot;mysql 使用的引擎&quot;&gt;&lt;/a&gt;mysql 使用的引擎&lt;/h4&gt;&lt;p&gt;A:1)MyIsam 不支持事务，适用于选择密集型，插入密集型，my
+    
+    </summary>
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/categories/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/source/tags/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据结构总结</title>
+    <link href="http://www.myzwl.win/2018/03/13/dream_5/"/>
+    <id>http://www.myzwl.win/2018/03/13/dream_5/</id>
+    <published>2018-03-13T08:48:51.000Z</published>
+    <updated>2018-03-18T15:47:52.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="线性表之顺序表"><a href="#线性表之顺序表" class="headerlink" title="线性表之顺序表"></a><a href="https://www.myzwl.win/2017/07/08/sjjg_1/">线性表之顺序表</a></h4><p>数组是顺序存储的随机存取结构，占用一组连续的存储单元，通过下标识别元素，元素地址是下标的线性函数，一个下标能唯一确定一个元素<br>模拟ArrayList</p>
+<h4 id="线性表之单链表"><a href="#线性表之单链表" class="headerlink" title="线性表之单链表 "></a><a href="https://www.myzwl.win/2017/07/08/sjjg_2/">线性表之单链表 </a></h4><p>线性表的链式存储是用若干地址分散的存储单元存储数据元素，逻辑上相连的数据元素在物理位置上不一定相连，必须采用附加信息表示数据元素之间的关系，并且存储单元至少包含两部分-数据域和地址域<br>单链表中结点只有一个地址并且指向后继结点<br>模拟SinglyLinkenList</p>
+<h4 id="线性表之双链表"><a href="#线性表之双链表" class="headerlink" title="线性表之双链表"></a><a href="https://www.myzwl.win/2017/07/08/sjjg_3/">线性表之双链表</a></h4><p>双链表的每个结点有两个地址域，分别指向它的前驱结点和后继结点</p>
+<h4 id="串之字符串"><a href="#串之字符串" class="headerlink" title="串之字符串 "></a><a href="https://www.myzwl.win/2017/07/09/sjjg_4/">串之字符串 </a></h4><p>串是由n(n&gt;=0)个字符组成的有限序列，它是一种特殊的线性表。而子串是指串s中任意连续字符组成的一个子序列组成的串。同时，串的比较通常由其字符编码的相关规则比较</p>
+<p>常量字符串String<br>字符串采用字符数组作为存储结构，并且采用顺序存储结构，不过String类一次性申请了固定的空间，同时由于其存储结构为最终型，所以string不提供删除，插入子串<br>变量字符串StringBuffer<br>该字符数组的容量总是大于串长，并且能够修改</p>
+<h4 id="栈"><a href="#栈" class="headerlink" title="栈"></a><a href="https://www.myzwl.win/2017/07/10/sjjg_5/">栈</a></h4><p>栈是一种特殊的线性表，其特殊之处在于插入和删除操作的位置受到限制，而且插入和删除只允许在线性表的一端进行，特点是后进先出<br>顺序栈、链式栈</p>
+<h4 id="顺序与链式队列"><a href="#顺序与链式队列" class="headerlink" title="顺序与链式队列"></a><a href="https://www.myzwl.win/2017/07/11/sjjg_6/">顺序与链式队列</a></h4><p>队列是一种特殊的线性表，其插入和删除操作分别在线性表的两端进行。特点是先进先出。<br>顺序队列使用数组存储数据元素<br>1.当队列空时，设置队头、队尾下标front=rear=-1，<br>2.当第一个元素入队时，front=rear=0，同时改变两个下标<br>3.进行入队、出队操作，front、rear随之变化<br>4.当入队的元素个数（包括已出队元素）超出数组容量时，rear下标越界，数据溢出，但是，由于之前已有若干元素出队，数组前部以空出许多存储单元，所以这种溢出并不是因为存储空间不够而产生的，称为假溢出<br>所以顺序队列有两个缺点：假溢出和存储单元没有重复使用机制<br>顺序循环队列<br>相比较顺序队列，有如下不同<br>1.队头、队尾元素按照如下循环规律变化，其中length表示数组长度<br>front=（front+1)%length;<br>rear=(rear+1)%length;<br>所以可以看出front和rear的取值范围为0~length-1<br>链式队列</p>
+<h4 id="树和二叉树"><a href="#树和二叉树" class="headerlink" title="树和二叉树"></a><a href="https://www.myzwl.win/2017/07/14/sjjg_8/">树和二叉树</a></h4><p>基本术语<br>孩子优先遍历<br>兄弟优先遍历<br>完全二叉树和满二叉树<br>顺序与链式存储<br>模拟二叉树类</p>
+<h4 id="hash散列表"><a href="#hash散列表" class="headerlink" title="hash散列表 "></a><a href="https://www.myzwl.win/2017/07/14/sjjg_9/">hash散列表 </a></h4><p>散列（hash）表是一种支持高效的查找、插入和删除操作的数据结构，它是针对查找效率接近O（1）而专门设计的。它根据元素的关键字确定元素的存储位置，而其中主要解决两个问题，设计散列函数和处理冲突<br>散列函数实质上是关键字集合到地址集合的映射，如果这种映射是一一对应的，则查找效率是O（1），但是由于散列表是一个压缩映射，即存储容量有限，即映射关系是多对一的映射，所以会产生冲突<br>除留余数法<br>该散列函数定义为hash（k）=k%p，函数结果范围为0~p-1，图示就是采用这种方法，而p取值为小于散列表长度的最大素数，如散列表长度分别为8,16,128，则对应的p（最大素数）分别为7,13,127<br>开放定址法<br>链地址法<br>模拟HashSet类</p>
+<h4 id="二叉排序树"><a href="#二叉排序树" class="headerlink" title="二叉排序树"></a><a href="https://www.myzwl.win/2017/07/27/BSTSort_1/">二叉排序树</a></h4><p>原理<br>AVL树</p>
+<h4 id="哈夫曼树"><a href="#哈夫曼树" class="headerlink" title="哈夫曼树"></a><a href="https://www.myzwl.win/2017/07/30/huffman_1/">哈夫曼树</a></h4><p>基本术语<br>哈弗曼编码<br>压缩与解压原理</p>
+<h4 id="图"><a href="#图" class="headerlink" title="图"></a><a href="https://www.myzwl.win/2017/08/01/graph_2/">图</a></h4><p>基本术语<br>邻接矩阵<br>深度（先序）<br>广度（层序）</p>
+<h4 id="集合简单总结"><a href="#集合简单总结" class="headerlink" title="集合简单总结"></a>集合简单总结</h4><p>java集合主要分为以下三种类型：<br>Set(集)：集合中的对象不按特定方式排序，且没有重复对象。它的有些实现类能对集合中的对象按照特地方式排序。<br>List(列表)：集合中的对象按照索引位置排序，可以有重复对象，允许使用索引检索对象。<br>Map(映射)：集合中的每一个元素都包含一对键对象和值对象（key-value），集合中的键对象是不能重复的,它的一些实现类能对集合中的键对象进行排序。<br>注意这里的不能重复与比较hashcode和equals有关</p>
+<p>Collection接口<br>Collection接口是Set、List、Queue接口的父接口，提供了多数集合常用的方法声明，包括 add()、remove()、contains() 、size() 、iterator() 等</p>
+<p>List接口<br>它的特点是有序可重复，使用此接口能够精确的控制每个元素插入的位置用户能够使用索引来访问List中的元素并且允许有可重复的元素</p>
+<p>ArrayList<br>底层实现是一个动态的数组，查询快，增删慢，线程不安全，效率高</p>
+<p>LinkedList<br>底层实现是一个双向循环链表，查询慢，增删快，线程不安全，效率较高</p>
+<p>Vector<br>是ArrlyList的线程安全版，底层同它基本一致，但是效率低，现在基本很少</p>
+<p>Set接口<br>它的特点就是唯一性并且不允许出现重复元素和是无序的</p>
+<p>hashSet<br>底层是基于哈希表实现的，而其核心就是先比较hashCode（）值是否相同（相当于索引），然后在用equals比较是否相同，从而确定元素是否重复，所以当不希望集合中有重复值，并且不关心元素之间的顺序时可以使用此类</p>
+<p>LinkedHashSet<br>底层实现是使用链表和哈希表，它由链表保证元素有序，哈希表保证元素唯一，因此当不希望集合中有重复值，并且希望按照元素的插入顺序进行迭代遍历时可采用此类</p>
+<p>TreeSet<br>底层实现是红黑树，也就是一种平衡AVL树，通过比较返回值是否是0来保证元素唯一性，并且通过自然排序来保证元素的排序（自然排序也就是让元素所属的类实现Comparable接口，比如abc排在abd前面，总之就是和插入顺序无关，只和元素本身的内容和特质有关）</p>
+<p>Queue接口<br>它的特点就是队列，即用于保存将要执行的任务列表</p>
+<p>LinkedList<br>实现了该接口，可以实现先进先出的队列</p>
+<p>PriorityQueue<br>底层采用某种排序的单链表存储队列元素，用来创建自然排序的优先级队列</p>
+<p>Map接口<br>Map关心的是唯一的标识符，也就是将唯一的键映射到某个元素，以键值对形式存储，键唯一，值可重复</p>
+<p>HashMap<br>底层实现是基于哈希表依赖于hashCode（）和equals（）方法，线程不安全，允许key和value为NULL，效率高</p>
+<p>Hashtable<br>HashMap的线程安全版，效率低，不允许key和value为NULL</p>
+<p>LinkedHashMap<br>底层是由链表和哈希表组成，链表保证元素有序，哈希表保证元素唯一，所以当需要键值对，并且关心插入顺序时可采用它</p>
+<p>TreeMap<br>底层是由红黑树实现，当需要键值对，并关心元素的自然排序时可采用它</p>
+<p>Collections<br>内置了一些常见的集合算法，像排序，查找算法等</p>
+<p>13.并发集合类是什么？<br>Java1.5并发包（java.util.concurrent）包含线程安全集合类，允许在迭代时修改集合。迭代器被设计为fail-fast的，会抛出ConcurrentModificationException。一部分类为：CopyOnWriteArrayList、 ConcurrentHashMap、CopyOnWriteArraySet。</p>
+<h4 id="多路查找树"><a href="#多路查找树" class="headerlink" title="多路查找树"></a>多路查找树</h4><p>每一个结点的孩子数可以多于两个，且每一个结点处可以存储多个元素<br>2-3树、2-3-4树<br>B树、B+树、红黑树</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;线性表之顺序表&quot;&gt;&lt;a href=&quot;#线性表之顺序表&quot; class=&quot;headerlink&quot; title=&quot;线性表之顺序表&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://www.myzwl.win/2017/07/08/sjjg_1/&quot;&gt;线性表之顺序表&lt;/a&gt;&lt;/h
+    
+    </summary>
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/categories/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/source/tags/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>java基础总结</title>
+    <link href="http://www.myzwl.win/2018/03/13/dream_6/"/>
+    <id>http://www.myzwl.win/2018/03/13/dream_6/</id>
+    <published>2018-03-13T06:48:51.000Z</published>
+    <updated>2018-03-18T15:44:14.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a><a href="https://www.myzwl.win/2017/07/16/yc_1/">异常处理</a></h4><p>从大的角度说主要分成两类：Error类代表了编译和系统的错误，不允许捕获，也就是我们自己无法主动去处理它；Exception类代表了我们可捕获并且可自己可处理异常，而Exception有包括两类，一个是你必须要处理的异常，如某个类有throws异常了，在未进入运行期就必须处理，另一类就是Runtime Exception（运行期异常），就是只有在运行时（也就是编译成class文件）时才知道，这个异常可处理或不处理</p>
+<p>try-catch-finally 规则<br>1）在finally语句块中发生了异常。<br>2）在前面的代码中用了System.exit()退出程序。<br>3）程序所在的线程死亡。<br>4）关闭CPU。</p>
+<h4 id="java-IO简单总结"><a href="#java-IO简单总结" class="headerlink" title="java IO简单总结 "></a><a href="https://www.myzwl.win/2017/07/23/IO_1/">java IO简单总结 </a></h4><p>流：数据在数据源（文件）和程序（内存）之间经历的路径<br>输入流：数据从数据源到内存的路径<br>输出流：数据从内存到数据源的路径<br>字节流：可以用于读写二进制文件及任何类型的byte，也就是一个字节一个的读<br>字符流：可以用于读写文本文件，不能操作二进制文件，也就是两个字节两个字节的读<br>2.根据数据流向不同分为：输入流和输出流<br>3。节点流和处理流<br>节点流：直接与数据源相连，读入或读出，可以发现使用该流过于频繁操作硬件，从而使读写很不方便<br>处理流：处理流和节点流一块使用，在节点流的基础上，再套接一层，套接在节点流上的就是处理流。如BufferedReader.处理流的构造方法总是要带一个其他的流对象做参数。一个流对象经过其他流的多次包装，称为流的链接。<br>Object流的意思将是像一根节点流插入一根Object流管道，专门操作Object，而它必须实现Serializable接口，该接口的意思是可序列化，就是说将一个对象流序列化成子节流写进网络或者文件，比如说游戏存盘，有各个游戏的记录，如果以面向对象来写进管道，它的各个成员变量，会在内存中被序列化成二进制写进去，而Serializable接口无方法，它只是个标记接口，编译器看到实现该接口的类就知道它应该被序列化，同样有一个transient关键字，是使可序列化的某个属性变成透明，也就是它不能变成字节写进去，那个属性只能为默认属性写进去</p>
+<h4 id="反射机制简单"><a href="#反射机制简单" class="headerlink" title="反射机制简单"></a>反射机制简单</h4><p>classLoad、Class、Methods</p>
+<h4 id="java基本数据类型"><a href="#java基本数据类型" class="headerlink" title="java基本数据类型"></a>java基本数据类型</h4><p>byte、short、int、long、float、double、char、boolean</p>
+<h4 id="能否重写构造方法"><a href="#能否重写构造方法" class="headerlink" title="能否重写构造方法"></a>能否重写构造方法</h4><p>重载构造方法是可以的。<br>但是重写则不可以，因为被重写的前提是被继承，而构造方法根本就不能被继承，所以谈不上被重写。只能调用父类的构造方法</p>
+<h4 id="构造代码块和构造方法的执行顺序"><a href="#构造代码块和构造方法的执行顺序" class="headerlink" title="构造代码块和构造方法的执行顺序"></a>构造代码块和构造方法的执行顺序</h4><p>父类静态块-自身静态块-父类块-父类构造器-自身块-自身构造器</p>
+<h4 id="说说-amp-与-amp-amp-的区别"><a href="#说说-amp-与-amp-amp-的区别" class="headerlink" title="说说&amp;与&amp;&amp;的区别"></a>说说&amp;与&amp;&amp;的区别</h4><p>&amp;与&amp;&amp;都可以用作逻辑与（and）的运算符<br>&amp;&amp;具有短路的功能，即如果第一个表达式为false，则不再计算第二个表达式。而&amp;则会同时计算<br>&amp;可以作为位运算符，当&amp;两边表达式不是boolean时，&amp;表示按位与操作，通常使用Ox0f来与一个整数&amp;运算，来取该整数的最低4个bit位</p>
+<h4 id="Overload与Override的区别？Overload的方法是否可以改变返回值的类型？"><a href="#Overload与Override的区别？Overload的方法是否可以改变返回值的类型？" class="headerlink" title="Overload与Override的区别？Overload的方法是否可以改变返回值的类型？"></a>Overload与Override的区别？Overload的方法是否可以改变返回值的类型？</h4><p>重载表示方法名相同，但是参数个数或类型不同）<br>重写表示子类中的方法可以与父亲中某个方法的名称和参数完全相同，通过子类创建实例调用父类这个方法，也就是相当于覆盖了父类的这个方法，但是当父类是private时相当于子类增加了一个全新的方法，就不存在覆盖了。并且子类应该比父类抛出更少的异常或者拥有更大的权限<br>如果参数名不同会改变返回类型，但是如果都一样肯定不会改变返回类型</p>
+<h4 id="abstractclass和interface语法上有什么区别？"><a href="#abstractclass和interface语法上有什么区别？" class="headerlink" title="abstractclass和interface语法上有什么区别？"></a>abstractclass和interface语法上有什么区别？</h4><p>1.抽象类可以有构造方法，接口不能有构造方法<br>2.抽象类中可以有普通成员方法，接口中没有普通成员变量<br>3.抽象类中可以包含非抽象的普通方法，接口中的所有方法必须都是抽象的，不能有非抽象的方法。<br>4.抽象类中的抽象方法访问类型可以是public、protected，但接口中的抽象方法只能是public类型的，并且默认即为public abstract类型<br>5.抽象类中可以包含静态方法，接口中不能包含静态方法<br>6.抽象类和接口类中都可以包含静态成员变量，抽象类中的静态成员变量的访问类型可以是任意，但是接口中定义的变量只能是public static final类型<br>7一个类可以实现多个接口，但只能继承一个抽象类</p>
+<h4 id="什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？"><a href="#什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？" class="headerlink" title="什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？"></a>什么是java序列化，如何实现java序列化？或者解释serializable接口的作用？</h4><p>将一个对象变成字节流的形式传出去或者从一个字节流中恢复成一个java对象，例如将一个java对象存储到硬盘或者送给网络上的其他计算机，可以用代码把一个java对象变成某个格式的字节流在传输<br>如果要让java自动帮我们做，就需要实现serializable接口，编译的类才被writeObject方法操作，例如，在web中，如果对象被保存在了session中，tomcat在重启时要把session对象序列化到硬盘</p>
+<h4 id="hashcode与equals"><a href="#hashcode与equals" class="headerlink" title="hashcode与equals"></a><a href="https://www.cnblogs.com/jesonjason/p/5492208.html" target="_blank" rel="external">hashcode与equals</a></h4>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;异常处理&quot;&gt;&lt;a href=&quot;#异常处理&quot; class=&quot;headerlink&quot; title=&quot;异常处理&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://www.myzwl.win/2017/07/16/yc_1/&quot;&gt;异常处理&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;从大的角度说主要分
+    
+    </summary>
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/categories/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/source/tags/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>计算机网络总结</title>
+    <link href="http://www.myzwl.win/2018/03/13/dream_7/"/>
+    <id>http://www.myzwl.win/2018/03/13/dream_7/</id>
+    <published>2018-03-13T04:48:51.000Z</published>
+    <updated>2018-03-18T15:46:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="网络编程简单总结-https-www-myzwl-win-2017-07-29-socket-1"><a href="#网络编程简单总结-https-www-myzwl-win-2017-07-29-socket-1" class="headerlink" title="网络编程简单总结(https://www.myzwl.win/2017/07/29/socket_1/)"></a>网络编程简单总结(<a href="https://www.myzwl.win/2017/07/29/socket_1/">https://www.myzwl.win/2017/07/29/socket_1/</a>)</h4><p>tcp/ip分层<br>链接层（ARP欺诈）-网络层（ip、icmp（ping））-传送层（tcp、udp）-应用层（POP3、Http、FTP，SSH、SMTP）<br>ip协议<br>ip层就是唯一确定了一台机器，就像我们住的房间地址一样，唯一确定了我们的住处<br>这里需要注意的是，ip地址由四位字节组成，每个字节由8位二进制组成，同时有a，b，c三类地址，如图由网络号和主机号组成，当然这是公网，如果是局域网的话，就需要配网关和子网掩码了，如192.168.1.1和255.255.0.0那么255.255就是确定了ip地址哪几位字节是网络号，如192.168就是网络号<br>TCP与UDP协议<br>tcp协议<br>有65536个端口 0号是保留端口<br>1-1024是固定端口<br>又叫有名端口，即被某些程序固定使用，一般程序员不使用。<br>22：SSH远程登录协议 23：telnet使用 21：ftp使用<br>25：smtp服务使用 80：iis使用 7：echo服务<br>1025-65535是动态端口<br>UDP协议<br>UDP向应用程序提供了一种发送封装的原始IP数据报的方法，并且发送时无需建立连接，是一种不可靠的连接。<br>简单来说，就是只发一次数据，不管对方有没有接收到都不会再发了，但是有时候效率会很高，像网络拥堵时</p>
+<p>url<br>统一资源定义符也被称为网页地址。Internet上的每一个网页都具有一个唯一的名称标识，通常称之为URL地址，这种地址可以是本地磁盘，也可以是局域网上的某一台计算机，更多的是Internet上的站点，简单地说，URL就是Web地址，俗称“网址”，是用于完整地描述Internet上网页和其他资源的地址的一种标识方法，如：<br><a href="http://www.sina.com:8080/index.html" target="_blank" rel="external">http://www.sina.com:8080/index.html</a><br>1、协议；2、ip地址(32位)；3、端口号(16位)0-65535；4、资源名称。</p>
+<p>单工、半双工和全双工<br>Socket编程（模拟socket编程）</p>
+<h4 id="tcp-如何保证传输的可靠性"><a href="#tcp-如何保证传输的可靠性" class="headerlink" title="tcp 如何保证传输的可靠性"></a>tcp 如何保证传输的可靠性</h4><p>tcp 是面向连接，可靠的字节流服务<br>面向连接意味着两个使用tcp 的应用（通常是一个客户端和一个服务器）在彼此交换数<br>据之前必须先建立一个tcp 连接。在一个tcp 连接中，仅有两方进行彼此通信，广播和多播<br>不能用于tcp。<br>Tcp 通过下列方式提供可靠性：<br>1）将应用数据分割为tcp 认为最合适发送的数据块；<br>2）超时重传：当tcp 发出一个段后，他启动一个定时器，等待目的端确认收到这个报<br>文段。若不能及时收到一个确认，将重发这个报文段。<br>3）当tcp 收到发自tcp 链接另一端的数据时，它将发送一个确认（对于收到的请求，给<br>出确认响应）。这个确认不是立即发送，通常将推迟几分之一秒（之所以推迟，可能是要对<br>包做完校验）；<br>4）若tcp 收到包，校验出包有错，丢弃报文段，不给出响应，tcp 发送端会超时重传；<br>5）对于失序数据进行重新排序，然后交给应用层（tcp 报文段作为ip 数据报进行传输，<br>而ip 数据报的到达会失序，因此tcp 报文段的到达也可能失序。若必要，tcp 将对收到的数<br>据进行重新排列，以正确的顺序交给应用层）。<br>6）对于重复数据，直接丢弃。<br>7）tcp 可以进行流量控制，防止较快主机致使较慢主机的缓冲区溢出<br>字节流服务：两个应用程序通过tcp 连接，tcp 不在字节中插入记录标识符，我们将这<br>种为字节流服务。<br>Tcp 对字节流的内容不做任何解释，tcp 不知道传输的字节流数据是二进制数据还是ascii<br>字符或其他类型数据，对字节流的解释由tcp 连接双方的应用层。</p>
+<h4 id="简单描述一下https"><a href="#简单描述一下https" class="headerlink" title="简单描述一下https"></a>简单描述一下https</h4><p>https 其实是由两部分组成：http+ssl/tls，也就是在http 上又加了一层处理加密信息的<br>模块，服务端和客户端的信息传输都会通过tls 加密，传输的数据都是加密后的数据。加解<br>密过程：<br>1）客户端发起https 请求（就是用户在浏览器里输入一个https 网址，然后连接到server<br>的443 端口）<br>2）服务端的配置（采用https 协议的服务器必须要有一塔数字证书，可以自己制作，<br>也可以向组织申请，这套证书就是一对公钥和私钥）。<br>3）传输证书（这个证书就是公钥，只是包含了很多信息）<br>4）客户端解析证书（由客户端tls 完成，首先验证公钥是否有效，若发现异常，则弹出<br>一个警示框，提示证书存在问题，若无问题，则生成一个随机值，然后用证书对随机值进行<br>加密）<br>5）传输加密信息（这里传输的是加密后的随机值，目的是让服务端得到这个随机值，<br>以后客户端和服务端的通信就可以通过这个随机值来进行加密了）<br>6）服务端解密信息（服务端用私钥解密后得到了客户端传来的随机值，then 把内容通<br>过该值进行对称加密。所谓对称加密就是，将信息和私钥通过某种算法混在一起，这样除非<br>知道私钥，不然无法获取内容，而正好客户端和服务端都知道这个私钥，所以只要加密算法<br>够彪悍，私钥够复杂，数据就够安全）<br>7）传输加密的信息<br>8）客户端解密信息，用随机数来解。</p>
+<p>短链接一般只会在client/server 间传递一次读写操作。<br>Tcp 保活功能，主要为服务器应用程序提供，服务器应用程序需要知道客户主机是否崩<br>溃，从而可以代表客户使用资源.<br>tcp 保护功能是探测长连接存活状况。<br>Tcp 的keep-alive 是检查当前tcp 是否还活着；http 的keep-alive 是让一个tcp 连接活多<br>久，他们是不同层次的概念。</p>
+<p>a 发送给b 一个信息，但是a 不承认他发送了，防止这个可用数字签名<br>DNS 即使用tcp，又使用udp<br>https 若在浏览器端抓包，是可以看到数据的，并没有加密，抓到的是加密之前的</p>
+<h4 id="http-请求过程——当我们在浏览器输入www-baidu-com，然后回车之后的详解"><a href="#http-请求过程——当我们在浏览器输入www-baidu-com，然后回车之后的详解" class="headerlink" title="http 请求过程——当我们在浏览器输入www.baidu.com，然后回车之后的详解"></a>http 请求过程——当我们在浏览器输入www.baidu.com，然后回车之后的详解</h4><p>1）域名解析（域名www.baidu.com 变为ip 地址）。<br>2）发起tcp 的三次握手，建立tcp 连接。浏<br>览器会以一个随机端口（1024-65535）向服务端的web 程序80 端口发起tcp 的连接.这个请<br>求（原始的http 请求，经过原始的tcp/ip 四层模型层层封装），到达服务器端后，进入网<br>卡，然后进入内核的协议栈（一层一层拨开），然后到达web 应用程序，最终建立了tcp/ip<br>链接。<br>3）建立tcp 连接后发起http 请求。<br>4）服务器响应http 请求，客户端得到html 代码。<br>服务器web 应用程序收到http 请求后，就开始处理请求，处理之后就返回给浏览器html<br>文件。<br>5）浏览器解析html 代码，并请求html 中的资源。<br>6）浏览器对页面进行渲染，并呈现给用户。</p>
+<h4 id="什么是正向代理和反向代理"><a href="#什么是正向代理和反向代理" class="headerlink" title="什么是正向代理和反向代理"></a>什么是正向代理和反向代理</h4><p>正向代理：我是一个用户，我访问不了某网站，但是我能访问一个代理服务器，这个代<br>理服务器呢，他能访问那个我不能访问的网站，于是我先连上代理服务器，告诉他我需要哪<br>个无法访问的网站的内容，代理服务器取回来给我。server 不知道client。<br>反向代理：client 不知道server，并不是URL 中请求的那个资源，而是不知道从什么地方来<br>的。以代理服务器来接收internet 上的请求，然后将请求转发给内部网络的服务器，并将从<br>服务器上得到的结果返回给internet 上请求的客户，此时代理服务器对外就表现为一个服务<br>器。1）保证内网安全、2）负载均衡，nginx 通过proxy-pass-http 配置代理站点，upstream<br>实现负载均衡。</p>
+<h4 id="怎么用udp-实现tcp"><a href="#怎么用udp-实现tcp" class="headerlink" title="怎么用udp 实现tcp"></a>怎么用udp 实现tcp</h4><p>由于在传输层udp 已经是不可靠的，那就要在应用层自己实现一<br>些保证可靠传输的机制，简单来说，要使用udp 来构建可靠的面向连接的数据传输，就要<br>实现类似于tcp 的超时重传（定时器），拥塞控制（滑动窗口），有序接收（添加包序号），<br>应答确认（ack 和seq）。目前已经有了实现udp 可靠运输的机制——udt：主要目的高速广<br>域网海量数据传输，他是应用层协议</p>
+<p>Tcp：<br>1）流量控制：防止较快主机使较慢主机缓冲区溢出，是点对点；<br>2）拥塞控制：全局性，防止过多的数据注入网络。<br>tcp 采用滑动窗口进行流量控制，滑动窗口大小可变，窗口大小的单位是字节。</p>
+<h4 id="一致性哈希算法"><a href="#一致性哈希算法" class="headerlink" title="一致性哈希算法"></a>一致性哈希算法</h4><p>在分布式集群中，对机器的添加和删除或机器故障后自动脱离集群，这些操作是分布式<br>集群管理最基本的功能，若采用常用的hash(object)%N 算法，那么在有机器添加或删除以后，<br>很多原有的数据就无法找到，所以出现一致性哈希算法——<br>1）环形hash 空间：按照常用的<br>hash 算法来将对应的key 哈希到一个具有232 个桶的空间，即（0-232 -1）的数字空间中，现<br>在我们将这些数字头尾相连，想象成一个闭合的环形。<br>2）把数据通过一定的hash 算法映射到环上。<br>3）将机器通过一定的hash 算法映射到环上。<br>4）节点按顺时针转动，遇到的第一个机器，就把数据放在该机器上</p>
+<h4 id="Nginx负载均衡五种配置"><a href="#Nginx负载均衡五种配置" class="headerlink" title="Nginx负载均衡五种配置"></a>Nginx负载均衡五种配置</h4><p>1）轮询（默认），每个请求按时间顺序逐一分配到不同的后端服务器，如果后端<br>服务器down 掉，能自动剔除；<br>2）指定权重，指定轮询几率。权重越大，轮询几率越大，<br>用于后端服务器性能不均的情况。<br>3）ip 绑定ip_path，每个请求按访问ip 的哈希结果分配，<br>这样每个客户固定访问一个服务器，可以解决session 问题。<br>4）fair（第三方）按后端服务器的响应时间来分配请求，响应时间短的优先分配。<br>5）url_hash 按访问的url 结果来分配请<br>求，使每个url 定位到同一个后端服务器。后端服务器为缓存时比较有效</p>
+<h4 id="三次握手-手动画出图解"><a href="#三次握手-手动画出图解" class="headerlink" title="三次握手(手动画出图解)"></a>三次握手(手动画出图解)</h4><p> 第一次握手：建立连接时，客户端发送syn包（syn=j）到服务器，并进入SYN_SENT状态，等待服务器确认；SYN：同步序列编号（Synchronize Sequence Numbers）。</p>
+<p>第二次握手：服务器收到syn包，必须确认客户的SYN（ack=j+1），同时自己也发送一个SYN包（syn=k），即SYN+ACK包，此时服务器进入SYN_RECV状态；</p>
+<p>第三次握手：客户端收到服务器的SYN+ACK包，向服务器发送确认包ACK(ack=k+1），此包发送完毕，客户端和服务器进入ESTABLISHED（TCP连接成功）状态，完成三次握手。</p>
+<p>完成三次握手，客户端与服务器开始传送数据</p>
+<p> 关闭TCP连接：改进的三次握手</p>
+<p>对于一个已经建立的连接，TCP使用改进的三次握手来释放连接（使用一个带有FIN附加标记的报文段）。TCP关闭连接的步骤如下：</p>
+<p>第一步，当主机A的应用程序通知TCP数据已经发送完毕时，TCP向主机B发送一个带有FIN附加标记的报文段（FIN表示英文finish）。</p>
+<p>第二步，主机B收到这个FIN报文段之后，并不立即用FIN报文段回复主机A，而是先向主机A发送一个确认序号ACK，同时通知自己相应的应用程序：对方要求关闭连接（先发送ACK的目的是为了防止在这段时间内，对方重传FIN报文段）。</p>
+<p>第三步，主机B的应用程序告诉TCP：我要彻底的关闭连接，TCP向主机A送一个FIN报文段。</p>
+<p>第四步，主机A收到这个FIN报文段后，向主机B发送一个ACK表示连接彻底释放</p>
+<h4 id="两次握手不行吗"><a href="#两次握手不行吗" class="headerlink" title="两次握手不行吗"></a>两次握手不行吗</h4><p>A发送报文滞留过长导致失效，然后b发送链接请求，A不理睬</p>
+<h4 id="TIME-WAIT为什么是2MSL"><a href="#TIME-WAIT为什么是2MSL" class="headerlink" title="TIME-WAIT为什么是2MSL"></a>TIME-WAIT为什么是2MSL</h4><p>确保最后一个报文发到b，没有则重传<br>防止已失效的报文链接出现在本链接中</p>
+<h4 id="为什么TCP释放连接需要四次"><a href="#为什么TCP释放连接需要四次" class="headerlink" title="为什么TCP释放连接需要四次"></a>为什么TCP释放连接需要四次</h4><p>  TCP建立连接要进行三次握手，而断开连接要进行四次。这是由于TCP的半关闭造成的。因为TCP连接是全双工的(即数据可在两个方向上同时传递)所以进行关闭时每个方向上都要单独进行关闭。这个单方向的关闭就叫半关闭。当一方完成它的数据发送任务，就发送一个FIN来向另一方通告将要终止这个方向的连接</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;网络编程简单总结-https-www-myzwl-win-2017-07-29-socket-1&quot;&gt;&lt;a href=&quot;#网络编程简单总结-https-www-myzwl-win-2017-07-29-socket-1&quot; class=&quot;headerlink&quot; tit
+    
+    </summary>
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/categories/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/source/tags/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+  </entry>
   
   <entry>
     <title>系统V1.0简单说明</title>
@@ -98,6 +383,111 @@
     
     
       <category term="学习总结" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>jvm总结之三:虚拟机堆参数</title>
+    <link href="http://www.myzwl.win/2017/12/23/jvm_3/"/>
+    <id>http://www.myzwl.win/2017/12/23/jvm_3/</id>
+    <published>2017-12-23T07:48:51.000Z</published>
+    <updated>2018-03-17T10:29:42.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>事实上，我们对堆内存的管理是可控的，可通过对jvm虚拟机相关堆内存参数设置进行控制</p>
+<h4 id="参数含义"><a href="#参数含义" class="headerlink" title="参数含义"></a>参数含义</h4><p>-XX 对于系统级别的jvm配置 配置日志信息 垃圾回收器类型<br>非 -XX的 基本都是对 应用层面上的配置</p>
+<ul>
+<li>启用 - 禁用<br>-XX :PrintGC 使用这个参数，虚拟机启动后，只要遇到GC就会打印日志<br>-XX: +UserSerialGC 配置串行回收器<br>-XX:+PrintGCDetails：可以查看详细信息，包括各个区的情况<br>-Xms: 设置java程序启动时初始堆大小<br>-Xmx: 设置java程序能获得的最大堆大小<br>-Xloggc:路径 ：将打印出来的日志信息保存至指定的路径<br>-Xmn：设置堆的内存大小<br>-XX:SurvivorRatio=m:n调整Eden和Survivor的比例为m:n</li>
+</ul>
+<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">public class test2 &#123;		</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">	</div><div class="line">		//-Xms20m -Xmx20m -Xmn10 -XX:+PrintGCDetails -Xloggc:d:\gc1.log</div><div class="line">		</div><div class="line">				//查看GC信息</div><div class="line">				System.out.println("max memory:" + Runtime.getRuntime().maxMemory());</div><div class="line">				System.out.println("free memory:" + Runtime.getRuntime().freeMemory());</div><div class="line">				System.out.println("total memory:" + Runtime.getRuntime().totalMemory());</div><div class="line">				</div><div class="line">				byte[] b1 = new byte[1*1024*1024];</div><div class="line">				System.out.println("分配了1M");</div><div class="line">				System.out.println("max memory:" + Runtime.getRuntime().maxMemory());</div><div class="line">				System.out.println("free memory:" + Runtime.getRuntime().freeMemory());</div><div class="line">				System.out.println("total memory:" + Runtime.getRuntime().totalMemory());</div><div class="line">				</div><div class="line">				byte[] b2 = new byte[4*1024*1024];</div><div class="line">				System.out.println("分配了4M");</div><div class="line">				System.out.println("max memory:" + Runtime.getRuntime().maxMemory());</div><div class="line">				System.out.println("free memory:" + Runtime.getRuntime().freeMemory());</div><div class="line">				System.out.println("total memory:" + Runtime.getRuntime().totalMemory());</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出结果</p>
+<blockquote>
+<p>Memory: 4k page, physical 2076596k(144200k free), swap 4923560k(620956k free)<br>CommandLine flags: -XX:InitialHeapSize=5242880 -XX:MaxHeapSize=20971520 -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:-UseLargePagesIndividualAllocation<br>0.418: [GC (Allocation Failure) 0.418: [DefNew: 655K-&gt;192K(1856K), 0.0049031 secs] 655K-&gt;466K(5952K), 0.0052607 secs] [Times: user=0.02 sys=0.00, real=0.01 secs]<br>0.448: [GC (Allocation Failure) 0.448: [DefNew: 1282K-&gt;0K(1856K), 0.0044827 secs]0.453: [Tenured: 1490K-&gt;1490K(4096K), 0.0033471 secs] 1557K-&gt;1490K(5952K), [Metaspace: 80K-&gt;80K(4480K)], 0.0083429 secs] [Times: user=0.02 sys=0.00, real=0.01 secs]<br>Heap<br> def new generation   total 1920K, used 68K [0x03a00000, 0x03c10000, 0x040a0000)<br>  eden space 1728K,   3% used [0x03a00000, 0x03a111f8, 0x03bb0000)<br>  from space 192K,   0% used [0x03bb0000, 0x03bb0000, 0x03be0000)<br>  to   space 192K,   0% used [0x03be0000, 0x03be0000, 0x03c10000)<br> tenured generation   total 8196K, used 5586K [0x040a0000, 0x048a1000, 0x04e00000)<br>   the space 8196K,  68% used [0x040a0000, 0x04614b70, 0x04614c00, 0x048a1000)<br> Metaspace       used 80K, capacity 2242K, committed 2368K, reserved 4480K</p>
+</blockquote>
+<p>其中from、to分别为s0、s1区</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;事实上，我们对堆内存的管理是可控的，可通过对jvm虚拟机相关堆内存参数设置进行控制&lt;/p&gt;
+&lt;h4 id=&quot;参数含义&quot;&gt;&lt;a href=&quot;#
+    
+    </summary>
+    
+      <category term="jvm" scheme="http://www.myzwl.win/categories/jvm/"/>
+    
+    
+      <category term="jvm" scheme="http://www.myzwl.win/source/tags/jvm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>jvm总结之二:回收策略</title>
+    <link href="http://www.myzwl.win/2017/12/22/jvm_2/"/>
+    <id>http://www.myzwl.win/2017/12/22/jvm_2/</id>
+    <published>2017-12-22T07:48:51.000Z</published>
+    <updated>2018-03-17T10:29:44.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>我们知道垃圾回收的主要内存区域是堆和方法区，因为这两块区域的内存分配相对于其他区域具有不确定性，而分配内存一般有两种方法，即指针碰撞和空闲列表</p>
+<h4 id="堆内存"><a href="#堆内存" class="headerlink" title="堆内存"></a>堆内存</h4><p>在堆内存中主要分为年轻代和老年代（具体后面再说），先说一下年轻代<br><img src="/images/imgs5/37.jpg" alt="Alt text"><br>如图，主要分为Eden（对象都会在该区域内创建）同时也会在s0或s1中随机一个进行创建，经过一次GC后在s0和s1中使用复制算法保留存活下来的对象，那么它是如何复制的了<br><img src="/images/imgs5/38.jpg" alt="Alt text"><br><img src="/images/imgs5/39.jpg" alt="Alt text"><br>大概流程就是将可回收的垃圾对象进行标记，然后复制存活的对象到另一块空白区域，依次类推<br>很显然这种复制方式很浪费空间，但是年轻代是生命周期很短的，换句话说，如果年轻代不够放了就会放到老年代，一般规定经过15次GC后的年轻代就会进入老年区（可通过-XX：MaxTenuringThreshold=15设置多少次为老年代），而老年区一般存放存活时间比较久的对象，通过标记-清除-整理进行垃圾回收，如果老年代内存不足就会触发FULL GC.默认是占用了68%后收集（可通过-XX:CMSInitiatingOccupancyFraction=68设置），该GC非常影响性能</p>
+<h4 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h4><p>我们知道垃圾回收算法可自行判断一个对象是否已经生命周期达到结束，从而将其视为垃圾进行回收。那么在此算法出现之前，出现过可达性分析算法进行垃圾回收<br>算法的基本思想就是通过一系列的称为“GC Roots”的对象作为起始点，从这些起始点开始向下搜索，所走过的路径称为引用链，如果一个对象到GC Roots没有任何引用链，那么这个对象是不可用的，就是说，程序中没有谁引用了这个对象，所以可以说从根节点到叶子结点是不可达的<br>而以下对象可作为GC Roots对象：<br>虚拟机栈（栈帧中本地变量表）中引用的对象<br>方法区中类静态属性引用的对象<br>方法区中常量引用的对象<br>本地方法栈中JNI（也就是native本地方法）引用的对象</p>
+<p>现在我们已经知道了通过可达性分析判断对象是否还可用，但是是不是不可达的对象都是不可用呢？答案是未必。原因在于要宣告一个对象的死亡，需要两次标记（为什么需要两次标记呢？原因是如果一个对象没有与GC Roots结点相连，就会被第一次标记，而如果对象覆盖了finalize方法，并且在finalize方法中与某个对象建立了引用关系，那么第二次标记会失败，那么这个对象就会被移出“即将回收”的对象列表，移出之后这个对象就“活”了下来，如果在finalize方法中这个对相关仍然没有与一个对象建立引用关系，那么这个对象就真正死亡了）。</p>
+<h4 id="回收方法区中的对象"><a href="#回收方法区中的对象" class="headerlink" title="回收方法区中的对象"></a>回收方法区中的对象</h4><p>方法区中的永久代的垃圾回收主要为两部分： 废弃常量和无用的类<br>废弃常量是指没有任何对象引用常量池中的某个对象，那么这个对象就会被回收，而对于常量池中的垃圾回收只要进行一次标记就可以进行判断<br>无用的类需要满足以下三个条件才可以宣判一个类的“死刑”：<br>    1.该类的所有实例都已经被回收，也就是Java堆中不存在该类的实例<br>    2.加载该类的ClassLoader已经被回收<br>    3.该类对应的java.lang.Class对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;我们知道垃圾回收的主要内存区域是堆和方法区，因为这两块区域的内存分配相对于其他区域具有不确定性，而分配内存一般有两种方法，即指针碰撞和空闲列
+    
+    </summary>
+    
+      <category term="jvm" scheme="http://www.myzwl.win/categories/jvm/"/>
+    
+    
+      <category term="jvm" scheme="http://www.myzwl.win/source/tags/jvm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>jvm总结之一:java内存区域</title>
+    <link href="http://www.myzwl.win/2017/12/21/jvm_1/"/>
+    <id>http://www.myzwl.win/2017/12/21/jvm_1/</id>
+    <published>2017-12-21T06:48:51.000Z</published>
+    <updated>2018-03-17T10:29:28.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>引用百度文库上对java虚拟机的定义.<br>虚拟机是一种抽象化的计算机，通过在实际的计算机上仿真模拟各种计算机功能来实现的。Java虚拟机有自己完善的硬体架构，如处理器、堆栈、寄存器等，还具有相应的指令系统。Java虚拟机屏蔽了与具体操作系统平台相关的信息，使得Java程序只需生成在Java虚拟机上运行的目标代码（字节码），就可以在多种平台上不加修改地运行</p>
+<h4 id="重要组成部分"><a href="#重要组成部分" class="headerlink" title="重要组成部分"></a>重要组成部分</h4><p><img src="/images/imgs5/35.jpg" alt="Alt text"></p>
+<p><font size="5">类加载子系统</font><br>负责从文件系统或者网络中加载class信息，加载的信息存放在一块称之为方法区的内存空间</p>
+<p><font size="5">方法区</font><br>存放类信息、常量信息、常量池信息、包括字符串常量和数字常量等</p>
+<p><font size="5">java堆</font><br>在虚拟机启动的时候创建，此内粗区域的唯一目的就是存放对象实例，是所有线程共享的，同时，这块内存区域也是垃圾收集器的主要区域，也被成为GC堆</p>
+<p><font size="5">Java虚拟机栈</font><br>每个java虚拟机线程都有一个私有的栈，其生命周期与线程相同，它描述了Java的方法执行模型，每个方法执行时都会创建一个栈帧。会抛出StackOverFlowError和OOM</p>
+<p><font size="5">本地方法栈</font><br>与Java虚拟机栈类似，最大的不同就是它是用于本地方法调用，同常用c语言编写</p>
+<p><font size="5">直接内存</font><br>NIO库允许java使用直接内存，通常速度由于java堆</p>
+<p><font size="5">程序计数器</font><br>程序计数器可以理解为当前线程执行的字节码的行号指示器，字节码解释器就是通哟改变这个值来获取需要执行的下一条需要执行的字节码指令。对于多线程来说，每条线程都有自己的程序计数器，这样各线程之间的计数器互不影响，这类内存区域也叫作“私有内存”（可以看到其实并不是私有的），之所以这么设计，是因为在多线程的情况下，完全可能出现线程中断的情况，那么当被中断的线程需要回复执行的时候，怎么知道上次该线程执行到哪里了呢？这就需要程序计数器发挥作用了，由于每个线程都有自己的程序计数器，这样当CPU重新调度该线程的时候，从其计数器中取出下一条的字节码执行指令，于是就可以继续执行了</p>
+<p><font size="5">执行引擎</font><br>负责执行虚拟机的字节码,先进行编译成机器码后执行</p>
+<h4 id="对象创建"><a href="#对象创建" class="headerlink" title="对象创建"></a>对象创建</h4><p>事实上，堆解决的是数据存储的问题，即数据怎么做，放在哪里，而栈解决的是程序的运行问题，即程序如何执行或者说如何处理数据，而方法区则是辅助堆栈的永久区，解决堆栈信息的产生,比如我们现在要创建一个student类实例<br><img src="/images/imgs5/36.jpg" alt="Alt text"><br>其中栈中存放的是对象的引用</p>
+<h4 id="对象创建详细过程"><a href="#对象创建详细过程" class="headerlink" title="对象创建详细过程"></a>对象创建详细过程</h4><p>首先检查这个指令的参数是否能在常量池中定位到一个类的符号引用，并且检查这个符号引用代表的类是否已被加载、解析和初始化过。如果没有就执行下一步</p>
+<p>检查通过后，虚拟机会为新生的对象分配内存，主要由两种内存分配策略，一种是指针碰撞，一种是空闲列表。所谓指针碰撞就是把Java堆中的内存一分为二，一边是所有用过的内存（这部分内存不能被分配了），一边是空闲的内存，是可以被分配的，这样的话，在可用于不可用的内存之间会有一个分割点指示器，那么为对象分配内存实际上就是从这个分界点指示器往空闲内存的一边拨动一段空间就可以了。而空闲列表则没有这个假设，已使用的内存与空闲内存可能是交叉在一起的，那么使用指针碰撞的方式分配内存就会产生问题，但是虚拟机维护着一张列表，这张列表记录了哪些区域的内存是可用的，那么在分配内存的时候就从选择可以容纳对象要求大小的内存区域分配给这个对象</p>
+<p>虚拟机将分配到的内存空间都初始化为零（不包括对象头），这里的初始化不同于我们在Java中利用构造函数进行初始化的过程，这里的初始化时保证Java的一些原生数据类型在不重新赋值的时候就可以直接使用，程序在使用这些对象的时候可以直接使用零值。</p>
+<p>接下来，虚拟机要对对象一些必要的设置，进行这些设置的目的是可以知道这些对象是哪个类的实例、对象的哈希码、对象的GC分代年龄等信息，这些信息都存储在对象头中。</p>
+<p>上面这些工作完成之后，从虚拟机的角度看，一个对象已经构造完成，但是从开发人员的角度看，还需要进行new对象之后初始化，接着执行init方法，到这里一个对象才算真正创建完毕</p>
+<h4 id="内存布局"><a href="#内存布局" class="headerlink" title="内存布局"></a>内存布局</h4><p>主要包括三部分的信息：对象头、实例数据和对齐填充</p>
+<p>对象头又包括两部分信息，第一部分用于存储对象自身的运行时数据，比如哈希码、GC分代年龄、锁状态标志、线程持有锁、偏向线程ID、偏向时间戳等；第二部分是类型指针，即对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象是哪个类的实例。</p>
+<p>实例数据部分是对象真真好存储的有效信息，也是程序代码中所定义的各种类型的字段内容</p>
+<p>第三部分不是必然存在的，只是起到占位符的作用，因为HotspotVM规定对象的起始地址必须是8字节的整数倍。所以很有可能以上两部分的大小不够8字节的整数倍，那么这个字段就可以发挥作用了。</p>
+<h4 id="对象的访问"><a href="#对象的访问" class="headerlink" title="对象的访问"></a>对象的访问</h4><p>主要是通过Java栈中的reference数据，通过这个reference数据只是一个指向对象的引用，那么对象的访问方式就可以不同。目前主流的对象访问方式主要由句柄和直接指针两种。通过句柄访问的话，会在Java堆中划分出一块句柄池，句柄池中句柄存放了对象的实例数据和类型指针，而reference数据则存放了句柄的地址引用。使用直接指针访问对象，那么reference数据存放的就是对象的地址<br>使用句柄访问的最大好处是reference中存储的稳定的句柄地址，当对象的地址发生了改变可以不用去关心。而直接指针的最大好处是速度更快，在于节省了一次指针定位的时间</p>
+<h4 id="OOM异常分类"><a href="#OOM异常分类" class="headerlink" title="OOM异常分类"></a>OOM异常分类</h4><p>Java堆溢出<br>虚拟机栈和本地方法栈溢出<br>方法区和运行常量池溢出<br>本机直接内存溢出</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;引用百度文库上对java虚拟机的定义.&lt;br&gt;虚拟机是一种抽象化的计算机，通过在实际的计算机上仿真模拟各种计算机功能来实现的。Java虚拟机
+    
+    </summary>
+    
+      <category term="jvm" scheme="http://www.myzwl.win/categories/jvm/"/>
+    
+    
+      <category term="jvm" scheme="http://www.myzwl.win/source/tags/jvm/"/>
     
   </entry>
   
@@ -478,395 +868,6 @@ ${number[0..3]} &lt;#-- 输出子串“0123” --&gt;
     
     
       <category term="redis" scheme="http://www.myzwl.win/source/tags/redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>redis笔记之三</title>
-    <link href="http://www.myzwl.win/2017/11/06/redis_3/"/>
-    <id>http://www.myzwl.win/2017/11/06/redis_3/</id>
-    <published>2017-11-06T06:48:51.000Z</published>
-    <updated>2017-12-07T06:56:40.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="redis高级命令及特性"><a href="#redis高级命令及特性" class="headerlink" title="redis高级命令及特性"></a>redis高级命令及特性</h4><p>1.返回满足的所有键keys <em>（可以模糊匹配）<br>2.exists是否存在指定的key<br>3.expire设置某个key的过期时间，使用ttl查看剩余时间<br>4.persist取消过期时间<br><img src="/images/imgs5/19.jpg" alt="Alt text"><br>5.select 选择数据库 数据库为0到15（一共16个数据库）默认进入的是0数据库<br>6 move key [数据库下标]将当前数据库中的key转移到其他数据库中<br>7.randomkey 随机返回数据库里的一个key<br>8.rename 重命名key<br><img src="/images/imgs5/20.jpg" alt="Alt text"><br>9.dbsize 查看数据库的key数量<br>10.info获取数据库信息<br>11.config get </em>返回所有配置<br>12 flushdb清空当前数据库，flushall清空所有数据库</p>
-<h4 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h4><p>通俗的讲就是一个用户访问一台服务器，该服务器假设为主服务器，具有读写功能，而在该主服务器下关联了一台从服务器，该从服务只具有读功能不具有写功能，并且数据是从主服务器经过一些列同步算法到该服务器上<br>配置过程</p>
-<blockquote>
-<p>1.修改redis.conf文件下<br>找到slaveof <masterip> <masterport><br>该服务器为从服务器</masterport></masterip></p>
-</blockquote>
-<p>主从复制对比<br><img src="/images/imgs5/21.jpg" alt="Alt text"><br>分析：<br>1.master可以拥有多个slave<br>2.多个slave可以连接同一个master外，还可以连接其他的slave<br>3.主从复制不会阻塞master在同步数据时，master可以据需处理client请求<br>4提供系统的伸缩性<br>主从复制过程<br>1.slave与master建立连接，发送sync同步命令<br>2.master会开启一个后台进程，将数据库快照保存到文件中，同时master主进程会开始收集新的写命令并缓存<br>3.后台完成保存后，就将文件发送给slave<br>4.slave将此文件保存在硬盘上</p>
-<h4 id="redis持久化机制"><a href="#redis持久化机制" class="headerlink" title="redis持久化机制"></a>redis持久化机制</h4><p>redis需要经常将内存中的数据同步到硬盘来保证持久化<br>1.快照（默认方式）<br>将内存中以快照的方式写入到二进制文件中，默认为dump.rdb，可以通过配置设置自动做快照持久化的方式。可以配置redis在n秒内如果超过m个key则修改就自动做快照<br>具体配置如下</p>
-<blockquote>
-<p>save 900 1 #900秒内如果超过1个key被修改 则发起快照保存<br>save 300 10<br>save 60 10000</p>
-</blockquote>
-<p>2.aof（日志方式）<br>由于快照方式是在一定时间间隔做一次，所以可能发生redis意外down的情况就会丢失最后一次快照后的所有修改的数据。使用aof时，redis会将每一个收到的写命令都通过write函数追加到命令中<br>aof设置</p>
-<blockquote>
-<p>appendonly yes //启动aof，有三种修改方式</p>
-<p>#appendfsync always//收到命令就立即写入到磁盘，效率最慢，但是保证完全的持久化</p>
-<p>#appendysync everysec//每秒钟写入磁盘一次，在性能和持久化方面做了很好的折中</p>
-<p>#appendysync no //完全依赖os性能，持久化没保证</p>
-</blockquote>
-<p>如图<br><img src="/images/imgs5/22.jpg" alt="Alt text"><br>有了aof我们就可以利用主从复制保证数据的完整性了</p>
-<h4 id="发布与订阅消息"><a href="#发布与订阅消息" class="headerlink" title="发布与订阅消息"></a>发布与订阅消息</h4><p>使用subscribe [频道] 进行订阅监听<br>使用publish [频道] [发布内容] 进行发布消息广播<br><img src="/images/imgs5/23.jpg" alt="Alt text"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;redis高级命令及特性&quot;&gt;&lt;a href=&quot;#redis高级命令及特性&quot; class=&quot;headerlink&quot; title=&quot;redis高级命令及特性&quot;&gt;&lt;/a&gt;redis高级命令及特性&lt;/h4&gt;&lt;p&gt;1.返回满足的所有键keys &lt;em&gt;（可以模糊匹配）&lt;br
-    
-    </summary>
-    
-      <category term="分布式" scheme="http://www.myzwl.win/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
-    
-    
-      <category term="redis" scheme="http://www.myzwl.win/source/tags/redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nginx笔记之一</title>
-    <link href="http://www.myzwl.win/2017/11/06/Nginx_1/"/>
-    <id>http://www.myzwl.win/2017/11/06/Nginx_1/</id>
-    <published>2017-11-06T06:48:51.000Z</published>
-    <updated>2017-12-02T17:14:36.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>Nginx是一款轻量级的web服务器/反向代理服务器及电子邮件代理服务器，其特点是占有内存少，并发能力强可以反向代理和负载均衡等等，总之功能强大</p>
-<h4 id="linux下环境搭建"><a href="#linux下环境搭建" class="headerlink" title="linux下环境搭建"></a>linux下环境搭建</h4><p>不多说，实践是检验真理的唯一标准。</p>
-<blockquote>
-<p>1.上传文件到服务器（我用的是nginx-1.6.2.tar。gz）<br>2解压到特定文件下，tar -zxvf nginx-1.6.2.tar.gz -C /usr/local<br>3.下载需要的依赖库文件<br>安装gcc g++的依赖库<br>apt-get install build-essential<br>apt-get install libtool<br>安装 pcre依赖库<br>sudo apt-get update<br>sudo apt-get install libpcre3 libpcre3-dev<br>安装 zlib依赖库<br>apt-get install zlib1g-dev<br>安装 ssl依赖库<br>apt-get install openssl<br>4在解压后的nginx目录下进行configure配置 ./configure –prefix=/usr/local/nginx-1.13.0(此处如果报错，可能是缺少依赖库)<br>5编译与安装 make&amp;&amp;make install<br>6.启动nginx，在nignx目录下主要有四个文件<br>conf配置文件、html网页文件、logs日志文件、sbin主要二进制程序<br>启动命令：在sbin目录下 ./nginx<br>关闭命令 ./nginx -s stop 重启 ./nginx -s reload<br>7测试 输入你的服务器ip地址，如果出现欢迎页面表示安装成功</p>
-</blockquote>
-<p><img src="/images/imgs5/17.jpg" alt="Alt text"></p>
-<h4 id="nginx配置文件简单说明"><a href="#nginx配置文件简单说明" class="headerlink" title="nginx配置文件简单说明"></a>nginx配置文件简单说明</h4><p>基本上完玩nginx就是在玩配置，首先得先了解一下配置中的一些说明,主要在conf目录下的ngnx.conf里<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div></pre></td><td class="code"><pre><div class="line">#user  nobody;</div><div class="line"></div><div class="line">#开启进程数 &lt;=CPU数 </div><div class="line">worker_processes  1;</div><div class="line"></div><div class="line">#错误日志保存位置</div><div class="line">#error_log  logs/error.log;</div><div class="line">#error_log  logs/error.log  notice;</div><div class="line">#error_log  logs/error.log  info;</div><div class="line"></div><div class="line">#进程号保存文件</div><div class="line">#pid        logs/nginx.pid;</div><div class="line"></div><div class="line">#每个进程最大连接数（最大连接=连接数x进程数）每个worker允许同时产生多少个链接，默认1024</div><div class="line">events &#123;</div><div class="line">    worker_connections  1024;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">http &#123;</div><div class="line">	#文件扩展名与文件类型映射表</div><div class="line">    include       mime.types;</div><div class="line">	#默认文件类型</div><div class="line">    default_type  application/octet-stream;</div><div class="line"></div><div class="line">	#日志文件输出格式 这个位置相于全局设置</div><div class="line">    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '</div><div class="line">                      '$status $body_bytes_sent "$http_referer" '</div><div class="line">                      '"$http_user_agent" "$http_x_forwarded_for"';</div><div class="line"></div><div class="line">	#请求日志保存位置</div><div class="line">    #access_log  logs/access.log  main;</div><div class="line">	</div><div class="line">	#打开发送文件</div><div class="line">    sendfile        on;</div><div class="line">    #tcp_nopush     on;</div><div class="line"></div><div class="line">    #keepalive_timeout  0;</div><div class="line">	#连接超时时间</div><div class="line">    keepalive_timeout  65;</div><div class="line"></div><div class="line">	#打开gzip压缩</div><div class="line">    #gzip  on;</div><div class="line">	</div><div class="line">	#设定请求缓冲</div><div class="line">	#client_header_buffer_size 1k;</div><div class="line">	#large_client_header_buffers 4 4k;</div><div class="line">	</div><div class="line">	#设定负载均衡的服务器列表</div><div class="line">	#upstream myproject &#123;</div><div class="line">		#weigth参数表示权值，权值越高被分配到的几率越大</div><div class="line">		#max_fails 当有#max_fails个请求失败，就表示后端的服务器不可用，默认为1，将其设置为0可以关闭检查</div><div class="line">		#fail_timeout 在以后的#fail_timeout时间内nginx不会再把请求发往已检查出标记为不可用的服务器</div><div class="line">	#&#125;</div><div class="line">	</div><div class="line">    #webapp</div><div class="line">    #upstream myapp &#123;   </div><div class="line">  	# server 192.168.1.171:8080 weight=1 max_fails=2 fail_timeout=30s;   </div><div class="line">	# server 192.168.1.172:8080 weight=1 max_fails=2 fail_timeout=30s;   </div><div class="line">    #&#125; </div><div class="line"></div><div class="line">	#配置虚拟主机，基于域名、ip和端口</div><div class="line">    server &#123;</div><div class="line">		#监听端口</div><div class="line">        listen       80;</div><div class="line">		#监听域名</div><div class="line">        server_name  localhost;</div><div class="line"></div><div class="line">        #charset koi8-r;</div><div class="line">		</div><div class="line">		#nginx访问日志放在logs/host.access.log下，并且使用main格式（还可以自定义格式）</div><div class="line">        #access_log  logs/host.access.log  main;</div><div class="line"></div><div class="line">		#返回的相应文件地址</div><div class="line">        location / &#123;</div><div class="line">            #设置客户端真实ip地址</div><div class="line">            #proxy_set_header X-real-ip $remote_addr;		</div><div class="line">			#负载均衡反向代理</div><div class="line">			#proxy_pass http://myapp;</div><div class="line">			</div><div class="line">			#返回根路径地址（相对路径:相对于/usr/local/nginx/）</div><div class="line">            root   html;</div><div class="line">			#默认访问文件</div><div class="line">            index  index.html index.htm;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">		#配置反向代理tomcat服务器：拦截.jsp结尾的请求转向到tomcat</div><div class="line">        #location ~ \.jsp$ &#123;</div><div class="line">        #    proxy_pass http://192.168.1.171:8080;</div><div class="line">        #&#125;		</div><div class="line">		</div><div class="line">        #error_page  404              /404.html;</div><div class="line">        # redirect server error pages to the static page /50x.html</div><div class="line">        #</div><div class="line">		</div><div class="line">		#错误页面及其返回地址</div><div class="line">        error_page   500 502 503 504  /50x.html;</div><div class="line">        location = /50x.html &#123;</div><div class="line">            root   html;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">   </div><div class="line"></div><div class="line">    &#125;</div><div class="line">	</div><div class="line">	#虚拟主机配置：</div><div class="line">	server &#123;</div><div class="line">		listen 1234;</div><div class="line">		server_name zwl.com;</div><div class="line">		location / &#123;		</div><div class="line">						</div><div class="line">			root zwl.com;</div><div class="line">			index index.html;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		</div><div class="line">		#配置访问日志</div><div class="line">		access_log logs/zwl.com.access.log main;</div><div class="line">	&#125;</div><div class="line"></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h4 id="日志配置"><a href="#日志配置" class="headerlink" title="日志配置"></a>日志配置</h4><p>access_log logs/zwl.com.access.log main;<br>其中第二个是日志路径相对于conf的，可以自定义，第三个是日志格式与下面对应</p>
-<blockquote>
-<p>#日志文件输出格式 这个位置相于全局设置<br>    log_format  main  ‘$remote_addr - $remote_user [$time_local] “$request” ‘<br>                      ‘$status $body_bytes_sent “$http_referer” ‘<br>                      ‘“$http_user_agent” “$http_x_forwarded_for”‘;</p>
-</blockquote>
-<h4 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h4><p><img src="/images/imgs5/18.jpg" alt="Alt text"><br>通俗的讲就是我们访问代理服务器，然后代理服务器为我们选择访问哪台服务器<br>而正向代理就是我们访问另一台服务器，但是过程是通过访问另一台代理服务器，代理服务器访问目标服务器，然后把结果返回给源服务器<br>这里有一个问题，就是如果不设置的话，返还给tomcat的就是代理服务器的ip，所以需要设置</p>
-<p> #设置客户端真实ip地址<br> proxy_set_header X-real-ip $remote_addr;<br> 通过&lt;%=request.getHeader(“X-real-ip”) %&gt;得到真实服务器ip地址<br>简单的代理就是在location中通过关键字配置</p>
-<blockquote>
-<pre><code>location / {
-     root   html;
-     index  index.html index.htm;
- }
-</code></pre><p>location /test  {<br> proxy_pass <a href="http://111.230.246.xx:8080/libra/" target="_blank" rel="external">http://111.230.246.xx:8080/libra/</a>;<br>}</p>
-</blockquote>
-<p>其中 location后面的配置可以使用正则表达式进行配置，这里含义是<a href="http://111.230.246.xx/与http://111.230.246.xx/test代理到不同的网址" target="_blank" rel="external">http://111.230.246.xx/与http://111.230.246.xx/test代理到不同的网址</a></p>
-<h4 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h4><p>通俗的讲就是访问量大了，分担给其它服务器。nginx的负载均衡也是配置一下</p>
-<blockquote>
-<p>#设定负载均衡的服务器列表</p>
-<pre><code>#upstream myproject {
-    #weigth参数表示权值，权值越高被分配到的几率越大
-    #max_fails 当有#max_fails个请求失败，就表示后端的服务器不可用，默认为1，将其设置为0可以关闭检查
-    #fail_timeout 在以后的#fail_timeout时间内nginx不会再把请求发往已检查出标记为不可用的服务器
-#}    
-#webapp
-#upstream myapp {   
-  # server 192.168.1.171:8080 weight=1 max_fails=2 fail_timeout=30s;   
-# server 192.168.1.172:8080 weight=1 max_fails=2 fail_timeout=30s;   
-#} 
-</code></pre></blockquote>
-<p> 其中第二参数是带负载的服务器，其他参数的策略不止这些，这里只是简单的策略</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p> nginx的功能远不止这些，它是一个高性能的服务器架设<br> 对于高性能网站 ,请求量大，可以通过nginx的一下方法支撑<br>1动静分离，在nginx里建立一个静态资源站点<br>2: 利用浏览器缓存等,减少查询.<br>3.对于不可避免的请求—-服务器集群+负载均衡来支撑.</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;Nginx是一款轻量级的web服务器/反向代理服务器及电子邮件代理服务器，其特点是占有内存少，并发能力强可以反向代理和负载均衡等等，总之功能
-    
-    </summary>
-    
-      <category term="分布式" scheme="http://www.myzwl.win/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
-    
-    
-      <category term="nginx" scheme="http://www.myzwl.win/source/tags/nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>redis笔记之二</title>
-    <link href="http://www.myzwl.win/2017/11/05/redis_2/"/>
-    <id>http://www.myzwl.win/2017/11/05/redis_2/</id>
-    <published>2017-11-05T06:48:51.000Z</published>
-    <updated>2017-12-02T17:14:38.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="Jedis初识"><a href="#Jedis初识" class="headerlink" title="Jedis初识"></a>Jedis初识</h4><p>通俗的讲就是通过java代码来操作redis<br>首先需要导入common-pool.jar会让jedis-2.7.0.jar<br>单实例连接</p>
-<blockquote>
-<p>//设置ip的端口号，已经开启linux上redis远程连接<br>Jedis redis=new Jedis(“111.230.246.xx”, 6379);<br>//设置数据<br>redis.set(“zwl”, “hello world”);<br>//获取数据，此时已经在linux客户端设置了键name的值<br>System.out.println(redis.get(“zwl”));<br>System.out.println(redis.get(“name”));<br>//释放资源<br>redis.close();</p>
-</blockquote>
-<p>连接池连接</p>
-<blockquote>
-<p>   //获取连接池配置对象，设置配置项<br>        JedisPoolConfig config=new JedisPoolConfig();<br>        //最大连接数<br>        config.setMaxTotal(30);<br>        //最大空闲连接数<br>        config.setMaxIdle(10);<br>        //获取连接池<br>        JedisPool jedispool=new JedisPool(config, “111.230.246.33”, 6379);<br>       //获取核心对象<br>        Jedis jedis=null;<br>        try {<br>            jedis=jedispool.getResource();<br>            jedis.set(“age”, “18”);<br>            System.out.println(jedis.get(“age”));<br>        } catch (Exception e) {<br>            // TODO: handle exception<br>        }finally{<br>            if(jedis!=null){<br>                jedis.close();<br>            }<br>            if(jedispool!=null)<br>                jedispool.close();<br>        }<br>    }</p>
-</blockquote>
-<p>当然jedis有很多接口，目前只应用一小部分</p>
-<h4 id="字符串（String）"><a href="#字符串（String）" class="headerlink" title="字符串（String）"></a>字符串（String）</h4><p>字符串类型是Redis中最为基础的数据存储类型，它在Redis中是二进制安全的，这    便意味着该类型可以接受任何格式的数据，如JPEG图像数据或Json对象描述信息等。    在Redis中字符串类型的Value最多可以容纳的数据长度是512M<br><img src="/images/imgs5/9.jpg" alt="Alt text"><br>1）set key value：设定key持有指定的字符串value，如果该key存在则进行覆盖    操作。总是返回”OK”<br>2）get key：获取key的value。如果与该key关联的value不是String类型，redis    将返回错误信息，因为get命令只能用于获取String value；如果该key不存在，返回null。<br>3）getset key value：先获取该key的值，然后在设置该key的值。<br>4）incr key：将指定的key的value原子性的递增1.如果该key不存在，其初始值    为0，在incr之后其值为1。如果value的值不能转成整型，如hello，该操作将执    行失败并返回相应的错误信息。<br>5）decr key：将指定的key的value原子性的递减1.如果该key不存在，其初始值    为0，在incr之后其值为-1。如果value的值不能转成整型，如hello，该操作将执    行失败并返回相应的错误信息。<br><img src="/images/imgs5/10.jpg" alt="Alt text"></p>
-<h4 id="存储list类型"><a href="#存储list类型" class="headerlink" title="存储list类型"></a>存储list类型</h4><p>在Redis中，List类型是按照插入顺序排序的字符串链表。和数据结构中的普通链表    一样，我们可以在其头部(left)和尾部(right)添加新的元素。在插入时，如果该键并不    存在，Redis将为该键创建一个新的链表。与此相反，如果链表中所有的元素均被移    除，那么该键也将会被从数据库中删除。List中可以包含的最大元素数量是    4294967295<br><img src="/images/imgs5/11.jpg" alt="Alt text"><br>1）lpush key value1 value2…：在指定的key所关联的list的头部插入所有的    values，如果该key不存在，该命令在插入的之前创建一个与该key关联的空链    表，之后再向该链表的头部插入数据。插入成功，返回元素的个数。<br>2）rpush key value1、value2…：在该list的尾部添加元素<br>3）lrange key start end：获取链表中从start到end的元素的值，start、end可    为负数，若为-1则表示链表尾部的元素，-2则表示倒数第二个，依次类推…<br>4）lpushx key value：仅当参数中指定的key存在时（如果与key管理的list中没    有值时，则该key是不存在的）在指定的key所关联的list的头部插入value。<br>5）rpushx key value：在该list的尾部添加元素<br>6）lpop key：返回并弹出指定的key关联的链表中的第一个元素，即头部元素。<br>7）rpop key：从尾部弹出元素。<br><img src="/images/imgs5/12.jpg" alt="Alt text"></p>
-<h4 id="存储sets类型"><a href="#存储sets类型" class="headerlink" title="存储sets类型"></a>存储sets类型</h4><p>在Redis中，我们可以将Set类型看作为没有排序的字符集合，和List类型一样，我    们也可以在该类型的数据值上执行添加、删除或判断某一元素是否存在等操作。需要    说明的是，这些操作的时间是常量时间。Set可包含的最大元素数是4294967295<br>和List类型不同的是，Set集合中不允许出现重复的元素。和List类型相比，Set类    型在功能上还存在着一个非常重要的特性，即在服务器端完成多个Sets之间的聚合计    算操作，如unions、intersections和differences。由于这些操作均在服务端完成，    因此效率极高，而且也节省了大量的网络IO开销<br>1）sadd key value1、value2…：向set中添加数据，如果该key的值已有则不会      重复添加<br>2）smembers key：获取set中所有的成员<br>3）scard key：获取set中成员的数量<br>4）sismember key member：判断参数中指定的成员是否在该set中，1表示存      在，0表示不存在或者该key本身就不存在<br>5）srem key member1、member2…：删除set中指定的成员<br>6）srandmember key：随机返回set中的一个成员<br>7）sdiff sdiff key1 key2：返回key1与key2中相差的成员，而且与key的顺序有      关。即返回差集<br>8）sdiffstore destination key1 key2：将key1、key2相差的成员存储在              destination上<br>9）sinter key[key1,key2…]：返回交集。<br>10）sinterstore destination key1 key2：将返回的交集存储在destination上<br>11）sunion key1、key2：返回并集。</p>
-<h4 id="存储sortedset"><a href="#存储sortedset" class="headerlink" title="存储sortedset"></a>存储sortedset</h4><p>Sorted-Sets和Sets类型极为相似，它们都是字符串的集合，都不允许重复的成员出    现在一个Set中。它们之间的主要差别是Sorted-Sets中的每一个成员都会有一个分    数(score)与之关联，Redis正是通过分数来为集合中的成员进行从小到大的排序。然    而需要额外指出的是，尽管Sorted-Sets中的成员必须是唯一的，但是分数(score)    却是可以重复的。<br>1）zadd key score member score2 member2 … ：将所有成员以及该成员的        分数存放到sorted-set中<br>2）zcard key：获取集合中的成员数量<br>3）zcount key min max：获取分数在[min,max]之间的成员<br>zincrby key increment member：设置指定成员的增加的分数。<br>zrange key start end [withscores]：获取集合中脚标为start-end的成员，[withscores]参数表明返回的成员包含其分数。<br>zrangebyscore key min max [withscores] [limit offset count]：返回分数在[min,max]的成员并按照分数从低到高排序。[withscores]：显示分数；[limit offset count]：offset，表明从脚标为offset的元素开始并返回count个成员。<br>zrank key member：返回成员在集合中的位置。<br>zrem key member[member…]：移除集合中指定的成员，可以指定多个成员。<br>zscore key member：返回指定成员的分数</p>
-<h4 id="存储hash"><a href="#存储hash" class="headerlink" title="存储hash"></a>存储hash</h4><p>Redis中的Hashes类型可以看成具有String Key和String Value的map容器。所    以该类型非常适合于存储值对象的信息。如Username、Password和Age等。如果    Hash中包含很少的字段，那么该类型的数据也将仅占用很少的磁盘空间。每一个Hash    可以存储4294967295个键值对。<br><img src="/images/imgs5/13.jpg" alt="Alt text"><br>1）hset key field value：为指定的key设定field/value对（键值对）。<br>  2）hgetall key：获取key中的所有filed-vaule<br>3）hget key field：返回指定的key中的field的值<br>4）hmset key fields：设置key中的多个filed/value<br>5）hmget key fileds：获取key中的多个filed的值<br>6）hexists key field：判断指定的key中的filed是否存在<br>7）hlen key：获取key所包含的field的数量<br>8）hincrby key field increment：设置key中filed的值增加increment，如：age增加20<br><img src="/images/imgs5/14.jpg" alt="Alt text"></p>
-<h4 id="keys的通用操作"><a href="#keys的通用操作" class="headerlink" title="keys的通用操作"></a>keys的通用操作</h4><p>key pattern：获取所有与pattern匹配的key，返回所有与该key匹配的keys，*表示所有，？表示任意一个<br><img src="/images/imgs5/15.jpg" alt="Alt text"></p>
-<h4 id="redis特性"><a href="#redis特性" class="headerlink" title="redis特性"></a>redis特性</h4><p>一个redis实例可以包括多个数据库，客户端可以连接某个redis实例的哪个数据库，就好比一个mysql中创建多个数据库，客户端连接时指定哪个数据库，一个redis最多提供16个数据库，默认是第0个数据库，命令太多，就不罗列了</p>
-<h4 id="redis事务"><a href="#redis事务" class="headerlink" title="redis事务"></a>redis事务</h4><p>multi：开启事务用于标记事物的开始，其后执行的命令都将被存入命令队列，直到执行exec时，这些命令才会被原子的执行，类似关系型数据库中的begin transaction<br>exec：提交事务，类似commit<br>discard：类似rollback<br><img src="/images/imgs5/16.jpg" alt="Alt text"></p>
-<h4 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a>redis持久化</h4><p>redis的高性能是由于其将所有数据存储在内存中，为了使redis重启之后仍能保证数据不丢失，需要将数据从内存中同步到硬盘中，就是持久化，有两种持久化方式<br>1.RDB持久化（默认）<br>在指定的时间间隔内将内存中的数据快照写入磁盘<br>2。AOF持久化<br>以日志的形式记录服务器所处理的每一个操作，在redis服务器启动之初会读取该文件来重构数据库</p>
-<p>RDB优势<br>1.性能最大化，避免每次都进行io操作<br>2,。如果数据集很大，启动效率更高<br>劣势：<br>会出现数据丢失</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>redis的功能和内容是丰富和强大的，这里只是做了一个最简单的总结</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;Jedis初识&quot;&gt;&lt;a href=&quot;#Jedis初识&quot; class=&quot;headerlink&quot; title=&quot;Jedis初识&quot;&gt;&lt;/a&gt;Jedis初识&lt;/h4&gt;&lt;p&gt;通俗的讲就是通过java代码来操作redis&lt;br&gt;首先需要导入common-pool.jar会让j
-    
-    </summary>
-    
-      <category term="分布式" scheme="http://www.myzwl.win/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
-    
-    
-      <category term="redis" scheme="http://www.myzwl.win/source/tags/redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>redis笔记之一</title>
-    <link href="http://www.myzwl.win/2017/11/04/redis_1/"/>
-    <id>http://www.myzwl.win/2017/11/04/redis_1/</id>
-    <published>2017-11-04T06:48:51.000Z</published>
-    <updated>2017-12-02T17:14:40.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="NoSQL简介"><a href="#NoSQL简介" class="headerlink" title="NoSQL简介"></a>NoSQL简介</h4><p>全称是Not Only SQL,泛指菲关系型数据库，它是通过键值对存储数据并且将数据存储在内存中。而像mysql，sql server这些通过关系表存数据的就叫关系型数据库</p>
-<h4 id="为什么需要NoSQL"><a href="#为什么需要NoSQL" class="headerlink" title="为什么需要NoSQL"></a>为什么需要NoSQL</h4><p>主要传统的关系型数据库暴露了许多问题<br>1.对数据库高并发读写的需求<br>高并发就是同一时间有许多用户访问同一网站造成访问量太大容易造成服务器崩溃，而传统的解决方法就是搭建集群，通俗的讲就是原先一个服务器提供服务，现在变成多个服务器提供服务</p>
-<p>2.高负载-对海量数据的高效率存储和访问的需求<br>通俗的讲就是数据量非常大，造成没地方存储或者访问查询sql的语句超过上千万造成查询非常低下</p>
-<p>3.高扩展-对数据库的高可扩展性和高可用性的需求<br>通俗的讲相当于银行窗口排队，刚开始一个窗口不能满足需求，后来增加多个窗口，而增加窗口不会造成业务上的不同，也就是集群起来很方便</p>
-<h4 id="主流的NoSQL产品"><a href="#主流的NoSQL产品" class="headerlink" title="主流的NoSQL产品"></a>主流的NoSQL产品</h4><p>主要有四大类<br>1.键值（key-value）存储数据库<br>主流产品：redis<br>典型应用：内容缓存，主要用于处理大量数据的高访问负载<br>优势：快速查询<br>劣势：存储的数据缺少结构化</p>
-<p>2.列存储数据库<br>主流产品：HBase<br>典型应用：分布式的文件系统<br>优势：查询速度快，可扩展性强，更容易进行分布式扩展<br>劣势：功能相对局限</p>
-<p>3.文档数据库<br>主流产品：MongoDB<br>典型应用：web应用<br>优势：数据结构要求不严格<br>劣势：查询效率不高，而且缺乏统一的查询语法</p>
-<p>4.图形数据库<br>主流产品：Neo4j<br>典型应用：社交网络<br>优势：利用图结构相关算法<br>劣势：不容易做分布式集群的方案</p>
-<h4 id="NoSQL特点"><a href="#NoSQL特点" class="headerlink" title="NoSQL特点"></a>NoSQL特点</h4><p>在大数据存取上具备关系型数据库无法比拟的性能优势<br>1.易扩展<br>2.大数据量，高性能<br>3.灵活的数据模型<br>4.高可用</p>
-<h4 id="redis简介"><a href="#redis简介" class="headerlink" title="redis简介"></a>redis简介</h4><p>redis是用c语言开发的一个开源的高性能键值对数据库它通过提供多种键值数据类型来适应不同场景下的存储需求，主要支持字符串、散列、列表、集合、有序集合数据类型<br>主要应用在如下场景<br>1.缓存（数据查询、商品内容等等）<br>2.聊天室的在线好友列表<br>3.任务队列（秒杀、抢购等等）<br>4.应用排行榜<br>5.网站访问统计<br>6.数据过期处理<br>7.分布式集群架构中的session分离</p>
-<h4 id="redis的环境搭建"><a href="#redis的环境搭建" class="headerlink" title="redis的环境搭建"></a>redis的环境搭建</h4><p>在windows下很方便，直接解压windows版本redis，里面有个服务端和客户端，先开启服务端，在操控客户端即可<br>下面是在linux下的redis安装</p>
-<blockquote>
-<p>1.将redis-3.0.0.tar.gz上传到Linux系统中<br>2.安装gcc编译环境 sudo apt-get install gcc<br>3.解压到/usr/local下  tar -xvf redis-3.0.0.tar.gz -C /usr/local<br>4）进入redis-3.0.0目录 使用make命令编译redis<br>5.在redis-3.0.0目录中 使用make PREFIX=/usr/local/redis install命令安装redis到/usr/local/redis中<br>6）拷贝redis-3.0.0中的redis.conf到安装目录redis中<br>7）启动redis 在bin下执行命令redis-server redis.conf<br>8.测试，开启另一个客户端，在bin目录下执行 ./redis-cli<br>如果出现ip号则证明安装成功</p>
-</blockquote>
-<p>这里需要改进的几个地方，服务端是在前端启动应改为后端启动，可以通过修改配置文件 配置redis后台启动，即服务器启动了但不会    穿件控制台窗口<br>将redis.conf文件中的daemonize从false修改成true表示后台启动<br>如需远程连接redis，需配置redis端口6379在linux防火墙中开发<br>/sbin/iptables -I INPUT -p tcp –dport 6379 -j ACCEPT<br>最后通过测试发现远程连接也成功了</p>
-<h4 id="redis停止"><a href="#redis停止" class="headerlink" title="redis停止"></a>redis停止</h4><p>有两种方法，一种是空过查询进程pid，然后杀死进程<br>ps -ef | grep redis<br>kill -9 pid</p>
-<p>另一种是在客户端通过<br>shutdown命令关闭redis</p>
-<p><img src="/images/imgs5/8.jpg" alt="Alt text"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;NoSQL简介&quot;&gt;&lt;a href=&quot;#NoSQL简介&quot; class=&quot;headerlink&quot; title=&quot;NoSQL简介&quot;&gt;&lt;/a&gt;NoSQL简介&lt;/h4&gt;&lt;p&gt;全称是Not Only SQL,泛指菲关系型数据库，它是通过键值对存储数据并且将数据存储在内存中。而
-    
-    </summary>
-    
-      <category term="分布式" scheme="http://www.myzwl.win/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
-    
-    
-      <category term="redis" scheme="http://www.myzwl.win/source/tags/redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>腾讯云linux服务器上搭建javaweb站点</title>
-    <link href="http://www.myzwl.win/2017/11/03/linux_2/"/>
-    <id>http://www.myzwl.win/2017/11/03/linux_2/</id>
-    <published>2017-11-03T06:48:51.000Z</published>
-    <updated>2017-11-30T05:20:58.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>我一直坚信没有过程就不会有好的结果。回顾大学期间的学习历程，关于别人访问自己的站点，从刚开始的基于swing的cs系统，到基于socket的聊天框，再到局域网访问的web与在分别虚拟机和双系统的linux下搭建web，到后来基于nat123的p2p访问，再到后来阿里云的window8 server服务器搭建java web站点，到最后的腾讯云linux服务器集成，每一次的探索，都是与踩坑做斗战，也是进步最快的方法。不多说，这里记录一下之前搭建的步骤</p>
-<h4 id="远程连接工具"><a href="#远程连接工具" class="headerlink" title="远程连接工具"></a>远程连接工具</h4><p>故名思议，举世通过远程的方式去连接Linux并操作它，Linux远程的操作工具有很多。像xshell、Puttty、secureCRT、SSH Secure等，一般情况下习惯用命令去控制，所以这里选择了SSH Secure。该工具是免费的图形化界面及命令行窗口集一身的远程工具，具体可以去网上下载。</p>
-<h4 id="JDK安装"><a href="#JDK安装" class="headerlink" title="JDK安装"></a>JDK安装</h4><p>步骤：<br>1）查看当前Linux系统是否已经安装java<br>输入 rpm -qa | grep java<br>2）卸载两个openJDK<br>输入rpm -e –nodeps 要卸载的软件<br>如果未安装直接跳过前面两个步骤<br>3）上传jdk到linux（我的是Ubuntu Server 16.04.1 LTS 64位注意版本问题）<br>4.解压jdk到/usr/local下 tar –xvf jdk-7u71-linux-i586.tar.gz –C /usr/local<br>5 配置jdk环境变量，打开/etc/profile配置文件，将下面配置拷贝进去，这个一定要用vi打开，gedit可能会不行</p>
-<blockquote>
-<p>#set java environment<br>    JAVA_HOME=/usr/local/jdk1.7.0_71<br>    CLASSPATH=.:$JAVA_HOME/lib.tools.jar<br>    PATH=$JAVA_HOME/bin:$PATH<br>    export JAVA_HOME CLASSPATH PATH</p>
-</blockquote>
-<p>6）重新加载/etc/profile配置文件 source /etc/profile</p>
-<h4 id="安装Tomcat"><a href="#安装Tomcat" class="headerlink" title="安装Tomcat"></a>安装Tomcat</h4><p>必选要先安装jdk<br>1）上传Tomcat到linux上<br>2）解压Tomcat到/usr/local下<br>3.cd 到/usr/local下，将apache-tomcat-7.0.57改名成tomcat，为了方便，可自定义名<br>mv apache-tomcat-7.0.57 tomcat<br>4.开放Linux的对外访问的端口8080<br>/sbin/iptables -I INPUT -p tcp –dport 8080 -j ACCEPT<br>/etc/rc.d/init.d/iptables save 关闭防火墙，这里不成功没关系，我的没成功但是可以正常运行<br>5）启动关闭Tomcat<br>进入tomcat的bin下启动：./startup.sh<br>进入tomcat的bin下关闭：./shutdown.sh</p>
-<h4 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h4><p>1 sudo apt-get install mysql-server<br>运行完这句命令后，不是root的话会要你输入root密码，密码输入正确后，系统就自动给你下载MySQL了<br>2.授权用户，并允许远程登录<br>mysql -u root -p<br>系统会要你输入密码，密码输入无误后，进入MySQL<br>远程登录mysql的权限<br>登录mysql后输入如下命令：<br>grant all privileges on <em>.</em> to ‘账户名称’ @’%’ identified by ‘密码’;<br>然后更新数据库<br>flush privileges;<br>用管理员权限编辑一下文件<br>sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf<br>添加’#’注释掉其中的”bind-address = 127.0.0.1”<br>注释后:wq保存，重启MySQL服务：<br>service mysql restart<br>但是这里仍然不能远程连接，后来找到了解决办法<br>更改 “mysql” 数据库里的 “user” 表里的 “host” 项，从”localhost”改称”%”:<br>切换数据库,<br>mysql&gt;use mysql;<br>查看root账号的登录权限,<br>mysql&gt;select host, user from user;<br>修改登录权限<br>mysql&gt;update user set host = ‘%’ where user = ‘root’;<br>刷新,生效,最后一步,至关重要<br>mysql&gt;flush   privileges;</p>
-<p>最后解决了</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>有时候别人的步骤不一定适合你，造成很多时候都需要自己去踩坑，去探索。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;我一直坚信没有过程就不会有好的结果。回顾大学期间的学习历程，关于别人访问自己的站点，从刚开始的基于swing的cs系统，到基于socket的
-    
-    </summary>
-    
-      <category term="linux" scheme="http://www.myzwl.win/categories/linux/"/>
-    
-    
-      <category term="linux" scheme="http://www.myzwl.win/source/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>linux命令小结</title>
-    <link href="http://www.myzwl.win/2017/11/02/linux_1/"/>
-    <id>http://www.myzwl.win/2017/11/02/linux_1/</id>
-    <published>2017-11-02T06:48:51.000Z</published>
-    <updated>2017-11-29T07:43:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h4><p><img src="/images/imgs5/5.jpg" alt="Alt text"></p>
-<h4 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h4><p>cd 进入某个目录。 如cd use<br>cd ../    切换到上一层目录<br>cd /    切换到系统根目录<br>cd ~    切换到用户主目录<br>cd -    切换到上一个所在目录</p>
-<h4 id="文件夹"><a href="#文件夹" class="headerlink" title="文件夹"></a>文件夹</h4><p>mkdir 创建文件夹<br>rmdir 删除文件夹 文件夹有内容时不可删</p>
-<h4 id="查看目录"><a href="#查看目录" class="headerlink" title="查看目录"></a>查看目录</h4><p>ls 看到该目录下的所有的目录和文件<br>ls -a 可以看到该目录下的所有文件和目录，包括隐藏的<br>ls -l或者ll或者ls -alh 可以看到该目录下的所有目录和文件的详细信息<br>ls z* 显示所有文件名以z开头的文件<br>ls z? 显示文件名只有两个字母且第一个字符为z的文件<br>ls &gt;2.txt 重定向 将ls的内容显示在2.txt中<br>ls &gt;&gt;2.txt 将ls的内容追加在2.txt中</p>
-<h4 id="寻找目录"><a href="#寻找目录" class="headerlink" title="寻找目录"></a>寻找目录</h4><p>find ./ -name ‘zw*’ 显示当前目录下文件名以zw的开头的文件</p>
-<h4 id="修改目录的名称"><a href="#修改目录的名称" class="headerlink" title="修改目录的名称"></a>修改目录的名称</h4><p>mv 目录名称 新目录名称<br>如 mv zwl zwlzwl<br>注意：mv的语法不仅可以对目录进行重命名而且也可以对各种文件，压缩包等进重命名的操作</p>
-<h4 id="移动目录的位置—剪切"><a href="#移动目录的位置—剪切" class="headerlink" title="移动目录的位置—剪切"></a>移动目录的位置—剪切</h4><p>mv 目录名称 目录的新位置<br>如 mv 1.txt ../<br>注意：mv语法不仅可以对目录进行剪切操作，对文件和压缩包等都可执行剪切操作</p>
-<h4 id="拷贝与删除目录"><a href="#拷贝与删除目录" class="headerlink" title="拷贝与删除目录"></a>拷贝与删除目录</h4><p>cp 复制文件，格式：cp 源文件 目标文件<br>rm 删除文件 （rm 文件夹 -r 递归删除文件夹内所有内容，并删除文件夹）<br>强制删除，使用rm -rf newTest</p>
-<h4 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h4><p>touch 1.txt 创建1.txt文件<br>cat 1.txt 查看1.txt里的内容<br>more 1.txt 1.txt内容过多时，分页显示<br>less 1.txt，可以使用键盘上的PgUp和PgDn向上    和向下翻页，q结束查看<br>tail -10 1.txt 查看后10行，Ctrl+C结束</p>
-<h4 id="解压打包"><a href="#解压打包" class="headerlink" title="解压打包"></a>解压打包</h4><p>Linux中的打包文件一般是以.tar结尾的，压缩的命令一般是以.gz结尾的。<br>而一般情况下打包和压缩是一起进行的，打包并压缩后的文件的后缀名一般.tar.gz。<br>命令：tar -zcvf 打包压缩后的文件名 要打包压缩的文件<br>tar -zcvf xxx.tar.gz aaa.txt bbb.txt ccc.txt<br>或：tar -zcvf xxx.tar.gz /test/*<br>解压压缩包<br>tar -zxvf FileName.tar.gz 压缩到本目录<br>tar -zxvf xxx.tar.gz -C /usr——C代表指定解压的位置</p>
-<h4 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h4><p>pwd 显示当前所在位置<br>grep 要搜索的字符串 要搜索的文件 –color（搜索命令）<br>ps -ef 查看当前系统中运行的进程<br>kill -9 进程的pid 强制杀死某进程<br>命令：|   将前一个命令的输出作为本次目录的输入<br>如 ps -ef | grep system 查看当前系统中所有的进程中包括system字符串的进程<br>ifconfig  查看当前系统的网卡信息<br>ping 查看与某台机器的连接情况<br>netstat -an 查看当前系统的端口使用</p>
-<h4 id="Linux的权限命令"><a href="#Linux的权限命令" class="headerlink" title="Linux的权限命令"></a>Linux的权限命令</h4><p>之前用ll的命令可以查看文件的详细信息<br><img src="/images/imgs5/6.jpg" alt="Alt text"><br>d：代表目录<br>-：代表文件<br>l：代表链接（可以认为是window中的快捷方式）<br>后面的9位分为3组，每3位置一组，分别代表属主的权限，与当前用户同组的    用户的权限，其他用户的权限<br>r：代表权限是可读，r也可以用数字4表示<br>w：代表权限是可写，w也可以用数字2表示<br>x：代表权限是可执行，x也可以用数字1表示<br><img src="/images/imgs5/7.jpg" alt="Alt text"><br>修改文件/目录的权限的命令：chmod<br>chmod u=rwx，g=rw，o=r 1.txt<br>或者 chmod 764 2.txt</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;目录结构&quot;&gt;&lt;a href=&quot;#目录结构&quot; class=&quot;headerlink&quot; title=&quot;目录结构&quot;&gt;&lt;/a&gt;目录结构&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;/images/imgs5/5.jpg&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
-&lt;h4 id=&quot;cd&quot;
-    
-    </summary>
-    
-      <category term="linux" scheme="http://www.myzwl.win/categories/linux/"/>
-    
-    
-      <category term="linux" scheme="http://www.myzwl.win/source/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>浅谈lucene</title>
-    <link href="http://www.myzwl.win/2017/11/01/lucene_1/"/>
-    <id>http://www.myzwl.win/2017/11/01/lucene_1/</id>
-    <published>2017-11-01T06:48:51.000Z</published>
-    <updated>2017-11-27T05:10:14.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>不知不觉，从九月份后就已经很少写博总结了，有点小颓废了。好吧，回到正题，本着应用为主，了解原理为辅的原则总结。<br>以我的微型论坛中的文章内容检索为例作为应用<a href="http://www.slycmiaoxi.xyz" target="_blank" rel="external">网站链接</a></p>
-<h4 id="全文检索定义"><a href="#全文检索定义" class="headerlink" title="全文检索定义"></a>全文检索定义</h4><p>全文检索首先对要搜索的文档进行分词，然后形成索引，通过查询索引来查询文档，比如：字典<br>字典的偏旁部首页，就类似于luence的索引<br>字典的具体内容，就类似于luence的文档内容<br>同时，Lucene是一个工具包，它不能独立运行，不能单独对外提供服务。说白了，就是几个jar包</p>
-<h4 id="Lucene实现全文检索的流程"><a href="#Lucene实现全文检索的流程" class="headerlink" title="Lucene实现全文检索的流程"></a>Lucene实现全文检索的流程</h4><p><img src="/images/imgs5/1.jpg" alt="Alt text"><br>其主要分为索引流程和搜索流程<br>索引流程：采集数据—文档处理-存储到索引库中<br>搜索流程：输入查询条件—通过lucene的查询器查询索引—从索引库中取出结果</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><p>需求：对进入论坛的所有文章进行全文检索<br>首先我们利用jdbc采集数据库，为了方便直接利用中文查询器，只贴出核心代码<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">public interface LuceneService &#123;</div><div class="line">	    //初始化采集本地数据</div><div class="line">		public void getIndex() throws Exception;</div><div class="line">		//增加一个term到本地数据</div><div class="line">		public void addIndex(Comment bc)  throws Exception ;</div><div class="line">		//删除一个term</div><div class="line">		public void deleteIndex(String blogId) throws Exception;</div><div class="line">		//更新本地数据</div><div class="line">		public void updateIndex(Blogcomment bc) throws Exception;</div><div class="line">		//根据条件查询数据		</div><div class="line">		public List&lt;Comment&gt; findAllIndex(String q)throws Exception;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 评论实体类</div><div class="line"> * @author zwl</div><div class="line"> *</div><div class="line"> */</div><div class="line">public class Comment &#123;</div><div class="line">	</div><div class="line">    private Date commentDate;</div><div class="line">    </div><div class="line">	private String content;</div><div class="line">	</div><div class="line">	private int id;</div><div class="line">	</div><div class="line">	private String title;</div><div class="line">	</div><div class="line">	private String userIp;</div><div class="line">	</div><div class="line">	private String username;</div><div class="line">	</div><div class="line">	private int hasread;    //访问量</div><div class="line">	</div><div class="line">	private int state;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>下面是其实现类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div></pre></td><td class="code"><pre><div class="line">@Service("luceneService")</div><div class="line">public class LuceneServiceImpl implements LuceneService &#123;</div><div class="line"></div><div class="line">	@Resource</div><div class="line">	private CommentMapper commentMapper;</div><div class="line">	</div><div class="line">	private Directory dir;</div><div class="line">	</div><div class="line">	//得到索引维护核心对象</div><div class="line">	private IndexWriter getWriter() throws Exception &#123;</div><div class="line">		File indexFile = new File("C:\\lucene\\");</div><div class="line">		Directory d=FSDirectory.open(indexFile);</div><div class="line">		 Analyzer analyzer =new IKAnalyzer();</div><div class="line">		 IndexWriterConfig conf=new IndexWriterConfig(Version.LUCENE_4_9_1, analyzer);</div><div class="line">			IndexWriter write=new IndexWriter(d, conf);</div><div class="line">			return write;</div><div class="line">&#125;</div><div class="line">	</div><div class="line">	public void addIndex(Comment bc)  throws Exception &#123;</div><div class="line">		IndexWriter write=getWriter();</div><div class="line">		Document document=new Document();</div><div class="line">		</div><div class="line">		// store:如果是yes，则说明存储到文档域中</div><div class="line">		Field id=new TextField("id",String.valueOf(bc.getId()), Store.YES);</div><div class="line">		Field username=new TextField("username",bc.getUsername(),Store.YES);</div><div class="line">		Field blogCommentDate=new TextField("commentDate",bc.getCommentDate().toLocaleString(),Store.YES);</div><div class="line">		Field content=new TextField("content",bc.getContent(),Store.YES);</div><div class="line">		Field title=new TextField("title",bc.getTitle(),Store.YES);</div><div class="line">		Field hasread=new TextField("hasread",bc.getHasread()+"",Store.YES);</div><div class="line">		Field state=new TextField("state",bc.getState()+"",Store.YES);	</div><div class="line">	             </div><div class="line">     // 将field域设置到Document对象中</div><div class="line">		document.add(id);</div><div class="line">		document.add(username);</div><div class="line">		document.add(blogCommentDate);</div><div class="line">		document.add(content);</div><div class="line">		document.add(title);</div><div class="line">		document.add(hasread);</div><div class="line">		document.add(state);</div><div class="line">					</div><div class="line">					write.addDocument(document);</div><div class="line">	             write.close();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public List&lt;Comment&gt; findAllIndex(String q)throws Exception&#123;</div><div class="line">		File indexFile = new File("C:\\lucene\\");</div><div class="line">		dir=FSDirectory.open(indexFile);</div><div class="line">		IndexReader reader = DirectoryReader.open(dir);</div><div class="line">		IndexSearcher searcher = new IndexSearcher(reader);</div><div class="line">		QueryParser parser = new QueryParser("content",</div><div class="line">				 new IKAnalyzer());</div><div class="line">		Query query = parser.parse(q);</div><div class="line">		TopDocs topDocs = searcher.search(query, 5);</div><div class="line">		List&lt;Comment&gt; list=new ArrayList&lt;Comment&gt;();</div><div class="line">		Comment cc=null;</div><div class="line">		// 根据查询条件匹配出的记录总数</div><div class="line">		int count = topDocs.totalHits;</div><div class="line">		System.out.println("匹配出的记录总数:" + count);</div><div class="line">		// 根据查询条件匹配出的记录</div><div class="line">		ScoreDoc[] scoreDocs = topDocs.scoreDocs;</div><div class="line">		for (ScoreDoc scoreDoc : scoreDocs) &#123;</div><div class="line">			// 获取文档的ID</div><div class="line">			int docId = scoreDoc.doc;</div><div class="line">			// 通过ID获取文档</div><div class="line">			Document doc = searcher.doc(docId);</div><div class="line">			cc=new Comment();</div><div class="line">			cc.setId(Integer.parseInt(doc.get("id")));</div><div class="line">			cc.setUsername( doc.get("username"));</div><div class="line">			cc.setTitle(doc.get("title"));</div><div class="line">			cc.setCommentDate(DateUtil.formatString(doc.get("commentDate"),"yyyy-MM-dd HH:mm"));</div><div class="line">			cc.setHasread(Integer.parseInt(doc.get("hasread")));	 </div><div class="line">		    cc.setContent(doc.get("content"));</div><div class="line">		    list.add(cc);</div><div class="line">		&#125;</div><div class="line">		// 关闭资源</div><div class="line">		reader.close();</div><div class="line">	return list;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//删除指定博客的索引</div><div class="line">			public void deleteIndex(String blogId) throws Exception &#123;</div><div class="line">				IndexWriter write=getWriter();</div><div class="line">				write.deleteDocuments(new Term("id",blogId));</div><div class="line">				write.commit();</div><div class="line">				write.close();</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">			//更新博客索引</div><div class="line">			public void updateIndex(Blogcomment bc) throws Exception &#123;</div><div class="line">				IndexWriter write=getWriter();</div><div class="line">				Document document=new Document();</div><div class="line">				</div><div class="line">				// store:如果是yes，则说明存储到文档域中</div><div class="line">							Field id=new TextField("id",String.valueOf(bc.getId()), Store.YES);</div><div class="line">							Field username=new TextField("username",bc.getUsername(),Store.YES);</div><div class="line">							Field blogCommentDate=new TextField("blogCommentDate",bc.getBlogCommentDate().toLocaleString(),Store.YES);</div><div class="line">							Field comments=new TextField("comments",bc.getComments(),Store.YES);</div><div class="line">							Field title=new TextField("title",bc.getComment().getTitle(),Store.YES);</div><div class="line">							Field hasread=new TextField("hasread",bc.getComment().getHasread()+"",Store.YES);</div><div class="line">							Field cid=new TextField("cid",bc.getComment().getId()+"",Store.YES);	</div><div class="line">			             </div><div class="line">							// 将field域设置到Document对象中</div><div class="line">							document.add(id);</div><div class="line">							document.add(username);</div><div class="line">							document.add(blogCommentDate);</div><div class="line">							document.add(comments);</div><div class="line">							document.add(title);</div><div class="line">							document.add(hasread);</div><div class="line">							document.add(cid);</div><div class="line">							</div><div class="line">							write.updateDocument(new Term("id",bc.getId()+""), document);</div><div class="line">			               write.close();</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	//初始化采集本地数据</div><div class="line">	public void getIndex() throws Exception&#123;</div><div class="line">	</div><div class="line">		// 采集数据</div><div class="line">				List&lt;Comment&gt; list=commentMapper.readAll();</div><div class="line">				</div><div class="line">				// 将采集到的数据封装到Document对象中</div><div class="line">				List&lt;Document&gt; docList=new ArrayList&lt;Document&gt;();</div><div class="line">				Document document=null;</div><div class="line">				for(Comment bc:list)&#123;</div><div class="line">					document=new Document();</div><div class="line">					// store:如果是yes，则说明存储到文档域中</div><div class="line">					Field id=new TextField("id",String.valueOf(bc.getId()), Store.YES);</div><div class="line">					Field username=new TextField("username",bc.getUsername(),Store.YES);</div><div class="line">					Field blogCommentDate=new TextField("commentDate",bc.getCommentDate().toLocaleString(),Store.YES);</div><div class="line">					Field content=new TextField("content",bc.getContent(),Store.YES);</div><div class="line">					Field title=new TextField("title",bc.getTitle(),Store.YES);</div><div class="line">					Field hasread=new TextField("hasread",bc.getHasread()+"",Store.YES);</div><div class="line">					Field state=new TextField("state",bc.getState()+"",Store.YES);</div><div class="line">					</div><div class="line">					</div><div class="line">					// 将field域设置到Document对象中</div><div class="line">					document.add(id);</div><div class="line">					document.add(username);</div><div class="line">					document.add(blogCommentDate);</div><div class="line">					document.add(content);</div><div class="line">					document.add(title);</div><div class="line">					document.add(hasread);</div><div class="line">					document.add(state);</div><div class="line">					</div><div class="line">					docList.add(document);			</div><div class="line">				&#125;</div><div class="line">				</div><div class="line">				IndexWriter write=this.getWriter();</div><div class="line">				// 通过IndexWriter对象将Document写入到索引库中</div><div class="line">				for(Document doc:docList)&#123;</div><div class="line">					write.addDocument(doc);</div><div class="line">				&#125;</div><div class="line">				// 关闭writer</div><div class="line">				write.close();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h4 id="索引文件的逻辑结构"><a href="#索引文件的逻辑结构" class="headerlink" title="索引文件的逻辑结构"></a>索引文件的逻辑结构</h4><p><img src="/images/imgs5/2.jpg" alt="Alt text"><br>通过图示，可以发现最重要的就是文档域和索引域<br>文档域存储的信息就是采集到的信息，通过Document对象来存储，具体说是通过Document对象中field域来存储数据。<br>比如：数据库中一条记录会存储一个一个Document对象，数据库中一列会存储成Document中一个field域。<br>索引域主要是为了搜索使用的。索引域内容是经过lucene分词之后存储的（这里的分词根据所引入的分词器不同，分词效果不一样）<br>传统方法是先找到文件，如何在文件中找内容，在文件内容中匹配搜索关键字，这种方法是顺序扫描方法，数据量大就搜索慢<br>但是lucene采用倒排索引结构，它是在索引中匹配搜索关键字，由于索引内容量有限并且采用固定优化算法搜索速度很快，找到了索引中的词汇，词汇与文档关联，从而最终找到了文档。</p>
-<h4 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h4><p><img src="/images/imgs5/3.jpg" alt="Alt text"><br>其中，IndexWriter是索引过程的核心组件，通过IndexWriter可以创建新索引、更新索引、删除索引操作。IndexWriter需要通过Directory对索引进行存储操作。<br>Directory描述了索引的存储位置，底层封装了I/O操作，负责对索引进行存储。它是一个抽象类，它的子类常用的包括FSDirectory（在文件系统存储索引）、RAMDirectory（在内存存储索引）。</p>
-<h4 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h4><p>Lucene中分词主要分为两个步骤：分词、过滤<br>分词：将field域中的内容一个个的分词。<br>过滤：将分好的词进行过滤，比如去掉标点符号、大写转小写、词的型还原（复数转单数、过去式转成现在式）、停用词过滤<br>停用词：单独应用没有特殊意义的词。比如的、啊、等，英文中的this is a the等等。</p>
-<h4 id="搜索流程"><a href="#搜索流程" class="headerlink" title="搜索流程"></a>搜索流程</h4><p><img src="/images/imgs5/4.jpg" alt="Alt text"><br>Field的属性，主要有三个<br>是否分词（Tokenized）<br>是：对该field存储的内容进行分词，分词的目的，就是为了索引。<br>是否索引（Indexed）<br>是：将分好的词进行索引，索引的目的，就是为了搜索<br>是否存储（Stored）<br>是：将field域中的内容存储到文档域中。存储的目的，就是为了搜索页面显示取值用的。</p>
-<h4 id="创建查询对象的方式"><a href="#创建查询对象的方式" class="headerlink" title="创建查询对象的方式"></a>创建查询对象的方式</h4><p>通过QueryParser来创建查询对象（其他方式就不介绍了）<br>通过QueryParser来创建query对象，可以指定分词器，搜索时的分词器和创建该索引的分词器一定要一致。还可以输入查询语句。<br>查询语法<br>1、基础的查询语法，关键词查询：<br>域名+“：”+搜索的关键字<br>例如：content:java<br>2、范围查询<br>域名+“:”+[最小值 TO 最大值]<br>例如：size:[1 TO 1000]<br>3、组合条件查询<br>条件1 AND 条件2<br>条件1 OR 条件2<br>条件1 NOT 条件2</p>
-<h4 id="TopDocs"><a href="#TopDocs" class="headerlink" title="TopDocs"></a>TopDocs</h4><p>Lucene搜索结果可通过TopDocs遍历<br>earch方法需要指定匹配记录数量n：indexSearcher.search(query, n)<br>TopDocs.totalHits：是匹配索引库中所有记录的数量<br>TopDocs.scoreDocs：匹配相关度高的前边记录数组，scoreDocs的长度小于等于search方法指定的参数n</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>当然lucene的知识体系远不止这些，这里只是通过应用主导学习来浅尝全文检索。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;不知不觉，从九月份后就已经很少写博总结了，有点小颓废了。好吧，回到正题，本着应用为主，了解原理为辅的原则总结。&lt;br&gt;以我的微型论坛中的文章
-    
-    </summary>
-    
-      <category term="全文检索" scheme="http://www.myzwl.win/categories/%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2/"/>
-    
-    
-      <category term="全文检索" scheme="http://www.myzwl.win/source/tags/%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>jvm总结之三:虚拟机堆参数</title>
-    <link href="http://www.myzwl.win/2017/10/24/jvm_3/"/>
-    <id>http://www.myzwl.win/2017/10/24/jvm_3/</id>
-    <published>2017-10-24T07:48:51.000Z</published>
-    <updated>2018-03-13T15:58:12.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>事实上，我们对堆内存的管理是可控的，可通过对jvm虚拟机相关堆内存参数设置进行控制</p>
-<h4 id="参数含义"><a href="#参数含义" class="headerlink" title="参数含义"></a>参数含义</h4><p>-XX 对于系统级别的jvm配置 配置日志信息 垃圾回收器类型<br>非 -XX的 基本都是对 应用层面上的配置</p>
-<ul>
-<li>启用 - 禁用<br>-XX :PrintGC 使用这个参数，虚拟机启动后，只要遇到GC就会打印日志<br>-XX: +UserSerialGC 配置串行回收器<br>-XX:+PrintGCDetails：可以查看详细信息，包括各个区的情况<br>-Xms: 设置java程序启动时初始堆大小<br>-Xmx: 设置java程序能获得的最大堆大小<br>-Xloggc:路径 ：将打印出来的日志信息保存至指定的路径<br>-Xmn：设置堆的内存大小<br>-XX:SurvivorRatio=m:n调整Eden和Survivor的比例为m:n</li>
-</ul>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">public class test2 &#123;		</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">	</div><div class="line">		//-Xms20m -Xmx20m -Xmn10 -XX:+PrintGCDetails -Xloggc:d:\gc1.log</div><div class="line">		</div><div class="line">				//查看GC信息</div><div class="line">				System.out.println("max memory:" + Runtime.getRuntime().maxMemory());</div><div class="line">				System.out.println("free memory:" + Runtime.getRuntime().freeMemory());</div><div class="line">				System.out.println("total memory:" + Runtime.getRuntime().totalMemory());</div><div class="line">				</div><div class="line">				byte[] b1 = new byte[1*1024*1024];</div><div class="line">				System.out.println("分配了1M");</div><div class="line">				System.out.println("max memory:" + Runtime.getRuntime().maxMemory());</div><div class="line">				System.out.println("free memory:" + Runtime.getRuntime().freeMemory());</div><div class="line">				System.out.println("total memory:" + Runtime.getRuntime().totalMemory());</div><div class="line">				</div><div class="line">				byte[] b2 = new byte[4*1024*1024];</div><div class="line">				System.out.println("分配了4M");</div><div class="line">				System.out.println("max memory:" + Runtime.getRuntime().maxMemory());</div><div class="line">				System.out.println("free memory:" + Runtime.getRuntime().freeMemory());</div><div class="line">				System.out.println("total memory:" + Runtime.getRuntime().totalMemory());</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>输出结果</p>
-<blockquote>
-<p>Memory: 4k page, physical 2076596k(144200k free), swap 4923560k(620956k free)<br>CommandLine flags: -XX:InitialHeapSize=5242880 -XX:MaxHeapSize=20971520 -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:-UseLargePagesIndividualAllocation<br>0.418: [GC (Allocation Failure) 0.418: [DefNew: 655K-&gt;192K(1856K), 0.0049031 secs] 655K-&gt;466K(5952K), 0.0052607 secs] [Times: user=0.02 sys=0.00, real=0.01 secs]<br>0.448: [GC (Allocation Failure) 0.448: [DefNew: 1282K-&gt;0K(1856K), 0.0044827 secs]0.453: [Tenured: 1490K-&gt;1490K(4096K), 0.0033471 secs] 1557K-&gt;1490K(5952K), [Metaspace: 80K-&gt;80K(4480K)], 0.0083429 secs] [Times: user=0.02 sys=0.00, real=0.01 secs]<br>Heap<br> def new generation   total 1920K, used 68K [0x03a00000, 0x03c10000, 0x040a0000)<br>  eden space 1728K,   3% used [0x03a00000, 0x03a111f8, 0x03bb0000)<br>  from space 192K,   0% used [0x03bb0000, 0x03bb0000, 0x03be0000)<br>  to   space 192K,   0% used [0x03be0000, 0x03be0000, 0x03c10000)<br> tenured generation   total 8196K, used 5586K [0x040a0000, 0x048a1000, 0x04e00000)<br>   the space 8196K,  68% used [0x040a0000, 0x04614b70, 0x04614c00, 0x048a1000)<br> Metaspace       used 80K, capacity 2242K, committed 2368K, reserved 4480K</p>
-</blockquote>
-<p>其中from、to分别为s0、s1区</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;事实上，我们对堆内存的管理是可控的，可通过对jvm虚拟机相关堆内存参数设置进行控制&lt;/p&gt;
-&lt;h4 id=&quot;参数含义&quot;&gt;&lt;a href=&quot;#
-    
-    </summary>
-    
-      <category term="jvm" scheme="http://www.myzwl.win/categories/jvm/"/>
-    
-    
-      <category term="jvm" scheme="http://www.myzwl.win/source/tags/jvm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>jvm总结之二:回收策略</title>
-    <link href="http://www.myzwl.win/2017/10/23/jvm_2/"/>
-    <id>http://www.myzwl.win/2017/10/23/jvm_2/</id>
-    <published>2017-10-23T07:48:51.000Z</published>
-    <updated>2018-03-13T15:57:58.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>我们知道垃圾回收的主要内存区域是堆和方法区，因为这两块区域的内存分配相对于其他区域具有不确定性，而分配内存一般有两种方法，即指针碰撞和空闲列表</p>
-<h4 id="堆内存"><a href="#堆内存" class="headerlink" title="堆内存"></a>堆内存</h4><p>在堆内存中主要分为年轻代和老年代（具体后面再说），先说一下年轻代<br><img src="/images/imgs5/37.jpg" alt="Alt text"><br>如图，主要分为Eden（对象都会在该区域内创建）同时也会在s0或s1中随机一个进行创建，经过一次GC后在s0和s1中使用复制算法保留存活下来的对象，那么它是如何复制的了<br><img src="/images/imgs5/38.jpg" alt="Alt text"><br><img src="/images/imgs5/39.jpg" alt="Alt text"><br>大概流程就是将可回收的垃圾对象进行标记，然后复制存活的对象到另一块空白区域，依次类推<br>很显然这种复制方式很浪费空间，但是年轻代是生命周期很短的，换句话说，如果年轻代不够放了就会放到老年代，一般规定经过15次GC后的年轻代就会进入老年区（可通过-XX：MaxTenuringThreshold=15设置多少次为老年代），而老年区一般存放存活时间比较久的对象，通过标记-清除-整理进行垃圾回收，如果老年代内存不足就会触发FULL GC.默认是占用了68%后收集（可通过-XX:CMSInitiatingOccupancyFraction=68设置），该GC非常影响性能</p>
-<h4 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h4><p>我们知道垃圾回收算法可自行判断一个对象是否已经生命周期达到结束，从而将其视为垃圾进行回收。那么在此算法出现之前，出现过可达性分析算法进行垃圾回收<br>算法的基本思想就是通过一系列的称为“GC Roots”的对象作为起始点，从这些起始点开始向下搜索，所走过的路径称为引用链，如果一个对象到GC Roots没有任何引用链，那么这个对象是不可用的，就是说，程序中没有谁引用了这个对象，所以可以说从根节点到叶子结点是不可达的<br>而以下对象可作为GC Roots对象：<br>虚拟机栈（栈帧中本地变量表）中引用的对象<br>方法区中类静态属性引用的对象<br>方法区中常量引用的对象<br>本地方法栈中JNI（也就是native本地方法）引用的对象</p>
-<p>现在我们已经知道了通过可达性分析判断对象是否还可用，但是是不是不可达的对象都是不可用呢？答案是未必。原因在于要宣告一个对象的死亡，需要两次标记（为什么需要两次标记呢？原因是如果一个对象没有与GC Roots结点相连，就会被第一次标记，而如果对象覆盖了finalize方法，并且在finalize方法中与某个对象建立了引用关系，那么第二次标记会失败，那么这个对象就会被移出“即将回收”的对象列表，移出之后这个对象就“活”了下来，如果在finalize方法中这个对相关仍然没有与一个对象建立引用关系，那么这个对象就真正死亡了）。</p>
-<h4 id="回收方法区中的对象"><a href="#回收方法区中的对象" class="headerlink" title="回收方法区中的对象"></a>回收方法区中的对象</h4><p>方法区中的永久代的垃圾回收主要为两部分： 废弃常量和无用的类<br>废弃常量是指没有任何对象引用常量池中的某个对象，那么这个对象就会被回收，而对于常量池中的垃圾回收只要进行一次标记就可以进行判断<br>无用的类需要满足以下三个条件才可以宣判一个类的“死刑”：<br>    1.该类的所有实例都已经被回收，也就是Java堆中不存在该类的实例<br>    2.加载该类的ClassLoader已经被回收<br>    3.该类对应的java.lang.Class对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;我们知道垃圾回收的主要内存区域是堆和方法区，因为这两块区域的内存分配相对于其他区域具有不确定性，而分配内存一般有两种方法，即指针碰撞和空闲列
-    
-    </summary>
-    
-      <category term="jvm" scheme="http://www.myzwl.win/categories/jvm/"/>
-    
-    
-      <category term="jvm" scheme="http://www.myzwl.win/source/tags/jvm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>jvm总结之一:java内存区域</title>
-    <link href="http://www.myzwl.win/2017/10/23/jvm_1/"/>
-    <id>http://www.myzwl.win/2017/10/23/jvm_1/</id>
-    <published>2017-10-23T06:48:51.000Z</published>
-    <updated>2018-03-13T15:57:42.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>引用百度文库上对java虚拟机的定义.<br>虚拟机是一种抽象化的计算机，通过在实际的计算机上仿真模拟各种计算机功能来实现的。Java虚拟机有自己完善的硬体架构，如处理器、堆栈、寄存器等，还具有相应的指令系统。Java虚拟机屏蔽了与具体操作系统平台相关的信息，使得Java程序只需生成在Java虚拟机上运行的目标代码（字节码），就可以在多种平台上不加修改地运行</p>
-<h4 id="重要组成部分"><a href="#重要组成部分" class="headerlink" title="重要组成部分"></a>重要组成部分</h4><p><img src="/images/imgs5/35.jpg" alt="Alt text"></p>
-<p><font size="5">类加载子系统</font><br>负责从文件系统或者网络中加载class信息，加载的信息存放在一块称之为方法区的内存空间</p>
-<p><font size="5">方法区</font><br>存放类信息、常量信息、常量池信息、包括字符串常量和数字常量等</p>
-<p><font size="5">java堆</font><br>在虚拟机启动的时候创建，此内粗区域的唯一目的就是存放对象实例，是所有线程共享的，同时，这块内存区域也是垃圾收集器的主要区域，也被成为GC堆</p>
-<p><font size="5">Java虚拟机栈</font><br>每个java虚拟机线程都有一个私有的栈，其生命周期与线程相同，它描述了Java的方法执行模型，每个方法执行时都会创建一个栈帧。会抛出StackOverFlowError和OOM</p>
-<p><font size="5">本地方法栈</font><br>与Java虚拟机栈类似，最大的不同就是它是用于本地方法调用，同常用c语言编写</p>
-<p><font size="5">直接内存</font><br>NIO库允许java使用直接内存，通常速度由于java堆</p>
-<p><font size="5">程序计数器</font><br>程序计数器可以理解为当前线程执行的字节码的行号指示器，字节码解释器就是通哟改变这个值来获取需要执行的下一条需要执行的字节码指令。对于多线程来说，每条线程都有自己的程序计数器，这样各线程之间的计数器互不影响，这类内存区域也叫作“私有内存”（可以看到其实并不是私有的），之所以这么设计，是因为在多线程的情况下，完全可能出现线程中断的情况，那么当被中断的线程需要回复执行的时候，怎么知道上次该线程执行到哪里了呢？这就需要程序计数器发挥作用了，由于每个线程都有自己的程序计数器，这样当CPU重新调度该线程的时候，从其计数器中取出下一条的字节码执行指令，于是就可以继续执行了</p>
-<p><font size="5">执行引擎</font><br>负责执行虚拟机的字节码,先进行编译成机器码后执行</p>
-<h4 id="对象创建"><a href="#对象创建" class="headerlink" title="对象创建"></a>对象创建</h4><p>事实上，堆解决的是数据存储的问题，即数据怎么做，放在哪里，而栈解决的是程序的运行问题，即程序如何执行或者说如何处理数据，而方法区则是辅助堆栈的永久区，解决堆栈信息的产生,比如我们现在要创建一个student类实例<br><img src="/images/imgs5/36.jpg" alt="Alt text"><br>其中栈中存放的是对象的引用</p>
-<h4 id="对象创建详细过程"><a href="#对象创建详细过程" class="headerlink" title="对象创建详细过程"></a>对象创建详细过程</h4><p>首先检查这个指令的参数是否能在常量池中定位到一个类的符号引用，并且检查这个符号引用代表的类是否已被加载、解析和初始化过。如果没有就执行下一步</p>
-<p>检查通过后，虚拟机会为新生的对象分配内存，主要由两种内存分配策略，一种是指针碰撞，一种是空闲列表。所谓指针碰撞就是把Java堆中的内存一分为二，一边是所有用过的内存（这部分内存不能被分配了），一边是空闲的内存，是可以被分配的，这样的话，在可用于不可用的内存之间会有一个分割点指示器，那么为对象分配内存实际上就是从这个分界点指示器往空闲内存的一边拨动一段空间就可以了。而空闲列表则没有这个假设，已使用的内存与空闲内存可能是交叉在一起的，那么使用指针碰撞的方式分配内存就会产生问题，但是虚拟机维护着一张列表，这张列表记录了哪些区域的内存是可用的，那么在分配内存的时候就从选择可以容纳对象要求大小的内存区域分配给这个对象</p>
-<p>虚拟机将分配到的内存空间都初始化为零（不包括对象头），这里的初始化不同于我们在Java中利用构造函数进行初始化的过程，这里的初始化时保证Java的一些原生数据类型在不重新赋值的时候就可以直接使用，程序在使用这些对象的时候可以直接使用零值。</p>
-<p>接下来，虚拟机要对对象一些必要的设置，进行这些设置的目的是可以知道这些对象是哪个类的实例、对象的哈希码、对象的GC分代年龄等信息，这些信息都存储在对象头中。</p>
-<p>上面这些工作完成之后，从虚拟机的角度看，一个对象已经构造完成，但是从开发人员的角度看，还需要进行new对象之后初始化，接着执行init方法，到这里一个对象才算真正创建完毕</p>
-<h4 id="内存布局"><a href="#内存布局" class="headerlink" title="内存布局"></a>内存布局</h4><p>主要包括三部分的信息：对象头、实例数据和对齐填充</p>
-<p>对象头又包括两部分信息，第一部分用于存储对象自身的运行时数据，比如哈希码、GC分代年龄、锁状态标志、线程持有锁、偏向线程ID、偏向时间戳等；第二部分是类型指针，即对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象是哪个类的实例。</p>
-<p>实例数据部分是对象真真好存储的有效信息，也是程序代码中所定义的各种类型的字段内容</p>
-<p>第三部分不是必然存在的，只是起到占位符的作用，因为HotspotVM规定对象的起始地址必须是8字节的整数倍。所以很有可能以上两部分的大小不够8字节的整数倍，那么这个字段就可以发挥作用了。</p>
-<h4 id="对象的访问"><a href="#对象的访问" class="headerlink" title="对象的访问"></a>对象的访问</h4><p>主要是通过Java栈中的reference数据，通过这个reference数据只是一个指向对象的引用，那么对象的访问方式就可以不同。目前主流的对象访问方式主要由句柄和直接指针两种。通过句柄访问的话，会在Java堆中划分出一块句柄池，句柄池中句柄存放了对象的实例数据和类型指针，而reference数据则存放了句柄的地址引用。使用直接指针访问对象，那么reference数据存放的就是对象的地址<br>使用句柄访问的最大好处是reference中存储的稳定的句柄地址，当对象的地址发生了改变可以不用去关心。而直接指针的最大好处是速度更快，在于节省了一次指针定位的时间</p>
-<h4 id="OOM异常分类"><a href="#OOM异常分类" class="headerlink" title="OOM异常分类"></a>OOM异常分类</h4><p>Java堆溢出<br>虚拟机栈和本地方法栈溢出<br>方法区和运行常量池溢出<br>本机直接内存溢出</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;引用百度文库上对java虚拟机的定义.&lt;br&gt;虚拟机是一种抽象化的计算机，通过在实际的计算机上仿真模拟各种计算机功能来实现的。Java虚拟机
-    
-    </summary>
-    
-      <category term="jvm" scheme="http://www.myzwl.win/categories/jvm/"/>
-    
-    
-      <category term="jvm" scheme="http://www.myzwl.win/source/tags/jvm/"/>
     
   </entry>
   

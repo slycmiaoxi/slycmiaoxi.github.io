@@ -99,7 +99,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="jvm," />
+  <meta name="keywords" content="自我救赎," />
 
 
 
@@ -115,25 +115,19 @@
 
 
 
-<meta name="description" content="前言事实上，我们对堆内存的管理是可控的，可通过对jvm虚拟机相关堆内存参数设置进行控制
-参数含义-XX 对于系统级别的jvm配置 配置日志信息 垃圾回收器类型非 -XX的 基本都是对 应用层面上的配置
-
-启用 - 禁用-XX :PrintGC 使用这个参数，虚拟机启动后，只要遇到GC就会打印日志-XX: +UserSerialGC 配置串行回收器-XX:+PrintGCDetails：可以查看详细">
+<meta name="description" content="线性表之顺序表数组是顺序存储的随机存取结构，占用一组连续的存储单元，通过下标识别元素，元素地址是下标的线性函数，一个下标能唯一确定一个元素模拟ArrayList
+线性表之单链表 线性表的链式存储是用若干地址分散的存储单元存储数据元素，逻辑上相连的数据元素在物理位置上不一定相连，必须采用附加信息表示数据元素之间的关系，并且存储单元至少包含两部分-数据域和地址域单链表中结点只有一个地址并且指向后继结点">
 <meta property="og:type" content="article">
-<meta property="og:title" content="jvm总结之三:虚拟机堆参数">
-<meta property="og:url" content="http://www.myzwl.win/2017/10/24/jvm_3/index.html">
+<meta property="og:title" content="数据结构总结">
+<meta property="og:url" content="http://www.myzwl.win/2018/03/13/dream_5/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="前言事实上，我们对堆内存的管理是可控的，可通过对jvm虚拟机相关堆内存参数设置进行控制
-参数含义-XX 对于系统级别的jvm配置 配置日志信息 垃圾回收器类型非 -XX的 基本都是对 应用层面上的配置
-
-启用 - 禁用-XX :PrintGC 使用这个参数，虚拟机启动后，只要遇到GC就会打印日志-XX: +UserSerialGC 配置串行回收器-XX:+PrintGCDetails：可以查看详细">
-<meta property="og:updated_time" content="2018-03-13T15:58:12.000Z">
+<meta property="og:description" content="线性表之顺序表数组是顺序存储的随机存取结构，占用一组连续的存储单元，通过下标识别元素，元素地址是下标的线性函数，一个下标能唯一确定一个元素模拟ArrayList
+线性表之单链表 线性表的链式存储是用若干地址分散的存储单元存储数据元素，逻辑上相连的数据元素在物理位置上不一定相连，必须采用附加信息表示数据元素之间的关系，并且存储单元至少包含两部分-数据域和地址域单链表中结点只有一个地址并且指向后继结点">
+<meta property="og:updated_time" content="2018-03-18T15:47:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="jvm总结之三:虚拟机堆参数">
-<meta name="twitter:description" content="前言事实上，我们对堆内存的管理是可控的，可通过对jvm虚拟机相关堆内存参数设置进行控制
-参数含义-XX 对于系统级别的jvm配置 配置日志信息 垃圾回收器类型非 -XX的 基本都是对 应用层面上的配置
-
-启用 - 禁用-XX :PrintGC 使用这个参数，虚拟机启动后，只要遇到GC就会打印日志-XX: +UserSerialGC 配置串行回收器-XX:+PrintGCDetails：可以查看详细">
+<meta name="twitter:title" content="数据结构总结">
+<meta name="twitter:description" content="线性表之顺序表数组是顺序存储的随机存取结构，占用一组连续的存储单元，通过下标识别元素，元素地址是下标的线性函数，一个下标能唯一确定一个元素模拟ArrayList
+线性表之单链表 线性表的链式存储是用若干地址分散的存储单元存储数据元素，逻辑上相连的数据元素在物理位置上不一定相连，必须采用附加信息表示数据元素之间的关系，并且存储单元至少包含两部分-数据域和地址域单链表中结点只有一个地址并且指向后继结点">
 
 
 
@@ -161,13 +155,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/10/24/jvm_3/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2018/03/13/dream_5/"/>
 
 
 
 
 
-  <title> jvm总结之三:虚拟机堆参数 | 秒西 </title>
+  <title> 数据结构总结 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -513,7 +507,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/10/24/jvm_3/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2018/03/13/dream_5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -534,7 +528,7 @@ var _hmt = _hmt || [];
             
             
               
-                jvm总结之三:虚拟机堆参数
+                数据结构总结
               
             
           </h1>
@@ -549,8 +543,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-24T15:48:51+08:00">
-                2017-10-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T16:48:51+08:00">
+                2018-03-13
               </time>
             
 
@@ -577,8 +571,8 @@ var _hmt = _hmt || [];
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/jvm/" itemprop="url" rel="index">
-                    <span itemprop="name">jvm</span>
+                  <a href="/categories/自我救赎/" itemprop="url" rel="index">
+                    <span itemprop="name">自我救赎</span>
                   </a>
                 </span>
 
@@ -617,17 +611,39 @@ var _hmt = _hmt || [];
       
 
       
-        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>事实上，我们对堆内存的管理是可控的，可通过对jvm虚拟机相关堆内存参数设置进行控制</p>
-<h4 id="参数含义"><a href="#参数含义" class="headerlink" title="参数含义"></a>参数含义</h4><p>-XX 对于系统级别的jvm配置 配置日志信息 垃圾回收器类型<br>非 -XX的 基本都是对 应用层面上的配置</p>
-<ul>
-<li>启用 - 禁用<br>-XX :PrintGC 使用这个参数，虚拟机启动后，只要遇到GC就会打印日志<br>-XX: +UserSerialGC 配置串行回收器<br>-XX:+PrintGCDetails：可以查看详细信息，包括各个区的情况<br>-Xms: 设置java程序启动时初始堆大小<br>-Xmx: 设置java程序能获得的最大堆大小<br>-Xloggc:路径 ：将打印出来的日志信息保存至指定的路径<br>-Xmn：设置堆的内存大小<br>-XX:SurvivorRatio=m:n调整Eden和Survivor的比例为m:n</li>
-</ul>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">public class test2 &#123;		</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">	</div><div class="line">		//-Xms20m -Xmx20m -Xmn10 -XX:+PrintGCDetails -Xloggc:d:\gc1.log</div><div class="line">		</div><div class="line">				//查看GC信息</div><div class="line">				System.out.println("max memory:" + Runtime.getRuntime().maxMemory());</div><div class="line">				System.out.println("free memory:" + Runtime.getRuntime().freeMemory());</div><div class="line">				System.out.println("total memory:" + Runtime.getRuntime().totalMemory());</div><div class="line">				</div><div class="line">				byte[] b1 = new byte[1*1024*1024];</div><div class="line">				System.out.println("分配了1M");</div><div class="line">				System.out.println("max memory:" + Runtime.getRuntime().maxMemory());</div><div class="line">				System.out.println("free memory:" + Runtime.getRuntime().freeMemory());</div><div class="line">				System.out.println("total memory:" + Runtime.getRuntime().totalMemory());</div><div class="line">				</div><div class="line">				byte[] b2 = new byte[4*1024*1024];</div><div class="line">				System.out.println("分配了4M");</div><div class="line">				System.out.println("max memory:" + Runtime.getRuntime().maxMemory());</div><div class="line">				System.out.println("free memory:" + Runtime.getRuntime().freeMemory());</div><div class="line">				System.out.println("total memory:" + Runtime.getRuntime().totalMemory());</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>输出结果</p>
-<blockquote>
-<p>Memory: 4k page, physical 2076596k(144200k free), swap 4923560k(620956k free)<br>CommandLine flags: -XX:InitialHeapSize=5242880 -XX:MaxHeapSize=20971520 -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:-UseLargePagesIndividualAllocation<br>0.418: [GC (Allocation Failure) 0.418: [DefNew: 655K-&gt;192K(1856K), 0.0049031 secs] 655K-&gt;466K(5952K), 0.0052607 secs] [Times: user=0.02 sys=0.00, real=0.01 secs]<br>0.448: [GC (Allocation Failure) 0.448: [DefNew: 1282K-&gt;0K(1856K), 0.0044827 secs]0.453: [Tenured: 1490K-&gt;1490K(4096K), 0.0033471 secs] 1557K-&gt;1490K(5952K), [Metaspace: 80K-&gt;80K(4480K)], 0.0083429 secs] [Times: user=0.02 sys=0.00, real=0.01 secs]<br>Heap<br> def new generation   total 1920K, used 68K [0x03a00000, 0x03c10000, 0x040a0000)<br>  eden space 1728K,   3% used [0x03a00000, 0x03a111f8, 0x03bb0000)<br>  from space 192K,   0% used [0x03bb0000, 0x03bb0000, 0x03be0000)<br>  to   space 192K,   0% used [0x03be0000, 0x03be0000, 0x03c10000)<br> tenured generation   total 8196K, used 5586K [0x040a0000, 0x048a1000, 0x04e00000)<br>   the space 8196K,  68% used [0x040a0000, 0x04614b70, 0x04614c00, 0x048a1000)<br> Metaspace       used 80K, capacity 2242K, committed 2368K, reserved 4480K</p>
-</blockquote>
-<p>其中from、to分别为s0、s1区</p>
+        <h4 id="线性表之顺序表"><a href="#线性表之顺序表" class="headerlink" title="线性表之顺序表"></a><a href="https://www.myzwl.win/2017/07/08/sjjg_1/">线性表之顺序表</a></h4><p>数组是顺序存储的随机存取结构，占用一组连续的存储单元，通过下标识别元素，元素地址是下标的线性函数，一个下标能唯一确定一个元素<br>模拟ArrayList</p>
+<h4 id="线性表之单链表"><a href="#线性表之单链表" class="headerlink" title="线性表之单链表 "></a><a href="https://www.myzwl.win/2017/07/08/sjjg_2/">线性表之单链表 </a></h4><p>线性表的链式存储是用若干地址分散的存储单元存储数据元素，逻辑上相连的数据元素在物理位置上不一定相连，必须采用附加信息表示数据元素之间的关系，并且存储单元至少包含两部分-数据域和地址域<br>单链表中结点只有一个地址并且指向后继结点<br>模拟SinglyLinkenList</p>
+<h4 id="线性表之双链表"><a href="#线性表之双链表" class="headerlink" title="线性表之双链表"></a><a href="https://www.myzwl.win/2017/07/08/sjjg_3/">线性表之双链表</a></h4><p>双链表的每个结点有两个地址域，分别指向它的前驱结点和后继结点</p>
+<h4 id="串之字符串"><a href="#串之字符串" class="headerlink" title="串之字符串 "></a><a href="https://www.myzwl.win/2017/07/09/sjjg_4/">串之字符串 </a></h4><p>串是由n(n&gt;=0)个字符组成的有限序列，它是一种特殊的线性表。而子串是指串s中任意连续字符组成的一个子序列组成的串。同时，串的比较通常由其字符编码的相关规则比较</p>
+<p>常量字符串String<br>字符串采用字符数组作为存储结构，并且采用顺序存储结构，不过String类一次性申请了固定的空间，同时由于其存储结构为最终型，所以string不提供删除，插入子串<br>变量字符串StringBuffer<br>该字符数组的容量总是大于串长，并且能够修改</p>
+<h4 id="栈"><a href="#栈" class="headerlink" title="栈"></a><a href="https://www.myzwl.win/2017/07/10/sjjg_5/">栈</a></h4><p>栈是一种特殊的线性表，其特殊之处在于插入和删除操作的位置受到限制，而且插入和删除只允许在线性表的一端进行，特点是后进先出<br>顺序栈、链式栈</p>
+<h4 id="顺序与链式队列"><a href="#顺序与链式队列" class="headerlink" title="顺序与链式队列"></a><a href="https://www.myzwl.win/2017/07/11/sjjg_6/">顺序与链式队列</a></h4><p>队列是一种特殊的线性表，其插入和删除操作分别在线性表的两端进行。特点是先进先出。<br>顺序队列使用数组存储数据元素<br>1.当队列空时，设置队头、队尾下标front=rear=-1，<br>2.当第一个元素入队时，front=rear=0，同时改变两个下标<br>3.进行入队、出队操作，front、rear随之变化<br>4.当入队的元素个数（包括已出队元素）超出数组容量时，rear下标越界，数据溢出，但是，由于之前已有若干元素出队，数组前部以空出许多存储单元，所以这种溢出并不是因为存储空间不够而产生的，称为假溢出<br>所以顺序队列有两个缺点：假溢出和存储单元没有重复使用机制<br>顺序循环队列<br>相比较顺序队列，有如下不同<br>1.队头、队尾元素按照如下循环规律变化，其中length表示数组长度<br>front=（front+1)%length;<br>rear=(rear+1)%length;<br>所以可以看出front和rear的取值范围为0~length-1<br>链式队列</p>
+<h4 id="树和二叉树"><a href="#树和二叉树" class="headerlink" title="树和二叉树"></a><a href="https://www.myzwl.win/2017/07/14/sjjg_8/">树和二叉树</a></h4><p>基本术语<br>孩子优先遍历<br>兄弟优先遍历<br>完全二叉树和满二叉树<br>顺序与链式存储<br>模拟二叉树类</p>
+<h4 id="hash散列表"><a href="#hash散列表" class="headerlink" title="hash散列表 "></a><a href="https://www.myzwl.win/2017/07/14/sjjg_9/">hash散列表 </a></h4><p>散列（hash）表是一种支持高效的查找、插入和删除操作的数据结构，它是针对查找效率接近O（1）而专门设计的。它根据元素的关键字确定元素的存储位置，而其中主要解决两个问题，设计散列函数和处理冲突<br>散列函数实质上是关键字集合到地址集合的映射，如果这种映射是一一对应的，则查找效率是O（1），但是由于散列表是一个压缩映射，即存储容量有限，即映射关系是多对一的映射，所以会产生冲突<br>除留余数法<br>该散列函数定义为hash（k）=k%p，函数结果范围为0~p-1，图示就是采用这种方法，而p取值为小于散列表长度的最大素数，如散列表长度分别为8,16,128，则对应的p（最大素数）分别为7,13,127<br>开放定址法<br>链地址法<br>模拟HashSet类</p>
+<h4 id="二叉排序树"><a href="#二叉排序树" class="headerlink" title="二叉排序树"></a><a href="https://www.myzwl.win/2017/07/27/BSTSort_1/">二叉排序树</a></h4><p>原理<br>AVL树</p>
+<h4 id="哈夫曼树"><a href="#哈夫曼树" class="headerlink" title="哈夫曼树"></a><a href="https://www.myzwl.win/2017/07/30/huffman_1/">哈夫曼树</a></h4><p>基本术语<br>哈弗曼编码<br>压缩与解压原理</p>
+<h4 id="图"><a href="#图" class="headerlink" title="图"></a><a href="https://www.myzwl.win/2017/08/01/graph_2/">图</a></h4><p>基本术语<br>邻接矩阵<br>深度（先序）<br>广度（层序）</p>
+<h4 id="集合简单总结"><a href="#集合简单总结" class="headerlink" title="集合简单总结"></a>集合简单总结</h4><p>java集合主要分为以下三种类型：<br>Set(集)：集合中的对象不按特定方式排序，且没有重复对象。它的有些实现类能对集合中的对象按照特地方式排序。<br>List(列表)：集合中的对象按照索引位置排序，可以有重复对象，允许使用索引检索对象。<br>Map(映射)：集合中的每一个元素都包含一对键对象和值对象（key-value），集合中的键对象是不能重复的,它的一些实现类能对集合中的键对象进行排序。<br>注意这里的不能重复与比较hashcode和equals有关</p>
+<p>Collection接口<br>Collection接口是Set、List、Queue接口的父接口，提供了多数集合常用的方法声明，包括 add()、remove()、contains() 、size() 、iterator() 等</p>
+<p>List接口<br>它的特点是有序可重复，使用此接口能够精确的控制每个元素插入的位置用户能够使用索引来访问List中的元素并且允许有可重复的元素</p>
+<p>ArrayList<br>底层实现是一个动态的数组，查询快，增删慢，线程不安全，效率高</p>
+<p>LinkedList<br>底层实现是一个双向循环链表，查询慢，增删快，线程不安全，效率较高</p>
+<p>Vector<br>是ArrlyList的线程安全版，底层同它基本一致，但是效率低，现在基本很少</p>
+<p>Set接口<br>它的特点就是唯一性并且不允许出现重复元素和是无序的</p>
+<p>hashSet<br>底层是基于哈希表实现的，而其核心就是先比较hashCode（）值是否相同（相当于索引），然后在用equals比较是否相同，从而确定元素是否重复，所以当不希望集合中有重复值，并且不关心元素之间的顺序时可以使用此类</p>
+<p>LinkedHashSet<br>底层实现是使用链表和哈希表，它由链表保证元素有序，哈希表保证元素唯一，因此当不希望集合中有重复值，并且希望按照元素的插入顺序进行迭代遍历时可采用此类</p>
+<p>TreeSet<br>底层实现是红黑树，也就是一种平衡AVL树，通过比较返回值是否是0来保证元素唯一性，并且通过自然排序来保证元素的排序（自然排序也就是让元素所属的类实现Comparable接口，比如abc排在abd前面，总之就是和插入顺序无关，只和元素本身的内容和特质有关）</p>
+<p>Queue接口<br>它的特点就是队列，即用于保存将要执行的任务列表</p>
+<p>LinkedList<br>实现了该接口，可以实现先进先出的队列</p>
+<p>PriorityQueue<br>底层采用某种排序的单链表存储队列元素，用来创建自然排序的优先级队列</p>
+<p>Map接口<br>Map关心的是唯一的标识符，也就是将唯一的键映射到某个元素，以键值对形式存储，键唯一，值可重复</p>
+<p>HashMap<br>底层实现是基于哈希表依赖于hashCode（）和equals（）方法，线程不安全，允许key和value为NULL，效率高</p>
+<p>Hashtable<br>HashMap的线程安全版，效率低，不允许key和value为NULL</p>
+<p>LinkedHashMap<br>底层是由链表和哈希表组成，链表保证元素有序，哈希表保证元素唯一，所以当需要键值对，并且关心插入顺序时可采用它</p>
+<p>TreeMap<br>底层是由红黑树实现，当需要键值对，并关心元素的自然排序时可采用它</p>
+<p>Collections<br>内置了一些常见的集合算法，像排序，查找算法等</p>
+<p>13.并发集合类是什么？<br>Java1.5并发包（java.util.concurrent）包含线程安全集合类，允许在迭代时修改集合。迭代器被设计为fail-fast的，会抛出ConcurrentModificationException。一部分类为：CopyOnWriteArrayList、 ConcurrentHashMap、CopyOnWriteArraySet。</p>
+<h4 id="多路查找树"><a href="#多路查找树" class="headerlink" title="多路查找树"></a>多路查找树</h4><p>每一个结点的孩子数可以多于两个，且每一个结点处可以存储多个元素<br>2-3树、2-3-4树<br>B树、B+树、红黑树</p>
 
       
     </div>
@@ -663,7 +679,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/jvm/" rel="tag"># jvm</a>
+            <a href="/source/tags/自我救赎/" rel="tag"># 自我救赎</a>
           
         </div>
       
@@ -676,8 +692,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/23/jvm_2/" rel="next" title="jvm总结之二:回收策略">
-                <i class="fa fa-chevron-left"></i> jvm总结之二:回收策略
+              <a href="/2018/03/13/dream_6/" rel="next" title="java基础总结">
+                <i class="fa fa-chevron-left"></i> java基础总结
               </a>
             
           </div>
@@ -686,8 +702,8 @@ var _hmt = _hmt || [];
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/11/01/lucene_1/" rel="prev" title="浅谈lucene">
-                浅谈lucene <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/13/dream_4/" rel="prev" title="数据库总结">
+                数据库总结 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -787,7 +803,7 @@ var _hmt = _hmt || [];
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">161</span>
+                <span class="site-state-item-count">168</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -798,7 +814,7 @@ var _hmt = _hmt || [];
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -809,7 +825,7 @@ var _hmt = _hmt || [];
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -865,7 +881,7 @@ var _hmt = _hmt || [];
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参数含义"><span class="nav-text">参数含义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#码上有戏"><span class="nav-text">码上有戏</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#线性表之顺序表"><span class="nav-text">线性表之顺序表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线性表之单链表"><span class="nav-text">线性表之单链表 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线性表之双链表"><span class="nav-text">线性表之双链表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#串之字符串"><span class="nav-text">串之字符串 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#栈"><span class="nav-text">栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#顺序与链式队列"><span class="nav-text">顺序与链式队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#树和二叉树"><span class="nav-text">树和二叉树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hash散列表"><span class="nav-text">hash散列表 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二叉排序树"><span class="nav-text">二叉排序树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#哈夫曼树"><span class="nav-text">哈夫曼树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图"><span class="nav-text">图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集合简单总结"><span class="nav-text">集合简单总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多路查找树"><span class="nav-text">多路查找树</span></a></li></ol></div>
             
 
           </div>
