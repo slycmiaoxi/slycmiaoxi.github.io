@@ -133,7 +133,7 @@
     <link href="http://www.myzwl.win/2018/03/13/dream_4/"/>
     <id>http://www.myzwl.win/2018/03/13/dream_4/</id>
     <published>2018-03-13T11:48:51.000Z</published>
-    <updated>2018-03-18T15:39:08.000Z</updated>
+    <updated>2018-03-21T08:17:18.000Z</updated>
     
     <content type="html"><![CDATA[<h4 id="mysql-使用的引擎"><a href="#mysql-使用的引擎" class="headerlink" title="mysql 使用的引擎"></a>mysql 使用的引擎</h4><p>A:1)MyIsam 不支持事务，适用于选择密集型，插入密集型，mysql 默认的引擎<br>2)innodb 使用于更新密集型，支持事务，自动灾难恢复，行级锁，外键约束<br>3）memory 出发点是速度采用的逻辑存储介质是内存<br>4）merge 一组myisam 表的组合</p>
 <h4 id="mysql-索引使用的是B-的数据结构"><a href="#mysql-索引使用的是B-的数据结构" class="headerlink" title="mysql 索引使用的是B+的数据结构"></a>mysql 索引使用的是B+的数据结构</h4><p>索引：用于提高数据访问速度的数据库对象。<br>优点：1）索引可以避免全表扫描；<br>2）对于非聚集索引，有些查询甚至可以不访问数据项；<br>3）聚集索引可以避免数据插入操作集中于表的最后一个数据页；<br>4）一些情况下，索引还可以避免排序。<br>虽然索引可以提高查询速度，但是他们也会导致数据库更新数据的性能下降，因为大部<br>分数据更新时需要同时更新索引。</p>
@@ -144,6 +144,7 @@
 <h4 id="数据库设计三范式是什么"><a href="#数据库设计三范式是什么" class="headerlink" title="数据库设计三范式是什么"></a>数据库设计三范式是什么</h4><p>第一范式：字段还可以再分吗？如过不能，则是符合1NF的设计。<br>第二范式：2NF是对记录的惟一性约束，要求记录有惟一标识，即实体的惟一性；<br>也就是说主键列与非主键列遵循完全函数依赖关系<br>第三范式：3NF是对字段冗余性的约束，即任何字段不能由其他字段派生出来，它要求字段没有冗余。<br>也就是说非主键列之间没有传递函数依赖关系<br>打个比方，比如评论表，如果你将用户ID，用户头像都放在这留言表中，就是不合适的了。用户头像是依赖于用户ID，而不依赖该评论。</p>
 <h4 id="悲观锁和乐观锁的比较"><a href="#悲观锁和乐观锁的比较" class="headerlink" title="悲观锁和乐观锁的比较"></a>悲观锁和乐观锁的比较</h4><p>面试思路：什么是锁，用来干什么&gt;悲观锁乐观锁各自特点&gt;优缺点比较和各自应用场景<br>数据库管理系统（DBMS）中的并发控制的任务是确保在多个事务同时存取数据库中同一数据时不破坏事务的隔离性和统一性以及数据库的统一性。<br>悲观锁:<br>简单来说悲观锁认什么操作都可以改变数据，所以在改数据就锁住（在sql语句中加上for update就可以了）<br>乐观锁：<br>简单来说乐观锁很乐观 所以修改数据库后锁住 （一般在数据库中加上一个字段区别历史版本和当前版本）<br>update t_goods<br>set status=2,version=version+1<br>where id=#{id} and version=#{version};<br>使用版本号时，可以在数据初始化时指定一个版本号，每次对数据的更新操作都对版本号执行+1操作。并判断当前版本号是不是该数据的最新的版本号。</p>
 <h4 id="mysql实现分页的优化sql语句"><a href="#mysql实现分页的优化sql语句" class="headerlink" title="mysql实现分页的优化sql语句"></a>mysql实现分页的优化sql语句</h4><p>面试思路：数据库分页的简单实现&gt;数据量变大时的优化方案<br>sql语句是LIMIT m,n其中m是当前页，n是从当前页数n个记录，如果参数为一个就是数n个记录<br>一般我们都会这样写:当数据达到百万级的时候会慢死<br>    SELECT FROM table ORDER BY id LIMIT 1000000, 10;<br>    优化一：<br>    SELECT FROM table WHERE id &gt;= (SELECT id FROM table LIMIT 1000000, 1) LIMIT 10;<br>    速度可以提升到0.x秒了<br>    优化二：<br>    SELECT FROM table WHERE id BETWEEN 1000000 AND 1000010;<br>    比上面提升5到10倍<br>    另外，如果需要查询 id 不是连续的一段，最佳的方法就是先找出 id ，然后用 in 查询<br>    SELECT FROM table WHERE id IN(10000, 100000, 1000000…);</p>
+<h4 id="sql优化"><a href="#sql优化" class="headerlink" title="sql优化"></a>sql优化</h4><p>1)对查询进行优化，要尽量避免全表扫描。在where 或order by 的列上加索<br>引。<br>2）尽量避免在where 子语句中有where num is null，这样不用索引，要全表扫描，可<br>用0 代替null。<br>3）避免在where 中用&lt;&gt;or!=,因为要全表扫描。<br>4）尽量避免在where 中用or，因为若一个字段有索引，一个没有，则要全表扫描。<br>5）like”%abc%”，全表扫描。<br>6）避免在where 子语句中对字段进行函数操作，因为要全表扫描。<br>7）使用复合索引时，必须用到该索引的第一个字段，否则索引不被使用。</p>
 ]]></content>
     
     <summary type="html">
@@ -164,7 +165,7 @@
     <link href="http://www.myzwl.win/2018/03/13/dream_5/"/>
     <id>http://www.myzwl.win/2018/03/13/dream_5/</id>
     <published>2018-03-13T08:48:51.000Z</published>
-    <updated>2018-03-18T15:47:52.000Z</updated>
+    <updated>2018-03-21T08:17:22.000Z</updated>
     
     <content type="html"><![CDATA[<h4 id="线性表之顺序表"><a href="#线性表之顺序表" class="headerlink" title="线性表之顺序表"></a><a href="https://www.myzwl.win/2017/07/08/sjjg_1/">线性表之顺序表</a></h4><p>数组是顺序存储的随机存取结构，占用一组连续的存储单元，通过下标识别元素，元素地址是下标的线性函数，一个下标能唯一确定一个元素<br>模拟ArrayList</p>
 <h4 id="线性表之单链表"><a href="#线性表之单链表" class="headerlink" title="线性表之单链表 "></a><a href="https://www.myzwl.win/2017/07/08/sjjg_2/">线性表之单链表 </a></h4><p>线性表的链式存储是用若干地址分散的存储单元存储数据元素，逻辑上相连的数据元素在物理位置上不一定相连，必须采用附加信息表示数据元素之间的关系，并且存储单元至少包含两部分-数据域和地址域<br>单链表中结点只有一个地址并且指向后继结点<br>模拟SinglyLinkenList</p>
@@ -198,7 +199,8 @@
 <p>TreeMap<br>底层是由红黑树实现，当需要键值对，并关心元素的自然排序时可采用它</p>
 <p>Collections<br>内置了一些常见的集合算法，像排序，查找算法等</p>
 <p>13.并发集合类是什么？<br>Java1.5并发包（java.util.concurrent）包含线程安全集合类，允许在迭代时修改集合。迭代器被设计为fail-fast的，会抛出ConcurrentModificationException。一部分类为：CopyOnWriteArrayList、 ConcurrentHashMap、CopyOnWriteArraySet。</p>
-<h4 id="多路查找树"><a href="#多路查找树" class="headerlink" title="多路查找树"></a>多路查找树</h4><p>每一个结点的孩子数可以多于两个，且每一个结点处可以存储多个元素<br>2-3树、2-3-4树<br>B树、B+树、红黑树</p>
+<h4 id="多路查找树"><a href="#多路查找树" class="headerlink" title="多路查找树"></a>多路查找树</h4><p>每一个结点的孩子数可以多于两个，且每一个结点处可以存储多个元素<br>2-3树、2-3-4树<br>B树、B+树、</p>
+<h4 id="说说红黑树"><a href="#说说红黑树" class="headerlink" title="说说红黑树"></a>说说红黑树</h4><p>红黑树—使二叉搜索树更加平衡：他是一种二叉搜索树，但在每个节点上增加一个存储<br>位表示节点的颜色，可是red 或black，红黑树的查找、插入、删除的时间复杂度最坏为O(lgn)。<br>因为由n 个节点随机生成的二叉搜索树的高度为lgn，所以二叉搜索树的一般操作的执行时<br>间为O(lgn)。如何保证一颗n 个节点的红黑树的高度始终为lgn，因为红黑树的5 个性质：<br>1）每个节点，要么红的，要么黑的<br>2）根节点是黑的<br>3）叶节点都是黑的，指的是NIL 指针<br>4）若一个节点时红的，则它的两个儿子都是黑的。<br>5）对于任意节点而言，其到叶节点数尾端NIL 指针的每条路径都包含相同数目的叶节点。</p>
 ]]></content>
     
     <summary type="html">
@@ -296,13 +298,138 @@
   </entry>
   
   <entry>
+    <title>javaweb基础总结</title>
+    <link href="http://www.myzwl.win/2018/03/13/dream_8/"/>
+    <id>http://www.myzwl.win/2018/03/13/dream_8/</id>
+    <published>2018-03-13T02:48:51.000Z</published>
+    <updated>2018-03-21T08:16:48.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="说一说servlet的生命周期"><a href="#说一说servlet的生命周期" class="headerlink" title="说一说servlet的生命周期"></a>说一说servlet的生命周期</h4><p>1）构造函数：<br>只有第一次请求servlet 时，创建servlet 实例，调用构造器，这说明servlet 是单例的，所以又线程安全<br>问题，只被调用一次<br>2）init：<br>只被调用一次，在创建好实例后，立即被调用，用来初始化servlet<br>3）service：<br>被多次调用，每次请求都会调用service，实际响应请求。<br>4）destory：<br>只被调用一次，在当前servlet 所在的web 应用被卸载前调用，用于释放当前servlet 所占用的资源。</p>
+<h4 id="servlet-API中forward（）与redirect（）区别"><a href="#servlet-API中forward（）与redirect（）区别" class="headerlink" title="servlet API中forward（）与redirect（）区别"></a>servlet API中forward（）与redirect（）区别</h4><p>从地址栏显示来说：<br>forward是服务器请求的地址资源，通过内部转发方式最后只返回一次内容，而redirect是重新转发，也就是需要经过两次请求与响应<br>从数据共享来说<br>forward可以共享request里的数据，而redirect不行，forward是服务器内部的一种操作，而redirect是服务器通知客户端，然后客户端重新发起请求<br>从运用地方<br>forward一般用于用户登录的时候，根据角色转发到相应的模块<br>redirect一般用于用户注销登录时返回主页和跳转到其它的网站<br>从效率上<br>forward高，redirect低</p>
+<h4 id="request-getAttribute-和request-getParameter-有什么区别"><a href="#request-getAttribute-和request-getParameter-有什么区别" class="headerlink" title="request.getAttribute()和request.getParameter()有什么区别"></a>request.getAttribute()和request.getParameter()有什么区别</h4><p>后者取得通过容器的实现来取得通过类似post，get等方式传入的数据<br>前者返回对象，后者返回字符串</p>
+<h4 id="Http中get和post方法区别"><a href="#Http中get和post方法区别" class="headerlink" title="Http中get和post方法区别"></a>Http中get和post方法区别</h4><p>1.get请求的数据会被浏览器缓存起来，并以明文方式出现在url中，不太安全而post则更安全<br>2get传输数据有大小限制get请求的参数会跟在url后进行传递</p>
+<h4 id="说说Cookie"><a href="#说说Cookie" class="headerlink" title="说说Cookie"></a>说说Cookie</h4><p>http 都是无状态的协议，web 服务器不能识别出哪些请求是同一个浏览器发的，浏览器的每一次请求都是完全独立的<br>Cookie 放在浏览器端，浏览器第一次范围服务器时，没有cookie，then 服务器给浏览<br>器一个cookie，以后每次浏览器访问服务器都要带上这个cookie。Jsp 是服务端<br>&lt;% 1.创建一个cookie 对象Cookie cookie =new Cookie(“name”,”jhb”);<br>2.调用response 的一个方法把cookie 传输给客户端<br>Response.addCookie（cookie）;%&gt;<br>默认情况下cookie 是会话级别，存储在浏览器内存中，用户退出浏览器之后被删除，<br>若希望浏览器将cookie 存在磁盘上，则要使用maxage，并给一个以秒为单位的时间，表示<br>cookie 的存活时间。<br>Cookie 作用范围：可以作用当前目录和当前目录的子目录，但不能作用与当前目录的上<br>一级。<br>Cookie:在客户端保持http 状态信息的方案，会话跟踪。</p>
+<h4 id="说说session"><a href="#说说session" class="headerlink" title="说说session"></a>说说session</h4><p>在服务器端保持http 状态信息<br>当浏览器第一次范围服务器时，没有cookie，服务器也就得不到JSession_id，then 服<br>务器创建一个session 对象，并返回一个JSession_id 给浏览器，通过cookie 返回，下次浏览<br>器再访问服务器时就带上cookie（其中有JSession_id），服务器就能找到对应的session 对<br>象。JSession_id 可以通过cookie 传输，也可以通过url 传送。</p>
+<p>一个session，对应一个sessionID</p>
+<p>Session：浏览器和服务器的一次会话，若浏览器不关，至始至终都是一个session，因<br>为用cookie 传送。<br>当程序需要为某给客户端的请求创建session 时，服务器首先检查这个客户端的请<br>求是否包含一个session 标识，即JSession_id，如果包含，则说明以前已经为此客户创建过<br>JSession_id，服务器就按照这个JSession_id 检索出来（若检索不到，可能会新建一个，这种<br>情况下可能会出现在服务器已经删除了该用户对应的session 对象。但用户人为的在请求的<br>URL 上附加衣蛾JSession_id 的参数。）如不包含则创建一个session，并生成与这个session<br>有关的JSession_id，这个JSession_id 将在本次响应中返回给客户端。<br>默认session 用cookie</p>
+<p>若第一次访问某web 应用程序的一个jsp 页面，且该jsp 页面的page 指定session=true，<br>服务器会创建一个httpsession 对象。<br>注：关闭浏览器只是使存储在浏览器内存中的session cookie 失效，不会使服务器端的<br>session 对象失效</p>
+<h4 id="xml-解析技术"><a href="#xml-解析技术" class="headerlink" title="xml 解析技术"></a>xml 解析技术</h4><p>1）dom：必须在解析之前把整个文档装入内存，处理大型文件时，性能低，适合xml 随机访问。<br>2）sax：事件驱动，它顺序读取xml 文件，不需要一次全部载入整个文件。当遇到文件开头，文档结束or 标签开头or 标签结束时，他会触发一个事件，用户通过在其回调事件中写入处理代码来处理xml 文件，适合顺序访问</p>
+<h4 id="多个请求映射到同一个jsp-页面"><a href="#多个请求映射到同一个jsp-页面" class="headerlink" title="多个请求映射到同一个jsp 页面"></a>多个请求映射到同一个jsp 页面</h4><p>1）这几个请求的名字都为xxx.do,all 以.do 结尾的都映射到同一个servlet。<br>2）用request 获得path，即/xxx.do。<br>3）去掉后面的.do 和前面的”/”，得到方法名,即xxx。<br>4）利用反射调用相关方法</p>
+<h4 id="Httpsession-生命周期"><a href="#Httpsession-生命周期" class="headerlink" title="Httpsession 生命周期"></a>Httpsession 生命周期</h4><p>1）什么时候创建httpsession？<br>答案：1.是否浏览器访问服务器<br>的任何一个jsp 或者servlet，服务器都会创建一个httpsession？不一定，设置session=false，<br>若当前jsp 是客户端访问的当前web 应用的第一个资源，且page 指定的session=false，则服<br>务器不会为jsp 创建session 对象。若当前jsp 不是客户端访问的当前web 应用的第一个资源，<br>且其他页面已经创建了其他httpsession 对象，则返回一个和当前会话相关的httpsession 对<br>象，不创建一个新对象。</p>
+<p>2.session=false 是什么意思<br>当前jsp 页面禁用session 隐含变量，但可以使用其他的显示的httpsession 的对象</p>
+<p>3.对于servlet，若servlet 是客户端访问的第<br>一个web 应用资源，只有调用request.getSession（）或除了1 和2 以外，只要访问jsp，则<br>要创建session 对象。</p>
+<p>4.什么时候销毁session 对象<br>1.直接调用httpsession 的invalidate 方法，该方法使httpsession 失效。<br>2.当前web 应用被卸载。<br>3.超出httpsession 的过期时间。</p>
+<h4 id="JavaWeb-servlet-监听器"><a href="#JavaWeb-servlet-监听器" class="headerlink" title="JavaWeb-servlet 监听器"></a>JavaWeb-servlet 监听器</h4><p>监听器：专门用与对其他对象身上发生的事件或状态的改变进行监听or 相应处理的对象。<br>当被监视的对象发生情况时，立即采取相应的行动<br>Servlet 监听器：一种特殊的类，用于ServletContext，httpsession，Servletrequest 等域<br>对象的创建与销毁事情，以及监听这些对象中的属性发生修改的事件<br>监听域对象的创建和销毁<br>    创建时间                            销毁时间<br>ServletContext（application）  web 应用被加载web 应用被销毁<br>Httpsession（session）<br>Servletrequest（request）   每次请求开始时创建每次访问结束后销毁</p>
+<p>ServletContextListener 最为常用，监听ServletContext 对象创建or 销毁的Servlet 监听器，可以在当前web 应用被加载时对当前web 应用的相关资源进行初始化，比如：创建数据库连接池<br>HttpsessionListener：sessioncreated 在session 被创建后调用，sessionDestoryed 在session被销毁前调用。</p>
+<h4 id="域对象生命周期"><a href="#域对象生命周期" class="headerlink" title="域对象生命周期"></a>域对象生命周期</h4><p>1）request：是一个请求，当一个相应返回时被销毁，发一个请求时被创建<br>1.forword 只有一个请求，只有一个request<br>2.response 有两个request<br>2）session：当第<br>一次访问web 应用的一个jsp 或Servlet 时，且该jsp 和Servlet 中还需要创建session 对象，<br>此时服务器会创建一个session 对象<br>3）application：ServletContext 对象。当前web 应用被<br>加载时创建，web 应用被卸载时销毁。</p>
+<h4 id="说说Filter"><a href="#说说Filter" class="headerlink" title="说说Filter"></a>说说Filter</h4><p>1）目的：调用目标资源前让一段代码执行，是否允许用户调用目标资源，调<br>用目标资源之后让一段代码执行<br>2）编写java 类，实现filter 接口，配置filter-mapping，<br>说明对哪些资源进行拦截。<br>3）每次拦截时，都调用filter 的dofilter 方法<br>4）filter 创建和销毁由servlet 容器，在web 应用启动时，创建实例，并调用init 方法，filter 对象只创建一<br>次，init 只执行一次。Destory，容器卸载filter 对象前被调用。<br>5）用户在配置filter 时，可<br>以使用<init-param>为filter 配置一些初始化参数，当web 容器实例化filter 对象时，调用其<br>init 方法，会把封装了filter 初始化参数的filter config 对象初始化，所以开发人员在写filter<br>时，可以用filter config 对象的方法来获得初始化对象。<br>6）应用：统一全站的字符编码；禁止浏览器缓存；实现url 级别的权限认证</init-param></p>
+<h4 id="说说拦截器"><a href="#说说拦截器" class="headerlink" title="说说拦截器"></a>说说拦截器</h4><p>拦截器，在AOP中用于在某个方法或字段被访问之前，进行拦截然后在之前或之后加入某些操作<br>启动顺序 :监听器 &gt; 过滤器 &gt; 拦截器<br>拦截器与过滤器的区别：<br>过滤器Filter依赖于Servlet容器，基于回调函数，过滤范围大。<br>拦截器Interceptor依赖于框架容器，基于反射机制，只过滤请求</p>
+<h4 id="说说集群"><a href="#说说集群" class="headerlink" title="说说集群"></a>说说集群</h4><p>1）伸缩性：系统适应不断增长的用户数的能力。<br>2)高可用性:避免单一服务器的单点失效<br>3)负载均衡:把请求发给不同服务器<br>4）失效转移：当一个节点失效后，通过选择集<br>群中的另一个节点，处理将会继续而不会终止。httpssession 失效转移，用来保证当某台服<br>务器失效以后，会话状态不会丢失，为了支持会话转移，web 服务器将在一定的时候把会话<br>对象备份到其他地方，以防丢失。这个其他地方有jdbc 数据库、其他所有服务器、任意选<br>择其他一台web server、中央server</p>
+<h4 id="Ajax的实现流程是主怎样的"><a href="#Ajax的实现流程是主怎样的" class="headerlink" title="Ajax的实现流程是主怎样的"></a>Ajax的实现流程是主怎样的</h4><p>1创建XMLHttpRequest对象，也就是创建一个异步调用对象<br>2.创建一个新的HTTp请求，并指定该HTTP请求的方法，url及验证信息<br>3设置http请求状态变化的函数<br>4.发送HTTp请求<br>5获取异步调用返回的数据<br>6.使用javascript和DOM实现局部刷新</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;说一说servlet的生命周期&quot;&gt;&lt;a href=&quot;#说一说servlet的生命周期&quot; class=&quot;headerlink&quot; title=&quot;说一说servlet的生命周期&quot;&gt;&lt;/a&gt;说一说servlet的生命周期&lt;/h4&gt;&lt;p&gt;1）构造函数：&lt;br&gt;只有第一次请求
+    
+    </summary>
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/categories/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/source/tags/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>基本框架基础总结</title>
+    <link href="http://www.myzwl.win/2018/03/13/dream_9/"/>
+    <id>http://www.myzwl.win/2018/03/13/dream_9/</id>
+    <published>2018-03-13T00:48:51.000Z</published>
+    <updated>2018-03-21T08:17:02.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="谈谈你对struts的理解"><a href="#谈谈你对struts的理解" class="headerlink" title="谈谈你对struts的理解"></a>谈谈你对struts的理解</h4><p>1.structs本质就是一个servlet，而这个servlet就是ActionServlet或是其子类，即将所有请求都交给servlet去处理，而该servlet参考配置文件将请求分发给不同action处理<br>2.在把请求交给action之前，会将参数封装成一个frombean对象，而该对象只有通过validate方法，才能将对象传递给execute方法，否则将返回一个错误页面，并且这个页面由input属性指定<br>3.action执行完之后要返回显示的结果视图，这个结果一个actionForward来表示，而其是通过在struts配置文件中配置获得返回页面</p>
+<h4 id="谈谈struts的优缺点"><a href="#谈谈struts的优缺点" class="headerlink" title="谈谈struts的优缺点"></a>谈谈struts的优缺点</h4><p>优点：<br>1.实现mvc模式，结构清晰，使开发者只关注业务逻辑的实现<br>2有丰富的tag可以使用，大大提高开发效率<br>3.页面导航使系统的脉络更加清晰<br>4.提供Exception处理机制<br>缺点：<br>1.structs的action是一种thread-safe方式，它仅仅允许一个实例处理所有的请求。容易引起线程安全问题<br>2 测试不方便。struts的每个action都同web层耦合在一起，这样它的测试依赖于web容器，单元测试很难实现<br>3.对servlet的依赖性过强，struts处理action时必须依赖servletRequest和servletRespouse，所以它摆脱不了servlet容器</p>
+<h4 id="谈谈你对hibernate的理解"><a href="#谈谈你对hibernate的理解" class="headerlink" title="谈谈你对hibernate的理解"></a>谈谈你对hibernate的理解</h4><p>1.使用hibernate的基本流程：配置Configuration对象、产生sessionfactory、创建session对象、启动事务，完成CRUD操作，提交事务，关闭session<br>2.使用hibernate时，先要配置hibernate.cfg.xml文件，其中配置数据库连接信息和方言，还要为每个实体配置相应的hbm.xml文件<br>3.在应用hibernate时，重点要了解session的缓存原理，级联，延迟加载和hql语句</p>
+<h4 id="介绍一下hibernate的二级缓存"><a href="#介绍一下hibernate的二级缓存" class="headerlink" title="介绍一下hibernate的二级缓存"></a>介绍一下hibernate的二级缓存</h4><p>回答思路：1.首先说清楚什么是缓存<br>2.再说有了hibernate的session就是一级缓存，即有了一级缓存，为什么还要有二级缓存<br>3.最后说如何配置hibernate的二级缓存</p>
+<p>1.缓存就是把以前从数据库中查询出来和使用过的对象保存在内存中，这个数据结构通常类似于hashmap，当以后要使用某个对象时，先查询缓存中是否有这个对象，如果有则使用缓存中的对象，如果没有则去查询数据库，并将查询出来的对象保存在缓存中，以便下次使用<br>2.hibernate的session就是一级缓存，当想要使用session从数据库中查询出的一个对象时，session也是先从自己内部查看是否存在这个对象，存在则直接返回，不存在则查询数据库<br>由于session代表依次会话，一个session与一个数据库连接的相关性，通常仅用一个事务，用完就关闭，由于一级缓存是线程不安全的，要被多个线程共享，而二级缓存是全局缓存，可以被多个线程和事务共享<br>3二级缓存是独立于hibernate的软件部件，如ehcache</p>
+<h4 id="hibernate中sessionFactory是线程安全吗？session是线程安全的吗"><a href="#hibernate中sessionFactory是线程安全吗？session是线程安全的吗" class="headerlink" title="hibernate中sessionFactory是线程安全吗？session是线程安全的吗"></a>hibernate中sessionFactory是线程安全吗？session是线程安全的吗</h4><p>sessionfactory对应一个数据存储的概念，它是线程安全的，可以被多个线程并发访问。一般在启动的时候通过单例模式进行封装便于访问<br>session是一个轻量级的非线程安全的对象，线程间不能共享session，session默认会延迟获取数据库连接</p>
+<h4 id="简单说一下mybatis的一级缓存和二级缓存"><a href="#简单说一下mybatis的一级缓存和二级缓存" class="headerlink" title="简单说一下mybatis的一级缓存和二级缓存"></a>简单说一下mybatis的一级缓存和二级缓存</h4><p>mybatis首先去缓存中查询结果集，如果没有则查询数据库，如果有则从从缓存取出返回结果集。mybatis内部缓存使用一个hashmap，key为hashcode+sqlid+sql语句。value从查询出来映射生成java对象<br>mybatis的二级缓存即查询缓存，它的作用域是一个mapper的namespace，即在同一个namespace中查询sql可以从缓存中存取数据，二级缓存是可以跨sqlsession的</p>
+<h4 id="mybatis中的动态SQL是什么意思"><a href="#mybatis中的动态SQL是什么意思" class="headerlink" title="mybatis中的动态SQL是什么意思"></a>mybatis中的动态SQL是什么意思</h4><p>动态sql主要包括if、choose、when、otherwise、trim、where、set、foreach</p>
+<h4 id="mybatis和hibernate有什么不同"><a href="#mybatis和hibernate有什么不同" class="headerlink" title="mybatis和hibernate有什么不同"></a>mybatis和hibernate有什么不同</h4><p>相同点：<br>都屏蔽了jdbc api底层访问细节，编程流程固定，还将sql语句与java代码混杂在一起<br>不同点<br>半自动，将sql语句与代码进行分离，提供了将结果集自动封装成为实体对象和对象集合的功能<br>全自动，hibernate，提供hql语句</p>
+<h4 id="谈谈你对spring的理解"><a href="#谈谈你对spring的理解" class="headerlink" title="谈谈你对spring的理解"></a>谈谈你对spring的理解</h4><p>1.spring是实现了工厂模式的工厂类，这个类为beanFactory，通常为其子类applicationContext，spring相当于一个大的工厂类，在其配置文件中通过元素配置用于创建实例对象名和实例对象的属性<br>2.spring提供了对IOC的良好支持，利用IOC可以很好的实现模块间的解耦<br>3.spring提供了对AOP技术的良好封装，即把系统中很多不相干的类的方法，在这些众多的方法中加入某种系统功能的代码，例如，加入日志，权限判断，异常处理等等，称为AOP<br>4实现AOP采用代理类，在jdk中采用proxy类产生动态代理的方式为某个接口生成实现类</p>
+<h4 id="使用spring框架的好处是什么"><a href="#使用spring框架的好处是什么" class="headerlink" title="使用spring框架的好处是什么"></a>使用spring框架的好处是什么</h4><p>轻量级、控制反转、面向切面编程（AOP）、容器（包含并管理应用中对象的生命周期和配置）、mvc框架、事务管理、异常处理</p>
+<h4 id="什么是spring的依赖注入？有哪些方法进行依赖注入？"><a href="#什么是spring的依赖注入？有哪些方法进行依赖注入？" class="headerlink" title="什么是spring的依赖注入？有哪些方法进行依赖注入？"></a>什么是spring的依赖注入？有哪些方法进行依赖注入？</h4><p>你不在代码里直接组装你的组件和服务，但是要在配置文件里描述哪些组件和服务，之后一个容器负责把他们组装起来<br>构造器依赖注入、setter方法注入</p>
+<h4 id="解释spring框架中bean的生命周期"><a href="#解释spring框架中bean的生命周期" class="headerlink" title="解释spring框架中bean的生命周期"></a>解释spring框架中bean的生命周期</h4><p>1.spring容器从XML文件中读取bean的定义，并实例化bean<br>2.spring根据bean的定义填充所有的属性<br>3.如果bean实现了beanNameAware接口，spring传递bean的ID到setBeanName方法<br>4.如果Bean实现了BeanFactoryAware接口，spring传递beanfactory给setBeanFactory<br>5.如果有任何与bean相关联的beanpostprocessors，spring会在postprocesserBeforeInitalzation（）方法内部调用他们<br>6.如果bean实现了intialzingBean了，调用它的afterPropertySet方法，如果bean声明初始化方法，调用此初始化方法<br>7.如果bean实现了disposableBean，它将调用destroy（）方法</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;谈谈你对struts的理解&quot;&gt;&lt;a href=&quot;#谈谈你对struts的理解&quot; class=&quot;headerlink&quot; title=&quot;谈谈你对struts的理解&quot;&gt;&lt;/a&gt;谈谈你对struts的理解&lt;/h4&gt;&lt;p&gt;1.structs本质就是一个servlet，而这个
+    
+    </summary>
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/categories/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/source/tags/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>时髦框架基础总结</title>
+    <link href="http://www.myzwl.win/2018/03/12/dream_10/"/>
+    <id>http://www.myzwl.win/2018/03/12/dream_10/</id>
+    <published>2018-03-12T10:48:51.000Z</published>
+    <updated>2018-03-21T08:33:34.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="redis和普通缓存区别"><a href="#redis和普通缓存区别" class="headerlink" title="redis和普通缓存区别"></a>redis和普通缓存区别</h4><p>cached：本质是一个内存key-value 数据库，但<br>不支持数据持久化，服务器关闭后，数据全丢失。只支持key-value 结构<br>Redis：将大部分数据放在内存中，支持的数据类型有：字符串、hash 表、链表、集合、<br>有序集合以及基于这些数据类型的相关操作。Redis 内部使用一个redisobject 对象来表示all<br>key 和value。<br>他们的区别：<br>1)redis 中并不是all 数据都一直存储在内存中<br>2）redis 不仅仅支持简单的key-value 类型的数据，同时还支持字符串、hash表、链表、集合、有序集合<br>3）redis 支持数据备份，即master-slave 模式的备份<br>4）redis 支持数据的持久化，可以将内存中的数据保存在磁盘上，重启的时候可以再次加载进内存使用。<br>5）cached 挂掉后，数据不可以恢复，redis数据丢失后可通过AOF 恢复（灾难恢复）。</p>
+<h4 id="为什么需要NoSQL"><a href="#为什么需要NoSQL" class="headerlink" title="为什么需要NoSQL"></a>为什么需要NoSQL</h4><p>1.对数据库高并发读写的需求<br>高并发就是同一时间有许多用户访问同一网站造成访问量太大容易造成服务器崩溃，而传统的解决方法就是搭建集群，通俗的讲就是原先一个服务器提供服务，现在变成多个服务器提供服务<br>2.高负载-对海量数据的高效率存储和访问的需求<br>通俗的讲就是数据量非常大，造成没地方存储或者访问查询sql的语句超过上千万造成查询非常低下<br>.高扩展-对数据库的高可扩展性和高可用性的需求<br>通俗的讲相当于银行窗口排队，刚开始一个窗口不能满足需求，后来增加多个窗口，而增加窗口不会造成业务上的不同，也就是集群起来很方便</p>
+<h4 id="redis应用"><a href="#redis应用" class="headerlink" title="redis应用"></a>redis应用</h4><p>主要应用在如下场景<br>1.缓存（数据查询、商品内容等等）<br>2.聊天室的在线好友列表<br>3.任务队列（秒杀、抢购等等）<br>4.应用排行榜<br>5.网站访问统计<br>6.数据过期处理<br>7.分布式集群架构中的session分离</p>
+<h4 id="了解redis主从复制"><a href="#了解redis主从复制" class="headerlink" title="了解redis主从复制"></a>了解redis主从复制</h4><p>通俗的讲就是一个用户访问一台服务器，该服务器假设为主服务器，具有读写功能，而在该主服务器下关联了一台从服务器，该从服务只具有读功能不具有写功能，并且数据是从主服务器经过一些列同步算法到该服务器上<br>分析：<br>1.master可以拥有多个slave<br>2.多个slave可以连接同一个master外，还可以连接其他的slave<br>3.主从复制不会阻塞master在同步数据时，master可以据需处理client请求<br>4提供系统的伸缩性<br>5.slave挂掉重启后不是slave<br>主从复制过程<br>1.slave与master建立连接，发送sync同步命令<br>2.master会开启一个后台进程，将数据库快照保存到文件中，同时master主进程会开始收集新的写命令并缓存<br>3.后台完成保存后，就将文件发送给slave<br>4.slave将此文件保存在硬盘上</p>
+<h4 id="了解redis持久化机制"><a href="#了解redis持久化机制" class="headerlink" title="了解redis持久化机制"></a>了解redis持久化机制</h4><p>edis需要经常将内存中的数据同步到硬盘来保证持久化<br>1.快照（默认方式）<br>将内存中以快照的方式写入到二进制文件中，默认为dump.rdb，可以通过配置设置自动做快照持久化的方式。可以配置redis在n秒内如果超过m个key则修改就自动做快照<br>save 900 1 #900秒内如果超过1个key被修改 则发起快照保存<br>2.aof（日志方式）<br>由于快照方式是在一定时间间隔做一次，所以可能发生redis意外down的情况就会丢失最后一次快照后的所有修改的数据。使用aof时，redis会将每一个收到的写命令都通过write函数追加到命令中<br>aof设置<br>appendonly yes //启动aof，有三种修改方式</p>
+<p>#appendfsync always//收到命令就立即写入到磁盘，效率最慢，但是保证完全的持久化</p>
+<p>#appendysync everysec//每秒钟写入磁盘一次，在性能和持久化方面做了很好的折中</p>
+<p>#appendysync no //完全依赖os性能，持久化没保证</p>
+<h4 id="Redis的回收策略"><a href="#Redis的回收策略" class="headerlink" title="Redis的回收策略"></a>Redis的回收策略</h4><p>从已设置过期时间的数据集中挑选最近最少使用的数据淘汰<br>从已设置过期时间的数据集中挑选将要过期的数据淘汰<br>从已设置过期时间的数据集中任意选择数据淘汰<br>从数据集中挑选最近最少使用的数据淘汰<br>从数据集中任意选择数据淘汰<br>禁止驱逐数据</p>
+<h4 id="redis常见性能问题和解决方案"><a href="#redis常见性能问题和解决方案" class="headerlink" title="redis常见性能问题和解决方案"></a>redis常见性能问题和解决方案</h4><p>Master最好不要做任何持久化工作，如RDB内存快照和AOF日志文件<br>如果数据比较重要，某个Slave开启AOF备份数据，策略设置为每秒同步一次<br>为了主从复制的速度和连接的稳定性，Master和Slave最好在同一个局域网内<br>尽量避免在压力很大的主库上增加从库<br>主从复制不要用图状结构，用单向链表结构更为稳定，即：Master &lt;- Slave1 &lt;- Slave2 &lt;- Slave3…<br>这样的结构方便解决单点故障问题，实现Slave对Master的替换。如果Master挂了，可以立刻启用Slave1做Master，其他不变</p>
+<h4 id="了解分布式锁"><a href="#了解分布式锁" class="headerlink" title="了解分布式锁"></a>了解分布式锁</h4><p>可靠性<br>互斥性。在任意时刻，只有一个客户端能持有锁。<br>不会发生死锁。即使有一个客户端在持有锁的期间崩溃而没有主动解锁，也能保证后续其他客户端能加锁。<br>具有容错性。只要大部分的Redis节点正常运行，客户端就可以加锁和解锁。<br>解铃还须系铃人。加锁和解锁必须是同一个客户端，客户端自己不能把别人加的锁给解了<br>基本原理 : 用一个状态值表示锁，对锁的占用和释放通过状态值来标识。<br>redis+setnx实现?<br>先拿setnx来争抢锁，抢到之后，再用expire给锁加一个过期时间防止锁忘记了释放<br>如果在setnx之后执行expire之前进程意外crash或者要重启维护了，那会怎么样？<br>同时把setnx和expire合成一条指令来用的<br>假如Redis里面有1亿个key，其中有10w个key是以某个固定的已知的前缀开头的，如果将它们全部找出来？<br>使用keys指令可以扫出指定模式的key列表<br>如果这个redis正在给线上的业务提供服务，那使用keys指令会有什么问题？<br>redis的单线程的。keys指令会导致线程阻塞一段时间，线上服务会停顿，直到指令执行完毕，服务才能恢复。这个时候可以使用scan指令，scan指令可以无阻塞的提取出指定模式的key列表，但是会有一定的重复概率，在客户端做一次去重就可以了，但是整体所花费的时间会比直接用keys指令长。<br>如果有大量的key需要设置同一时间过期，一般需要注意什么？<br>如果大量的key过期时间设置的过于集中，到过期的那个时间点，redis可能会出现短暂的卡顿现象。一般需要在时间上加一个随机值，使得过期时间分散一些。</p>
+<h4 id="redis其他功能"><a href="#redis其他功能" class="headerlink" title="redis其他功能"></a>redis其他功能</h4><p>Redis是单进程单线程的，利用队列技术将并发访问变为串行访问，消除了传统数据库串行控制的开销<br>数据分片、分库<br>发布订阅<br>集群<br>各种配置</p>
+<h4 id="Nginx负载均衡方式"><a href="#Nginx负载均衡方式" class="headerlink" title="Nginx负载均衡方式"></a>Nginx负载均衡方式</h4><p>可以根据客户端的ip 进行负载均衡，在upstream 里设置ip_path，负载均衡五种配置<br>1）轮询（默认），每个请求按时间顺序逐一分配到不同的后端服务器，如果后端<br>服务器down 掉，能自动剔除<br>2）指定权重，指定轮询几率。权重越大，轮询几率越大，用于后端服务器性能不均的情况<br>3）ip 绑定ip_path，每个请求按访问ip 的哈希结果分配，这样每个客户固定访问一个服务器，可以解决session 问题<br>4）fair（第三方）按后端服务器的响应时间来分配请求，响应时间短的优先分配<br>5）url_hash 按访问的url 结果来分配请求，使每个url 定位到同一个后端服务器。后端服务器为缓存时比较有效</p>
+<h4 id="nginx其他"><a href="#nginx其他" class="headerlink" title="nginx其他"></a>nginx其他</h4><p>反向代理<br>文件服务器<br>静态资源<br>ssl配置<br>各种其他配置</p>
+<h4 id="了解shiro"><a href="#了解shiro" class="headerlink" title="了解shiro"></a>了解shiro</h4><p>主要为解决以下四个问题<br>1、 认证-用户身份识别，常被称为用户登录<br>2、 授权-访问控制<br>3、 密码加密-保护或隐藏数据防止被偷窥<br>4、 会话管理-每用户相关的时间敏感的状态<br>原理图<br>token令牌、认证与授权、缓存机制（Ehcache）、散列算法（MD5）、匹配、会话<br>拦截器和相关配置、shiro标签<br>shiro会话管理（sessionDao和监听器)</p>
+<h4 id="了解lucene"><a href="#了解lucene" class="headerlink" title="了解lucene"></a>了解lucene</h4><p>全文检索首先对要搜索的文档进行分词，然后形成索引，通过查询索引来查询文档，比如：字典<br>字典的偏旁部首页，就类似于luence的索引<br>字典的具体内容，就类似于luence的文档内容<br>原理图:<br>其主要分为索引流程和搜索流程<br>索引流程：采集数据—文档处理-存储到索引库中<br>搜索流程：输入查询条件—通过lucene的查询器查询索引—从索引库中取出结果<br>逻辑结构<br>索引-文档域（document-field）<br>分词、过滤、各种查询语法</p>
+<h4 id="了解elasticsearch"><a href="#了解elasticsearch" class="headerlink" title="了解elasticsearch"></a>了解elasticsearch</h4><p>字典树（结合图形)<br>根节点不包含字符，除根节点外每一个节点都只包含一个字符。<br>从根节点到某一节点，路径上经过的字符连接起来，为该节点对应的字符串。<br>每个节点的所有子节点包含的字符都不相同。<br>其它参考lucene学习的</p>
+<h4 id="了解dubbo"><a href="#了解dubbo" class="headerlink" title="了解dubbo"></a>了解dubbo</h4><p>那张原理图,主要是暴露服务，提供接口<br>Consumer服务消费者，Provider服务提供者。Container服务容器,Monitor这是一个监控,Registry注册中心<br>Dubbo中zookeeper做注册中心，如果注册中心集群都挂掉，发布者和订阅者之间还能通信么？<br>可以的，启动dubbo时，消费者会从zk拉取注册的生产者的地址接口等数据，缓存在本地。每次调用时，按照本地存储的地址进行调用<br>注册中心对等集群，任意一台宕掉后，会自动切换到另一台<br>注册中心全部宕掉，服务提供者和消费者仍可以通过本地缓存通讯<br>服务提供者无状态，任一台 宕机后，不影响使用<br>服务提供者全部宕机，服务消费者会无法使用，并无限次重连等待服务者恢复</p>
+<p>Dubbo在安全机制方面是如何解决的<br>Dubbo通过Token令牌防止用户绕过注册中心直连，然后在注册中心上管理授权。Dubbo还提供服务黑白名单，来控制服务所允许的调用方</p>
+<h4 id="了解activeMQ"><a href="#了解activeMQ" class="headerlink" title="了解activeMQ"></a>了解activeMQ</h4><p>发布-订阅(topic)一对多<br>p2p(Queue)点对点<br>配置参数相关设置，如处理过期，心跳等设置</p>
+<h4 id="了解websocket"><a href="#了解websocket" class="headerlink" title="了解websocket"></a>了解websocket</h4><p>ajax轮询  : 让浏览器隔个几秒就发送一次请求，询问服务器是否有新信息<br>long poll :  客户端发起连接后，如果没消息，就一直不返回Response给客户端。直到有消息才返回，返回完之后，客户端再次建立连接，周而复始,取的是阻塞模型<br>Websocket :主动推送，建立一次握手</p>
+<h4 id="了解fastdfs"><a href="#了解fastdfs" class="headerlink" title="了解fastdfs"></a>了解fastdfs</h4><p>原理图<br>clint-tracker（相当于一个管家，在storager与client之间进行交流）-storager（存储图片)<br>配合Nginx按照一定规则存储和取出图片<br>一般有图片到tomcat服务器或者第三方（如七牛云），或者自己搭建图片服务器</p>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>技术是学不完的，总是为解决某些问题而产生，技术只是工具，而如何去解决问题才是关键,而我认为计算机基础课程才是最主要的，对一个人在计算机领域的发展和学习技术至关重要</p>
+<h4 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h4><p>希望自己找到一份好的实习</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;redis和普通缓存区别&quot;&gt;&lt;a href=&quot;#redis和普通缓存区别&quot; class=&quot;headerlink&quot; title=&quot;redis和普通缓存区别&quot;&gt;&lt;/a&gt;redis和普通缓存区别&lt;/h4&gt;&lt;p&gt;cached：本质是一个内存key-value 数据库，但&lt;
+    
+    </summary>
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/categories/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/source/tags/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+  </entry>
+  
+  <entry>
     <title>系统V1.0简单说明</title>
     <link href="http://www.myzwl.win/2018/03/10/sys_1/"/>
     <id>http://www.myzwl.win/2018/03/10/sys_1/</id>
     <published>2018-03-10T07:48:51.000Z</published>
-    <updated>2018-03-16T01:50:14.000Z</updated>
+    <updated>2018-03-21T09:03:52.000Z</updated>
     
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>该系统很不完善，由于一个人的精力和时间有限，有很多考虑不周到的地方，很多地方算法复杂度高，模块耦合性高，部分设计模式设计不合理，代码规范不达标等等请谅解</p>
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>该系统为2.0版本但是很不完善，由于一个人的精力和时间有限，有很多考虑不周到的地方，很多地方算法复杂度高，模块耦合性高，部分设计模式设计不合理，代码规范不达标等等请谅解<br>但是在设计和代码上都做了充分考虑，等找到实习稳定下来，将详细发到github供大家一起学习研究（ps，github全删，原因代码太烂和有效代码不完美)</p>
 <h4 id="系统部分"><a href="#系统部分" class="headerlink" title="系统部分"></a>系统部分</h4><p>其次自己租了11台linux服务器，内存1G以上有6台，以下是之前的架构，由于时间关系，展示如下<br>系统架构(旧)<br><img src="/images/imgs6/1.png" alt="Alt text"><br>所用技术栈(旧)<br><img src="/images/imgs6/2.png" alt="Alt text"><br>系统部分说明(旧)<br><img src="/images/imgs6/1.jpg" alt="Alt text"></p>
 <h4 id="困难与解决"><a href="#困难与解决" class="headerlink" title="困难与解决"></a>困难与解决</h4><p><strong>1.留言板的数据存储如何存储与取出算法实现</strong><br>按照自己之前的经验，一个人写一条留言就记录下，然后就是垂直式的记录，很明显存在很多问题<br><img src="/images/imgs6/2.jpg" alt="Alt text"><br>解决方法 :<br>将问题抽象成伪B树数据结构，节点数以固定，不需要记录<br><img src="/images/imgs6/3.png" alt="Alt text"><br>很明显这样嵌套下去，深度非常大，就是一颗斜二叉树，还有就是留言板目前最多需要楼中楼加上前端写不出来，所以深度固定为2并且最后一层放在一个栈里（按照时间排序）</p>
 <p>如何有效率的取出数据?<br>按照首先的想法（sql不是很好，所以按照笨方法来考虑），因为这里记录的是结点，而最后需要的是用户名等信息，也就是说还需要查数据库转换(如果加个相关字段除外),<br>也就是遍历到所有结点o(n)，然后每个结点查数据库转换为相关信息o（n），而且查数据库的字段保存的内存也大，还要查数据库n次，所以如果数据量极大，效率很不高</p>
@@ -323,7 +450,7 @@
     
     <summary type="html">
     
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;该系统很不完善，由于一个人的精力和时间有限，有很多考虑不周到的地方，很多地方算法复杂度高，模块耦合性高，部分设计模式设计不合理，代码规范不达
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;该系统为2.0版本但是很不完善，由于一个人的精力和时间有限，有很多考虑不周到的地方，很多地方算法复杂度高，模块耦合性高，部分设计模式设计不合
     
     </summary>
     
@@ -646,228 +773,6 @@
     
     
       <category term="solr" scheme="http://www.myzwl.win/source/tags/solr/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>solr笔记之一</title>
-    <link href="http://www.myzwl.win/2017/11/09/solr_1/"/>
-    <id>http://www.myzwl.win/2017/11/09/solr_1/</id>
-    <published>2017-11-09T06:48:51.000Z</published>
-    <updated>2017-12-18T05:16:44.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>使用传统的数据库查询方式实现搜索无法满足一些高级需求，比如：搜索速度要快、搜索结果按相关度排序、搜索内容不固定，一般可以单独使用Lucene或者使用google或者百度接口或者使用solr实现全文检索。而solr是基于lucene，是一个服务器，在各方面都相对优越<br><img src="/images/imgs5/24.jpg" alt="Alt text"></p>
-<h4 id="redis环境搭建"><a href="#redis环境搭建" class="headerlink" title="redis环境搭建"></a>redis环境搭建</h4><p>有如下步骤</p>
-<blockquote>
-<p>1.上传solr压缩包solr-4.10.3.tgz.tar到linux上<br>2.解压到/usr/local下，tar -zxvf solr-4.10.3.tgz.tar -C /usr/local/<br>3.进入目录: cd solr-4.10.3/example/webapps/<br>4.拷贝其下的war文件到tomcat的webapps中：cp solr.war /usr/local/tomcat/webapps/(tomcat启动，自动解压war包)<br>5.进入solr文件，修改其中一些文件: vim solr/WEB-INF/web.xml 找到nv-entry内容，解开注释，并修改solr/home的地址：我的是/usr/local/solr-4.10.3/example/solr<br>6.拷贝相关jar包到tomcat下 cd /usr/local/solr-4.10.3/example/lib/ext &amp;&amp; cp * /usr/local/tomcat/lib/<br>7.重启tomcat</p>
-</blockquote>
-<p>然后通过浏览器访问，如看到下面的solr主页即可<br><img src="/images/imgs5/25.jpg" alt="Alt text"><br>至此我们可以通过可视化页面对数据进行增删改查操作，其中solr是以id为标识的，并且根据不同的分词器进行分词，而索引字段是在服务器配置文件中已定义好的（可自定义）</p>
-<h4 id="相关文件说明"><a href="#相关文件说明" class="headerlink" title="相关文件说明"></a>相关文件说明</h4><p>solrhome：目录中包括了运行solr实例的所有的配置文件和数据文件，是运行的主目录，可包括多个solrcore<br>solrcore：提供单独的搜索和索引服务<br>如可视化界面中的collection1</p>
-<h4 id="solr索引"><a href="#solr索引" class="headerlink" title="solr索引"></a>solr索引</h4><p>schema.xml，在solrcore的conf目录下，它是solr数据表配置文件，它定义了加入索引的数据的数据类型。主要包括FiledTypes、Filed和其他的一些缺省设置<br><img src="/images/imgs5/26.jpg" alt="Alt text"><br>FieldType域类型<br>text_general是solr默认的域类型<br>子节点<br>name：是这个FieldType的名称<br>class：是Solr提供的包solr.TextField，solr.TextField<br>允许用户通过分析器来定制索引和查询，分析器包括一个分词器（tokenizer）<br>和多个过滤器（filter）<br>positionIncrementGap：可选属性，定义在同一个文档中此类型数据的空白<br>间隔，避免短语匹配错误，此值相当于Lucene的短语查询设置slop值，根据经<br>验设置为100。<br>在FieldType定义的时候最重要的就是定义这个类型的数据在建立索引和进<br>行查询的时候要使用的分析器analyzer,包括分词和过滤<br>索引分析器中：使用solr.StandardTokenizerFactory标准分词器，solr.StopFilte<br>rFactory停用词过滤器，solr.LowerCaseFilterFactory小写过滤器。<br>搜索分析器中：使用solr.StandardTokenizerFactory标准分词器，solr.StopFilte<br>rFactory停用词过滤器，这里还用到了solr.SynonymFilterFactory同义词过滤器</p>
-<p>Field定义<br>在fields结点内定义具体的Field，filed定义包括name,type（为之前定义过的<br>各种FieldType）,indexed（是否被索引）,stored（是否被储存），multiValued（<br>是否存储多个值）等属性。<br>如下：</p>
-<p><field name="name" type="text_general" indexed="true" stored="true"></field></p>
-<p><field name="features" type="text_general" indexed="true" stored="true" multivalued="true"><br>multiValued：该Field如果要存储多个值时设置为true，solr允许一个Field存<br>储多个值，比如存储一个用户的好友id（多个），商品的图片（多个，大图和<br>小图），通过使用solr查询要看出返回给客户端是数组</field></p>
-<p>uniqueKey<br>Solr中默认定义唯一主键key为id域，如下：<br>Solr在删除、更新索引时使用id域进行判断，也可以自定义唯一主键</p>
-<p>copyField复制域<br>copyField复制域，可以将多个Field复制到一个Field中，以便进行统一的检索</p>
-<p>dynamicField（动态字段）<br>动态字段就是不用指定具体的名称，只要定义字段名称的规则，例如定义<br>一个dynamicField，name<br>为*_i，定义它的type为text，那么在使用这个字段的时候，任何以_i结尾的字段<br>都被认为是符合这个定义的，例如：name_i，gender_i，school_i等</p>
-<h4 id="配置中文分词器"><a href="#配置中文分词器" class="headerlink" title="配置中文分词器"></a>配置中文分词器</h4><p>具体步骤如下</p>
-<blockquote>
-<p>1.下载并解压IKAnalyzer<br>2.将IKAnalyzer2012FF_u1.jar拷贝到Tomcat的webapps/solr/WEB-INF/lib 下。<br>3在Tomcat的webapps/solr/WEB-INF/下创建classes目录<br>4.将IKAnalyzer.cfg.xml、ext_stopword.dic mydict.dic copy到Tomcat的webapps/solr/WEB-INF/classes<br>5.修改solr core的schema文件添加FieldType：<br><!-- IKAnalyzer--></p>
-<p><fieldtype name="text_ik" class="solr.TextField"></fieldtype></p>
-<p><analyzer type="index" ismaxwordlength="false" class="org.wltea.analyzer.lucene.IKAnalyzer"></analyzer></p>
-<p><analyzer type="query" ismaxwordlength="true" class="org.wltea.analyzer.lucene.IKAnalyzer"><br><br>6.重启tomcat</analyzer></p>
-</blockquote>
-<p>这样配置后，中文分词就会有很好的分词效果</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;使用传统的数据库查询方式实现搜索无法满足一些高级需求，比如：搜索速度要快、搜索结果按相关度排序、搜索内容不固定，一般可以单独使用Lucene
-    
-    </summary>
-    
-      <category term="solr" scheme="http://www.myzwl.win/categories/solr/"/>
-    
-    
-      <category term="solr" scheme="http://www.myzwl.win/source/tags/solr/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>FreeMarker笔记之基础知识</title>
-    <link href="http://www.myzwl.win/2017/11/08/freemarker_1/"/>
-    <id>http://www.myzwl.win/2017/11/08/freemarker_1/</id>
-    <published>2017-11-08T06:48:51.000Z</published>
-    <updated>2017-12-17T12:45:16.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>FreeMarker是一个模板引擎，一个基于模板生成文本输出的通用工具。简单比如来说，html作为只关心前台，无后台数据，而后台数据通过freemarker模板来定义数据，然后在html中取出数据</p>
-<h4 id="入门程序"><a href="#入门程序" class="headerlink" title="入门程序"></a>入门程序</h4><p>不妨以一个hello world程序作为入门，然后在研究它<br>1.建立一个普通的java项目<br>2.引入freemarker.jar包<br>3.在项目目录下建立模板目录：templates<br>4.在templates目录下，建立一个xx.ftl文件，内容如下</p>
-<blockquote>
-<p>hello，${msg}</p>
-</blockquote>
-<p>5.然后建立一个测试类：</p>
-<blockquote>
-<p>public static void main(String[] args) throws Exception {<br>        //创建Freemarker配置实例<br>        Configuration cfg = new Configuration();<br>        cfg.setDirectoryForTemplateLoading(new File(“templates”));<br>        //创建数据模型<br>        Map root = new HashMap();<br>        root.put(“msg”, “world”);<br>        //加载模板文件<br>        Template t1 = cfg.getTemplate(“a.ftl”);<br>        //显示生成的数据,//将合并后的数据打印到控制台<br>        Writer out = new OutputStreamWriter(System.out);<br>        t1.process(root, out);<br>        out.flush();<br>    }</p>
-</blockquote>
-<p>输出结果：<br>hello，world</p>
-<h4 id="if指令"><a href="#if指令" class="headerlink" title="if指令"></a>if指令</h4><p>不妨先看例子<br>测试类中添加如下语句<br>root.put(“random”, new Random().nextInt(100));</p>
-<p>模板文件添加如下语句</p>
-<blockquote>
-<p>if语句测试：</p>
-<h2 id="msg-是-lt-if-msg-”world”-gt-is-right-lt-if-gt"><a href="#msg-是-lt-if-msg-”world”-gt-is-right-lt-if-gt" class="headerlink" title="${msg}是&lt;#if msg==”world”&gt;is right&lt;/#if&gt;"></a>${msg}是&lt;#if msg==”world”&gt;is right&lt;/#if&gt;</h2><p>if else 语句测试：<br>&lt;#if random gt 60&gt;<br>    及格！<br>&lt;#else&gt;<br>    不及格！</p>
-<h2 id="lt-if-gt"><a href="#lt-if-gt" class="headerlink" title="&lt;/#if&gt;"></a>&lt;/#if&gt;</h2><p>if else if else语句测试：<br>&lt;#if random gte 90&gt;<br>    优秀！<br>&lt;#elseif random gte 80&gt;<br>    良好！<br>&lt;#else&gt;<br>    一般！<br>&lt;/#if&gt;</p>
-</blockquote>
-<p>随机输出结果:<br>if语句测试：</p>
-<h2 id="gt-world是is-right"><a href="#gt-world是is-right" class="headerlink" title="&gt;world是is right"></a>&gt;world是is right</h2><p>if else 语句测试：</p>
-<pre><code>及格！
-</code></pre><hr>
-<p>if else if else语句测试：<br>    优秀！</p>
-<p>其中运用了比较运算符</p>
-<ol>
-<li>=（或者==）： 判断两个值是否相等；</li>
-<li>!=： 判断两个值是否不相等；<br>注： =和!=可以用作字符串、数值和日期的比较，但两边的数据类型必须相同。而且FreeMarker的比较是精确比较，不会忽略大小写及空格。</li>
-<li><blockquote>
-<p>（或者gt）： 大于</p>
-</blockquote>
-</li>
-<li><blockquote>
-<p>=（或者gte）： 大于等于</p>
-</blockquote>
-</li>
-<li>&lt;（或者lt）： 小于</li>
-<li>&lt;=（或者lte）： 小于等于<br>注： 上面这些比较运算符可以用于数字和日期，但不能用于字符串。大部分时候，使用gt比&gt;有更好的效果，因为FreeMarker会把&gt;解释成标签的结束字符。可以使用括号来避免这种情况，如：&lt;#if (x&gt;y)&gt;。</li>
-</ol>
-<h4 id="list指令"><a href="#list指令" class="headerlink" title="list指令"></a>list指令</h4><p>首先添加一个address类<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">public class Address &#123;</div><div class="line"></div><div class="line">	</div><div class="line">	private String country;</div><div class="line">	public String getCountry() &#123;</div><div class="line">		return country;</div><div class="line">	&#125;</div><div class="line">	public void setCountry(String country) &#123;</div><div class="line">		this.country = country;</div><div class="line">	&#125;</div><div class="line">	public String getCity() &#123;</div><div class="line">		return city;</div><div class="line">	&#125;</div><div class="line">	public void setCity(String city) &#123;</div><div class="line">		this.city = city;</div><div class="line">	&#125;</div><div class="line">	public Address(String country, String city) &#123;</div><div class="line">		super();</div><div class="line">		this.country = country;</div><div class="line">		this.city = city;</div><div class="line">	&#125;</div><div class="line">	private String city;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>然后测试类中添加如下语句</p>
-<blockquote>
-<p>List list = new ArrayList();<br>        list.add(new Address(“中国”,”北京”));<br>        list.add(new Address(“中国”,”上海”));<br>        list.add(new Address(“美国”,”纽约”));<br>        root.put(“lst”, list);</p>
-</blockquote>
-<p>模板文件添加如下</p>
-<blockquote>
-<p>测试list指令：<br>&lt;#list lst as temp &gt;<br>    <b>${temp.country}</b> <br><br>&lt;/#list&gt;</p>
-</blockquote>
-<h4 id="include指令"><a href="#include指令" class="headerlink" title="include指令"></a>include指令</h4><p>在templates目录下随便写一个文件，比如tt.txt，里面目前只有test字符<br>模板文件增加如下：<br>&lt;#include “tt.txt” /&gt;<br>将增加tt.txt里面的文本内容到该模板文件中</p>
-<h4 id="macro指令"><a href="#macro指令" class="headerlink" title="macro指令"></a>macro指令</h4><p>该指令为宏指令，相当于定义函数和参数<br>第一个为函数名，后面为参数可有可无<br>如：</p>
-<blockquote>
-<p>&lt;#macro tt&gt;<br>hello<br>world<br>&lt;/#macro&gt;</p>
-</blockquote>
-<p>引用&lt;@tt /&gt;<br>输出结果<br>hello<br>world</p>
-<p>定义待参宏指令<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-id">#macro</span> func <span class="selector-tag">a</span> b&gt;</div><div class="line">$&#123;a&#125;,$&#123;b&#125;</div><div class="line">&lt;/#macro&gt;</div><div class="line"></div><div class="line">&lt;@func a=<span class="string">'hello'</span> b=<span class="string">'world'</span>/&gt;</div></pre></td></tr></table></figure></p>
-<p>输出结果为hello，world</p>
-<p>nested指令<br>该指定是插入引入的内容到相应位置如：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-id">#macro</span> <span class="attribute">border</span>&gt; </div><div class="line"> before </div><div class="line">    &lt;#nested&gt; </div><div class="line">    after</div><div class="line">&lt;/#macro&gt;</div><div class="line"></div><div class="line">&lt;@<span class="attribute">border</span> &gt;now&lt;/@border&gt;</div></pre></td></tr></table></figure></p>
-<p>输出结果为<br>before now after</p>
-<p>命名空间<br>当运行 FTL 模板时，就会有使用 assign 和 macro 指令创建的变量的集合，当引用不同的模板，就需要使用import指令<br>比如创建如下b.ftl<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-id">#macro</span> copyright date&gt;</div><div class="line">  &lt;p&gt;Copyright (C) $&#123;date&#125; &lt;/p&gt; </div><div class="line">&lt;/#macro&gt; </div><div class="line">&lt;<span class="selector-id">#assign</span> mail = <span class="string">"zwl"</span>&gt;</div><div class="line"></div><div class="line">在测试模板中</div><div class="line">测试命名空间：</div><div class="line">&lt;<span class="selector-id">#import</span> <span class="string">"b.ftl"</span> as bb  /&gt;</div><div class="line">&lt;@bb<span class="selector-class">.copyright</span> date=<span class="string">"2013-2017"</span> /&gt;</div><div class="line">$&#123;bb.mail&#125;</div></pre></td></tr></table></figure></p>
-<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><p>一、直接指定值<br>直接指定值可以是字符串、数值、布尔值、集合及Map对象。</p>
-<ol>
-<li><p>字符串<br>直接指定字符串值使用单引号或双引号限定。字符串中可以使用转义字符”\”。如果字符串内有大量的特殊字符，则可以在引号的前面加上一个字母r，则字符串内的所有字符都将直接输出。</p>
-</li>
-<li><p>数值<br>数值可以直接输入，不需要引号。FreeMarker不支持科学计数法。</p>
-</li>
-<li><p>布尔值<br>直接使用true或false，不使用引号。</p>
-</li>
-<li><p>集合<br>集合用中括号包括，集合元素之间用逗号分隔。<br>使用数字范围也可以表示一个数字集合，如1..5等同于集合[1, 2, 3, 4, 5]；同样也可以用5..1来表示[5, 4, 3, 2, 1]。</p>
-</li>
-<li><p>Map对象<br>Map对象使用花括号包括，Map中的key-value对之间用冒号分隔，多组key-value对之间用逗号分隔。<br>注意：Map对象的key和value都是表达式，但key必须是字符串</p>
-</li>
-</ol>
-<p>6.时间对象<br>如：root.put(“date1”, new Date());<br>输出:${date1?string(“yyyy-MM-dd HH:mm”)}<br>其中后面的为日期输出格式</p>
-<ol>
-<li>JAVABEAN的处理<br>Freemarker中对于javabean的处理跟EL表达式一致，类型可自动转化</li>
-</ol>
-<p>二、输出变量值<br>FreeMarker的表达式输出变量时，这些变量可以是顶层变量，也可以是Map对象的变量，还可以是集合中的变量，并可以使用点（.）语法来访问Java对象的属性。</p>
-<ol>
-<li>顶层变量<br>所谓顶层变量就是直接放在数据模型中的值。输出时直接用${variableName}即可</li>
-</ol>
-<p>输出集合元素<br>可 以根据集合元素的索引来输出集合元素，索引用中括号包括。如： 输出[“1”， “2”， “3”]这个名为number的集合，可以用${number[0]}来输出第一个数字。FreeMarker还支持用number[1..2]来表示原 集合的子集合[“2”， “3”]。</p>
-<ol>
-<li><p>输出Map元素<br>对于JavaBean实例，FreeMarker一样把它看作属性为key，属性值为value的Map对象。<br>输出Map对象时，可以使用点语法或中括号语法，如下面的几种写法的效果是一样的：</p>
-<pre><code>book.author.name                                                                                book.author[&quot;name&quot;]                                                                              book[&quot;author&quot;].name                                                                            book[&quot;author&quot;][&quot;name&quot;]                                            
-</code></pre><p>字符串操作</p>
-</li>
-<li>字符串连接<br>直接使用+连接<br>截取子串<br>截取子串可以根据字符串的索引来进行，如果指定一个索引值，则取得字符串该索引处的字符；如果指定两个索引值，则截取两个索引中间的字符串子串。如：<pre><code>&lt;#assign number=&quot;01234&quot;&gt;
-${number[0]} &lt;#-- 输出字符0 --&gt;
-${number[0..3]} &lt;#-- 输出子串“0123” --&gt;
-</code></pre></li>
-</ol>
-<p>内建函数<br>FreeMarker提供了一些内建函数来转换输出，可以在任何变量后紧跟?，?后紧跟内建函数，就可以通过内建函数来转换输出变量。</p>
-<p>字符串相关常用的内建函数：</p>
-<ol>
-<li>html： 对字符串进行HTML编码；</li>
-<li>cap_first： 使字符串第一个字母大写；</li>
-<li>lower_case： 将字符串转成小写；</li>
-<li>upper_case： 将字符串转成大写；</li>
-</ol>
-<p>集合相关常用的内建函数：</p>
-<ol>
-<li>size： 获得集合中元素的个数；</li>
-</ol>
-<p>数字值相关常用的内建函数：</p>
-<ol>
-<li>int： 取得数字的整数部分。</li>
-</ol>
-<p>举例：<br>root.put(“htm2”, “<b>粗体</b>“);<br>内建函数：<br>${htm2?html}</p>
-<p>其它类型<br>集合连接操作<br>Map连接操作<br>算术运算符<br>比较运算符<br>逻辑运算符<br>空值处理运算符</p>
-<p>数据类型常见示例<br> 直接指定值<br>   字符串 ： “Foo”或 者’Foo’或”It’s \”quoted\””或r”C:\raw\string”<br>   数字：123.45<br>   布尔值：true, false<br>   序列：[“foo”, “bar”, 123.45], 1..100<br>   哈希表：{“name”:”green mouse”, “price”:150}<br>   检索变量    顶层变量：user<br>   从哈希表中检索数据：user.name, user[“name”]<br>   从序列中检索：products[5]<br>   特殊变量：.main<br>   字符串操作<br>   插值（或连接）：”Hello ${user}!”（或”Free” + “Marker”）<br>   获取一个字符：name[0]<br>   序列操作<br>   连接：users + [“guest”]<br>   序列切分：products[10..19]  或  products[5..]<br>   哈希表操作<br>   连接：passwords + {“joe”:”secret42”}<br>   算数运算: (x * 1.5 + 10) / 2 - y % 100<br>   比 较 运 算 ： x == y,   x != y,   x &lt; y,   x &gt; y,   x &gt;= y,   x &lt;= y,<br>x &lt; y,  等等<br>    逻辑操作：!registered &amp;&amp; (firstVisit || fromEurope)<br>    内建函数：name?upper_case<br>    方法调用：repeat(“What”, 3)<br>   处理不存在的值<br>   默认值：name!”unknown”  或者(user.name)!”unknown”  或者<br>name!  或者  (user.name)!<br>   检测不存在的值：name?? 或者(user.name)??</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;FreeMarker是一个模板引擎，一个基于模板生成文本输出的通用工具。简单比如来说，html作为只关心前台，无后台数据，而后台数据通过fr
-    
-    </summary>
-    
-      <category term="FreeMarker" scheme="http://www.myzwl.win/categories/FreeMarker/"/>
-    
-    
-      <category term="FreeMarker" scheme="http://www.myzwl.win/source/tags/FreeMarker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>redis笔记四之搭建伪集群</title>
-    <link href="http://www.myzwl.win/2017/11/07/redis_4/"/>
-    <id>http://www.myzwl.win/2017/11/07/redis_4/</id>
-    <published>2017-11-07T06:48:51.000Z</published>
-    <updated>2017-12-08T08:12:44.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>在redis3.0之前，提供了哨兵的机制，即如果主服务器down掉，哨兵会监听到并且通知一个从服务器使其成为主服务器。但是可以通过集群解决这一问题，即分别分配多组不同的主从服务器，并且每次存储的业务数据不同与存储的机器也不一样，也就是真正的分布式系统，大大提高了容错率，由于笔者目前只有两台linux服务器，所以只是在其中一台上通过建立6个目录来模拟集群，真正的集群是将目录换成机器<br>不多说，实践是检验真理的唯一标准</p>
-<h4 id="集群搭建步骤"><a href="#集群搭建步骤" class="headerlink" title="集群搭建步骤"></a>集群搭建步骤</h4><p>第一步：创建一个文件夹redis-cluster，然后在其下面分别创建6个文件夹如下：</p>
-<blockquote>
-<p>1.mkdir -p /usr/local/redis-cluster<br>2.mkdir 1001,mkdir 1002,mkdir 1003,mkdir 1004,mkdir 1005,mkdir 1006</p>
-</blockquote>
-<p>第二步：把之前的redis.conf配置文件分别copy到1001-1006文件夹下，然后需要修改下面信息，</p>
-<blockquote>
-<p>1.daemonize yes 后端启动<br>2 port 700*（分别对每个机器的端口号设置，注意每个文件夹这里不一样）</p>
-<ol>
-<li>bind 127.0.0.1(绑定当前机器的ip)</li>
-<li>dir /usr/local/redis-cluster/700<em>/（指定数据文件的存放位置，每个文件夹对应不同文件）<br>5.cluster-enabled yes(启动集群模式)<br>6.cluster-config-file nodes700</em>.conf(集群的配置文件)<br>7.cluster-node-timeout 15000 集群失效时间<br>8.appendonly yes 开启aof日志方式</li>
-</ol>
-</blockquote>
-<p>第三步：安装ruby（针对不同的linux版本，命令不一样）</p>
-<blockquote>
-<p>sudo apt-get install ruby<br> sudo apt-get install rubygems<br> gem install redis</p>
-</blockquote>
-<p> 第四步：分别启动6个redis实例，然后检查是否启动成功</p>
-<blockquote>
-<p>/usr/local/redis3/bin/redis-server /usr/local/redis-cluster/700*/redis.conf<br> 同时redis的同一个服务，但是对于的redis.conf不同<br> 查看是否启动成功<br> ps -ef | grep redis</p>
-</blockquote>
-<p> 第五步：找到redis的安装目录，在src下找到redis-trib.rb文件</p>
-<blockquote>
-<p>./redis-trib.rb create–replicas 1 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 127.0.0.1:7006<br> 其中参数1是主从对应关系，也就说前面三个是主，后面三个是从，是1:1</p>
-</blockquote>
-<p> 第六步：检测集群是否成功<br> 使用命令netstat -tunp | grep redis<br> 如果出现上面几个端口，证明集群成功</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;在redis3.0之前，提供了哨兵的机制，即如果主服务器down掉，哨兵会监听到并且通知一个从服务器使其成为主服务器。但是可以通过集群解决这
-    
-    </summary>
-    
-      <category term="分布式" scheme="http://www.myzwl.win/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
-    
-    
-      <category term="redis" scheme="http://www.myzwl.win/source/tags/redis/"/>
     
   </entry>
   

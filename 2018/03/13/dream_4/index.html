@@ -123,7 +123,7 @@ mysql 索引使用的是B+的数据结构索引：用于提高数据访问速度
 <meta property="og:site_name" content="秒西">
 <meta property="og:description" content="mysql 使用的引擎A:1)MyIsam 不支持事务，适用于选择密集型，插入密集型，mysql 默认的引擎2)innodb 使用于更新密集型，支持事务，自动灾难恢复，行级锁，外键约束3）memory 出发点是速度采用的逻辑存储介质是内存4）merge 一组myisam 表的组合
 mysql 索引使用的是B+的数据结构索引：用于提高数据访问速度的数据库对象。优点：1）索引可以避免全表扫描；2）对于">
-<meta property="og:updated_time" content="2018-03-18T15:39:08.000Z">
+<meta property="og:updated_time" content="2018-03-21T08:17:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库总结">
 <meta name="twitter:description" content="mysql 使用的引擎A:1)MyIsam 不支持事务，适用于选择密集型，插入密集型，mysql 默认的引擎2)innodb 使用于更新密集型，支持事务，自动灾难恢复，行级锁，外键约束3）memory 出发点是速度采用的逻辑存储介质是内存4）merge 一组myisam 表的组合
@@ -620,6 +620,7 @@ var _hmt = _hmt || [];
 <h4 id="数据库设计三范式是什么"><a href="#数据库设计三范式是什么" class="headerlink" title="数据库设计三范式是什么"></a>数据库设计三范式是什么</h4><p>第一范式：字段还可以再分吗？如过不能，则是符合1NF的设计。<br>第二范式：2NF是对记录的惟一性约束，要求记录有惟一标识，即实体的惟一性；<br>也就是说主键列与非主键列遵循完全函数依赖关系<br>第三范式：3NF是对字段冗余性的约束，即任何字段不能由其他字段派生出来，它要求字段没有冗余。<br>也就是说非主键列之间没有传递函数依赖关系<br>打个比方，比如评论表，如果你将用户ID，用户头像都放在这留言表中，就是不合适的了。用户头像是依赖于用户ID，而不依赖该评论。</p>
 <h4 id="悲观锁和乐观锁的比较"><a href="#悲观锁和乐观锁的比较" class="headerlink" title="悲观锁和乐观锁的比较"></a>悲观锁和乐观锁的比较</h4><p>面试思路：什么是锁，用来干什么&gt;悲观锁乐观锁各自特点&gt;优缺点比较和各自应用场景<br>数据库管理系统（DBMS）中的并发控制的任务是确保在多个事务同时存取数据库中同一数据时不破坏事务的隔离性和统一性以及数据库的统一性。<br>悲观锁:<br>简单来说悲观锁认什么操作都可以改变数据，所以在改数据就锁住（在sql语句中加上for update就可以了）<br>乐观锁：<br>简单来说乐观锁很乐观 所以修改数据库后锁住 （一般在数据库中加上一个字段区别历史版本和当前版本）<br>update t_goods<br>set status=2,version=version+1<br>where id=#{id} and version=#{version};<br>使用版本号时，可以在数据初始化时指定一个版本号，每次对数据的更新操作都对版本号执行+1操作。并判断当前版本号是不是该数据的最新的版本号。</p>
 <h4 id="mysql实现分页的优化sql语句"><a href="#mysql实现分页的优化sql语句" class="headerlink" title="mysql实现分页的优化sql语句"></a>mysql实现分页的优化sql语句</h4><p>面试思路：数据库分页的简单实现&gt;数据量变大时的优化方案<br>sql语句是LIMIT m,n其中m是当前页，n是从当前页数n个记录，如果参数为一个就是数n个记录<br>一般我们都会这样写:当数据达到百万级的时候会慢死<br>    SELECT FROM table ORDER BY id LIMIT 1000000, 10;<br>    优化一：<br>    SELECT FROM table WHERE id &gt;= (SELECT id FROM table LIMIT 1000000, 1) LIMIT 10;<br>    速度可以提升到0.x秒了<br>    优化二：<br>    SELECT FROM table WHERE id BETWEEN 1000000 AND 1000010;<br>    比上面提升5到10倍<br>    另外，如果需要查询 id 不是连续的一段，最佳的方法就是先找出 id ，然后用 in 查询<br>    SELECT FROM table WHERE id IN(10000, 100000, 1000000…);</p>
+<h4 id="sql优化"><a href="#sql优化" class="headerlink" title="sql优化"></a>sql优化</h4><p>1)对查询进行优化，要尽量避免全表扫描。在where 或order by 的列上加索<br>引。<br>2）尽量避免在where 子语句中有where num is null，这样不用索引，要全表扫描，可<br>用0 代替null。<br>3）避免在where 中用&lt;&gt;or!=,因为要全表扫描。<br>4）尽量避免在where 中用or，因为若一个字段有索引，一个没有，则要全表扫描。<br>5）like”%abc%”，全表扫描。<br>6）避免在where 子语句中对字段进行函数操作，因为要全表扫描。<br>7）使用复合索引时，必须用到该索引的第一个字段，否则索引不被使用。</p>
 
       
     </div>
@@ -779,7 +780,7 @@ var _hmt = _hmt || [];
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">168</span>
+                <span class="site-state-item-count">171</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -857,7 +858,7 @@ var _hmt = _hmt || [];
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql-使用的引擎"><span class="nav-text">mysql 使用的引擎</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql-索引使用的是B-的数据结构"><span class="nav-text">mysql 索引使用的是B+的数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#连接关联"><span class="nav-text">连接关联</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#共享锁VS-排他锁"><span class="nav-text">共享锁VS 排他锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事务隔离级别"><span class="nav-text">事务隔离级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是事务"><span class="nav-text">什么是事务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库设计三范式是什么"><span class="nav-text">数据库设计三范式是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#悲观锁和乐观锁的比较"><span class="nav-text">悲观锁和乐观锁的比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql实现分页的优化sql语句"><span class="nav-text">mysql实现分页的优化sql语句</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql-使用的引擎"><span class="nav-text">mysql 使用的引擎</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql-索引使用的是B-的数据结构"><span class="nav-text">mysql 索引使用的是B+的数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#连接关联"><span class="nav-text">连接关联</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#共享锁VS-排他锁"><span class="nav-text">共享锁VS 排他锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事务隔离级别"><span class="nav-text">事务隔离级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是事务"><span class="nav-text">什么是事务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库设计三范式是什么"><span class="nav-text">数据库设计三范式是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#悲观锁和乐观锁的比较"><span class="nav-text">悲观锁和乐观锁的比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql实现分页的优化sql语句"><span class="nav-text">mysql实现分页的优化sql语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sql优化"><span class="nav-text">sql优化</span></a></li></ol></div>
             
 
           </div>

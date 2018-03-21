@@ -123,7 +123,7 @@
 <meta property="og:site_name" content="秒西">
 <meta property="og:description" content="线性表之顺序表数组是顺序存储的随机存取结构，占用一组连续的存储单元，通过下标识别元素，元素地址是下标的线性函数，一个下标能唯一确定一个元素模拟ArrayList
 线性表之单链表 线性表的链式存储是用若干地址分散的存储单元存储数据元素，逻辑上相连的数据元素在物理位置上不一定相连，必须采用附加信息表示数据元素之间的关系，并且存储单元至少包含两部分-数据域和地址域单链表中结点只有一个地址并且指向后继结点">
-<meta property="og:updated_time" content="2018-03-18T15:47:52.000Z">
+<meta property="og:updated_time" content="2018-03-21T08:17:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据结构总结">
 <meta name="twitter:description" content="线性表之顺序表数组是顺序存储的随机存取结构，占用一组连续的存储单元，通过下标识别元素，元素地址是下标的线性函数，一个下标能唯一确定一个元素模拟ArrayList
@@ -643,7 +643,8 @@ var _hmt = _hmt || [];
 <p>TreeMap<br>底层是由红黑树实现，当需要键值对，并关心元素的自然排序时可采用它</p>
 <p>Collections<br>内置了一些常见的集合算法，像排序，查找算法等</p>
 <p>13.并发集合类是什么？<br>Java1.5并发包（java.util.concurrent）包含线程安全集合类，允许在迭代时修改集合。迭代器被设计为fail-fast的，会抛出ConcurrentModificationException。一部分类为：CopyOnWriteArrayList、 ConcurrentHashMap、CopyOnWriteArraySet。</p>
-<h4 id="多路查找树"><a href="#多路查找树" class="headerlink" title="多路查找树"></a>多路查找树</h4><p>每一个结点的孩子数可以多于两个，且每一个结点处可以存储多个元素<br>2-3树、2-3-4树<br>B树、B+树、红黑树</p>
+<h4 id="多路查找树"><a href="#多路查找树" class="headerlink" title="多路查找树"></a>多路查找树</h4><p>每一个结点的孩子数可以多于两个，且每一个结点处可以存储多个元素<br>2-3树、2-3-4树<br>B树、B+树、</p>
+<h4 id="说说红黑树"><a href="#说说红黑树" class="headerlink" title="说说红黑树"></a>说说红黑树</h4><p>红黑树—使二叉搜索树更加平衡：他是一种二叉搜索树，但在每个节点上增加一个存储<br>位表示节点的颜色，可是red 或black，红黑树的查找、插入、删除的时间复杂度最坏为O(lgn)。<br>因为由n 个节点随机生成的二叉搜索树的高度为lgn，所以二叉搜索树的一般操作的执行时<br>间为O(lgn)。如何保证一颗n 个节点的红黑树的高度始终为lgn，因为红黑树的5 个性质：<br>1）每个节点，要么红的，要么黑的<br>2）根节点是黑的<br>3）叶节点都是黑的，指的是NIL 指针<br>4）若一个节点时红的，则它的两个儿子都是黑的。<br>5）对于任意节点而言，其到叶节点数尾端NIL 指针的每条路径都包含相同数目的叶节点。</p>
 
       
     </div>
@@ -803,7 +804,7 @@ var _hmt = _hmt || [];
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">168</span>
+                <span class="site-state-item-count">171</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -881,7 +882,7 @@ var _hmt = _hmt || [];
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#线性表之顺序表"><span class="nav-text">线性表之顺序表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线性表之单链表"><span class="nav-text">线性表之单链表 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线性表之双链表"><span class="nav-text">线性表之双链表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#串之字符串"><span class="nav-text">串之字符串 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#栈"><span class="nav-text">栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#顺序与链式队列"><span class="nav-text">顺序与链式队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#树和二叉树"><span class="nav-text">树和二叉树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hash散列表"><span class="nav-text">hash散列表 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二叉排序树"><span class="nav-text">二叉排序树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#哈夫曼树"><span class="nav-text">哈夫曼树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图"><span class="nav-text">图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集合简单总结"><span class="nav-text">集合简单总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多路查找树"><span class="nav-text">多路查找树</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#线性表之顺序表"><span class="nav-text">线性表之顺序表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线性表之单链表"><span class="nav-text">线性表之单链表 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线性表之双链表"><span class="nav-text">线性表之双链表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#串之字符串"><span class="nav-text">串之字符串 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#栈"><span class="nav-text">栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#顺序与链式队列"><span class="nav-text">顺序与链式队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#树和二叉树"><span class="nav-text">树和二叉树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hash散列表"><span class="nav-text">hash散列表 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二叉排序树"><span class="nav-text">二叉排序树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#哈夫曼树"><span class="nav-text">哈夫曼树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图"><span class="nav-text">图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集合简单总结"><span class="nav-text">集合简单总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多路查找树"><span class="nav-text">多路查找树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说说红黑树"><span class="nav-text">说说红黑树</span></a></li></ol></div>
             
 
           </div>

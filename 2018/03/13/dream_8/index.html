@@ -1,0 +1,1202 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="自我救赎," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="说一说servlet的生命周期1）构造函数：只有第一次请求servlet 时，创建servlet 实例，调用构造器，这说明servlet 是单例的，所以又线程安全问题，只被调用一次2）init：只被调用一次，在创建好实例后，立即被调用，用来初始化servlet3）service：被多次调用，每次请求都会调用service，实际响应请求。4）destory：只被调用一次，在当前servlet 所在的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javaweb基础总结">
+<meta property="og:url" content="http://www.myzwl.win/2018/03/13/dream_8/index.html">
+<meta property="og:site_name" content="秒西">
+<meta property="og:description" content="说一说servlet的生命周期1）构造函数：只有第一次请求servlet 时，创建servlet 实例，调用构造器，这说明servlet 是单例的，所以又线程安全问题，只被调用一次2）init：只被调用一次，在创建好实例后，立即被调用，用来初始化servlet3）service：被多次调用，每次请求都会调用service，实际响应请求。4）destory：只被调用一次，在当前servlet 所在的">
+<meta property="og:updated_time" content="2018-03-21T08:16:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="javaweb基础总结">
+<meta name="twitter:description" content="说一说servlet的生命周期1）构造函数：只有第一次请求servlet 时，创建servlet 实例，调用构造器，这说明servlet 是单例的，所以又线程安全问题，只被调用一次2）init：只被调用一次，在创建好实例后，立即被调用，用来初始化servlet3）service：被多次调用，每次请求都会调用service，实际响应请求。4）destory：只被调用一次，在当前servlet 所在的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":true,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.myzwl.win/2018/03/13/dream_8/"/>
+
+
+
+
+
+  <title> javaweb基础总结 | 秒西 </title>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"   background="imags/bg.jpg" style="opacity: 0.7;background-color: transparent;">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秒西</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+	
+	<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+    function c() {
+        var e = document.createElement("link");
+        e.setAttribute("type", "text/css");
+        e.setAttribute("rel", "stylesheet");
+        e.setAttribute("href", f);
+        e.setAttribute("class", l);
+        document.body.appendChild(e)
+    }
+
+    function h() {
+        var e = document.getElementsByClassName(l);
+        for (var t = 0; t < e.length; t++) {
+            document.body.removeChild(e[t])
+        }
+    }
+
+    function p() {
+        var e = document.createElement("div");
+        e.setAttribute("class", a);
+        document.body.appendChild(e);
+        setTimeout(function() {
+            document.body.removeChild(e)
+        }, 100)
+    }
+
+    function d(e) {
+        return {
+            height : e.offsetHeight,
+            width : e.offsetWidth
+        }
+    }
+
+    function v(i) {
+        var s = d(i);
+        return s.height > e && s.height < n && s.width > t && s.width < r
+    }
+
+    function m(e) {
+        var t = e;
+        var n = 0;
+        while (!!t) {
+            n += t.offsetTop;
+            t = t.offsetParent
+        }
+        return n
+    }
+
+    function g() {
+        var e = document.documentElement;
+        if (!!window.innerWidth) {
+            return window.innerHeight
+        } else if (e && !isNaN(e.clientHeight)) {
+            return e.clientHeight
+        }
+        return 0
+    }
+
+    function y() {
+        if (window.pageYOffset) {
+            return window.pageYOffset
+        }
+        return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+    }
+
+    function E(e) {
+        var t = m(e);
+        return t >= w && t <= b + w
+    }
+
+    function S() {
+        var e = document.createElement("audio");
+        e.setAttribute("class", l);
+        e.src = i;
+        e.loop = false;
+        e.addEventListener("canplay", function() {
+            setTimeout(function() {
+                x(k)
+            }, 500);
+            setTimeout(function() {
+                N();
+                p();
+                for (var e = 0; e < O.length; e++) {
+                    T(O[e])
+                }
+            }, 15500)
+        }, true);
+        e.addEventListener("ended", function() {
+            N();
+            h()
+        }, true);
+        e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+        document.body.appendChild(e);
+        e.play()
+    }
+
+    function x(e) {
+        e.className += " " + s + " " + o
+    }
+
+    function T(e) {
+        e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+    }
+
+    function N() {
+        var e = document.getElementsByClassName(s);
+        var t = new RegExp("\\b" + s + "\\b");
+        for (var n = 0; n < e.length; ) {
+            e[n].className = e[n].className.replace(t, "")
+        }
+    }
+
+    var e = 30;
+    var t = 30;
+    var n = 350;
+    var r = 350;
+    var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+    var s = "mw-harlem_shake_me";
+    var o = "im_first";
+    var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+    var a = "mw-strobe_light";
+    var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+    var l = "mw_added_css";
+    var b = g();
+    var w = y();
+    var C = document.getElementsByTagName("*");
+    var k = null;
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            if (E(A)) {
+                k = A;
+                break
+            }
+        }
+    }
+    if (A === null) {
+        console.warn("Could not find a node of the right size. Please try a different page.");
+        return
+    }
+    c();
+    S();
+    var O = [];
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            O.push(A)
+        }
+    }
+})()    '>让标题抖起来</a> </li>
+	
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2018/03/13/dream_8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                javaweb基础总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T10:48:51+08:00">
+                2018-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/自我救赎/" itemprop="url" rel="index">
+                    <span itemprop="name">自我救赎</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="说一说servlet的生命周期"><a href="#说一说servlet的生命周期" class="headerlink" title="说一说servlet的生命周期"></a>说一说servlet的生命周期</h4><p>1）构造函数：<br>只有第一次请求servlet 时，创建servlet 实例，调用构造器，这说明servlet 是单例的，所以又线程安全<br>问题，只被调用一次<br>2）init：<br>只被调用一次，在创建好实例后，立即被调用，用来初始化servlet<br>3）service：<br>被多次调用，每次请求都会调用service，实际响应请求。<br>4）destory：<br>只被调用一次，在当前servlet 所在的web 应用被卸载前调用，用于释放当前servlet 所占用的资源。</p>
+<h4 id="servlet-API中forward（）与redirect（）区别"><a href="#servlet-API中forward（）与redirect（）区别" class="headerlink" title="servlet API中forward（）与redirect（）区别"></a>servlet API中forward（）与redirect（）区别</h4><p>从地址栏显示来说：<br>forward是服务器请求的地址资源，通过内部转发方式最后只返回一次内容，而redirect是重新转发，也就是需要经过两次请求与响应<br>从数据共享来说<br>forward可以共享request里的数据，而redirect不行，forward是服务器内部的一种操作，而redirect是服务器通知客户端，然后客户端重新发起请求<br>从运用地方<br>forward一般用于用户登录的时候，根据角色转发到相应的模块<br>redirect一般用于用户注销登录时返回主页和跳转到其它的网站<br>从效率上<br>forward高，redirect低</p>
+<h4 id="request-getAttribute-和request-getParameter-有什么区别"><a href="#request-getAttribute-和request-getParameter-有什么区别" class="headerlink" title="request.getAttribute()和request.getParameter()有什么区别"></a>request.getAttribute()和request.getParameter()有什么区别</h4><p>后者取得通过容器的实现来取得通过类似post，get等方式传入的数据<br>前者返回对象，后者返回字符串</p>
+<h4 id="Http中get和post方法区别"><a href="#Http中get和post方法区别" class="headerlink" title="Http中get和post方法区别"></a>Http中get和post方法区别</h4><p>1.get请求的数据会被浏览器缓存起来，并以明文方式出现在url中，不太安全而post则更安全<br>2get传输数据有大小限制get请求的参数会跟在url后进行传递</p>
+<h4 id="说说Cookie"><a href="#说说Cookie" class="headerlink" title="说说Cookie"></a>说说Cookie</h4><p>http 都是无状态的协议，web 服务器不能识别出哪些请求是同一个浏览器发的，浏览器的每一次请求都是完全独立的<br>Cookie 放在浏览器端，浏览器第一次范围服务器时，没有cookie，then 服务器给浏览<br>器一个cookie，以后每次浏览器访问服务器都要带上这个cookie。Jsp 是服务端<br>&lt;% 1.创建一个cookie 对象Cookie cookie =new Cookie(“name”,”jhb”);<br>2.调用response 的一个方法把cookie 传输给客户端<br>Response.addCookie（cookie）;%&gt;<br>默认情况下cookie 是会话级别，存储在浏览器内存中，用户退出浏览器之后被删除，<br>若希望浏览器将cookie 存在磁盘上，则要使用maxage，并给一个以秒为单位的时间，表示<br>cookie 的存活时间。<br>Cookie 作用范围：可以作用当前目录和当前目录的子目录，但不能作用与当前目录的上<br>一级。<br>Cookie:在客户端保持http 状态信息的方案，会话跟踪。</p>
+<h4 id="说说session"><a href="#说说session" class="headerlink" title="说说session"></a>说说session</h4><p>在服务器端保持http 状态信息<br>当浏览器第一次范围服务器时，没有cookie，服务器也就得不到JSession_id，then 服<br>务器创建一个session 对象，并返回一个JSession_id 给浏览器，通过cookie 返回，下次浏览<br>器再访问服务器时就带上cookie（其中有JSession_id），服务器就能找到对应的session 对<br>象。JSession_id 可以通过cookie 传输，也可以通过url 传送。</p>
+<p>一个session，对应一个sessionID</p>
+<p>Session：浏览器和服务器的一次会话，若浏览器不关，至始至终都是一个session，因<br>为用cookie 传送。<br>当程序需要为某给客户端的请求创建session 时，服务器首先检查这个客户端的请<br>求是否包含一个session 标识，即JSession_id，如果包含，则说明以前已经为此客户创建过<br>JSession_id，服务器就按照这个JSession_id 检索出来（若检索不到，可能会新建一个，这种<br>情况下可能会出现在服务器已经删除了该用户对应的session 对象。但用户人为的在请求的<br>URL 上附加衣蛾JSession_id 的参数。）如不包含则创建一个session，并生成与这个session<br>有关的JSession_id，这个JSession_id 将在本次响应中返回给客户端。<br>默认session 用cookie</p>
+<p>若第一次访问某web 应用程序的一个jsp 页面，且该jsp 页面的page 指定session=true，<br>服务器会创建一个httpsession 对象。<br>注：关闭浏览器只是使存储在浏览器内存中的session cookie 失效，不会使服务器端的<br>session 对象失效</p>
+<h4 id="xml-解析技术"><a href="#xml-解析技术" class="headerlink" title="xml 解析技术"></a>xml 解析技术</h4><p>1）dom：必须在解析之前把整个文档装入内存，处理大型文件时，性能低，适合xml 随机访问。<br>2）sax：事件驱动，它顺序读取xml 文件，不需要一次全部载入整个文件。当遇到文件开头，文档结束or 标签开头or 标签结束时，他会触发一个事件，用户通过在其回调事件中写入处理代码来处理xml 文件，适合顺序访问</p>
+<h4 id="多个请求映射到同一个jsp-页面"><a href="#多个请求映射到同一个jsp-页面" class="headerlink" title="多个请求映射到同一个jsp 页面"></a>多个请求映射到同一个jsp 页面</h4><p>1）这几个请求的名字都为xxx.do,all 以.do 结尾的都映射到同一个servlet。<br>2）用request 获得path，即/xxx.do。<br>3）去掉后面的.do 和前面的”/”，得到方法名,即xxx。<br>4）利用反射调用相关方法</p>
+<h4 id="Httpsession-生命周期"><a href="#Httpsession-生命周期" class="headerlink" title="Httpsession 生命周期"></a>Httpsession 生命周期</h4><p>1）什么时候创建httpsession？<br>答案：1.是否浏览器访问服务器<br>的任何一个jsp 或者servlet，服务器都会创建一个httpsession？不一定，设置session=false，<br>若当前jsp 是客户端访问的当前web 应用的第一个资源，且page 指定的session=false，则服<br>务器不会为jsp 创建session 对象。若当前jsp 不是客户端访问的当前web 应用的第一个资源，<br>且其他页面已经创建了其他httpsession 对象，则返回一个和当前会话相关的httpsession 对<br>象，不创建一个新对象。</p>
+<p>2.session=false 是什么意思<br>当前jsp 页面禁用session 隐含变量，但可以使用其他的显示的httpsession 的对象</p>
+<p>3.对于servlet，若servlet 是客户端访问的第<br>一个web 应用资源，只有调用request.getSession（）或除了1 和2 以外，只要访问jsp，则<br>要创建session 对象。</p>
+<p>4.什么时候销毁session 对象<br>1.直接调用httpsession 的invalidate 方法，该方法使httpsession 失效。<br>2.当前web 应用被卸载。<br>3.超出httpsession 的过期时间。</p>
+<h4 id="JavaWeb-servlet-监听器"><a href="#JavaWeb-servlet-监听器" class="headerlink" title="JavaWeb-servlet 监听器"></a>JavaWeb-servlet 监听器</h4><p>监听器：专门用与对其他对象身上发生的事件或状态的改变进行监听or 相应处理的对象。<br>当被监视的对象发生情况时，立即采取相应的行动<br>Servlet 监听器：一种特殊的类，用于ServletContext，httpsession，Servletrequest 等域<br>对象的创建与销毁事情，以及监听这些对象中的属性发生修改的事件<br>监听域对象的创建和销毁<br>    创建时间                            销毁时间<br>ServletContext（application）  web 应用被加载web 应用被销毁<br>Httpsession（session）<br>Servletrequest（request）   每次请求开始时创建每次访问结束后销毁</p>
+<p>ServletContextListener 最为常用，监听ServletContext 对象创建or 销毁的Servlet 监听器，可以在当前web 应用被加载时对当前web 应用的相关资源进行初始化，比如：创建数据库连接池<br>HttpsessionListener：sessioncreated 在session 被创建后调用，sessionDestoryed 在session被销毁前调用。</p>
+<h4 id="域对象生命周期"><a href="#域对象生命周期" class="headerlink" title="域对象生命周期"></a>域对象生命周期</h4><p>1）request：是一个请求，当一个相应返回时被销毁，发一个请求时被创建<br>1.forword 只有一个请求，只有一个request<br>2.response 有两个request<br>2）session：当第<br>一次访问web 应用的一个jsp 或Servlet 时，且该jsp 和Servlet 中还需要创建session 对象，<br>此时服务器会创建一个session 对象<br>3）application：ServletContext 对象。当前web 应用被<br>加载时创建，web 应用被卸载时销毁。</p>
+<h4 id="说说Filter"><a href="#说说Filter" class="headerlink" title="说说Filter"></a>说说Filter</h4><p>1）目的：调用目标资源前让一段代码执行，是否允许用户调用目标资源，调<br>用目标资源之后让一段代码执行<br>2）编写java 类，实现filter 接口，配置filter-mapping，<br>说明对哪些资源进行拦截。<br>3）每次拦截时，都调用filter 的dofilter 方法<br>4）filter 创建和销毁由servlet 容器，在web 应用启动时，创建实例，并调用init 方法，filter 对象只创建一<br>次，init 只执行一次。Destory，容器卸载filter 对象前被调用。<br>5）用户在配置filter 时，可<br>以使用<init-param>为filter 配置一些初始化参数，当web 容器实例化filter 对象时，调用其<br>init 方法，会把封装了filter 初始化参数的filter config 对象初始化，所以开发人员在写filter<br>时，可以用filter config 对象的方法来获得初始化对象。<br>6）应用：统一全站的字符编码；禁止浏览器缓存；实现url 级别的权限认证</init-param></p>
+<h4 id="说说拦截器"><a href="#说说拦截器" class="headerlink" title="说说拦截器"></a>说说拦截器</h4><p>拦截器，在AOP中用于在某个方法或字段被访问之前，进行拦截然后在之前或之后加入某些操作<br>启动顺序 :监听器 &gt; 过滤器 &gt; 拦截器<br>拦截器与过滤器的区别：<br>过滤器Filter依赖于Servlet容器，基于回调函数，过滤范围大。<br>拦截器Interceptor依赖于框架容器，基于反射机制，只过滤请求</p>
+<h4 id="说说集群"><a href="#说说集群" class="headerlink" title="说说集群"></a>说说集群</h4><p>1）伸缩性：系统适应不断增长的用户数的能力。<br>2)高可用性:避免单一服务器的单点失效<br>3)负载均衡:把请求发给不同服务器<br>4）失效转移：当一个节点失效后，通过选择集<br>群中的另一个节点，处理将会继续而不会终止。httpssession 失效转移，用来保证当某台服<br>务器失效以后，会话状态不会丢失，为了支持会话转移，web 服务器将在一定的时候把会话<br>对象备份到其他地方，以防丢失。这个其他地方有jdbc 数据库、其他所有服务器、任意选<br>择其他一台web server、中央server</p>
+<h4 id="Ajax的实现流程是主怎样的"><a href="#Ajax的实现流程是主怎样的" class="headerlink" title="Ajax的实现流程是主怎样的"></a>Ajax的实现流程是主怎样的</h4><p>1创建XMLHttpRequest对象，也就是创建一个异步调用对象<br>2.创建一个新的HTTp请求，并指定该HTTP请求的方法，url及验证信息<br>3设置http请求状态变化的函数<br>4.发送HTTp请求<br>5获取异步调用返回的数据<br>6.使用javascript和DOM实现局部刷新</p>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/自我救赎/" rel="tag"># 自我救赎</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/13/dream_9/" rel="next" title="基本框架基础总结">
+                <i class="fa fa-chevron-left"></i> 基本框架基础总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/13/dream_7/" rel="prev" title="计算机网络总结">
+                计算机网络总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+         <div id="uyan_frame"></div>
+    
+  </div>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description">I believe my dream will come true</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">171</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://www.slycmiaoxi.xyz" target="_blank" title="微型论坛">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微型论坛
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/images/zwl.png" target="_blank" title="Weixin">
+                  
+                    <i class="fa fa-fw fa-weixin"></i>
+                  
+                  Weixin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+      
+        
+
+
+		
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#说一说servlet的生命周期"><span class="nav-text">说一说servlet的生命周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#servlet-API中forward（）与redirect（）区别"><span class="nav-text">servlet API中forward（）与redirect（）区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#request-getAttribute-和request-getParameter-有什么区别"><span class="nav-text">request.getAttribute()和request.getParameter()有什么区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Http中get和post方法区别"><span class="nav-text">Http中get和post方法区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说说Cookie"><span class="nav-text">说说Cookie</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说说session"><span class="nav-text">说说session</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#xml-解析技术"><span class="nav-text">xml 解析技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多个请求映射到同一个jsp-页面"><span class="nav-text">多个请求映射到同一个jsp 页面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Httpsession-生命周期"><span class="nav-text">Httpsession 生命周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaWeb-servlet-监听器"><span class="nav-text">JavaWeb-servlet 监听器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#域对象生命周期"><span class="nav-text">域对象生命周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说说Filter"><span class="nav-text">说说Filter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说说拦截器"><span class="nav-text">说说拦截器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说说集群"><span class="nav-text">说说集群</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ajax的实现流程是主怎样的"><span class="nav-text">Ajax的实现流程是主怎样的</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=86 height=100 src="http://music.163.com/outchain/player?type=0&id=120897804&auto=0&height=90&auto=1&height=86&autoPlay=true" style="width:0px;height:0px;"></iframe>
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+
+
+
+
+
+
+<br/>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+    
+  
+ 
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2127192"></script>
+      <!-- UY END -->
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.min.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {          
+          jQuery("img").lazyload({
+            placeholder:"http://www.arao.me/loading.gif",
+              effect:"fadeIn"
+            });
+          });
+    </script>
+	<!-- 动态线条 -->
+	<script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+	
+
+
+
+</body>
+</html>
