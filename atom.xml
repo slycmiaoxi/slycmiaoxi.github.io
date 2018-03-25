@@ -5,10 +5,38 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2018-03-18T15:29:10.000Z</updated>
+  <updated>2018-03-25T02:10:30.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深刻反思</title>
+    <link href="http://www.myzwl.win/2018/03/24/dream_14/"/>
+    <id>http://www.myzwl.win/2018/03/24/dream_14/</id>
+    <published>2018-03-24T12:48:51.000Z</published>
+    <updated>2018-03-25T02:10:30.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>说来也惭愧，刚上大学那会还挺着迷于算法的，也很喜欢c++（现在估计只会打开编辑器写个hello world了).自从接触java后，就很少在写算法了，导致熟练度直线下降，一遇到复杂的就是写不出来了。<br>说说这几次笔试吧，实际上自己也算是裸考吧。自己是3月10号左右投的很多校招大公司，有些因为学历关系被刷，毕竟hr从好学校选的基础好的概率大，而且计算机基础才是最重要的，有些有些机会，自己也是抱着试一试的态度去尝试，有些因为一些原因，放弃尝试了，就拿几次印象比较深的说一下</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>首先是CVTE，基础部分大概大部分就是java基础，数据库，操作系统、计算机网络，其中java基础很多都是关于反射、jvm和一些调优，而编程部分就是26个字母加密(AC),ipv4-ipv6加解密、问答短信、email危机。<br>然后就是美团，大概分为三个部分，智力题，主要是概率和找规律，话说这部分做的很带劲，但是时间花费太多~，然后就是计算机基础，不过涉及的基本都与java无关，c、c++居多，还是那些重要的基础课程，不过做的贼烂~，最后就是编程题，字符串求距离（AC)、数字字符<br>然后就是头条，五道编程题，说实话被虐的好惨，只做了前两道，求差值(AC),求最小路径次数(复杂度太高,20%)<br>最后不得不说，用java做太占内存了，很后悔丢了c++~</p>
+<h4 id="部分"><a href="#部分" class="headerlink" title="部分"></a>部分</h4><p>当时也没多想，大概就跟着第一思路求解算法<br>求差值（暴力，效率很低)<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">/*给出两个相同长度的由字符 a 和 b 构成的字符串，</div><div class="line">	定义它们的距离为对应位置不同的字符的数量。</div><div class="line">	如串”aab”与串”aba”的距离为 2；串”ba”与串”aa”的距离为 1；</div><div class="line">	串”baa”和串”baa”的距离为 0。</div><div class="line">	下面给出两个字符串 S 与 T，其中 S 的长度不小于 T 的长度。</div><div class="line">	我们用|S|代表 S 的长度，|T|代表 T 的长度，那么在 S 中一共有|S|-|T|+1 个与T长度相同的子串，</div><div class="line">	现在你需要计算 T 串与这些|S|-|T|+1 个子串的距离的和。*/</div><div class="line">	public int distanceofStr(String s,String t)&#123;</div><div class="line">		if(s.length()&lt;t.length()||s.length()==0)return 0;</div><div class="line">		int count=0;</div><div class="line">		int k=0;</div><div class="line">		int slen=s.length();</div><div class="line">		int tlen=t.length();</div><div class="line">		for(int i=0;i&lt;slen-tlen+1;i++)</div><div class="line">			for(int j=0;j&lt;tlen;j++)&#123;</div><div class="line">				 k=i;//暴力后移</div><div class="line">				if(s.charAt(k+j)!=t.charAt(j))&#123;</div><div class="line">					count++;				</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		return count;</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>求差值(具体不记得当时，怎么写的了，只是回忆了大概的)<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public int chazhi(int n,int k,int[] a)&#123;</div><div class="line">        int count=1;</div><div class="line">        int s=1; //第一个值</div><div class="line">        Arrays.sort(a);</div><div class="line"> for(int i=0;i&lt;n&amp;&amp;s&lt;n;i++)&#123;</div><div class="line">	 int j=i;</div><div class="line">	 if(a[j]-a[s]==k||a[j]-a[s]==-k)&#123;</div><div class="line">		s++;</div><div class="line">	 &#125;else&#123;</div><div class="line">		 count++;</div><div class="line">		 j++;</div><div class="line">		 s++;</div><div class="line">	 &#125;</div><div class="line"> &#125;</div><div class="line"> return count;</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>最小规则步数（内存消耗大)<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">private static void getsm()&#123;</div><div class="line">		m=s;</div><div class="line">		s=s+s;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	private static void gets()&#123;</div><div class="line">		s=s+m;</div><div class="line">	&#125;</div><div class="line">	public static String s="a";</div><div class="line">   public static String m=s;</div><div class="line"></div><div class="line">public static void main(String[] args) &#123;</div><div class="line">		 Scanner in = new Scanner(System.in);</div><div class="line">	        int n = in.nextInt();</div><div class="line">	        List&lt;String&gt; list=new ArrayList&lt;String&gt;();</div><div class="line">	        while(s.length()!=n)&#123;</div><div class="line">	        	list.add(s);</div><div class="line">	        	list.add(m);</div><div class="line">	        	if(s.length()&lt;n)&#123;</div><div class="line">	        		if(n%2==0)&#123;</div><div class="line">	        		getsm();&#125;</div><div class="line">	        		else&#123;</div><div class="line">	        			gets();</div><div class="line">	        		&#125;</div><div class="line">	        	&#125;</div><div class="line">	        	else&#123;</div><div class="line">	        		int t=list.size()-1;</div><div class="line">	        		list.remove(t);</div><div class="line">	        		list.remove(t-1);</div><div class="line">	        		s=list.get(t-3);</div><div class="line">	        		m=list.get(t-2);</div><div class="line">	        		gets();</div><div class="line">	        	&#125;</div><div class="line">	        &#125;</div><div class="line">	        System.out.println(list.size()/2);</div><div class="line"></div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="感想"><a href="#感想" class="headerlink" title="感想"></a>感想</h4><p>很多时候，一旦丢了某样东西，就很难在找回来了，也清楚的认识到自己的不足与别人的差距，也知道自己不该继续抱有幻想了，或许考研才是最适合我的，但是已经没有心态在考研了。剩下的日子也不多了，希望自己找到好工作</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;说来也惭愧，刚上大学那会还挺着迷于算法的，也很喜欢c++（现在估计只会打开编辑器写个hello world了).自从接触java后，就很少在
+    
+    </summary>
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/categories/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/source/tags/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+  </entry>
   
   <entry>
     <title>JVM总结</title>
@@ -423,6 +451,89 @@
   </entry>
   
   <entry>
+    <title>linux基础总结三</title>
+    <link href="http://www.myzwl.win/2018/03/10/dream_13/"/>
+    <id>http://www.myzwl.win/2018/03/10/dream_13/</id>
+    <published>2018-03-10T12:48:51.000Z</published>
+    <updated>2018-03-25T02:10:02.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="iptables"><a href="#iptables" class="headerlink" title="iptables"></a>iptables</h4><p>安装iptables<br>systemctil disable firewalld<br>yum install -y iptables-services<br>systemctl start iptables<br>ystemctl status iptables查看状态<br>iptables -I INPUT -p tcp –dport 80 -m state –state NEW -j ACCEPT(开放80)<br>/sbin/iptables -I INPUT -p tcp –dport 80 -j ACCEPT<br>保存 /etc/rc.d/init.d/iptables save<br>查看打开的端口 /etc/init.d/iptables status<br>关闭防火墙<br>1） 永久性生效，重启后不会复原<br>开启： chkconfig iptables on<br>关闭： chkconfig iptables off<br>2） 即时生效，重启后复原<br>开启： service iptables start<br>关闭： service iptables stop<br>查看防火墙状态： service iptables status</p>
+<h4 id="firewall"><a href="#firewall" class="headerlink" title="firewall"></a>firewall</h4><p>firewall-cmd –add-port=8080/tcp –permanent<br>irewall-cmd –remove-port=8080/udp –permanent<br>firewall-cmd –reload 重启防火墙<br>开启firewall：systemctl start firewalld.service<br>停止firewall：systemctl stop firewalld.service<br>禁止firewall开机启动：systemctl disable firewalld.service<br> 查看默认防火墙状态：firewall-cmd –state</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;iptables&quot;&gt;&lt;a href=&quot;#iptables&quot; class=&quot;headerlink&quot; title=&quot;iptables&quot;&gt;&lt;/a&gt;iptables&lt;/h4&gt;&lt;p&gt;安装iptables&lt;br&gt;systemctil disable firewalld&lt;br&gt;
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.myzwl.win/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://www.myzwl.win/source/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux基础总结二</title>
+    <link href="http://www.myzwl.win/2018/03/10/dream_12/"/>
+    <id>http://www.myzwl.win/2018/03/10/dream_12/</id>
+    <published>2018-03-10T11:48:51.000Z</published>
+    <updated>2018-03-25T02:09:50.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="ssh登录远程服务器"><a href="#ssh登录远程服务器" class="headerlink" title="ssh登录远程服务器"></a>ssh登录远程服务器</h4><p>yum install ssh<br>ssh -p 端口 服务器用户名@服务器 ip<br>rpm -qa | grep ssh 查看SSH是否安装<br>vi /etc/ssh/sshd_config(修改用户权限文件）<br>service sshd restart</p>
+<h4 id="用户命令"><a href="#用户命令" class="headerlink" title="用户命令"></a>用户命令</h4><p>useradd 用户名 -m （添加用户)<br>useradd  -g group –G adm,root 用户名(属组)<br>passwd 用户口令的管理<br>userdel -r 用户名 (删除账号)<br>su 用户名 切到其他用户<br>groupadd  用户组<br>groupdel 用户组<br>groupmod  用户组<br>su 用户名 切到其他用户<br>usermod -a -G 组名 用户名 修改用户所在组。。必须在adm和sudo组的用户才能拥有root权限<br>usermod -g root user(添加至组）<br>chmod 776 文件名 则表示当前用户和当前用户组拥有可读可写可执行权限，其他用户拥有可读可写权限<br>chown 用户 文件名 表示修改文件所有者<br>chgrp 用户组 文件名 表示修改用户所在用户组<br>sudo su - ，即可获得root权限进行操作</p>
+<h4 id="与用户账号有关的系统文件"><a href="#与用户账号有关的系统文件" class="headerlink" title="与用户账号有关的系统文件"></a>与用户账号有关的系统文件</h4><p>与用户和用户组相关的信息都存放在一些系统文件中，这些文件包括/etc/passwd, /etc/shadow, /etc/group等<br>/etc/passwd中一行记录对应着一个用户，每行记录又被冒号(:)分隔为7个字段<br>用户名:口令:用户标识号:组标识号:注释性描述:主目录:登录Shell<br>1）”用户名”是代表用户账号的字符串。<br>2）“口令”一些系统中，存放着加密后的用户口令字<br>3）“用户标识号”是一个整数，系统内部用它来标识用户。<br>4）“组标识号”字段记录的是用户所属的用户组。<br>5)“注释性描述”字段记录着用户的一些个人情况。<br>6)“主目录”，也就是用户的起始工作目录。<br>7)用户登录后，要启动一个进程，负责将用户的操作传给内核，这个进程是用户登录到系统后运行的命令解释器或某个特定的程序，即Shell。<br>8)系统中有一类用户称为伪用户（psuedo users）。</p>
+<h4 id="Linux-磁盘管理"><a href="#Linux-磁盘管理" class="headerlink" title="Linux 磁盘管理"></a>Linux 磁盘管理</h4><p>df -h 列出文件系统的整体磁盘使用量<br>du 检查磁盘空间使用量<br>fdisk 用于磁盘分区<br> mount s1 s2 磁盘挂载<br> umount s1 磁盘卸载<br>free -h(-m) 查看内存使用情况<br>ps aux|head -1;ps aux|grep -v PID|sort -rn -k +4|head (获取占用内存资源最多的10个进程)</p>
+<h4 id="yum命令"><a href="#yum命令" class="headerlink" title="yum命令"></a>yum命令</h4><p>yum是一个软件包管理器,基於RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软体包<br> 1.列出所有可更新的软件清单命令：yum check-update<br>2.更新所有软件命令：yum update<br>3.仅安装指定的软件命令：yum install package<br>4.仅更新指定的软件命令：yum update package<br>5.列出所有可安裝的软件清单命令：yum list<br>6.删除软件包命令：yum remove package<br>7.查找软件包 命令：yum search <keyword> </keyword></p>
+<ol>
+<li>清除缓存目录下的软件包 yum clean packages</li>
+<li>安装rpm包 rpm -ivh 包名<br>10.卸载rpm包 rpm -e 包名<br>如:yum remove mysql mysql-server mysql-libs compat-mysql51(删除mysql)<br>安装JDK1.8<br>查看可安装JDK版本： yum list java<em><br>安装指定1.8版本： yum -y install java-1.8.0-openjdk</em><br>查看是否安装成功：java -version<br>设置环境变量vi /etc/profile<br>让修改生效 source /etc/profile</li>
+</ol>
+<h4 id="更换yum源"><a href="#更换yum源" class="headerlink" title="更换yum源"></a>更换yum源</h4><p>默认源：ll /etc/yum.repos.d<br>备份/etc/yum.repos.d/CentOS-Base.repo<br>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup<br>载对应版本repo文件, 放入/etc/yum.repos.d/<br>CentOS5 ：<a href="http://mirrors.163.com/.help/CentOS5-Base-163.repo" target="_blank" rel="external">http://mirrors.163.com/.help/CentOS5-Base-163.repo</a><br>CentOS6 ：<a href="http://mirrors.163.com/.help/CentOS6-Base-163.repo" target="_blank" rel="external">http://mirrors.163.com/.help/CentOS6-Base-163.repo</a><br>生成缓存<br>yum clean all<br>yum makecache</p>
+<h4 id="常见文件命令"><a href="#常见文件命令" class="headerlink" title="常见文件命令"></a>常见文件命令</h4><p>tar -zxvf FileName.tar 解压<br>tar -zcvf FileName.tar DirName 打包并压缩<br>unrar e file.rar 解压rar<br>unzip file.zip 解压zip<br>scp -r 要传输的 用户名@目标地址:目标目录（远程传输）<br>wget 网络地址（下载网络文件）<br>ifconfig（内网）<br>curl ifconfig.me(外网）<br>查看进程 ps -ef | grep <em> 或 ps -aux | grep </em><br>-aux 显示所有状态<br>查看端口 netstat -nap | grep 端口号<br>ps 显示当前进程信息<br>top 动态显示显示当前系统进程信息<br>kill 根据进程id杀死进程<br>kill -9 强制杀死某进程<br>export PATH=/usr/bin:/usr/sbin:/bin:/sbin(保证命令行命令暂时可以使用)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;ssh登录远程服务器&quot;&gt;&lt;a href=&quot;#ssh登录远程服务器&quot; class=&quot;headerlink&quot; title=&quot;ssh登录远程服务器&quot;&gt;&lt;/a&gt;ssh登录远程服务器&lt;/h4&gt;&lt;p&gt;yum install ssh&lt;br&gt;ssh -p 端口 服务器用户名@服务
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.myzwl.win/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://www.myzwl.win/source/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux基础总结一</title>
+    <link href="http://www.myzwl.win/2018/03/10/dream_11/"/>
+    <id>http://www.myzwl.win/2018/03/10/dream_11/</id>
+    <published>2018-03-10T10:48:51.000Z</published>
+    <updated>2018-03-25T02:09:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="系统启动过程"><a href="#系统启动过程" class="headerlink" title="系统启动过程"></a>系统启动过程</h4><p>其过程分为5个阶段<br>1.内核的引导<br>bios启动、然后读取/boot内核下的所有文件<br>2.运行init<br>init 进程是系统所有进程的起点<br>CentOS 7,配置文件：/usr/lib/systemd/system、 /etc/systemd/system<br>在Windows叫做”服务”（service），在Linux就叫做”守护进程”（daemon）<br>3.系统初始化<br>4.建立终端<br>5.用户登录系统<br>命令行登录<br>ssh登录<br>图形界面登录</p>
+<p>正确顺序为<br>操作系统-/boot-init进程-运行级别-/etc/init.d-用户登录-login shell</p>
+<h4 id="Linux关机"><a href="#Linux关机" class="headerlink" title="Linux关机"></a>Linux关机</h4><p>sync 将数据由内存同步到硬盘中。<br>shutdown 关机指令<br>Shutdown –h now 立马关机<br>Shutdown –h 20:25 系统会在今天20:25关机<br>Shutdown –h +10 十分钟后关机<br>Shutdown –r now 系统立马重启<br>Shutdown –r +10 系统十分钟后重启<br>reboot 重启<br>halt 关闭系统</p>
+<h4 id="Linux系统目录结构"><a href="#Linux系统目录结构" class="headerlink" title="Linux系统目录结构"></a>Linux系统目录结构</h4><p>/bin<br>存放最经常使用的命令<br>/boot<br>存放的是启动Linux时使用的一些核心文件，包括一些连接文件以及镜像文件<br>/dev<br>该目录下存放的是Linux的外部设备，在Linux中访问设备的方式和访问文件的方式是相同的<br>/etc<br>这个目录用来存放所有的系统管理所需要的配置文件和子目录<br>/home<br>用户的主目录，在Linux中，每个用户都有一个自己的目录，一般该目录名是以用户的账号命名的<br>/lib<br>这个目录里存放着系统最基本的动态连接共享库，其作用类似于Windows里的DLL文件。几乎所有的应用程序都需要用到这些共享库<br>/lost+found：<br>这个目录一般情况下是空的，当系统非法关机后，这里就存放了一些文件<br>/media<br>linux系统会自动识别一些设备，例如U盘、光驱等等，当识别后，linux会把识别的设备挂载到这个目录下<br>/mnt：<br>系统提供该目录是为了让用户临时挂载别的文件系统的，我们可以将光驱挂载在/mnt/上，然后进入该目录就可以查看光驱里的内容了<br>/opt：<br> 这是给主机额外安装软件所摆放的目录。比如你安装一个ORACLE数据库则就可以放到这个目录下。默认是空的<br> /proc：<br>这个目录是一个虚拟的目录，它是系统内存的映射，我们可以通过直接访问这个目录来获取系统信息<br>/root：<br>该目录为系统管理员，也称作超级权限者的用户主目录<br>/sbin：<br>s就是Super User的意思，这里存放的是系统管理员使用的系统管理程序<br>srv：<br> 该目录存放一些服务启动之后需要提取的数据。<br> /tmp：<br>这个目录是用来存放一些临时文件的<br>/usr：<br> 这是一个非常重要的目录，用户的很多应用程序和文件都放在这个目录下，类似于windows下的program files目录<br> /var：<br>这个目录中存放着在不断扩充着的东西，我们习惯将那些经常被修改的目录放在这个目录下。包括各种日志文件</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;系统启动过程&quot;&gt;&lt;a href=&quot;#系统启动过程&quot; class=&quot;headerlink&quot; title=&quot;系统启动过程&quot;&gt;&lt;/a&gt;系统启动过程&lt;/h4&gt;&lt;p&gt;其过程分为5个阶段&lt;br&gt;1.内核的引导&lt;br&gt;bios启动、然后读取/boot内核下的所有文件&lt;br&gt;2.
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.myzwl.win/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://www.myzwl.win/source/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
     <title>系统V1.0简单说明</title>
     <link href="http://www.myzwl.win/2018/03/10/sys_1/"/>
     <id>http://www.myzwl.win/2018/03/10/sys_1/</id>
@@ -615,164 +726,6 @@
     
     
       <category term="jvm" scheme="http://www.myzwl.win/source/tags/jvm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>FastDFS+Nginx搭建分布式图片服务器</title>
-    <link href="http://www.myzwl.win/2017/12/20/fastdfs_1/"/>
-    <id>http://www.myzwl.win/2017/12/20/fastdfs_1/</id>
-    <published>2017-12-20T06:48:51.000Z</published>
-    <updated>2018-01-04T13:33:58.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>FastDFS是用c语言编写的一款开源的分布式文件系统。充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标，使用FastDFS很容易搭建一套高性能的文件服务器集群提供文件上传、下载等服务。其流程如下所示<br><img src="/images/imgs5/28.jpg" alt="Alt text"><br>其中tracker相当于一个管家，在storager与client之间进行交流，最终图片存在storager中。<br>而在传统图片存储中，一般都存在某个服务器的目录中，如果要集群的话，并发量大的话，另一台服务器就访问不到了，所以需要一个专门的图片服务器</p>
-<h4 id="上传与下载流程"><a href="#上传与下载流程" class="headerlink" title="上传与下载流程"></a>上传与下载流程</h4><p>上传<br><img src="/images/imgs5/29.jpg" alt="Alt text"><br>下载<br><img src="/images/imgs5/30.jpg" alt="Alt text"></p>
-<h4 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h4><p>一.上传需要的软件到linux上<br><img src="/images/imgs5/31.jpg" alt="Alt text"><br>二.linux上安装必要的环境<br>1.安装gcc sudo apt-get install gcc<br>2.安装libevent工具包(ubuntu 16.04不能直接使用命令安装，具体也是谷歌了很久绕一大串才能安装)<br>三.安装libfastcommon（这里将所有文件放在了/usr/local/fast目录下）<br>1.解压缩到相应目录下<br>2.进行编译和安装<br>./make.sh &amp;&amp; ./make.sh install<br>3.把/usr/lib64/libfastcommon.so文件向/usr/lib/下复制一份<br>四。安装Tracker服务<br>1、解压缩<br>2、./make.sh<br>3、./make.sh install<br>安装后在/usr/bin/目录下有以fdfs开头的文件都是编译出来的。<br>配置文件都放到/etc/fdfs文件夹<br>4、把/conf目录下的所有的配置文件都复制到/etc/fdfs下<br>5、配置tracker服务。修改/etc/fdfs/tracker.conf文件。<br>找到base_path=/home/yuqing/fastdfs<br>把后面的路径修改成你服务器上的路径，并且这个目录必须存在。我的是/usr/local/fast/fastdfs<br>6、启动tracker。/usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf<br>重启使用命令：/usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf restart<br>五。安装storage服务<br>1、如果是在不同的服务器安装，第四步的1~4需要重新执行。<br>2、配置storage服务。修改/etc/fdfs/storage.conf文件<br>需要修改几处。<br>base_path与store_path0改成自己的，我的是/usr/local/fast/storage<br>tracker_server改成自己主机的ip：22122<br>3、启动storage服务。<br>/usr/bin/fdfs_storaged /etc/fdfs/storage.conf restart<br>六。安装测试<br>1、修改配置文件/etc/fdfs/client.conf将其中的base_path与tracker_server修改<br>2、测试<br>/usr/bin/fdfs_test /etc/fdfs/client.conf upload anti-steal.jpg<br>如果成功的话会提示图片存储路径<br>七。搭建nginx提供http服务<br>上传fastdfs-nginx-module_v1.16.tar.gz<br>1、解压插件压缩包<br>2、修改/fastdfs-nginx-module/src/config文件，把其中的local去掉，同时如果你的是64位的把lib改成lib64<br>3、对nginx重新config<br>./configure \<br>–prefix=/usr/local/nginx \<br>–pid-path=/var/run/nginx/nginx.pid \<br>–lock-path=/var/lock/nginx.lock \<br>–error-log-path=/var/log/nginx/error.log \<br>–http-log-path=/var/log/nginx/access.log \<br>–with-http_gzip_static_module \<br>–http-client-body-temp-path=/var/temp/nginx/client \<br>–http-proxy-temp-path=/var/temp/nginx/proxy \<br>–http-fastcgi-temp-path=/var/temp/nginx/fastcgi \<br>–http-uwsgi-temp-path=/var/temp/nginx/uwsgi \<br>–http-scgi-temp-path=/var/temp/nginx/scgi \<br>–add-module=/usr/local/fast/fastdfs-nginx-module/src<br>注意最后一个是安装的路径，第一个是你自己的nginx路径<br>4、make<br>5、make install<br>6、把/fastdfs-nginx-module/src/mod_fastdfs.conf文件复制到/etc/fdfs目录下。修改<br>tracker_server=192.168.1.172:22122//改成自己的服务器ip地址<br>url_have_group_name = true //改为true，启动组<br>store_path0=/fastdfs/storage //改成自己的图片存储路径<br>7、nginx的配置<br>server {<br>        listen       80;<br>        server_name  localhost;</p>
-<pre><code>location /group1/M00/{
-        #root /home/FastDFS/fdfs_storage/data;
-        ngx_fastdfs_module;
-}
-</code></pre><p>}<br>8、将libfdfsclient.so拷贝至/usr/lib下<br>cp /usr/lib64/libfdfsclient.so /usr/lib/<br>9.启动nginx</p>
-<h4 id="遇到的错误"><a href="#遇到的错误" class="headerlink" title="遇到的错误"></a>遇到的错误</h4><p>事情并非一帆风顺的，其中有几个坑需要注意<br>1.如果你的是64位，一定要把上面说的lib改成lib64<br>2.主要上面修改的配置文件中有http.server_port=8888默认的，改成你在nginx中配置的，我配置的是80，就全部改成80，另外cliet那个配置文件是8080，页改成80，不然会出现404错误<br>3.增加权限，在nginx.conf中第一行增加user root；权限<br>最后利用上传时显示的图片地址在浏览器中进行访问即可<br><img src="/images/imgs5/32.jpg" alt="Alt text"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;FastDFS是用c语言编写的一款开源的分布式文件系统。充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标，使用Fas
-    
-    </summary>
-    
-      <category term="分布式" scheme="http://www.myzwl.win/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
-    
-    
-      <category term="FastDFS" scheme="http://www.myzwl.win/source/tags/FastDFS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>pythonDiary_01之map与reduce</title>
-    <link href="http://www.myzwl.win/2017/12/11/python_02/"/>
-    <id>http://www.myzwl.win/2017/12/11/python_02/</id>
-    <published>2017-12-11T06:48:51.000Z</published>
-    <updated>2018-01-04T12:40:02.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>map()函数接收两个参数，一个是函数，一个是Iterable，map将传入的函数依次作用到序列的每个元素，并把结果作为新的Iterator返回。<br>比如：list(map(str, [1, 2, 3, 4, 5, 6, 7, 8, 9]))<br>把这个list所有数字转为字符串</p>
-<p>reduce把一个函数作用在一个序列[x1, x2, x3, …]上，这个函数必须接收两个参数，reduce把结果继续和序列的下一个元素做累积计算，其效果就是：<br>reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)<br>比方说对一个序列求和</p>
-<blockquote>
-<p>from functools import reduce<br>  def add(x, y):<br>  return x + y<br>reduce(add, [1, 3, 5, 7, 9])</p>
-</blockquote>
-<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>在一个有序集合，统计出现所有键的个数</p>
-<blockquote>
-<p>from functools import reduce<br>def func(lst):<br>  dic={}<br>  for k in lst:<br>   if not k in dic :<br>     dic[k]=1<br>   else :<br>     dic[k]+=1;<br>     return dic<br>lst=[1,1,2,3,2,3,3,5,6,7,7,6,5,5,5]<br>print(func(lst))<br>def func1(lst):<br> m=set(lst)<br> dic={}<br> for x in m:<br>    dic[x]=lst.count(x)<br> return dic<br>ls=[1,1,2,3,2,3,3,5,6,7,7,6,5,5,5]<br>print(func1(ls))<br>def func2(dic,p):<br>   if not p in dic :<br>     dic[p]=1<br>   else :<br>     dic[p]+=1;<br>     return dic<br>print(reduce(func2,ls,{}))</p>
-</blockquote>
-<h4 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h4><p>filter()函数用于过滤序列。<br>和map()类似，filter()也接收一个函数和一个序列。和map()不同的是，filter()把传入的函数依次作用于每个元素，然后根据返回值是True还是False决定保留还是丢弃该元素。<br>在一个list中，删掉偶数，只保留奇数，可以这么写：</p>
-<blockquote>
-<p>def is_odd(n):<br>    return n % 2 == 1<br>list(filter(is_odd, [1, 2, 4, 5, 6, 9, 10, 15]))</p>
-<h1 id="结果-1-5-9-15"><a href="#结果-1-5-9-15" class="headerlink" title="结果: [1, 5, 9, 15]"></a>结果: [1, 5, 9, 15]</h1></blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;map()函数接收两个参数，一个是函数，一个是Iterable，map将传入的函数依次作用到序列的每个元素，并把结果作为新的Iterator
-    
-    </summary>
-    
-      <category term="python" scheme="http://www.myzwl.win/categories/python/"/>
-    
-    
-      <category term="python" scheme="http://www.myzwl.win/source/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>pythonDiary_01之数据类型</title>
-    <link href="http://www.myzwl.win/2017/12/10/python_01/"/>
-    <id>http://www.myzwl.win/2017/12/10/python_01/</id>
-    <published>2017-12-10T06:48:51.000Z</published>
-    <updated>2017-12-24T05:20:46.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>人生苦短，我用python。最近为了丰富自己的技术栈，开始学习这门神奇的语言。我的是在linux环境下进行学习，参考了廖雪峰先生的教程进行学习，不多说，下面将介绍python中几种不熟悉的数据元素：列表、元组、字典、set</p>
-<h4 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h4><p>列表list是一种有序的集合，可以随时添加和删除其中的元素<br>1.1初始化列表</p>
-<blockquote>
-<p>list=[‘java’,’php’,’c’,’python’]</p>
-</blockquote>
-<p>1.2访问列表中的值<br>列表引用[索引号]，如list[0],下标从0开始，-1表示最后一个，依次类推</p>
-<p>1.3更新列表<br>直接将列表中值重新赋值，如list[0]=‘c++’</p>
-<p>1.4删除列表元素<br>del list[0]</p>
-<p>1.5列表操作符</p>
-<blockquote>
-<p>[1,2]+[4,5]  #[1,2,4,5]<br>[‘h’]*4 #[‘h’,’h’,’h’,’h’]<br>1 in [1,2] #true<br>for yy in [‘x’,’y’] # ‘x’,’y’</p>
-</blockquote>
-<p>1.6列表截取</p>
-<blockquote>
-<p>list=[‘java’,’php’,’c’,’python’]<br>list[0] #java<br>list[-1] #python<br>list[1:3] # c python 其中list[：-1]默认第一个是从0开始，list[0:]最后一个不写默认是最后一个</p>
-</blockquote>
-<p>1.7列表函数与方法</p>
-<blockquote>
-<p>list.append(obj) #末尾添加新对象<br>list.count(obj)   #统计某个元素在列表中出现的次数<br>list.extend(seq)  #在列表末尾一次性追加里一个序列<br>list.index(obj)   #找出第一个匹配值的序列<br>list.insert(index,obj)  #指定索引位置插入<br>list.pop(index)       #按索引溢出列表中元素，默认最后一个<br>list.remove(obj)     #按值移除<br>list.reverse()      #倒转<br>list.sort()        #排序</p>
-</blockquote>
-<h4 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h4><p>元组tuple和list非常类似，但是tuple一旦初始化就不能修改，而且元组使用（）定义，列表使用[]<br>初始化<br>tuple=(‘java’,’python’,’c’,’php’)<br>只有一个元素需要添加逗号<br>tuple=(‘java’,)<br>空元组<br>tuple=()</p>
-<p>元组内置函数</p>
-<blockquote>
-<p>cmp(t1,t2) #比较两个元组元素<br>len(t)      #计算元组元素的个数<br>max(t)      #返回元组中元素最大值<br>min(t)      #。。最小值<br>tuple(seq)  #列表转化为元组</p>
-</blockquote>
-<p>其余操作和列表基本一致</p>
-<h4 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h4><p>Python内置了字典：dict的支持，dict全称dictionary，在其他语言中也称为map，使用键-值（key-value）存储，具有极快的查找速度<br>1.1初始化字典<br>如dict={‘java’:’hello’,’c’:’world’,’python’:’hi’}<br>1.2 访问字典的值<br>dict[‘java’] #hello<br>1.3修改字典</p>
-<blockquote>
-<p>dict[‘java’]=’we’ #修改<br>dict[‘c++’]=’lol’ #增加<br>del dict[‘java’] #删除键<br>dict.clear()    #清空字典<br>del dict        #删除词典</p>
-</blockquote>
-<p>1.4字典内置函数</p>
-<blockquote>
-<p>1.cmp(dict1, dict2)<br>比较两个字典元素<br>2    len(dict)<br>计算字典元素个数，即键的总数。<br>3    str(dict)<br>输出字典可打印的字符串表示。<br>4    type(variable)<br>返回输入的变量类型，如果变量是字典就返回字典类型。<br>Python字典包含了以下内置方法：<br>1    dict.clear()<br>删除字典内所有元素<br>2    dict.copy()<br>返回一个字典的浅复制<br>3    dict.fromkeys(seq[, val])<br>创建一个新字典，以序列 seq 中元素做字典的键，val 为字典所有键对应的初始值<br>4    dict.get(key, default=None)<br>返回指定键的值，如果值不在字典中返回default值<br>5    dict.has_key(key)<br>如果键在字典dict里返回true，否则返回false<br>6    dict.items()<br>以列表返回可遍历的(键, 值) 元组数组<br>7    dict.keys()<br>以列表返回一个字典所有的键<br>8    dict.setdefault(key, default=None)<br>和get()类似, 但如果键不存在于字典中，将会添加键并将值设为default<br>9    dict.update(dict2)<br>把字典dict2的键/值对更新到dict里<br>10    dict.values()<br>以列表返回字典中的所有值<br>11    pop(key[,default])<br>删除字典给定键 key 所对应的值，返回值为被删除的值。key值必须给出。 否则，返回default值。<br>12    popitem()<br>随机返回并删除字典中的一对键和值。</p>
-</blockquote>
-<h4 id="set"><a href="#set" class="headerlink" title="set"></a>set</h4><p>set和dict类似，也是一组key的集合，但不存储value。由于key不能重复，所以，在set中，没有重复的key。<br>要创建一个set，需要提供一个list作为输入集合：<br>s = set([1, 2, 3])<br>其余和字典差不多</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;人生苦短，我用python。最近为了丰富自己的技术栈，开始学习这门神奇的语言。我的是在linux环境下进行学习，参考了廖雪峰先生的教程进行学
-    
-    </summary>
-    
-      <category term="python" scheme="http://www.myzwl.win/categories/python/"/>
-    
-    
-      <category term="python" scheme="http://www.myzwl.win/source/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>solr笔记之二</title>
-    <link href="http://www.myzwl.win/2017/11/10/solr_2/"/>
-    <id>http://www.myzwl.win/2017/11/10/solr_2/</id>
-    <published>2017-11-10T06:48:51.000Z</published>
-    <updated>2017-12-18T10:29:32.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="solrj的基本使用"><a href="#solrj的基本使用" class="headerlink" title="solrj的基本使用"></a>solrj的基本使用</h4><p>环境准备<br>新建一个java工程，然后添加如下jar包<br><img src="/images/imgs5/27.jpg" alt="Alt text"><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">//远程连接的solr服务器地址</div><div class="line">private static final String URL="http://111.230.246.33:8080/solr";</div><div class="line">	</div><div class="line">	public void search()throws Exception&#123;</div><div class="line">		//solr服务</div><div class="line">		SolrServer solr=new HttpSolrServer(URL);</div><div class="line">		//查询对象</div><div class="line">		SolrQuery query=new SolrQuery();</div><div class="line">		//设置查询条件,名称“q”是固定的且必须的</div><div class="line">		query.set("q", "title:zwl");</div><div class="line">		// 请求查询</div><div class="line">		QueryResponse res=solr.query(query);</div><div class="line">		// 查询结果</div><div class="line">		SolrDocumentList list=res.getResults();</div><div class="line">		// 查询文档总数</div><div class="line">		long num=list.getNumFound();</div><div class="line">		System.out.println(num);</div><div class="line">		for(SolrDocument sd :list)&#123;</div><div class="line">			String id=(String)sd.get("id");</div><div class="line">			//String title=(String)sd.get("title");</div><div class="line">			System.out.println(id);</div><div class="line">		//	System.out.println(title);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void del()throws Exception&#123;</div><div class="line">		SolrServer solr=new HttpSolrServer(URL);</div><div class="line">		solr.deleteById("5");</div><div class="line">		solr.commit();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public void add() throws Exception&#123;</div><div class="line">		//实例化solr对象</div><div class="line">		SolrServer solr=new HttpSolrServer(URL);</div><div class="line">		SolrInputDocument doc1=new SolrInputDocument();</div><div class="line">		doc1.setField("id", "5");</div><div class="line">		doc1.setField("title", "dx");</div><div class="line">		solr.add(doc1);</div><div class="line">		solr.commit();</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>注意：以上的索引都是在配置文件中已声明了，如：<br><!--IKAnalyzer Field--></p>
-<p><field name="title_ik" type="text_ik" indexed="true" stored="true"></field></p>
-<p><field name="content_ik" type="text_ik" indexed="true" stored="false" multivalued="true"><br>type可以为具体类型，也可以为一个分词器</field></p>
-<h4 id="查询语法"><a href="#查询语法" class="headerlink" title="查询语法"></a>查询语法</h4><ol>
-<li>q - 查询字符串，必须的，如果查询所有使用<em>:</em></li>
-<li>fq - （filter<br>query）过虑查询，作用：在q查询符合结果中同时是fq查询符合的，例如product_price:[1 TO 20]<br>过滤查询价格从1到20的记录<br>3.sort - 排序，格式：sort=<field name="">+<desc|asc>[,<field name="">+<desc|asc>]…<br>如 product_price desc 按价格降序排序</desc|asc></field></desc|asc></field></li>
-<li>start - 分页显示使用，开始记录下标，从0开始</li>
-<li>rows - 指定返回结果最多有多少条记录，配合start来实现分页。</li>
-<li>fl - 指定返回那些字段内容，用逗号或空格分隔多个<br>7.df-指定一个搜索Field</li>
-<li>wt - (writer type)指定输出格式，可以有xml, json, php, phps, 后面solr<br>1.3增加的，要用通知我们，因为默认没有打开。</li>
-<li>hl 是否高亮,设置高亮Field，设置格式前缀和后缀。<br>10 组合查询：使用and or等等</li>
-</ol>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;solrj的基本使用&quot;&gt;&lt;a href=&quot;#solrj的基本使用&quot; class=&quot;headerlink&quot; title=&quot;solrj的基本使用&quot;&gt;&lt;/a&gt;solrj的基本使用&lt;/h4&gt;&lt;p&gt;环境准备&lt;br&gt;新建一个java工程，然后添加如下jar包&lt;br&gt;&lt;img 
-    
-    </summary>
-    
-      <category term="solr" scheme="http://www.myzwl.win/categories/solr/"/>
-    
-    
-      <category term="solr" scheme="http://www.myzwl.win/source/tags/solr/"/>
     
   </entry>
   
