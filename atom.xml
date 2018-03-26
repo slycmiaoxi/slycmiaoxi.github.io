@@ -5,10 +5,63 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2018-03-25T02:10:30.000Z</updated>
+  <updated>2018-03-26T08:22:24.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>学习面经</title>
+    <link href="http://www.myzwl.win/2018/03/24/dream_15/"/>
+    <id>http://www.myzwl.win/2018/03/24/dream_15/</id>
+    <published>2018-03-24T13:48:51.000Z</published>
+    <updated>2018-03-26T08:22:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>以下题目均来自牛客网大佬分享</p>
+<h4 id="酷家乐实习一面"><a href="#酷家乐实习一面" class="headerlink" title="酷家乐实习一面"></a>酷家乐实习一面</h4><p>1.自我介绍<br>自信展示自我，重点突出与职位相吻合的优势，同时注意自身素质和礼貌</p>
+<p>2.做了哪些功能，为什么这么设计，提出新功能，如何做出来 ?<br>以最熟悉的项目为例（按照深度方式询问)<br>主要有留言版、实时显示在线登录人数、在线编程、算法建模、细粒度控制url加密，解耦业务逻辑，论坛核心表、黑名单和日志统计、email和消息推送、自定义访问量统计<br>为什么这么设计?<br>回答思路，困难-怎样做的-有其他方法或改进的<br>比如：留言版，正常思路三张表，文章表、评论表和楼中楼表，表与表之间有关系，控制起来感觉很多<br>三范式:一字段不能再分，二完全依赖主键，三无传递关系<br>很多表设计时都是有传递，如头像，姓名，解决办法，继承父类，放一些字段记录值或者直接sql多表查询<br>尽量放在一张表上，<br>数据结构B树符合，<br>B树是什么?<br>一种多路查找树,每一个结点的孩子数可以多于两个，且每一个结点处可以存储多个元素，所有元素之间存在某种特定的排序的关系，比如退化到2-2树，二叉排序树，2-3树，2-3-4树，B树、B+树分页面<br>形式最左边记录结点数<br>这里仿照B树<br>节点数固定三个，父节点、当前结点、回复者结点。省略结点记录个数。然后分成两块，最顶层评论和楼中评论，通过父节点是否为0区分，这些父节点构造成一个链表，然后每个结点下，非0，楼中按照父节点id得到一组链表，按照时间顺序放入栈。<br>取出的时候就是由于记录的是用户id’作为结点，所以遍历用户表，id，用户名放入hash表，转换，然后栈-放入集合<br>什么是hash表?<br>它是针对查找效率接近O（1）而专门设计的,散列函数和处理冲突<br>除留余数法<br>该散列函数定义为hash（k）=k%p<br>通过开放定址法、链地址法解决冲突<br>map扩容为什么是2^n，原因位运算比取模运算效率高</p>
+<p>3.在线登录人数<br>需要解决五个问题<br>用户主动退出登录，长时间不点击和主动关闭浏览器都会导致会话失效，另外并发登录人数限制和管理员在线踢出用户都会影响登录人数<br>什么是会话?<br>从计算机网络角度来说<br>三次握手，简单来说客户端发送包到服务器，等待服务器确认，第一次握手，<br>服务器收到包，先确认，在发送SYN包，进入SYN——RECV状态第二次握手<br>客户端收到SYN+ACK包，像服务器发送确认包，客户端和服务器端进入监听状态，完成三次握手<br>客户端与服务器开始传送数据<br>四次握手：向主机发送一个带有FIN附加标记的报文段<br>主机先发送确认号ACK，然后通知程序防止重传，客户再发送fin，q确认关闭连接<br>两次握手: 报文发送滞留时间过长失效，服务器发送链接，不理睬</p>
+<p>从tomcat角度<br>http 都是无状态的协议，web 服务器不能识别出哪些请求是同一个浏览器发的，浏览器的每一次请求都是完全独立的<br>Cookie 放在浏览器端，浏览器第一次范围服务器时创建，以后每次都带上这个，保持http 状态信息的方案，会话跟踪<br>session通过cokkie携带的JSession_id返回session标识用<br>默认session cookie，关闭浏览器只是使存储在浏览器内存中的session cookie 失效，不会使服务器端的<br>session 对象失效</p>
+<p>写个servlet会话监听器去监听登录，当有会话建立时并且已经成功登录和先判断该用户是否已经正在线，统计相关信息，然后就是退出浏览器只能等会话失效才算离线，统计内容和效果不好<br>session是用shiro管理的，大部分应用离不开shiro，而且shiro的sessionId每次是不一样的，也就是说，同一用户登录，在缓存中通过用户名产生的会话id不一样，造成同一用户登录重新登录会变成不同用户而在线人数不对<br>用shiro的缓存来统计，得解决这个并发登录人数控制。Shiro是这样做的，规定同一账号最大会话数，实际上是放在一个缓存队列中，如果其大小超过该会话数，就踢出头或尾会话，在加入该会话，然后就是这个缓存队列是通过ehcache中命名用户名设置的，然后将其放在shiro拦截器，放在登录请求中<br>如何解决缓存同步<br>需要个监听器根据那个用户名得到sessionId然后踢掉<br>还有一个就是强制用户退出，就是根据sessionId让session失效，logout就行了<br>最后就是实时统计在线列表了，这里比较棘手的就是的就是那个强制退出的会话怎么清除，如果不清除，缓存中会得到空指针，最头疼的是服务器崩溃，利用缓存中的方法可以得到所有活跃的会话，包括失效的，然后就是通过异常<br>得到失效的会话，然后就是通过sessionid判断，更新缓存，删掉那个失效的会话，最后就是活跃的会话了，而关闭浏览器通过缩短会话存活时间保证，主动退出和会话正常死亡通过监听器解决</p>
+<p>更好的方法,利用redis缓存信息,现在redis中放两组key，根据需求一组存放登陆用户的SessionId与ClientUser的Json数据，另一组存放存放登录用户的UID与SessionId对于的数据，然后利用该监听器，，只要一有会话差生，就从redis登记表（封装各类实时统计的方法）中查看，以一定规则查看是否登录，这里可以判断是游客还是会员，然后记录相关登记信息等等，放在session中</p>
+<p>其他同理</p>
+<h4 id="项目的并发量"><a href="#项目的并发量" class="headerlink" title="项目的并发量"></a>项目的并发量</h4><p>支持比较小的高并发，压测（Load Impact）50个并发量，5分钟<br>回答思路：项目架构-功能分析<br>部分构成拆成微服务，算法建模+在线编程主要为dubbo+zookeeper，邮箱注册+在线推送，activeMQ+websocket，<br>zookeeper集群，activeMq集群，tomcat集群，nginx根据权重负载均衡和反向代理，redis缓存算法建模和主从复制，elasticsearch搜索查询，mysql数据库分库<br>在线编程尝试多线程并发，返回结果随机，失败</p>
+<h4 id="sql语句"><a href="#sql语句" class="headerlink" title="sql语句"></a>sql语句</h4><p>连接关联<br>A 的id 和b 的parent_id 关联<br>Select a,b from a inner join b on a.id=b.parent_id<br>结果为：1 张三1 23 1<br>2 李四2 34 2<br>左外链接（左表all 元素都有）<br>Select a.,b.from a left join b on a.id=b. parent_id;<br>结果为：1 张三1 23 1<br>2 李四2 34 2<br>3 王五null<br>3）右外链接（右表all 元素都有）<br>Select a.,b.from a right join b on a.id=b. parent_id;<br>结果为：1 张三1 23 1<br>2 李四2 34 2<br>Null 3 34 2<br>4）完全链接（返回左边和右表中所有行，若某行在另外一个表中无匹配，则另一表的<br>选择列表列包含空值）<br>Select a.,b.from a full join b on a.id=b. parent_id;<br>结果为：1 张三1 23 1<br>2 李四2 34 2<br>Null 3 34 2<br>3 王五null<br>Not in 的例子：<br>Select emp_no from emplyees where emp_no not in (select emp_no from dept_manager)<br>mysql实现分页的优化sql语句<br>select from table order by id limit 1000000,10(数据1达到百万级贼慢)<br>优化一:<br>select from table where id&gt;=(select id from table limit 100000,1) limit 10<br>速度提升0.x倍<br>优化二:<br>select from table where id between 10000000 and 10000010<br>比上面提升5到10倍<br>另外，如果需要查询 id 不是连续的一段，最佳的方法就是先找出 id ，然后用 in 查询<br>SELECT FROM table WHERE id IN(10000, 100000, 1000000…);<br>sql优化原则<br>1.对查询进行优化，要尽量避免全表扫描，在where或order的列上加索引<br>2.尽量避免在where子语句中有where num is null但可用0<br>代替<br>3.尽量避免在where 中用or，因为若一个字段有索引，一个没有，则要全表扫描<br>4.like %abc%全表扫描<br>5.避免在where子语句中对子语句中进行函数操作，因为要全表扫描<br>6使用复合索引时，必须用到该索引的第一个字段，否则索引不被使用</p>
+<p>悲观锁和乐观锁<br>面试思路：什么是锁，用来干什么&gt;悲观锁乐观锁各自特点&gt;优缺点比较和各自应用场景<br>数据库管理系统并发控制任务是确保在多个事务同时存取数据库中同一数据时不破坏事务隔离以及统一性以及数据库的统一性<br>悲观锁<br>什么操作都可以改变数据，所以在该数据时就锁住<br>select 。。。for update<br>乐观锁<br>修改数据库后锁住（一般在数据库中加上一个字段区别历史版本和当前版本）<br>update t_goods<br>set status=2,version=version+1<br>where id=#{id} and version=#{version}</p>
+<h4 id="有序数组排成二叉搜索树"><a href="#有序数组排成二叉搜索树" class="headerlink" title="有序数组排成二叉搜索树"></a>有序数组排成二叉搜索树</h4><p>思路，对于有序数组还是链表，其中间的数就是根结点，而中间的左边数就是左子树，中间右边就是右子树，依次递归即可<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public static TreeNode sortedArrayToBST(int[] nums)&#123;</div><div class="line">		if(nums.length&lt;=0)return null;</div><div class="line">		return buildTree(nums,0,nums.length-1);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public static TreeNode buildTree(int[] nums,int start,int end)&#123;</div><div class="line">		if(start&lt;=end)&#123;</div><div class="line">			int mid=(start+end)/2;</div><div class="line">			TreeNode&lt;Integer&gt; tree=new TreeNode&lt;Integer&gt;(nums[mid]);</div><div class="line">			tree.left=buildTree(nums,start,mid-1);</div><div class="line">			tree.right=buildTree(nums,mid+1,end);</div><div class="line">			return tree;</div><div class="line">		&#125;else&#123;</div><div class="line">			return null;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="索引，B-树"><a href="#索引，B-树" class="headerlink" title="索引，B+树"></a>索引，B+树</h4><p>mysql索引使用的是B+的数据结构<br>索引: 用于提高数据访问速度的数据库对象<br>有点：避免全表扫描、有些查询甚至可以不访问数据项、索引可以避免排序<br>缺点，性能性能下降，大部分数据更新时需要更新索引<br>哈希索引<br>在有大量重复键值情况下，哈希索引的效率也是极低的，因为存在所谓的哈希碰撞问题</p>
+<h4 id="CAS与读写锁"><a href="#CAS与读写锁" class="headerlink" title="CAS与读写锁"></a>CAS与读写锁</h4><p>CAS（Compare and Swap）有3个操作数，内存值V，旧的预期值A，要修改的新值B。当且仅当预期值A和内存值V相同时，将内存值V修改为B，否则什么都不做。<br>死锁 :哲学家进餐问题，每个哲学家都在等右边哲学家方上筷子，处于僵持等待状态，称为死锁<br>synchronized关键字保证同步的，这是一种独占锁，也是是悲观锁<br>synchronized（S）VS lock（L）<br>）L 是接口，S 是关键字<br>2）S 在发生异常时，会自动释放线程占有的锁，不会发生死锁。L 在发生异常时，若没<br>有主动通过unlock（）释放锁，则很有可能造成死锁。所以用lock 时要在finally 中释放锁。<br>3)L 可以当等待锁的线程响应中断，而S 不行，使用S 时，等待的线程将会一直等下去，<br>不能响应中断。<br>4）通过L 可以知道是否成功获得锁，S 不可以。<br>5）L 可以提高多个线程进行读写操作的效率。<br>继承thread或者Runnable，调用run方法，start启动<br>sleep：暂时停止线程当前的操作<br>wait-把线程放入休息室<br>notify方法-从休息区拿出线程<br>notifyAll从线程区中拿出所有线程<br>Lock lock=new ReentrantLock();读写锁<br>ReadWriteLock rwLock=new ReentrantReadWriteLock()；读-读不互斥，读-写互斥，写-写互斥，并发性提高<br>CountDownLatch: 倒数计时器<br>ReenTrantLock ：公平锁：线程先来，先得到锁，可在构造函数中设置<br>join方法。该方法主要作用是在该线程中的run方法结束后，才往下执行<br>yield方法。这个是线程本身的调度方法，使用时你可以在run方法执行完毕时，调用该方法，告知你已可以出让内存资源。<br>关键字volatile 是轻量级的同步机制。<br>Volatile 变量对于all 线程的可见性，指当一条线程修改了这个变量的值，新值对于其他<br>线程来说是可见的、立即得知的。</p>
+<h4 id="锁-可重入锁"><a href="#锁-可重入锁" class="headerlink" title="锁,可重入锁"></a>锁,可重入锁</h4><p>ReentrantLock支持两种获取锁的方式，一种是公平模型，一种是非公平模型</p>
+<h4 id="tomcat集群"><a href="#tomcat集群" class="headerlink" title="tomcat集群"></a>tomcat集群</h4><p>集群配置session共享<br>tomcat本身有三种集群方式<br>DNS轮询：当集群中某台服务器停止之后，用户由于dns缓存的缘故，便无法访问服务，必须等到dns解析更新，或者这台服务器重新启动<br>Apache R-proxy<br>Apache mod_jk<br>主要采用nginx的负载均衡<br>五种方式upstream<br>1）轮询（默认），每个请求按时间顺序逐一分配到不同的后端服务器，如果后端<br>服务器down 掉，能自动剔除<br>2）指定权重，指定轮询几率。权重越大，轮询几率越大，用于后端服务器性能不均的情况<br>3）ip 绑定ip_path，每个请求按访问ip 的哈希结果分配，这样每个客户固定访问一个服务器，可以解决session 问题<br>4）fair（第三方）按后端服务器的响应时间来分配请求，响应时间短的优先分配<br>5）url_hash 按访问的url 结果来分配请求，使每个url 定位到同一个后端服务器。后端服务器为缓存时比较有效<br>nginx还可以做<br>反向代理<br>文件服务器<br>静态资源<br>ssl配置</p>
+<h4 id="Tomcat同步"><a href="#Tomcat同步" class="headerlink" title="Tomcat同步"></a>Tomcat同步</h4><p>集群增量会话管理器<br>这是一种全节点复制模式，全节点复制指的是集群中一个节点发生改变后会同步到其余全部节点，会在一个请求被响应之前同步到其余节点上</p>
+<p>集群备份会话管理器<br>全节点复制模式存在的一个很大的问题就是用于备份的网络流量会随着节点数的增加而急速增加，这也就是无法构建较大规模集群的原因，每个会话只有一个备份。这样就可构建大规模的集群</p>
+<h4 id="Redis缓存"><a href="#Redis缓存" class="headerlink" title="Redis缓存"></a>Redis缓存</h4><p>redis和普通缓存区别<br>cached：本质是一个内存key-value 数据库，但<br>不支持数据持久化，服务器关闭后，数据全丢失。只支持key-value 结构<br>Redis：将大部分数据放在内存中，支持的数据类型有：字符串、hash 表、链表、集合、<br>有序集合以及基于这些数据类型的相关操作。Redis 内部使用一个redisobject 对象来表示all<br>key 和value。<br>redis 支持数据备份，即master-slave 模式的备份<br>redis 支持数据的持久化，可以将内存中的数据保存在磁盘上，重启的时候可以再次加载进内存使用。<br>cached 挂掉后，数据不可以恢复，redis数据丢失后可通过AOF 恢复（灾难恢复）。<br>为什么需要NoSQL<br>1.对数据库高并发读写的需求<br>2.高负载-对海量数据的高效率存储和访问的需求<br>3.高扩展-对数据库的高可扩展性和高可用性的需求<br>主要应用在如下场景<br>1.缓存（数据查询、商品内容等等）<br>2.聊天室的在线好友列表<br>3.任务队列（秒杀、抢购等等）<br>4.应用排行榜<br>5.网站访问统计<br>6.数据过期处理<br>7.分布式集群架构中的session分离<br>redis持久化机制<br>快照（默认方式）<br>将内存中以快照的方式写入到二进制文件中，默认为dump.rdb，redis在n秒内如果超过m个key则修改就自动做快照<br>2.aof（日志方式）<br>由于快照方式是在一定时间间隔做一次，所以可能发生redis意外down的情况就会丢失最后一次快照后的所有修改的数据<br>三种修改方式<br>收到命令就立即写入到磁盘<br>每秒钟写入磁盘一次<br>完全依赖os性能<br>回收策略<br>1.最近最少使用<br>2.将要过期<br>3.任意选择数据<br>4.禁止驱逐数据<br>分布式锁<br>基本原理 : 用一个状态值表示锁，对锁的占用和释放通过状态值来标识。<br>redis+setnx实现?<br>先拿setnx来争抢锁，抢到之后，再用expire给锁加一个过期时间防止锁忘记了释放<br>如果在setnx之后执行expire之前进程意外crash或者要重启维护了，那会怎么样？<br>同时把setnx和expire合成一条指令来用的<br>假如Redis里面有1亿个key，其中有10w个key是以某个固定的已知的前缀开头的，如果将它们全部找出来？<br>使用keys指令可以扫出指定模式的key列表<br>如果这个redis正在给线上的业务提供服务，那使用keys指令会有什么问题？<br>redis的单线程的。keys指令会导致线程阻塞一段时间，线上服务会停顿，直到指令执行完毕，服务才能恢复。这个时候可以使用scan指令，scan指令可以无阻塞的提取出指定模式的key列表，但是会有一定的重复概率，在客户端做一次去重就可以了，但是整体所花费的时间会比直接用keys指令长。<br>如果有大量的key需要设置同一时间过期，一般需要注意什么？<br>如果大量的key过期时间设置的过于集中，到过期的那个时间点，redis可能会出现短暂的卡顿现象。一般需要在时间上加一个随机值，使得过期时间分散一些。<br>redis其他功能<br>数据分片、分库<br>发布订阅<br>集群</p>
+<h4 id="密码加密MD5"><a href="#密码加密MD5" class="headerlink" title="密码加密MD5"></a>密码加密MD5</h4><p>散列算法<br>该算法是一种不可逆的算法，如MD5，SHA等，一般该算法最好需要提供一个salt（盐）来增加破解难度，一般情况下的盐被设置为 密码+用户名+盐，这样只有系统知道盐值，更难被破解<br>md5有迭代次数<br>对称加解密base64和16进制字符串编码/解码<br>AES、Blowfish需要key<br>https<br>https 其实是由两部分组成：http+ssl/tls，也就是在http 上又加了一层处理加密信息的<br>模块，服务端和客户端的信息传输都会通过tls 加密，传输的数据都是加密后的数据<br>加解<br>密过程：<br>1）客户端发起https 请求（就是用户在浏览器里输入一个https 网址，然后连接到server<br>的443 端口）<br>2）服务端的配置（采用https 协议的服务器必须要有一塔数字证书，可以自己制作，<br>也可以向组织申请，这套证书就是一对公钥和私钥）。<br>3）传输证书（这个证书就是公钥，只是包含了很多信息）<br>4）客户端解析证书（由客户端tls 完成，首先验证公钥是否有效，若发现异常，则弹出<br>一个警示框，提示证书存在问题，若无问题，则生成一个随机值，然后用证书对随机值进行<br>加密）<br>5）传输加密信息（这里传输的是加密后的随机值，目的是让服务端得到这个随机值，<br>以后客户端和服务端的通信就可以通过这个随机值来进行加密了）<br>6）服务端解密信息（服务端用私钥解密后得到了客户端传来的随机值，then 把内容通<br>过该值进行对称加密。所谓对称加密就是，将信息和私钥通过某种算法混在一起，这样除非<br>知道私钥，不然无法获取内容，而正好客户端和服务端都知道这个私钥，所以只要加密算法<br>够彪悍，私钥够复杂，数据就够安全）<br>7）传输加密的信息<br>8）客户端解密信息，用随机数来解。</p>
+<h4 id="酷家乐实习二面："><a href="#酷家乐实习二面：" class="headerlink" title="酷家乐实习二面："></a>酷家乐实习二面：</h4><p>1.自我介绍 </p>
+<ol>
+<li>N个红白蓝三种小球，乱序排在一起，两两交换，要求从左至右排序成红白蓝<br>这是经典的荷兰国旗问题，最经典的解法就是模拟快排，利用三个指针，begin，current，end解决，具体思路如下<br>1.当current为0时，交换current与begin对应的值，current、begin后移一位<br>2.当current为1时，begin不动，只是current后移一位<br>3.当current为2时，交换end与current对应的值，end前移一位<br>手撕代码<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">private static void swap(int[] a,int i,int j)&#123;</div><div class="line">		int temp=a[i];</div><div class="line">		a[i]=a[j];</div><div class="line">		a[j]=temp;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public static void paritionYellowArray(int[] a)&#123;</div><div class="line">		int current=0;</div><div class="line">		int begin=0;</div><div class="line">		int end=a.length-1;</div><div class="line">		while(current&lt;end)&#123;</div><div class="line">			if(a[current]==1)&#123;</div><div class="line">				current++;</div><div class="line">			&#125;</div><div class="line">			else if(a[current]==0)&#123;</div><div class="line">				swap(a,begin,current);</div><div class="line">				begin++;</div><div class="line">				current++;</div><div class="line">			&#125;else&#123;</div><div class="line">				swap(a,current,end);</div><div class="line">				end--;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>3.二维数组，行递增从左至右，列从上到下递增，给一个数，求出该数的位置<br>根据条件很容易知道要先选出一个角作为比较点，比如第一行最后一个，然后依次与值比较，比它小，在左边行，比它大，在下边列，依次类推<br>手撕代码<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public String Find(int target, int [][] array) &#123;</div><div class="line">       int rows=array.length;</div><div class="line">       int columns=array[0].length;</div><div class="line">       int row=0;</div><div class="line">       int column=columns-1;</div><div class="line">       while(row&lt;rows&amp;&amp;column&gt;=0)&#123;</div><div class="line">           if(array[row][column]==target)&#123;</div><div class="line">            break;</div><div class="line">           &#125;else if(array[row][column]&lt;=target)&#123;</div><div class="line">               row++;</div><div class="line">           &#125;else&#123;</div><div class="line">               column--;</div><div class="line">           &#125;</div><div class="line">           </div><div class="line">       &#125;</div><div class="line">       return row+""+","+column+"";</div><div class="line">       </div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<h4 id="酷家乐实习终面"><a href="#酷家乐实习终面" class="headerlink" title="酷家乐实习终面"></a>酷家乐实习终面</h4><p>1.spring IOC<br>控制程序对象之间的关系，all类的创建，销毁都由spring来控制，也就是控制对象生命周期的不是引用他的对象，而是spring。对于某个对象而言，以前是他控制其他对象，现在是all对象都被spring控制，控制反转<br>依赖注入都过反射机制实现，在实例化一个类时，它通过反射反射调用类中的set方法将事先保存在hashmap中的类属性注入到类中</p>
+<p>2.spring AOP<br>将那些与业务无关，却为业务模块所公用，称其为aspect，便于减少系统的重复代码<br>aop把软件系统分为两个部分<br>核心关注点和横切关注点<br>实现aop 的两大技术：1）采用动态代理，利用截取消息的方式，对该消息进行装饰，<br>以获取原有对象行为的执行。2）采用静态织入，引入特定的语法创建切面，从而可以使编<br>译器可在编译期间织入有关切面的代码。<br>JDK 动态代理，cglib 动态代理。<br>JDK 动态代理：其代理对象必须是某个接口的实现，他是通过在运行期间创建一个接口<br>的实现类来完成对目标对象的代理。核心类有：InnovactionHandler，Proxy。<br>Cgib 动态代理：实现原理类似于jdk 动态代理，只是他在运行期间生成的代理对象是针<br>对目标类扩展的子类。MethodInterceptor</p>
+<p>3.hashmap<br>Map(映射)：集合中的每一个元素都包含一对键对象和值对象（key-value），集合中的键对象是不能重复的,它的一些实现类能对集合中的键对象进行排序。<br>不能重复与比较hashcode和equals有关<br>HashMap<br>底层实现是基于哈希表依赖于hashCode（）和equals（）方法，线程不安全，允许key和value为NULL，效率高<br> 有3个关键参数：<br>capacity：容量，就是数组大小<br>loadFactor：比例，用于扩容<br>threshold:=capacity*loadFactor   最多容纳的Entry数，如果当前元素个数多于这个就要扩容（capacity扩大为原来的2倍）</p>
+<h4 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h4><p>分段锁<br>把一个大的Map拆分成N个小的HashTable，根据key.hashCode()来决定把key放到哪个HashTable中。<br>在ConcurrentHashMap中，就是把Map分成了N个Segment，put和get的时候，都是现根据key.hashCode()算出放到哪个Segment中</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;以下题目均来自牛客网大佬分享&lt;/p&gt;
+&lt;h4 id=&quot;酷家乐实习一面&quot;&gt;&lt;a href=&quot;#酷家乐实习一面&quot; class=&quot;headerli
+    
+    </summary>
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/categories/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+    
+      <category term="自我救赎" scheme="http://www.myzwl.win/source/tags/%E8%87%AA%E6%88%91%E6%95%91%E8%B5%8E/"/>
+    
+  </entry>
   
   <entry>
     <title>深刻反思</title>
@@ -675,50 +728,6 @@
     <summary type="html">
     
       &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;我们知道垃圾回收的主要内存区域是堆和方法区，因为这两块区域的内存分配相对于其他区域具有不确定性，而分配内存一般有两种方法，即指针碰撞和空闲列
-    
-    </summary>
-    
-      <category term="jvm" scheme="http://www.myzwl.win/categories/jvm/"/>
-    
-    
-      <category term="jvm" scheme="http://www.myzwl.win/source/tags/jvm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>jvm总结之一:java内存区域</title>
-    <link href="http://www.myzwl.win/2017/12/21/jvm_1/"/>
-    <id>http://www.myzwl.win/2017/12/21/jvm_1/</id>
-    <published>2017-12-21T06:48:51.000Z</published>
-    <updated>2018-03-17T10:29:28.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>引用百度文库上对java虚拟机的定义.<br>虚拟机是一种抽象化的计算机，通过在实际的计算机上仿真模拟各种计算机功能来实现的。Java虚拟机有自己完善的硬体架构，如处理器、堆栈、寄存器等，还具有相应的指令系统。Java虚拟机屏蔽了与具体操作系统平台相关的信息，使得Java程序只需生成在Java虚拟机上运行的目标代码（字节码），就可以在多种平台上不加修改地运行</p>
-<h4 id="重要组成部分"><a href="#重要组成部分" class="headerlink" title="重要组成部分"></a>重要组成部分</h4><p><img src="/images/imgs5/35.jpg" alt="Alt text"></p>
-<p><font size="5">类加载子系统</font><br>负责从文件系统或者网络中加载class信息，加载的信息存放在一块称之为方法区的内存空间</p>
-<p><font size="5">方法区</font><br>存放类信息、常量信息、常量池信息、包括字符串常量和数字常量等</p>
-<p><font size="5">java堆</font><br>在虚拟机启动的时候创建，此内粗区域的唯一目的就是存放对象实例，是所有线程共享的，同时，这块内存区域也是垃圾收集器的主要区域，也被成为GC堆</p>
-<p><font size="5">Java虚拟机栈</font><br>每个java虚拟机线程都有一个私有的栈，其生命周期与线程相同，它描述了Java的方法执行模型，每个方法执行时都会创建一个栈帧。会抛出StackOverFlowError和OOM</p>
-<p><font size="5">本地方法栈</font><br>与Java虚拟机栈类似，最大的不同就是它是用于本地方法调用，同常用c语言编写</p>
-<p><font size="5">直接内存</font><br>NIO库允许java使用直接内存，通常速度由于java堆</p>
-<p><font size="5">程序计数器</font><br>程序计数器可以理解为当前线程执行的字节码的行号指示器，字节码解释器就是通哟改变这个值来获取需要执行的下一条需要执行的字节码指令。对于多线程来说，每条线程都有自己的程序计数器，这样各线程之间的计数器互不影响，这类内存区域也叫作“私有内存”（可以看到其实并不是私有的），之所以这么设计，是因为在多线程的情况下，完全可能出现线程中断的情况，那么当被中断的线程需要回复执行的时候，怎么知道上次该线程执行到哪里了呢？这就需要程序计数器发挥作用了，由于每个线程都有自己的程序计数器，这样当CPU重新调度该线程的时候，从其计数器中取出下一条的字节码执行指令，于是就可以继续执行了</p>
-<p><font size="5">执行引擎</font><br>负责执行虚拟机的字节码,先进行编译成机器码后执行</p>
-<h4 id="对象创建"><a href="#对象创建" class="headerlink" title="对象创建"></a>对象创建</h4><p>事实上，堆解决的是数据存储的问题，即数据怎么做，放在哪里，而栈解决的是程序的运行问题，即程序如何执行或者说如何处理数据，而方法区则是辅助堆栈的永久区，解决堆栈信息的产生,比如我们现在要创建一个student类实例<br><img src="/images/imgs5/36.jpg" alt="Alt text"><br>其中栈中存放的是对象的引用</p>
-<h4 id="对象创建详细过程"><a href="#对象创建详细过程" class="headerlink" title="对象创建详细过程"></a>对象创建详细过程</h4><p>首先检查这个指令的参数是否能在常量池中定位到一个类的符号引用，并且检查这个符号引用代表的类是否已被加载、解析和初始化过。如果没有就执行下一步</p>
-<p>检查通过后，虚拟机会为新生的对象分配内存，主要由两种内存分配策略，一种是指针碰撞，一种是空闲列表。所谓指针碰撞就是把Java堆中的内存一分为二，一边是所有用过的内存（这部分内存不能被分配了），一边是空闲的内存，是可以被分配的，这样的话，在可用于不可用的内存之间会有一个分割点指示器，那么为对象分配内存实际上就是从这个分界点指示器往空闲内存的一边拨动一段空间就可以了。而空闲列表则没有这个假设，已使用的内存与空闲内存可能是交叉在一起的，那么使用指针碰撞的方式分配内存就会产生问题，但是虚拟机维护着一张列表，这张列表记录了哪些区域的内存是可用的，那么在分配内存的时候就从选择可以容纳对象要求大小的内存区域分配给这个对象</p>
-<p>虚拟机将分配到的内存空间都初始化为零（不包括对象头），这里的初始化不同于我们在Java中利用构造函数进行初始化的过程，这里的初始化时保证Java的一些原生数据类型在不重新赋值的时候就可以直接使用，程序在使用这些对象的时候可以直接使用零值。</p>
-<p>接下来，虚拟机要对对象一些必要的设置，进行这些设置的目的是可以知道这些对象是哪个类的实例、对象的哈希码、对象的GC分代年龄等信息，这些信息都存储在对象头中。</p>
-<p>上面这些工作完成之后，从虚拟机的角度看，一个对象已经构造完成，但是从开发人员的角度看，还需要进行new对象之后初始化，接着执行init方法，到这里一个对象才算真正创建完毕</p>
-<h4 id="内存布局"><a href="#内存布局" class="headerlink" title="内存布局"></a>内存布局</h4><p>主要包括三部分的信息：对象头、实例数据和对齐填充</p>
-<p>对象头又包括两部分信息，第一部分用于存储对象自身的运行时数据，比如哈希码、GC分代年龄、锁状态标志、线程持有锁、偏向线程ID、偏向时间戳等；第二部分是类型指针，即对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象是哪个类的实例。</p>
-<p>实例数据部分是对象真真好存储的有效信息，也是程序代码中所定义的各种类型的字段内容</p>
-<p>第三部分不是必然存在的，只是起到占位符的作用，因为HotspotVM规定对象的起始地址必须是8字节的整数倍。所以很有可能以上两部分的大小不够8字节的整数倍，那么这个字段就可以发挥作用了。</p>
-<h4 id="对象的访问"><a href="#对象的访问" class="headerlink" title="对象的访问"></a>对象的访问</h4><p>主要是通过Java栈中的reference数据，通过这个reference数据只是一个指向对象的引用，那么对象的访问方式就可以不同。目前主流的对象访问方式主要由句柄和直接指针两种。通过句柄访问的话，会在Java堆中划分出一块句柄池，句柄池中句柄存放了对象的实例数据和类型指针，而reference数据则存放了句柄的地址引用。使用直接指针访问对象，那么reference数据存放的就是对象的地址<br>使用句柄访问的最大好处是reference中存储的稳定的句柄地址，当对象的地址发生了改变可以不用去关心。而直接指针的最大好处是速度更快，在于节省了一次指针定位的时间</p>
-<h4 id="OOM异常分类"><a href="#OOM异常分类" class="headerlink" title="OOM异常分类"></a>OOM异常分类</h4><p>Java堆溢出<br>虚拟机栈和本地方法栈溢出<br>方法区和运行常量池溢出<br>本机直接内存溢出</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;引用百度文库上对java虚拟机的定义.&lt;br&gt;虚拟机是一种抽象化的计算机，通过在实际的计算机上仿真模拟各种计算机功能来实现的。Java虚拟机
     
     </summary>
     
