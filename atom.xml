@@ -5,10 +5,86 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.myzwl.win/"/>
-  <updated>2018-03-26T08:22:24.000Z</updated>
+  <updated>2018-04-14T08:12:04.000Z</updated>
   <id>http://www.myzwl.win/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>学习面经一</title>
+    <link href="http://www.myzwl.win/2018/04/05/dream_16/"/>
+    <id>http://www.myzwl.win/2018/04/05/dream_16/</id>
+    <published>2018-04-05T13:48:51.000Z</published>
+    <updated>2018-04-14T08:12:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>失败并不可怕，可怕的是不能从失败的阴影中走出来。以下主要来自牛客网别人分享或者有些自己记得的题目</p>
+<h4 id="部分一"><a href="#部分一" class="headerlink" title="部分一"></a>部分一</h4><p>1.自我介绍。主要介绍以前做的项目<br>2.如何找出数组中数量最多的数（要求时间复杂度最佳）？<br>public static int maxNumber(int[] a){<br>        Map<integer,integer> map=new HashMap<integer,integer>();<br>       for(int i=0;i<a.length;i++){ if(map.get(a[i])="=null){" map.put(a[i],="" 1);="" }else{="" map.get(a[i])+1);="" }="" int="" max="0;" num="0;" for="" (entry<integer,integer=""> entry :map.entrySet()){</a.length;i++){></integer,integer></integer,integer></p>
+<pre><code>        if(entry.getValue()&gt;max){
+           max=(Integer)entry.getValue();
+           num=(Integer)entry.getKey();
+       }
+   }
+return num;
+}
+</code></pre><p>3.如何找出数组中数量超过一半的数（要求时间复杂度最佳）？<br>    public static int searchOver(int[] a){<br>        if(a==null)return -1;<br>        int count=0;<br>        int temp=0;<br>        for(int j=0;j<a.length 2;j++){="" temp="a[j];" for(int="" i="j+1;i<a.length;i++){" if(temp="=a[i]){" count++;="" }="" if(count="">a.length/2)<br>                    return temp;<br>            }<br>            count=0;<br>        }<br>        return -1;<br>    }</a.length></p>
+<p>4.如何实现轮询？<br>应用:tomcat集群中默认dns轮询，如果有tomcat挂掉了，必须等到dns重新解析或者重启<br>Nginx，轮询（默认）按照时间请求，同时还有个加权<br>spring task定时器，根据相关表达式，设置一定时间轮询<br>循环队列和计数器</p>
+<p>5.针对项目提问<br>6.数据库索引为何要用B+树？<br>首先有其他树结构<br>AVL树左孩子毕根节点小，右孩子大，插入O（1）,删除和查找lon（n）<br>红黑树，改进删除O（n）；<br>trim（字典树）但是存储的是字符串，avl删除不行，红黑树<br>磁盘io读取次数过于频繁<br>而数据库中文件过大，不可能全部存在内存中<br>在查找过程中要减少磁盘io读取次数<br>b+数结构，结点值对应最左边第一个，然后叶子结点记录数据，非叶子结点记录索引，一次携带关键字多，减少磁盘io，<br>另一方扫描范围大和稳定（局部性原理)</p>
+<p>7.为什么用B+树就会快（硬盘底层问题）<br>8..http状态码<br>主要由三个十进制组成，第一个代表状态<br>1<strong> 信息，服务器收到请求，需要请求者继续执行<br>2</strong> 成功200<br>3<strong>重定向<br>4</strong>客户端 403跨越、401权限404<br>5** 服务器500</p>
+<p>9.如何使用数据库索引？<br>聚簇索引（拼音排序好）张查到a-z，知道结果（正文本身就是一个目录<br>非聚簇索引（拼旁部首），不同字上下页跳动大（先找到目录的结果，在翻到所需的页码</p>
+<h4 id="部分二"><a href="#部分二" class="headerlink" title="部分二"></a>部分二</h4><p>1.项目中遇到的问题，如何解决？<br>2。一个无序数组，其中一个数字出现的次数大于其他数字之和，求这个数字<br>public static int searchOver(int[] a){<br>        if(a==null)return -1;<br>        int count=0;<br>        int temp=0;<br>        for(int j=0;j<a.length 2;j++){="" temp="a[j];" for(int="" i="j+1;i<a.length;i++){" if(temp="=a[i]){" count++;="" }="" if(count="">a.length/2)<br>                    return temp;<br>            }<br>            count=0;<br>        }<br>        return -1;<br>    }</a.length></p>
+<p>3.一个数组，有正有负，不改变顺序的情况下，求和最大的最长子序列<br>public static ArrayList<integer> maxSum(int[] a){<br>        ArrayList<integer> list=new ArrayList<integer>();<br>        if(a==null)return null;<br>        int max=0;<br>        for(int i=0;i&lt;a.length;i++){<br>           max+=a[i];<br>           if(max&lt;0){<br>               max=a[i];<br>               list.clear();<br>               list.add(a[i]);<br>           }else{<br>               list.add(a[i]);<br>           }<br>        }<br>        return list;<br>    }</integer></integer></integer></p>
+<p>4.volatile和synchronized？<br>内存模型: 线程、变量、本地内存、主内存<br>v:1.保证变量可见性(死循环，main，isrung线程)本地方法私有栈读取，不强制到主内存刷新，共享变量<br>2.不保证原子可见性，线程不安全，（100个线程，i++，脏读）<br>3.保证有序性（禁止指令重排，比如配置文件加载，happen-before；1.一个操作必须在另一个操作之前，一个操作必须对下一个操作可见）<br>synchronize：同步锁，类锁，对象锁，加载方法和变量，修饰的变量必须拥有锁，才能到临界区执行方法<br>比较:v轻量级，只能修饰变量，s重量级不仅变量还可以是方法<br>v：只能保证变量可见性，不能保证同步性，所以多个线程并发访问不会阻塞，s可以，多个线程竞争锁，会出现阻塞</p>
+<p>5.项目用到什么数据库？隔离级别？索引？<br>mysql<br>首先事务并发执行需要解决四个问题<br>1.更新丢失（谁快就覆盖谁）<br>2.脏读（事务未提交，就读了）<br>3.不可重复读（事物之间修改了，读到了未修改前的）<br>4.幻读（事务之间有插入和删除）</p>
+<p>事务隔离级别<br>1.默认的一个 不支持事务<br>2.innodb 支持事务 ，灾难恢复，行级锁、索引等等<br>3.memory 内存<br>4.多个默认的隔离级别在一起</p>
+<p>innodb b+树索引<br>索引提高查询速度的数据库对象<br>比如主键，索引可以避免全表查询，有些数据项不需要查询、和避免排序</p>
+<p>6.垃圾回收算法？<br>主要是分代算法（堆内存中)<br>按照对象的生命周期将内存进行划分<br>分为年轻代和老年代<br>年轻代分为eden、from、to<br>首先对象会在eden、中，但满了之后会将还在使用的放到from中，出发gc，清理eden、然后eden满了，将eden和from中正在使用的放在to中，一次类推，直到一定次数，将还在使用的对象放到老年区，经过一些列折腾后，出发full GC影响性能</p>
+<p>7.垃圾收集器?<br>serial(单线程，暂停)<br>prnew（多线程版）<br>serial old<br>parnew old<br>cms（老年代收集器，实现一边清理一边工作，大大提高性能，需要配合使用）<br>G1收集器（将java堆分成大小相等的独立区域，进行年轻代和老年代的回收）</p>
+<p>8.怎样进入老年代？<br>1.新生代每经过一次gc，年龄加1，当达到阙值，默认15就会进入老年代<br>2.大对象直接进入老年代<br>3.在复制算法中，s轮换区无法容纳的对象直接进入老年区</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;失败并不可怕，可怕的是不能从失败的阴影中走出来。以下主要来自牛客网别人分享或者有些自己记得的题目&lt;/p&gt;
+&lt;h4 id=&quot;部分一&quot;&gt;&lt;a h
+    
+    </summary>
+    
+      <category term="从头开始" scheme="http://www.myzwl.win/categories/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B/"/>
+    
+    
+      <category term="从头开始" scheme="http://www.myzwl.win/source/tags/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>学习面经一</title>
+    <link href="http://www.myzwl.win/2018/04/05/dream_17/"/>
+    <id>http://www.myzwl.win/2018/04/05/dream_17/</id>
+    <published>2018-04-05T13:48:51.000Z</published>
+    <updated>2018-04-14T08:12:26.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>失败并不可怕，可怕的是不能从失败的阴影中走出来。以下主要来自牛客网别人分享或者有些自己面试记得的题目</p>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><p>从三月中旬到四月初，前前后后大概有些在线笔试机会。给自己帮助最大的就是算法了，自己也是非常喜欢算法的，之前也是准备好久的，很多都是leetcode或者剑指offer的题，有些则是结合各公司实际的题，当然做的效果很一般（自己太渣），不得不说算法是程序的灵魂</p>
+<h4 id="部分一"><a href="#部分一" class="headerlink" title="部分一"></a>部分一</h4><p>加密解密了解么？几种算法，讲一下你了解的<br>多线程了解么？什么是线程安全？<br>说一个你最熟悉的设计模式<br>讲一下你项目中用到了哪些设计模式<br>Java的hashmap的原理<br>Hashmap的线程安全性，什么是线程安全的？如何实现线程安全<br>Mysql的数据库引擎，区别特点<br>写一个单例模式，用双检查锁单例<br>单例模式在你项目里哪些应用？<br>数据连接池<br>说一说高并发<br>项目介绍，最复杂的表<br>Hashmap的原理<br>Hashmap为什么大小是2的幂次<br>介绍一下红黑树<br>Arraylist的原理<br>堆排序的原理<br>抽象工厂和工厂方法模式的区别<br>工厂模式的思想<br>object类你知道的方法<br>哪里用到了工厂模式<br>Forward和redirect的区别<br>线程池的使用时的注意事项<br>Spring中autowire和resourse关键字的区别<br>Hashmap的原理<br>Hashmap的大小为什么指定为2的幂次<br>简单说一说消息队列和分布式<br>Redis的应用场景<br>Hashmap的原理<br>Hashmap中jdk1.8之后做了哪些优化<br>垃圾回收的过程<br>Jvm的参数设置<br>项目中的优化<br>快排的思想</p>
+<h4 id="部分二"><a href="#部分二" class="headerlink" title="部分二"></a>部分二</h4><p>Tcp怎么保证可靠传输<br>Tcp的拥塞控制<br>让你设计一个即时聊天的系统<br>支付宝转账，是如何实现，几个小时通知转账成功的<br>解释一下长连接<br>对面向对象的理解<br>介绍多态<br>Java新建线程有哪几种方式<br>线程池的作用<br>一棵二叉排序树，给定一个数，找到与给定数差值最小的数<br>设计一个系统，解决抢购时所需要的大量的短链接的功能，如何保证高并发，如何设计短链接<br>设计一个系统，记录qq用户前一天的登录状态，提供16g内存和2tb的硬盘，要做到查询指定qq号的前一天的登录状态<br>两个排序的数组A和B分别含有m和n个数，找到两个排序数组的中位数<br>数据库的索引原理<br>索引使用的注意事项<br>数据库的引擎<br>Java垃圾回收机制<br>Java的finalize，finally，final三个关键字的区别和应用场景<br>String类可以被继承么<br>给一个整数数组，找到两个数使得他们的和等于一个给定的数 target<br>红黑树<br>Redis的应用<br>自己写一个tomcat服务器，你会怎么写<br>分布式服务器会出现哪些问题<br>怎么解决session一致性缓存的问题<br>Redis的优势和特点<br>一千万用户并发抢购，怎么设计<br>如果成功的用户有10万，redis存不下怎么处理<br>Redis和mysql的区别<br>Redis的持久化有哪些方式，具体原理<br>Java collection类，集合<br>多线程并发包<br>countDownLatch<br>Hashmap的原理<br>hashmap容量为什么是2的幂次<br>hashset的源码<br>object类你知道的方法<br>hashcode和equals<br>Redis的持久化？有哪些方式，原理是什么？<br>稳定的排序算法和不稳定的排序算法<br>快速排序的思想</p>
+<h4 id="部分三"><a href="#部分三" class="headerlink" title="部分三"></a>部分三</h4><p>Java的内存模型，垃圾回收<br>Nio和IO有什么区别<br>Nio和aio的区别<br>Spring的aop怎么实现<br>Spring的aop有哪些实现方式<br>动态代理的实现方式和区别<br>Linux，查找磁盘上最大的文件的命令<br>Linux，如何查看系统日志文件<br>Java中的多态<br>Object类下的方法<br>Finalize的作用和使用场景<br>Hashcode和equals<br>为什么要同时重写hashcode和equals<br>不同时重写会出现哪些问题<br>Hashmap的原理<br>Hashmap如何变线程安全，每种方式的优缺点<br>垃圾回收机制<br>反转单链表<br>实现类似微博子结构的数据结构，输入一系列父子关系，输出一个类似微博评论的父子结构图<br>手写java多线程<br>手写java的soeket编程，服务端和客户端<br>进程间的通信方式<br>Mysql的容灾备份<br>Redis和memcache 的区别<br>Java的full gc<br>Full gc会导致什么问题<br>两个有序链表合并成一个有序链表<br>死锁是什么呢<br>怎么解决死锁</p>
+<h4 id="部分四"><a href="#部分四" class="headerlink" title="部分四"></a>部分四</h4><p>http请求流程<br>为什么负载均衡<br>数据库挂了怎么办？除了热备份还有什么方法<br>找出两个数组相等的数，不能用其他数据结构<br>给定一个数字，一个数组，找出数组中相加等于这两个数的和，不能用数据结构<br>如何判断一个树是不是另一颗树的子树<br>I++操作怎么保证线程安全<br>设计一个下单系统，下单成功后可以给用户发优惠券<br>接上面场景题：服务器挂了，优惠券还没发怎么办<br>数据库挂了怎么怎么办<br>怎么保证一致性<br>Nio的原理<br>Channel和buffer<br>directBuffer和buffer的区别<br>nio和aio的区别<br>锁的实现原理<br>怎么解决缓存和主存的一致性问题<br>缓存还没更新到主存，服务器挂了怎么办<br>数据库挂了怎么办<br>读写锁<br>什么时候用读锁<br>什么时候用写锁<br>Cas的原理，使用场景<br>数据库的瓶颈<br>序列化的底层怎么实现的<br>synchronized 的底层怎么实现的<br>乐观锁vs 悲观锁<br>gc<br>concurrenthashmap 分段锁的细节<br>设计模式怎么分类，每一类都有哪些<br>并发包里了解哪些<br>b 树，b+树，b*树</p>
+<h4 id="部分五"><a href="#部分五" class="headerlink" title="部分五"></a>部分五</h4><p>jdk 动态代理vscglib 动态代理，他们底层分别怎么实现的<br>synchronizedMap 知道吗？他和concurrenthashmap 分别使用于什么场景？<br>https 过程?公钥能用公钥解吗<br>描述一下java 线程池。<br>怎么保证redis 和db 中的数据一致<br>设计模式怎么用到项目中<br>类加载<br>jvm 分区<br>spring ioc，aop 以及其优点<br>浏览器访问一个网址的时候都有哪些过程（还要了解DNS 查找的过程）<br>tcp 三次握手，四次分手<br>线程池<br>java 同步机制有哪些<br>进程和线程</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;失败并不可怕，可怕的是不能从失败的阴影中走出来。以下主要来自牛客网别人分享或者有些自己面试记得的题目&lt;/p&gt;
+&lt;h4 id=&quot;算法&quot;&gt;&lt;a 
+    
+    </summary>
+    
+      <category term="从头开始" scheme="http://www.myzwl.win/categories/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B/"/>
+    
+    
+      <category term="从头开始" scheme="http://www.myzwl.win/source/tags/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B/"/>
+    
+  </entry>
   
   <entry>
     <title>学习面经</title>
@@ -674,67 +750,6 @@
     
     
       <category term="学习总结" scheme="http://www.myzwl.win/source/tags/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>jvm总结之三:虚拟机堆参数</title>
-    <link href="http://www.myzwl.win/2017/12/23/jvm_3/"/>
-    <id>http://www.myzwl.win/2017/12/23/jvm_3/</id>
-    <published>2017-12-23T07:48:51.000Z</published>
-    <updated>2018-03-17T10:29:42.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>事实上，我们对堆内存的管理是可控的，可通过对jvm虚拟机相关堆内存参数设置进行控制</p>
-<h4 id="参数含义"><a href="#参数含义" class="headerlink" title="参数含义"></a>参数含义</h4><p>-XX 对于系统级别的jvm配置 配置日志信息 垃圾回收器类型<br>非 -XX的 基本都是对 应用层面上的配置</p>
-<ul>
-<li>启用 - 禁用<br>-XX :PrintGC 使用这个参数，虚拟机启动后，只要遇到GC就会打印日志<br>-XX: +UserSerialGC 配置串行回收器<br>-XX:+PrintGCDetails：可以查看详细信息，包括各个区的情况<br>-Xms: 设置java程序启动时初始堆大小<br>-Xmx: 设置java程序能获得的最大堆大小<br>-Xloggc:路径 ：将打印出来的日志信息保存至指定的路径<br>-Xmn：设置堆的内存大小<br>-XX:SurvivorRatio=m:n调整Eden和Survivor的比例为m:n</li>
-</ul>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">public class test2 &#123;		</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">	</div><div class="line">		//-Xms20m -Xmx20m -Xmn10 -XX:+PrintGCDetails -Xloggc:d:\gc1.log</div><div class="line">		</div><div class="line">				//查看GC信息</div><div class="line">				System.out.println("max memory:" + Runtime.getRuntime().maxMemory());</div><div class="line">				System.out.println("free memory:" + Runtime.getRuntime().freeMemory());</div><div class="line">				System.out.println("total memory:" + Runtime.getRuntime().totalMemory());</div><div class="line">				</div><div class="line">				byte[] b1 = new byte[1*1024*1024];</div><div class="line">				System.out.println("分配了1M");</div><div class="line">				System.out.println("max memory:" + Runtime.getRuntime().maxMemory());</div><div class="line">				System.out.println("free memory:" + Runtime.getRuntime().freeMemory());</div><div class="line">				System.out.println("total memory:" + Runtime.getRuntime().totalMemory());</div><div class="line">				</div><div class="line">				byte[] b2 = new byte[4*1024*1024];</div><div class="line">				System.out.println("分配了4M");</div><div class="line">				System.out.println("max memory:" + Runtime.getRuntime().maxMemory());</div><div class="line">				System.out.println("free memory:" + Runtime.getRuntime().freeMemory());</div><div class="line">				System.out.println("total memory:" + Runtime.getRuntime().totalMemory());</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>输出结果</p>
-<blockquote>
-<p>Memory: 4k page, physical 2076596k(144200k free), swap 4923560k(620956k free)<br>CommandLine flags: -XX:InitialHeapSize=5242880 -XX:MaxHeapSize=20971520 -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:-UseLargePagesIndividualAllocation<br>0.418: [GC (Allocation Failure) 0.418: [DefNew: 655K-&gt;192K(1856K), 0.0049031 secs] 655K-&gt;466K(5952K), 0.0052607 secs] [Times: user=0.02 sys=0.00, real=0.01 secs]<br>0.448: [GC (Allocation Failure) 0.448: [DefNew: 1282K-&gt;0K(1856K), 0.0044827 secs]0.453: [Tenured: 1490K-&gt;1490K(4096K), 0.0033471 secs] 1557K-&gt;1490K(5952K), [Metaspace: 80K-&gt;80K(4480K)], 0.0083429 secs] [Times: user=0.02 sys=0.00, real=0.01 secs]<br>Heap<br> def new generation   total 1920K, used 68K [0x03a00000, 0x03c10000, 0x040a0000)<br>  eden space 1728K,   3% used [0x03a00000, 0x03a111f8, 0x03bb0000)<br>  from space 192K,   0% used [0x03bb0000, 0x03bb0000, 0x03be0000)<br>  to   space 192K,   0% used [0x03be0000, 0x03be0000, 0x03c10000)<br> tenured generation   total 8196K, used 5586K [0x040a0000, 0x048a1000, 0x04e00000)<br>   the space 8196K,  68% used [0x040a0000, 0x04614b70, 0x04614c00, 0x048a1000)<br> Metaspace       used 80K, capacity 2242K, committed 2368K, reserved 4480K</p>
-</blockquote>
-<p>其中from、to分别为s0、s1区</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;事实上，我们对堆内存的管理是可控的，可通过对jvm虚拟机相关堆内存参数设置进行控制&lt;/p&gt;
-&lt;h4 id=&quot;参数含义&quot;&gt;&lt;a href=&quot;#
-    
-    </summary>
-    
-      <category term="jvm" scheme="http://www.myzwl.win/categories/jvm/"/>
-    
-    
-      <category term="jvm" scheme="http://www.myzwl.win/source/tags/jvm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>jvm总结之二:回收策略</title>
-    <link href="http://www.myzwl.win/2017/12/22/jvm_2/"/>
-    <id>http://www.myzwl.win/2017/12/22/jvm_2/</id>
-    <published>2017-12-22T07:48:51.000Z</published>
-    <updated>2018-03-17T10:29:44.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>我们知道垃圾回收的主要内存区域是堆和方法区，因为这两块区域的内存分配相对于其他区域具有不确定性，而分配内存一般有两种方法，即指针碰撞和空闲列表</p>
-<h4 id="堆内存"><a href="#堆内存" class="headerlink" title="堆内存"></a>堆内存</h4><p>在堆内存中主要分为年轻代和老年代（具体后面再说），先说一下年轻代<br><img src="/images/imgs5/37.jpg" alt="Alt text"><br>如图，主要分为Eden（对象都会在该区域内创建）同时也会在s0或s1中随机一个进行创建，经过一次GC后在s0和s1中使用复制算法保留存活下来的对象，那么它是如何复制的了<br><img src="/images/imgs5/38.jpg" alt="Alt text"><br><img src="/images/imgs5/39.jpg" alt="Alt text"><br>大概流程就是将可回收的垃圾对象进行标记，然后复制存活的对象到另一块空白区域，依次类推<br>很显然这种复制方式很浪费空间，但是年轻代是生命周期很短的，换句话说，如果年轻代不够放了就会放到老年代，一般规定经过15次GC后的年轻代就会进入老年区（可通过-XX：MaxTenuringThreshold=15设置多少次为老年代），而老年区一般存放存活时间比较久的对象，通过标记-清除-整理进行垃圾回收，如果老年代内存不足就会触发FULL GC.默认是占用了68%后收集（可通过-XX:CMSInitiatingOccupancyFraction=68设置），该GC非常影响性能</p>
-<h4 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h4><p>我们知道垃圾回收算法可自行判断一个对象是否已经生命周期达到结束，从而将其视为垃圾进行回收。那么在此算法出现之前，出现过可达性分析算法进行垃圾回收<br>算法的基本思想就是通过一系列的称为“GC Roots”的对象作为起始点，从这些起始点开始向下搜索，所走过的路径称为引用链，如果一个对象到GC Roots没有任何引用链，那么这个对象是不可用的，就是说，程序中没有谁引用了这个对象，所以可以说从根节点到叶子结点是不可达的<br>而以下对象可作为GC Roots对象：<br>虚拟机栈（栈帧中本地变量表）中引用的对象<br>方法区中类静态属性引用的对象<br>方法区中常量引用的对象<br>本地方法栈中JNI（也就是native本地方法）引用的对象</p>
-<p>现在我们已经知道了通过可达性分析判断对象是否还可用，但是是不是不可达的对象都是不可用呢？答案是未必。原因在于要宣告一个对象的死亡，需要两次标记（为什么需要两次标记呢？原因是如果一个对象没有与GC Roots结点相连，就会被第一次标记，而如果对象覆盖了finalize方法，并且在finalize方法中与某个对象建立了引用关系，那么第二次标记会失败，那么这个对象就会被移出“即将回收”的对象列表，移出之后这个对象就“活”了下来，如果在finalize方法中这个对相关仍然没有与一个对象建立引用关系，那么这个对象就真正死亡了）。</p>
-<h4 id="回收方法区中的对象"><a href="#回收方法区中的对象" class="headerlink" title="回收方法区中的对象"></a>回收方法区中的对象</h4><p>方法区中的永久代的垃圾回收主要为两部分： 废弃常量和无用的类<br>废弃常量是指没有任何对象引用常量池中的某个对象，那么这个对象就会被回收，而对于常量池中的垃圾回收只要进行一次标记就可以进行判断<br>无用的类需要满足以下三个条件才可以宣判一个类的“死刑”：<br>    1.该类的所有实例都已经被回收，也就是Java堆中不存在该类的实例<br>    2.加载该类的ClassLoader已经被回收<br>    3.该类对应的java.lang.Class对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h4&gt;&lt;p&gt;我们知道垃圾回收的主要内存区域是堆和方法区，因为这两块区域的内存分配相对于其他区域具有不确定性，而分配内存一般有两种方法，即指针碰撞和空闲列
-    
-    </summary>
-    
-      <category term="jvm" scheme="http://www.myzwl.win/categories/jvm/"/>
-    
-    
-      <category term="jvm" scheme="http://www.myzwl.win/source/tags/jvm/"/>
     
   </entry>
   
