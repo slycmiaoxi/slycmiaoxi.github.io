@@ -18,8 +18,8 @@
 
 <script>
     (function(){
-        if('aaaa'){
-            if (prompt('请输入文章密码') !== 'aaaa'){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
                 alert('密码错误！');
                 history.back();
             }
@@ -99,7 +99,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="学习总结," />
+  <meta name="keywords" content="x-blog," />
 
 
 
@@ -115,19 +115,28 @@
 
 
 
-<meta name="description" content="前言不知不觉新的一年将开始，也意味着6月份之后美好的大学生活和学生时代即将结束。回顾这三年多生活，大学前一年基本迷迷茫茫，太多的课程，让人不知道如何去选择一个方向学习，基本很迷茫，有一次为了表示对物理的尊敬和兴趣，特地网上买了物理上下答案，晚上或者周末一有时间就去自习室刷题，刷完一本后，突然发现除了内心的满足感，到现在再也没碰过物理了，从上中学开始就一直对数学情由独钟，也因此错过很多很多机会和干过">
+<meta name="description" content="前言如果放在一张表里，控制起来很复杂，所以干脆设置成三张表t_blog_info(帖子表)、t_comment_info（评论表)、t_floor_info（楼中楼表)为了方便直接贴出截图（以下是按照自己的想法建的结构，仅作为项目说明，如不合理，请谅解)
+数据库设计
+t_blog_info(帖子表)其中visitor_hasread为帖子访问量，blog_item帖子唯一索引，用来快速定义帖子详情">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我的大学自学java体系一">
-<meta property="og:url" content="http://www.myzwl.win/2017/12/30/study_01/index.html">
+<meta property="og:title" content="x-blog之论坛核心表简单设计">
+<meta property="og:url" content="http://www.myzwl.win/2019/07/05/xblog_6/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="前言不知不觉新的一年将开始，也意味着6月份之后美好的大学生活和学生时代即将结束。回顾这三年多生活，大学前一年基本迷迷茫茫，太多的课程，让人不知道如何去选择一个方向学习，基本很迷茫，有一次为了表示对物理的尊敬和兴趣，特地网上买了物理上下答案，晚上或者周末一有时间就去自习室刷题，刷完一本后，突然发现除了内心的满足感，到现在再也没碰过物理了，从上中学开始就一直对数学情由独钟，也因此错过很多很多机会和干过">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs5/33.jpg">
-<meta property="og:image" content="http://www.myzwl.win/images/imgs5/34.jpg">
-<meta property="og:updated_time" content="2018-03-15T14:04:06.000Z">
+<meta property="og:description" content="前言如果放在一张表里，控制起来很复杂，所以干脆设置成三张表t_blog_info(帖子表)、t_comment_info（评论表)、t_floor_info（楼中楼表)为了方便直接贴出截图（以下是按照自己的想法建的结构，仅作为项目说明，如不合理，请谅解)
+数据库设计
+t_blog_info(帖子表)其中visitor_hasread为帖子访问量，blog_item帖子唯一索引，用来快速定义帖子详情">
+<meta property="og:image" content="http://www.myzwl.win/images/xblog/2_3.jpg">
+<meta property="og:image" content="http://www.myzwl.win/images/xblog/2_4.jpg">
+<meta property="og:image" content="http://www.myzwl.win/images/xblog/2_5.jpg">
+<meta property="og:image" content="http://www.myzwl.win/images/xblog/2_6.jpg">
+<meta property="og:image" content="http://www.myzwl.win/images/xblog/2_7.jpg">
+<meta property="og:updated_time" content="2019-07-14T09:08:08.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我的大学自学java体系一">
-<meta name="twitter:description" content="前言不知不觉新的一年将开始，也意味着6月份之后美好的大学生活和学生时代即将结束。回顾这三年多生活，大学前一年基本迷迷茫茫，太多的课程，让人不知道如何去选择一个方向学习，基本很迷茫，有一次为了表示对物理的尊敬和兴趣，特地网上买了物理上下答案，晚上或者周末一有时间就去自习室刷题，刷完一本后，突然发现除了内心的满足感，到现在再也没碰过物理了，从上中学开始就一直对数学情由独钟，也因此错过很多很多机会和干过">
-<meta name="twitter:image" content="http://www.myzwl.win/images/imgs5/33.jpg">
+<meta name="twitter:title" content="x-blog之论坛核心表简单设计">
+<meta name="twitter:description" content="前言如果放在一张表里，控制起来很复杂，所以干脆设置成三张表t_blog_info(帖子表)、t_comment_info（评论表)、t_floor_info（楼中楼表)为了方便直接贴出截图（以下是按照自己的想法建的结构，仅作为项目说明，如不合理，请谅解)
+数据库设计
+t_blog_info(帖子表)其中visitor_hasread为帖子访问量，blog_item帖子唯一索引，用来快速定义帖子详情">
+<meta name="twitter:image" content="http://www.myzwl.win/images/xblog/2_3.jpg">
 
 
 
@@ -155,13 +164,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/2017/12/30/study_01/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2019/07/05/xblog_6/"/>
 
 
 
 
 
-  <title> 我的大学自学java体系一 | 秒西 </title>
+  <title> x-blog之论坛核心表简单设计 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -507,7 +516,7 @@ var _hmt = _hmt || [];
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2017/12/30/study_01/">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2019/07/05/xblog_6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -528,7 +537,7 @@ var _hmt = _hmt || [];
             
             
               
-                我的大学自学java体系一
+                x-blog之论坛核心表简单设计
               
             
           </h1>
@@ -543,8 +552,8 @@ var _hmt = _hmt || [];
               
                 <span class="post-meta-item-text" style="color:red;">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-30T14:48:51+08:00">
-                2017-12-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-05T22:48:51+08:00">
+                2019-07-05
               </time>
             
 
@@ -571,8 +580,8 @@ var _hmt = _hmt || [];
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/个人感想/" itemprop="url" rel="index">
-                    <span itemprop="name">个人感想</span>
+                  <a href="/categories/x-blog/" itemprop="url" rel="index">
+                    <span itemprop="name">x-blog</span>
                   </a>
                 </span>
 
@@ -611,12 +620,24 @@ var _hmt = _hmt || [];
       
 
       
-        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>不知不觉新的一年将开始，也意味着6月份之后美好的大学生活和学生时代即将结束。<br>回顾这三年多生活，大学前一年基本迷迷茫茫，太多的课程，让人不知道如何去选择一个方向学习，基本很迷茫，有一次为了表示对物理的尊敬和兴趣，特地网上买了物理上下答案，晚上或者周末一有时间就去自习室刷题，刷完一本后，突然发现除了内心的满足感，到现在再也没碰过物理了，从上中学开始就一直对数学情由独钟，也因此错过很多很多机会和干过很多愚蠢的事，自己当时心里就想着干自己喜欢的事，于是乎，除了几门极个别的课，基本上全在研究数学，看大学老师录的数学视频，刷奥数题，上头时为了手写和推出一元三次和四次方程的含复根求根公式，连续好几天乐此不疲，然后一次很重要的人生考试被自己的糊涂和幼稚错过了（除了那两张象征荣誉的奥数证书，后来已经撕了，现在觉得当时太傻，太傻，太傻，也成为了自己的一个警醒），后来大学填报专业时，第一志愿写了数学专业，家里也希望当个数学老师算了，后来阴差阳错的调剂到软件工程专业，慢慢的，慢慢地也就淡忘了对数学的热情。大学里，也迷茫过，包夜上网玩游戏已达上百次，也是因为兴趣上头，后来想想身体健康才是最主要的，娱乐要有度。<br>大学真正开始学习是从c、c++开始，当时第一次接触c语言，真的很兴奋，基本上就一直做数学程序题，后来接触了c++，用vc6.0做mfc程序，然后就是一直对着c++ primer plus学习，当时也算是有了一个目标。后来，也是改变了我的学习方向的一个时间，到现在都记忆犹新。有一次室友有事，让我代替他上一节php公选课（时间2015-10-20），第一次接触web，服务器，突然发现这才是自己喜欢做的，自己被深深的震撼到了，当时他也布置了一个任务，做一个简单的网页含后台，回去后，就像发现新大陆一样，通过百度搭建了php环境和wampserver服务器，然后就是着了迷一样的弄，几天后弄出来了一个个人主页网站<br><img src="/images/imgs5/33.jpg" alt="Alt text"><br><img src="/images/imgs5/34.jpg" alt="Alt text"></p>
-<p>突然之间感觉自己有了学习兴趣和方向，像着了迷一样的学习。后来2016年初做的几次兼职深深的意识到了，学习比干苦力看重眼前利益有用些，后来听说了java（学校是在2016年10月才开设的唯一一门java基础课，后续没了java相关了），开始一脚踏进了深深的深渊，开始疯狂的自学中至今</p>
-<h4 id="感谢韩顺平老师"><a href="#感谢韩顺平老师" class="headerlink" title="感谢韩顺平老师"></a>感谢韩顺平老师</h4><p>刚开始在图书馆借了一本<21天学通java>,因为之前有c和数据结构等基础，所以学习起来也轻松，没几天就看完和动手码完了<br>，后来无意中接触了java吧，看到了传播智客韩顺平老师的视频分享，于是一口气下完了，不得不说韩老师是我的java启蒙老师，也很荣幸他的视频讲的很细致，每集时间很长，他的视频我连续花了四个多月才消化完，其中java se搞了两个月（到现在仍然觉得java基础仍不足），而每天像打了鸡血一样，一天真的12小时以上，哪也不去，就是对着电脑先仔细听他说完一级，然后看着笔记认真动手操作每一集的每一个代码（当时，真的不复制，就是自己从头敲到尾，遇到卡住的，回头再看视频回顾细节），然后按照自己的想法把它的功能改成自己的，一直都记着韩老师的一句话（把别人的知识通过自己的语言描述出来就是自己的知识，一定要实践），记得三月底的一次运动会，宿舍人要么回家了，要么出去玩了。当时自己选择留在宿舍学习(也就是为了完成韩顺平老师的项目)，就这样连续五天在各种情形下度过了，也许当时会感觉很孤独，但是总觉得在一个目标和兴趣下，一切都是那么充实。每天晚上，总会在睡觉前在手机上观看韩顺平老师的笔记到一两年，就这样早上7点起来，晚上2点睡，持续了大半年。这期间（现在想来）有些技术踩坑了，比如swing当时要求自己手写所有的，很认真的花很多时间学习struts1.xml四种解析情况自己手写模拟（现在忘光了），而最多最多的就是自己踩坑，抗压学习，遇到问题，然后通过耐心的百度，谷歌解决，每个学习的知识和技能都要转化为自己的语言应用，哪怕花时间去网站上找相关辅助代码，一定要还原真实情况。正是这段时间的学习，让我对软件开发有一个很深很深的认识，唯一的代价就是失眠和孤独。后来在四月初，数据库老师布置了一个任务，让我们做一个的数据库课程设计，事实上就不说了，后来也许是兴趣或者正好可以用上，自己花了一个星期（事实上每天就睡4,5个小时）自己一行一行的敲，做了一个基于swing的宿舍管理系统，这是自己第一次进行设计和编码，不知道当时拿给老师是有多兴奋~，后来老师说功能写的可以，就是太乱。当时也不懂软件工程，于是回去后又花了一个星期改了一个基于socket的宿舍管理系统，也许是当时太想把网络知识应用上，后来老师说我回去得看看软件工程。后来发现的确，盲目编码很不规范，然后当时就有一个心愿写一个网站的宿舍系统，而当时也是参考了韩老师的学生管理系统，又是一个月的努力，在五月份的时候，第一次写了一个基于纯servlet和mvc模式的宿舍系统，当时也许是太单纯了，自己拿了四张A4纸把每个类和流程都手写出来，然后去验收，然后向同学借了几台电脑去验收，也许是老师看我太认真了，说了一句（学校没几个像你这样的，然后让我帮她帮一个学校做一个网站），当时因为着迷技术，推掉了（直到2017年2月帮做另一个项目，已完成），后来也许就是这句话，自己越学越有劲，总之韩顺平老师的课程帮助了我许多许多</21天学通java></p>
-<h4 id="那些充实的日子"><a href="#那些充实的日子" class="headerlink" title="那些充实的日子"></a>那些充实的日子</h4><p>后来6月初，有个达内来的ios七天校内实训，然后做一个tom猫小程序。当时，真的很兴奋，从一开始就抱着不学ios，自己做一个基于web的tom动画程序，然后后来就各种jsdom做了一个，后来演示时，他直接说我私底下给他看了过了（贼笑），期间也和他聊了聊，从java se聊到ssh和自己的项目，他说我这样可以去实习和然后工作了，当时，仍然以兴趣和沉迷技术，根本没有想那么多（现在后悔了，早点实习，早点有工作经验真的很有益，而且有明确的学习方向）。学完韩顺平老师的以后，也陆续发现还有许多优秀的讲师，像马士兵老师，于是以同样的方式学习，突然发现马老师，彻底改变了我的学习方式，而且他的课程讲的很深，像jdk源码，设计模式等等，总之马士兵老师的视频将近花了三个多月，也是收获最多的，在16年五月初的时候自己就有种打算写一个个人博客，于是乎花了将近两个月时间，写了第一个基于s2sh的个人博客，过程就不说了，也第一次接触到了外网访问，当时用的是nat123，将服务器架在自己电脑上，而且刚上限就被黑客黑了，自己机子成了肉鸡（贼笑），后来也许是自己太得意和想摆脱孤独，发在了空间，第一次感受到了温暖<br>当然，代价是很严重的，就是自己的精神很萎靡和严重缺少睡眠和每天都失眠，基本就是宅在房里，没有交流<br>再到后来，陆陆续续不断学习李炎灰老师的前端体系，easy ui创始人的视频（这个帮助真大），北风网的优秀视频，黑马东哥视频，和java123视频，最终以一个课程设计猎图网（按照软件工程编写文档）而结束了2016年的学习。<br>回忆起来，这一年真的很充实和苦有所得</p>
-<h4 id="持久以恒"><a href="#持久以恒" class="headerlink" title="持久以恒"></a>持久以恒</h4><p>2017年开始，自己就开始写博客来记录学习和知识，早在2015年3月，自己建了一个c++群，不过里面人很少，刚开始是用文档记录发到群里分享，后来直接用hexo博客写，自己也租了一台阿里云服务器，部署自己的网站。而之前也是利用业余时间看看经典书籍，而这一年更是如此，也很少看视频了，基本以经典书籍学习，像设计模式，多线程，数据结构与算法等等，也许是精力不行了，也没有了之前疯狂的学习热情，后来在3月到5月一直帮一个学校做项目（过程太累），第一次感受到真实项目的复杂合自己一个人做的挑战，最后改编成了毕业设计。然后到了7月，自己也许是爆发最后一次的能量，整个暑假出门不超过几十次，花了一个月终于完成了自己的个人论坛项目，带着渴望不孤独的心情第二次发到了空间，然而在之前，因为自己太痴迷于技术，错过了好多推荐的机会，现在后悔都来不及。到九月份，突然发现，自己投的简历都石沉大海，一次面试对方说出了详情，我们不需要有自己想法的人，就算你自己苦思冥想设计算法最后还是调用第三方库，如谷歌、百度。而且现在培训这么多，别人几个月会各种分布式技术，各种技术集群，而且只要基本的增删改查和基本操作就够了，而且我们只要有工作经验的，也许是自己之前的学习热情过头惹怒了面试官加上简历上写的0工作经验和找实习，要么是培训机构要么没有机会，加上自己又要考驾照和精神不够好胡思乱想，于是从十月份开始彻底废了，每天沉迷游戏，动漫，电影，自暴自弃，甚至考虑转行等等，期间也偶尔兴趣来了学习一下技术，后来慢慢的发现，自己太单纯了，自己的目标是一名工程师，技术会用和深入学习的时间性价比是天壤之别，而且这是一个很现实的社会</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>慢慢的，人总是会变的现实，很感激大学里陪伴我的严蔚敏老师、韩顺平老师、马士兵老师、李炎灰老师和其他免费开源的优秀老师以及那些经典书籍的作者，是他们陪伴我度过了最充实的大学生活。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果放在一张表里，控制起来很复杂，所以干脆设置成三张表<br>t_blog_info(帖子表)、t_comment_info（评论表)、t_floor_info（楼中楼表)<br>为了方便直接贴出截图（以下是按照自己的想法建的结构，仅作为项目说明，如不合理，请谅解)</p>
+<h4 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h4><ol>
+<li><p>t_blog_info(帖子表)<br><img src="/images/xblog/2_3.jpg" alt="Alt text"><br>其中visitor_hasread为帖子访问量，<br>blog_item帖子唯一索引，用来快速定义帖子详情，blog_state帖子状态，标记是普通贴还是精贴等等，用枚举值标记。</p>
+</li>
+<li><p>t_comment_info(顶层评论表)<br><img src="/images/xblog/2_4.jpg" alt="Alt text"><br>其中blog_id用来定位所属那篇帖子</p>
+</li>
+<li><p>t_floor_info（楼中楼表)<br><img src="/images/xblog/2_5.jpg" alt="Alt text"><br>其中blog_id,comment_id用来定位唯一楼中楼评论</p>
+</li>
+</ol>
+<p>ok，以上三张基础表建好了，就可以在此基础上扩展功能了</p>
+<h4 id="功能简单介绍"><a href="#功能简单介绍" class="headerlink" title="功能简单介绍"></a>功能简单介绍</h4><p>围绕论坛基本功能主要分为搜索帖子，所有帖子展示（包含不同状态的帖子)，用户个人所有帖子展示，访问量控制，评论与楼中楼加载等等</p>
+<ol>
+<li>搜索帖子改进由like模糊查询-&gt;lucene-&gt;es，其中将帖子标题和内容进行分词和搜索，具体见es包下封装</li>
+<li>所有帖子展示，分页查询所有帖子和热门贴，一般要门后端分类号直接给前端，要么前端加载利用jstl进行判断分类，由于目前每页显示数据量不大，所有直接通过前端判断分类显示了<br>3.用户个人所有帖子展示 同所有帖子，只不过加个用户id<br>4.访问量计算 按照ip和用户的访问表进行登记判断，以一天为准，通过定时器凌晨自动清空访问表，并且访问量记录在帖子表更新下<br><img src="/images/xblog/2_6.jpg" alt="Alt text"><br>5.评论与楼中楼加载，按照所属哪个帖子直接加载其下所有数据即可，如下代码<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">    * 返回帖子内容页</div><div class="line">    *</div><div class="line">    * @param currentPage 当前页</div><div class="line">    * @param encodeBlogId 帖子id</div><div class="line">    * @param mv ModelAndView对象</div><div class="line">    * @param request 域对象</div><div class="line">    * @return 帖子内容页</div><div class="line">    * @author slycmiaoxi</div><div class="line">    * @since 2019-06-28</div><div class="line">    */</div><div class="line">   @RequestMapping("show/&#123;currentPage&#125;/&#123;encodeBlogId&#125;")</div><div class="line">   public ModelAndView show(@PathVariable int currentPage, @PathVariable String encodeBlogId, ModelAndView mv,</div><div class="line">       HttpServletRequest request) &#123;</div><div class="line">       long blogId = Long.parseLong(CodecUtils.decodeData(encodeBlogId));</div><div class="line">       // 1.该篇文章数据</div><div class="line">       ArticleDto articleDto = itBlogInfoService.getDtoById(blogId);</div><div class="line">       </div><div class="line">       // 2.楼中楼数据</div><div class="line">       List&lt;FloorDto&gt; floorDtos =</div><div class="line">           (List&lt;FloorDto&gt;)itFloorInfoService.queryListbyPage(new Page(), new ResultMap("blogId", blogId).toMap())</div><div class="line">               .getList();</div><div class="line">       </div><div class="line">       // 3.访问量统计</div><div class="line">       boolean checked = itCritiquerecordInfoService.checkRepeat(blogId, request.getRemoteAddr());</div><div class="line">       if (!checked) &#123;</div><div class="line">           TCritiquerecordInfo po = new TCritiquerecordInfo();</div><div class="line">           po.setBlogId(blogId);</div><div class="line">           po.setIpAddress(request.getRemoteAddr());</div><div class="line">           po.setGmtCreate(new Date());</div><div class="line">           po.setDeleteFlag(Enable.YES.getValue());</div><div class="line">           itCritiquerecordInfoService.insert(po);</div><div class="line">           TBlogInfo blogInfo = itBlogInfoService.selectById(blogId);</div><div class="line">           int hasReadCount = blogInfo.getVisitorHasread();</div><div class="line">           blogInfo.setVisitorHasread(++hasReadCount);</div><div class="line">           itBlogInfoService.updateById(blogInfo);</div><div class="line">       &#125;</div><div class="line">       </div><div class="line">       // 4.评论数据</div><div class="line">       Page page = new Page(currentPage, Constants.DEFAULT_EVERY_PAGE);</div><div class="line">       PageModal pg = itCommentInfoService.queryListbyPage(page, new ResultMap("blogId", blogId).toMap());</div><div class="line">       long total = itCommentInfoService.queryTotal(new ResultMap("blogId", blogId).toMap());</div><div class="line">       new PageListUtil().pageModelList(total, mv, pg);</div><div class="line">       mv.addObject("blogInfo", articleDto);</div><div class="line">       mv.addObject("Floor", floorDtos);</div><div class="line">       </div><div class="line">       mv.setViewName("article/articleContent");</div><div class="line">       return mv;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="首页设计"><a href="#首页设计" class="headerlink" title="首页设计"></a>首页设计</h4><p>旧版本这里的设计是对应模块，比如友情链接，关于吧主模块等等，都是在设计一张表，然后通过一个监听器，初始化（initxx）,放在session里，然后定时更新session。<br>目前简化了，直接提供接口，实时改变。比如友情连接<br><img src="/images/xblog/2_7.jpg" alt="Alt text"><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">@RequestMapping("portal")</div><div class="line">  public String getDoorView(Model model) &#123;</div><div class="line">      </div><div class="line">      // 1.加载链接栏信息</div><div class="line">      List&lt;TLinkInfo&gt; linkList = itLinkInfoService.selectList(new EntityWrapper&lt;TLinkInfo&gt;());</div><div class="line">      model.addAttribute("linkList", linkList);</div><div class="line"></div><div class="line">      // 2.加载热门贴</div><div class="line">      List&lt;ArticleDto&gt; hotDtos = itBlogInfoService.listHotDtos();</div><div class="line">      model.addAttribute("hotBlog", hotDtos);</div><div class="line"></div><div class="line">      return "portal/index";</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<h4 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h4><p>由于个人经验和能力的不足以及前端比较短板，目前该模块有许多不足之处，请谅解！<br>比如，楼中楼的前端分页显示，自己做不出来~，有能力的在校生或者大佬如果添加，将及时更新</p>
 
       
     </div>
@@ -652,7 +673,7 @@ var _hmt = _hmt || [];
       
         <div class="post-tags">
           
-            <a href="/source/tags/学习总结/" rel="tag"># 学习总结</a>
+            <a href="/source/tags/x-blog/" rel="tag"># x-blog</a>
           
         </div>
       
@@ -665,8 +686,8 @@ var _hmt = _hmt || [];
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/23/jvm_3/" rel="next" title="jvm总结之三:虚拟机堆参数">
-                <i class="fa fa-chevron-left"></i> jvm总结之三:虚拟机堆参数
+              <a href="/2019/07/05/xblog_7/" rel="next" title="x-blog之权限模块简单说明">
+                <i class="fa fa-chevron-left"></i> x-blog之权限模块简单说明
               </a>
             
           </div>
@@ -675,8 +696,8 @@ var _hmt = _hmt || [];
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/31/study_02/" rel="prev" title="我的大学自学java体系二">
-                我的大学自学java体系二 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/07/08/xblog_5/" rel="prev" title="x-blog之实时显示在线登录人数简单介绍">
+                x-blog之实时显示在线登录人数简单介绍 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -776,7 +797,7 @@ var _hmt = _hmt || [];
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">178</span>
+                <span class="site-state-item-count">182</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -787,7 +808,7 @@ var _hmt = _hmt || [];
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -854,7 +875,7 @@ var _hmt = _hmt || [];
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#感谢韩顺平老师"><span class="nav-text">感谢韩顺平老师</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#那些充实的日子"><span class="nav-text">那些充实的日子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#持久以恒"><span class="nav-text">持久以恒</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库设计"><span class="nav-text">数据库设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#功能简单介绍"><span class="nav-text">功能简单介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#首页设计"><span class="nav-text">首页设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不足"><span class="nav-text">不足</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -885,7 +906,7 @@ var _hmt = _hmt || [];
         <div class="copyright" >
   
   &copy;  2016 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

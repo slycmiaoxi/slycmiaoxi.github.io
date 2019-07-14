@@ -99,7 +99,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java, hexo" />
+  <meta name="keywords" content="x-blog," />
 
 
 
@@ -115,15 +115,16 @@
 
 
 
-<meta name="description" content="I believe my dream will come true">
-<meta property="og:type" content="website">
-<meta property="og:title" content="秒西">
-<meta property="og:url" content="http://www.myzwl.win/source/tags/学习总结/index.html">
+<meta name="description" content="前言首先怎么才算登录人数，一般规定用户登录后才算，但是登陆后会出现几种情况，用户主动退出登录，长时间不点击和主动关闭浏览器都会导致会话失效，另外并发登录人数限制和管理员在线踢出用户都会影响登录人数而一般的做法就是写个servlet会话监听器去监听登录，当有会话建立时并且已经成功登录和先判断该用户是否已经正在线，统计相关信息，然后就是退出浏览器只能等会话失效才算离线。用这种方法去做，简单.但是实时效">
+<meta property="og:type" content="article">
+<meta property="og:title" content="x-blog之实时显示在线登录人数简单介绍">
+<meta property="og:url" content="http://www.myzwl.win/2019/07/08/xblog_5/index.html">
 <meta property="og:site_name" content="秒西">
-<meta property="og:description" content="I believe my dream will come true">
+<meta property="og:description" content="前言首先怎么才算登录人数，一般规定用户登录后才算，但是登陆后会出现几种情况，用户主动退出登录，长时间不点击和主动关闭浏览器都会导致会话失效，另外并发登录人数限制和管理员在线踢出用户都会影响登录人数而一般的做法就是写个servlet会话监听器去监听登录，当有会话建立时并且已经成功登录和先判断该用户是否已经正在线，统计相关信息，然后就是退出浏览器只能等会话失效才算离线。用这种方法去做，简单.但是实时效">
+<meta property="og:updated_time" content="2019-07-14T09:08:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="秒西">
-<meta name="twitter:description" content="I believe my dream will come true">
+<meta name="twitter:title" content="x-blog之实时显示在线登录人数简单介绍">
+<meta name="twitter:description" content="前言首先怎么才算登录人数，一般规定用户登录后才算，但是登陆后会出现几种情况，用户主动退出登录，长时间不点击和主动关闭浏览器都会导致会话失效，另外并发登录人数限制和管理员在线踢出用户都会影响登录人数而一般的做法就是写个servlet会话监听器去监听登录，当有会话建立时并且已经成功登录和先判断该用户是否已经正在线，统计相关信息，然后就是退出浏览器只能等会话失效才算离线。用这种方法去做，简单.但是实时效">
 
 
 
@@ -151,13 +152,13 @@
 
 
 
-  <link rel="canonical" href="http://www.myzwl.win/source/tags/学习总结/"/>
+  <link rel="canonical" href="http://www.myzwl.win/2019/07/08/xblog_5/"/>
 
 
 
 
 
-  <title> 标签: 学习总结 | 秒西 </title>
+  <title> x-blog之实时显示在线登录人数简单介绍 | 秒西 </title>
   
   <script>
 var _hmt = _hmt || [];
@@ -203,7 +204,7 @@ var _hmt = _hmt || [];
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -493,81 +494,245 @@ var _hmt = _hmt || [];
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        学习总结
-        <small>标签</small>
-      </h2>
-    </div>
-
+  <div id="posts" class="posts-expand">
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/31/study_02/" itemprop="url">
-              
-                <span itemprop="name">我的大学自学java体系二</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-31T14:48:51+08:00"
-              content="2017-12-31" >
-          12-31
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/30/study_01/" itemprop="url">
-              
-                <span itemprop="name">我的大学自学java体系一</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-30T14:48:51+08:00"
-              content="2017-12-30" >
-          12-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-  </div>
 
   
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2019/07/08/xblog_5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                x-blog之实时显示在线登录人数简单介绍
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-08T22:48:51+08:00">
+                2019-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/x-blog/" itemprop="url" rel="index">
+                    <span itemprop="name">x-blog</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>首先怎么才算登录人数，一般规定用户登录后才算，但是登陆后会出现几种情况，用户主动退出登录，长时间不点击和主动关闭浏览器都会导致会话失效，另外并发登录人数限制和管理员在线踢出用户都会影响登录人数<br>而一般的做法就是写个servlet会话监听器去监听登录，当有会话建立时并且已经成功登录和先判断该用户是否已经正在线，统计相关信息，然后就是退出浏览器只能等会话失效才算离线。用这种方法去做，简单.但是实时效果不是太好但是发现我得session是用shiro管理的，大部分应用离不开shiro，而且shiro的sessionId每次是不一样的，也就是说，同一用户登录，在缓存中通过用户名产生的会话id不一样，造成同一用户登录重新登录会变成不同用户而在线人数不对。<br>而另一种更好并且统计更准确的是利用redis缓存信息（遇到了瓶颈，也是这个sessionId每次不一样，但是如果把shiro换掉或者做成分布式可以解决），大概是这样的想法，现在redis中放两组key，根据需求一组存放登陆用户的SessionId与ClientUser的Json数据，另一组存放存放登录用户的UID与SessionId对于的数据，然后利用该监听器，，只要一有会话差生，就从redis登记表（封装各类实时统计的方法）中查看，以一定规则查看是否登录，这里可以判断是游客还是会员，然后记录相关登记信息等等，放在session中，这种统计方法更实时，统计内容更多，但是因为shiro的问题，最终统计很不准确，因为这个sessionId还必须是准确才行</p>
+<h4 id="会话列表"><a href="#会话列表" class="headerlink" title="会话列表"></a>会话列表</h4><p>要能准确的实时统计，得先解决上面涉及的5个影响因素</p>
+<ol>
+<li>并发登录人数控制 核心思想就是利用监听器根据那个用户名得到sessionId然后踢掉，缓存同步（见并发登陆人数控制）</li>
+<li>用户主动退出和会话正常死亡通过监听器解决<br>3.关闭浏览器通过缩短会话存活时间保证（不一定合理，因为该项目纯粹娱乐所以可以这样做)</li>
+<li>强制用户退出 根据sessionId让session失效，logout就行了<br>不过这里比较棘手的就是的就是那个强制退出的会话怎么清除，如果不清除，缓存中会得到空指针，最头疼的是服务器崩溃，利用缓存中的方法可以得到所有活跃的会话，包括失效的。通过异常删选出失效的会话并删除，最后就剩下正常的会话列表了</li>
+</ol>
+<p>当然这时传统的做法，不能完全模拟实时统计，最有效的方法就是用心跳方式解决</p>
+<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"> **</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 在线人数服务实现类</div><div class="line"> * &lt;/p&gt;</div><div class="line"> *</div><div class="line"> * @author slycmiaoxi</div><div class="line"> * @since 2019-06-23</div><div class="line"> */</div><div class="line">@Service</div><div class="line">@Slf4j</div><div class="line">public class ITSessionServiceImpl implements ITSessionService &#123;</div><div class="line">    @Autowired</div><div class="line">    private SessionDAO sessionDAO;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    public int countActivesSession() &#123;</div><div class="line">        return CollectionUtils.isEmpty(listActivesSession()) ? 0 : listActivesSession().size();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    public Collection&lt;Session&gt; listActivesSession() &#123;</div><div class="line">        // 1. 获得当前所有活跃的在线用户</div><div class="line">        Collection&lt;Session&gt; currentSessionList = sessionDAO.getActiveSessions();</div><div class="line">        </div><div class="line">        // 2.仍然存在缓存中但已失效的的用户会话</div><div class="line">        Collection&lt;Session&gt; invalidSessionList = new LinkedList&lt;&gt;();</div><div class="line">        </div><div class="line">        // 3.筛选出失效的会话</div><div class="line">        Iterator&lt;Session&gt; it = currentSessionList.iterator();</div><div class="line">        while (it.hasNext()) &#123;</div><div class="line">            try &#123;</div><div class="line">                Session session = it.next();</div><div class="line">                PrincipalCollection principalCollection =</div><div class="line">                    (PrincipalCollection)session.getAttribute(DefaultSubjectContext.AUTHENTICATED_SESSION_KEY);</div><div class="line">                invalidSessionList.add(session);</div><div class="line">            &#125;</div><div class="line">            catch (Exception e) &#123;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        // 4.删除缓存活跃会话中失效的会话</div><div class="line">        invalidSessionList.stream().filter(x -&gt; x != null).forEach(x -&gt; &#123;</div><div class="line">            if (currentSessionList.contains(x)) &#123;</div><div class="line">                sessionDAO.delete(x);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        </div><div class="line">        // 5. 剩下正常的在线用户</div><div class="line">        Collection&lt;Session&gt; normalSessionList = sessionDAO.getActiveSessions();</div><div class="line">        return normalSessionList;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    public SessionDAO getSessionDAO() &#123;</div><div class="line">        return this.sessionDAO;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/x-blog/" rel="tag"># x-blog</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/05/xblog_6/" rel="next" title="x-blog之论坛核心表简单设计">
+                <i class="fa fa-chevron-left"></i> x-blog之论坛核心表简单设计
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/09/xblog_4/" rel="prev" title="x-blog之并发登陆人数控制简单介绍">
+                x-blog之并发登陆人数控制简单介绍 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
 
           
           </div>
           
 
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
 
           
+  <div class="comments" id="comments">
+    
+         <div id="uyan_frame"></div>
+    
+  </div>
+
         </div>
         
           
@@ -586,8 +751,17 @@ var _hmt = _hmt || [];
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -602,7 +776,7 @@ var _hmt = _hmt || [];
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">178</span>
+                <span class="site-state-item-count">182</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -613,7 +787,7 @@ var _hmt = _hmt || [];
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -671,6 +845,22 @@ var _hmt = _hmt || [];
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#会话列表"><span class="nav-text">会话列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#码上有戏"><span class="nav-text">码上有戏</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
         <div class="back-to-top">
@@ -695,7 +885,7 @@ var _hmt = _hmt || [];
         <div class="copyright" >
   
   &copy;  2016 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -795,6 +985,10 @@ var _hmt = _hmt || [];
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
@@ -815,6 +1009,10 @@ var _hmt = _hmt || [];
     
   
  
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2127192"></script>
+      <!-- UY END -->
+  
 
 
 
