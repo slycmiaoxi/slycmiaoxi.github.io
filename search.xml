@@ -4,6 +4,72 @@
   
     
     <entry>
+      <title><![CDATA[手写简单策略版游戏匹配算法]]></title>
+      <url>http://www.myzwl.win/2019/07/21/algo_match1/</url>
+      <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>游戏一般分为房间场和匹配场，现实中游戏匹配的算法需要考虑的因素比较多。笔者只是纯粹娱乐，分析一下一个简单的游戏匹配。<br>假设场景是简单的LOL玩家匹配<br>1.当玩家数量达到一定规定最小数时匹配，比如最小玩家匹配数是2吧<br>2.有时候玩家匹配的数量不确定，比如匹配是只要小于最大玩家数，比如3个玩家也可以玩游戏<br>总结上面，匹配到2或3个人数时，开始游戏</p>
+<h4 id="整体设计"><a href="#整体设计" class="headerlink" title="整体设计"></a>整体设计</h4><p>整个匹配分为两个阶段</p>
+<ol>
+<li>第一阶段match：一直等到满足最低人数要求，然后进入第二阶段match2</li>
+<li>第二阶段match2：额外等待一段时间，然后创建房间<br>所以需要的属性至少得包括房间最小人数、房间最小人数额外等的人的数量、额外需要等待的秒数、游戏类型的名称、玩家队列、匹配日志<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">  /**</div><div class="line">     * 是否显示匹配日志：显示(true), 不显示(false)</div><div class="line">     */</div><div class="line">    private static final boolean SHOW_MATCH_LOG = true;</div><div class="line">    </div><div class="line">    /**</div><div class="line">     * 房间最小人数</div><div class="line">     */</div><div class="line">    private static final int ROOM_MIN_NUM = 2;</div><div class="line">    </div><div class="line">    /**</div><div class="line">     * 房间最小人数额外等的人的数量</div><div class="line">     */</div><div class="line">    private static final int ROOM_ADDITION_NUM = 1;</div><div class="line">    </div><div class="line">    /**</div><div class="line">     * 额外需要等待的秒数</div><div class="line">     */</div><div class="line">    private static final int ROOM_ADDITION_SECOND = 5;</div><div class="line">    </div><div class="line">    </div><div class="line">    /**</div><div class="line">     * 游戏类型的名称</div><div class="line">     */</div><div class="line">    private static final Map&lt;Integer, String&gt; GAME_TYPE_NAME = new HashMap&lt;Integer, String&gt;()</div><div class="line">    &#123;</div><div class="line">        &#123;</div><div class="line">            put(0, "匹配自选模式");</div><div class="line">            put(1, "极地大乱斗");</div><div class="line">            put(2, "单双排");</div><div class="line">            put(3, "灵活排位");</div><div class="line">            put(4, "无线火力");</div><div class="line">            put(5, "镜像模式");</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">    </div><div class="line">    /**</div><div class="line">     * 玩家队列</div><div class="line">     */</div><div class="line">    private static final Map&lt;Integer, List&lt;BaseUser&gt;&gt; PLAYER_QUEUE = new ConcurrentHashMap&lt;Integer, List&lt;BaseUser&gt;&gt;()</div><div class="line">    &#123;</div><div class="line">        &#123;</div><div class="line">            put(0, new ArrayList&lt;&gt;());</div><div class="line">            put(1, new ArrayList&lt;&gt;());</div><div class="line">            put(2, new ArrayList&lt;&gt;());</div><div class="line">            put(3, new ArrayList&lt;&gt;());</div><div class="line">            put(4, new ArrayList&lt;&gt;());</div><div class="line">            put(5, new ArrayList&lt;&gt;());</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line"></div><div class="line">    public class BaseUser &#123;</div><div class="line">    private int id ;</div><div class="line"></div><div class="line">    private String name;</div><div class="line"></div><div class="line">    public BaseUser(int id, String name) &#123;</div><div class="line">        this.id = id;</div><div class="line">        this.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int getId() &#123;</div><div class="line">        return id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setId(int id) &#123;</div><div class="line">        this.id = id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public String getName() &#123;</div><div class="line">        return name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setName(String name) &#123;</div><div class="line">        this.name = name;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="玩家匹配加入"><a href="#玩家匹配加入" class="headerlink" title="玩家匹配加入"></a>玩家匹配加入</h4><p>当玩家点击开始匹配时，将玩家加入对应的游戏中的玩家队列中<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/**</div><div class="line">  * 将玩家加入匹配</div><div class="line">  *</div><div class="line">  * @param user 进行匹配的玩家</div><div class="line">  * @param type 房间类型：</div><div class="line">  * @return 操作成功(true), 操作失败(false)</div><div class="line">  */</div><div class="line"> public static boolean put(BaseUser user, int type) &#123;</div><div class="line">     add(user, type);</div><div class="line">     System.out.println("startMatch");</div><div class="line">     return true;</div><div class="line"> &#125;</div><div class="line"></div><div class="line">  /**</div><div class="line">  * 向匹配池添加玩家</div><div class="line">  *</div><div class="line">  * @param user 进行匹配的玩家</div><div class="line">  * @param type 需要匹配的类型</div><div class="line">  * @return 操作成功(true), 操作失败(false)</div><div class="line">  */</div><div class="line"> private synchronized static boolean add(BaseUser user, int type) &#123;</div><div class="line">     if (!PLAYER_QUEUE.containsKey(type)) &#123;</div><div class="line">         PLAYER_QUEUE.put(type, new ArrayList&lt;&gt;());</div><div class="line">     &#125;</div><div class="line">     List&lt;BaseUser&gt; playerQueue = PLAYER_QUEUE.computeIfAbsent(type, k -&gt; new ArrayList&lt;&gt;());</div><div class="line">     if (!playerQueue.contains(user)) &#123;</div><div class="line">         playerQueue.add(user);</div><div class="line">     &#125;</div><div class="line">     return true;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<h4 id="匹配第一阶段"><a href="#匹配第一阶段" class="headerlink" title="匹配第一阶段"></a>匹配第一阶段</h4><p>先用最简单的方式，这里简化了（应该用while（true）控制，匹配线程一直处于监听状态。<br>核心思想就是遍历玩家队列，如果规定指定人数开局，那么就不需要下一阶段，直接创建房间，队列中踢出玩家即可。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">  /**</div><div class="line">    * 匹配第一阶段</div><div class="line">    */</div><div class="line">   private static void match() &#123;</div><div class="line">           try &#123;</div><div class="line"></div><div class="line">               synchronized (PLAYER_QUEUE) &#123;</div><div class="line">                   PLAYER_QUEUE.forEach((type, userList) -&gt; &#123;</div><div class="line">                       if (ROOM_MIN_NUM &gt; 0 &amp;&amp; userList.size() &gt;= ROOM_MIN_NUM) &#123;</div><div class="line">                           // 已达到最低可开局人数，还需要额外等一会儿</div><div class="line">                           scheduledExecutorService.schedule(() -&gt; match2(type), 0, TimeUnit.SECONDS);           </div><div class="line">                       &#125;</div><div class="line">                   &#125;);</div><div class="line">                   if (SHOW_MATCH_LOG) &#123;</div><div class="line">                       testLog();</div><div class="line">                   &#125;</div><div class="line">               &#125;</div><div class="line">               Thread.sleep(1000);</div><div class="line">           &#125;</div><div class="line">           catch (InterruptedException e) &#123;</div><div class="line">               log.error(e.getMessage());</div><div class="line">           &#125;</div><div class="line">   &#125;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line">    * 线程池</div><div class="line">    */</div><div class="line">   public static ScheduledExecutorService scheduledExecutorService =</div><div class="line">       Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() * 2);</div><div class="line">   </div><div class="line"></div><div class="line"></div><div class="line">   public static void sleepSomeMillis(long millis) &#123;</div><div class="line">       try &#123;</div><div class="line">           Thread.sleep(millis);</div><div class="line">       &#125;</div><div class="line">       catch (InterruptedException e) &#123;</div><div class="line">           log.error("睡眠等待时出现错误：" + e.getMessage());</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   /**</div><div class="line">    * 匹配日志</div><div class="line">    */</div><div class="line">   private static void testLog() &#123;</div><div class="line">       PLAYER_QUEUE.forEach((type, userList) -&gt; &#123;</div><div class="line">           if (userList.size() &gt; 0) &#123;</div><div class="line">               System.out.println(GAME_TYPE_NAME.get(type) + "人数为：" + userList.size());</div><div class="line">           &#125;</div><div class="line">       &#125;);</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<h4 id="匹配第二阶段"><a href="#匹配第二阶段" class="headerlink" title="匹配第二阶段"></a>匹配第二阶段</h4><p>该阶段主要考虑的因素包括等待额外的时间，以及玩家队列是否有人取消匹配导致不满足最小匹配人数等等，然后去匹配，<br>用线程池去控制匹配第二阶段<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/**</div><div class="line">  * 匹配第二阶段</div><div class="line">  *</div><div class="line">  * @param type 房间类型</div><div class="line">  */</div><div class="line"> private static void match2(int type) &#123;</div><div class="line">     List&lt;BaseUser&gt; users = PLAYER_QUEUE.get(type);</div><div class="line">     long deadline = System.currentTimeMillis() + ROOM_ADDITION_SECOND * 1000;</div><div class="line">     // 需要的最大的人数</div><div class="line">     int realNeedNum = ROOM_MIN_NUM + ROOM_ADDITION_NUM;</div><div class="line">     while (true) &#123;</div><div class="line">         if (System.currentTimeMillis() &gt; deadline) &#123;</div><div class="line">             break;</div><div class="line">         &#125;</div><div class="line">         synchronized (PLAYER_QUEUE) &#123;</div><div class="line">             if (users.size() &lt; ROOM_MIN_NUM) &#123;</div><div class="line">                 return;</div><div class="line">             &#125;</div><div class="line">             if (users.size() &gt;= realNeedNum) &#123;</div><div class="line">                 break;</div><div class="line">             &#125;</div><div class="line">         &#125;</div><div class="line">         sleepSomeMillis(500);</div><div class="line">     &#125;</div><div class="line">     synchronized (PLAYER_QUEUE) &#123;</div><div class="line">         // 等待结束之后实际的人数</div><div class="line">         int realNum = users.size() &gt; realNeedNum ? realNeedNum : users.size();</div><div class="line">         // 如果人数仍然满足最小匹配人数，则创建房间</div><div class="line">         if (realNum &gt;= ROOM_MIN_NUM) &#123;</div><div class="line">             createRoom(type, realNum);</div><div class="line">         &#125;</div><div class="line">     &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<h4 id="创建房间"><a href="#创建房间" class="headerlink" title="创建房间"></a>创建房间</h4><p>该阶段显示在玩家队列中踢出已匹配的玩家，然后在创建房间<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/**</div><div class="line"> * 创建房间</div><div class="line"> *</div><div class="line"> * @param type 房间类型</div><div class="line"> * @param playerNum 房间人数</div><div class="line"> */</div><div class="line">private static void createRoom(int type, int playerNum) &#123;</div><div class="line">    synchronized (PLAYER_QUEUE) &#123;</div><div class="line">        BaseUser[] baseUsers = new BaseUser[playerNum];</div><div class="line">        List&lt;BaseUser&gt; users = PLAYER_QUEUE.get(type);</div><div class="line">        if (users.size() &gt;= playerNum) &#123;</div><div class="line">            for (int i = 0; i &lt; playerNum; i++) &#123;</div><div class="line">                baseUsers[i] = users.get(i);</div><div class="line">            &#125;</div><div class="line">            users.removeAll(Arrays.asList(baseUsers));</div><div class="line">            // 创建房间            </div><div class="line">            System.out.println("create room success");          </div><div class="line">           </div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>这里是每增加一个用户匹配一次，事实上match方法应该是一个类似监听器<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">@Test</div><div class="line"> public  void matchUser() throws InterruptedException &#123;</div><div class="line">     int type = 0;</div><div class="line">     BaseUser user1 = new BaseUser(1, "aa");</div><div class="line">     BaseUser user2 = new BaseUser(2, "bb");</div><div class="line">     BaseUser user3 = new BaseUser(3, "cc");</div><div class="line">     Match.put(user1, type);</div><div class="line">     Match.match();</div><div class="line">     Match.put(user2, type);</div><div class="line">     Match.match();</div><div class="line">     Match.put(user3, type);</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<p>最后显示的结果为<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">  startMatch</div><div class="line">匹配自选模式人数为：<span class="number">1</span></div><div class="line">startMatch</div><div class="line">匹配自选模式人数为：<span class="number">2</span></div><div class="line">startMatch</div><div class="line">[cn<span class="selector-class">.slycmiaoxi</span><span class="selector-class">.match</span><span class="selector-class">.BaseUser</span>@<span class="number">21001</span>, cn<span class="selector-class">.slycmiaoxi</span><span class="selector-class">.match</span><span class="selector-class">.BaseUser</span>@c5e0b1, cn<span class="selector-class">.slycmiaoxi</span><span class="selector-class">.match</span><span class="selector-class">.BaseUser</span>@fa7b71]</div><div class="line">create room success</div></pre></td></tr></table></figure></p>
+<h4 id="最后说明"><a href="#最后说明" class="headerlink" title="最后说明"></a>最后说明</h4><p>1.至于取消匹配，做法类似<br>2.现实中匹配要考虑好多因素，可以想象LOL中的匹配~<br>当然目前只是一个简单的demo，仅供参考！</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 算法 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[面试官的question之一]]></title>
+      <url>http://www.myzwl.win/2019/07/17/saveMe_1/</url>
+      <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>离职后的自己经历了高潮-颓废-兴奋-理性-责任（对父母，对爱人)<br>差不多花了20天把自己大学原创的项目重写了一遍，然后备案（吐槽一下，都2个星期了，太慢了)<br>这个星期才开始投简历，玩也玩够了，不多说，总结一下这两天的面试（记得的）</p>
+<h4 id="电话面试"><a href="#电话面试" class="headerlink" title="电话面试"></a>电话面试</h4><p>差不多下午4点钟开始，一面技术关电话面试，很基础（AC)<br>1.了解spring的ioc和aop吗？说说原理？在你之前做过的项目中应用在哪些场景？<br>2.ArrayList和set集合区别<br>3.spring mvc场景注解？<br>4.拦截器有什么用？你在项目中哪些地方用到了？<br>5.@ResponseBody有什么用？</p>
+<h4 id="一次算法与算法之间的较量"><a href="#一次算法与算法之间的较量" class="headerlink" title="一次算法与算法之间的较量"></a>一次算法与算法之间的较量</h4><p>大概下午两点半到了公司，公司也挺大的，自己也迟到了。但是hr很友好，显示做了一份笔试题，很基础的题（全AC），中间还来了一个年纪很大的面试官，因为自己简历上侧重于算法和数据结构，正好这位面试官对这些很感兴趣，于是乎，聊嗨了，最后将近一问一答弄了三个小时左右<br>笔试题：（很基础）<br>1.举例说明==与equals区别？<br>2.将字符串啊啊a,b,c以逗号分隔成数组？<br>3.列举出你在项目中常见的异常？<br>4.set，list，map区别？<br>5.分别用js，jquery在页面加载时，打印出“页面已被加载”<br>6.分别用js，jquery实现取出id为username的值？<br>7.sql题，一个部门表，一个用户表（关联部门id)，增删改和关联查询</p>
+<p>然后是面试题，层层深入<br>1.先自我介绍，工作经历，主要侧重工作的流程，让面试者知道自己熟悉整个软件开发的完整流程<br>2.你最熟悉哪些排序算法？手写出其中最熟悉的几个，并且说说思想<br>我选择了快排，冒泡，选择，直接插入，希尔排序手写和说了原理，只说了归并排序原理</p>
+<p>2.1 说说其中一些算法的空间和时间复杂度，并说说熟悉的算法应用之处<br>我说了快排，冒泡，选择<br>2.2 举例说说你在项目中或者哪些你知道的为什么会有时间换空间或者空间换时间的？<br>我当时首先想到的就是数据库的存储原理，基于B+树。说了B+树的原理，以及b树，b-树，红黑树，<br>以及mysql利用b+树存取数据，如何空间换时间的原理。说到了如何选择建立索引（离散度），索引回表原理<br>说到这里，突然面试官问了，我你到B是啥意思吗？这个我还真不知道，然后他说banlance<br>2.3 然后面试官问为什么取b?<br>当时立马想到AVL数，然后说了下二叉树，二分查找，然后演变为二叉平衡树以及斜度太高导致复杂度高，所以需要AVL树，以及AVL树特点通过二分查找很快定位，但是AVL树在插入或者删除的时候需要先确定旋转因子，然后。。。<br>2.4 紧接着面试官，说你之前说到索引回表，说下聚簇索引吧，顺表说了下说说你知道的sql优化<br>这个当时只答了四条优化，面试官看我说不出来，就换了个话题（对着简历)</p>
+<p>3.游戏中玩家各组牌是怎么初始化的？作弊牌是怎么做的<br>这个自己很熟悉，毕竟自己还优化过~但是这里面有一个地方不是很好，就是洗牌的时候只是重新shuffle了一下，也就是牌没洗开<br>3.1 能不能设计一个算法让牌的洗开度更高？<br>只是给了一种想法，类似于归并，将数据分成多组（因为牌数并不多)，从下层洗牌，然后依次向上递归在洗牌<br>3.2 出了一道算法题，利用数据结构实现一个计算机<br>当时想到了双栈</p>
+<p>4.问了linux相关的命令，安装各种软件，挑了几个说了下<br>主要回答了grep，scp，wget，rm -rf，ssh免登陆说到这里又问了工作中操作linux的环节<br>4.1 接着又问了ssh免登陆是否做过？<br>我说了git搭建hexo博客用到了</p>
+<p>5.问了你熟悉的设计模式？<br>我说了迭代器设计模式（现场模拟了Arraylist实现迭代器，主要有collection，Iterator，ArrayListIteartor实现）<br>然后就是里面扩容问题<br>接着就是代理模式，实现在线编程</p>
+<p>6.开始问项目中遇到到的国难<br>我讲了两个，一个是多数据源因为磁盘满了怎么定位，另一个是netty版本太低导致经常socket断开连接，使用实时刷新，断线重连重载信息</p>
+<p>7.接着问了编程习惯注意的问题以及工作中的那些事<br>这个阿里巴巴规范的那些，基本自己在编程中都会注意</p>
+<p>8.然后我开始问面试官问题<br>科班学的这些像算法，数据结构，操作系统到底有什么用，现在技术那么多，学历也不是特别好，很多公司注重框架学习和应用，自己是否坚持和对以后学历不好的我有什么用？虽然这个问题很弱智。<br>面试官说了，看问题的深度，和对以后的技术学习的理解度和灵感度</p>
+<p>全场面试大概3个小时，但是也使自己受益最深的，基本上没有问到框架，全是cs基础知识,然后等待后续二面</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 自我救赎 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 自我救赎 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[x-blog之算法建模简单介绍]]></title>
       <url>http://www.myzwl.win/2019/07/14/xblog_1/</url>
       <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这里的算法建模知识简单的建模。等同于数学公式，利用某种语言编好算法，利用一定逻辑存取，然后正确展示。里面涉及的细节包括对算法的理解和编写，数据模型的建立，高效存取，用户输入，编程规范以及涉及到web的一些知识等等。如下图所示。<br><img src="/images/xblog/1.jpg" alt="Alt text"></p>
@@ -214,33 +280,6 @@
     
     <entry>
       <title><![CDATA[学习面经一]]></title>
-      <url>http://www.myzwl.win/2018/04/05/dream_17/</url>
-      <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>失败并不可怕，可怕的是不能从失败的阴影中走出来。以下主要来自牛客网别人分享或者有些自己面试记得的题目</p>
-<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><p>从三月中旬到四月初，前前后后大概有些在线笔试机会。给自己帮助最大的就是算法了，自己也是非常喜欢算法的，之前也是准备好久的，很多都是leetcode或者剑指offer的题，有些则是结合各公司实际的题，当然做的效果很一般（自己太渣），不得不说算法是程序的灵魂</p>
-<h4 id="部分一"><a href="#部分一" class="headerlink" title="部分一"></a>部分一</h4><p>加密解密了解么？几种算法，讲一下你了解的<br>多线程了解么？什么是线程安全？<br>说一个你最熟悉的设计模式<br>讲一下你项目中用到了哪些设计模式<br>Java的hashmap的原理<br>Hashmap的线程安全性，什么是线程安全的？如何实现线程安全<br>Mysql的数据库引擎，区别特点<br>写一个单例模式，用双检查锁单例<br>单例模式在你项目里哪些应用？<br>数据连接池<br>说一说高并发<br>项目介绍，最复杂的表<br>Hashmap的原理<br>Hashmap为什么大小是2的幂次<br>介绍一下红黑树<br>Arraylist的原理<br>堆排序的原理<br>抽象工厂和工厂方法模式的区别<br>工厂模式的思想<br>object类你知道的方法<br>哪里用到了工厂模式<br>Forward和redirect的区别<br>线程池的使用时的注意事项<br>Spring中autowire和resourse关键字的区别<br>Hashmap的原理<br>Hashmap的大小为什么指定为2的幂次<br>简单说一说消息队列和分布式<br>Redis的应用场景<br>Hashmap的原理<br>Hashmap中jdk1.8之后做了哪些优化<br>垃圾回收的过程<br>Jvm的参数设置<br>项目中的优化<br>快排的思想</p>
-<h4 id="部分二"><a href="#部分二" class="headerlink" title="部分二"></a>部分二</h4><p>Tcp怎么保证可靠传输<br>Tcp的拥塞控制<br>让你设计一个即时聊天的系统<br>支付宝转账，是如何实现，几个小时通知转账成功的<br>解释一下长连接<br>对面向对象的理解<br>介绍多态<br>Java新建线程有哪几种方式<br>线程池的作用<br>一棵二叉排序树，给定一个数，找到与给定数差值最小的数<br>设计一个系统，解决抢购时所需要的大量的短链接的功能，如何保证高并发，如何设计短链接<br>设计一个系统，记录qq用户前一天的登录状态，提供16g内存和2tb的硬盘，要做到查询指定qq号的前一天的登录状态<br>两个排序的数组A和B分别含有m和n个数，找到两个排序数组的中位数<br>数据库的索引原理<br>索引使用的注意事项<br>数据库的引擎<br>Java垃圾回收机制<br>Java的finalize，finally，final三个关键字的区别和应用场景<br>String类可以被继承么<br>给一个整数数组，找到两个数使得他们的和等于一个给定的数 target<br>红黑树<br>Redis的应用<br>自己写一个tomcat服务器，你会怎么写<br>分布式服务器会出现哪些问题<br>怎么解决session一致性缓存的问题<br>Redis的优势和特点<br>一千万用户并发抢购，怎么设计<br>如果成功的用户有10万，redis存不下怎么处理<br>Redis和mysql的区别<br>Redis的持久化有哪些方式，具体原理<br>Java collection类，集合<br>多线程并发包<br>countDownLatch<br>Hashmap的原理<br>hashmap容量为什么是2的幂次<br>hashset的源码<br>object类你知道的方法<br>hashcode和equals<br>Redis的持久化？有哪些方式，原理是什么？<br>稳定的排序算法和不稳定的排序算法<br>快速排序的思想</p>
-<h4 id="部分三"><a href="#部分三" class="headerlink" title="部分三"></a>部分三</h4><p>Java的内存模型，垃圾回收<br>Nio和IO有什么区别<br>Nio和aio的区别<br>Spring的aop怎么实现<br>Spring的aop有哪些实现方式<br>动态代理的实现方式和区别<br>Linux，查找磁盘上最大的文件的命令<br>Linux，如何查看系统日志文件<br>Java中的多态<br>Object类下的方法<br>Finalize的作用和使用场景<br>Hashcode和equals<br>为什么要同时重写hashcode和equals<br>不同时重写会出现哪些问题<br>Hashmap的原理<br>Hashmap如何变线程安全，每种方式的优缺点<br>垃圾回收机制<br>反转单链表<br>实现类似微博子结构的数据结构，输入一系列父子关系，输出一个类似微博评论的父子结构图<br>手写java多线程<br>手写java的soeket编程，服务端和客户端<br>进程间的通信方式<br>Mysql的容灾备份<br>Redis和memcache 的区别<br>Java的full gc<br>Full gc会导致什么问题<br>两个有序链表合并成一个有序链表<br>死锁是什么呢<br>怎么解决死锁</p>
-<h4 id="部分四"><a href="#部分四" class="headerlink" title="部分四"></a>部分四</h4><p>http请求流程<br>为什么负载均衡<br>数据库挂了怎么办？除了热备份还有什么方法<br>找出两个数组相等的数，不能用其他数据结构<br>给定一个数字，一个数组，找出数组中相加等于这两个数的和，不能用数据结构<br>如何判断一个树是不是另一颗树的子树<br>I++操作怎么保证线程安全<br>设计一个下单系统，下单成功后可以给用户发优惠券<br>接上面场景题：服务器挂了，优惠券还没发怎么办<br>数据库挂了怎么怎么办<br>怎么保证一致性<br>Nio的原理<br>Channel和buffer<br>directBuffer和buffer的区别<br>nio和aio的区别<br>锁的实现原理<br>怎么解决缓存和主存的一致性问题<br>缓存还没更新到主存，服务器挂了怎么办<br>数据库挂了怎么办<br>读写锁<br>什么时候用读锁<br>什么时候用写锁<br>Cas的原理，使用场景<br>数据库的瓶颈<br>序列化的底层怎么实现的<br>synchronized 的底层怎么实现的<br>乐观锁vs 悲观锁<br>gc<br>concurrenthashmap 分段锁的细节<br>设计模式怎么分类，每一类都有哪些<br>并发包里了解哪些<br>b 树，b+树，b*树</p>
-<h4 id="部分五"><a href="#部分五" class="headerlink" title="部分五"></a>部分五</h4><p>jdk 动态代理vscglib 动态代理，他们底层分别怎么实现的<br>synchronizedMap 知道吗？他和concurrenthashmap 分别使用于什么场景？<br>https 过程?公钥能用公钥解吗<br>描述一下java 线程池。<br>怎么保证redis 和db 中的数据一致<br>设计模式怎么用到项目中<br>类加载<br>jvm 分区<br>spring ioc，aop 以及其优点<br>浏览器访问一个网址的时候都有哪些过程（还要了解DNS 查找的过程）<br>tcp 三次握手，四次分手<br>线程池<br>java 同步机制有哪些<br>进程和线程</p>
-]]></content>
-      
-        <categories>
-            
-            <category> 从头开始 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 从头开始 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[学习面经一]]></title>
       <url>http://www.myzwl.win/2018/04/05/dream_16/</url>
       <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>失败并不可怕，可怕的是不能从失败的阴影中走出来。以下主要来自牛客网别人分享或者有些自己记得的题目</p>
 <h4 id="部分一"><a href="#部分一" class="headerlink" title="部分一"></a>部分一</h4><p>1.自我介绍。主要介绍以前做的项目<br>2.如何找出数组中数量最多的数（要求时间复杂度最佳）？<br>public static int maxNumber(int[] a){<br>        Map<integer,integer> map=new HashMap<integer,integer>();<br>       for(int i=0;i<a.length;i++){ if(map.get(a[i])="=null){" map.put(a[i],="" 1);="" }else{="" map.get(a[i])+1);="" }="" int="" max="0;" num="0;" for="" (entry<integer,integer=""> entry :map.entrySet()){</a.length;i++){></integer,integer></integer,integer></p>
@@ -265,6 +304,33 @@ return num;
 <p>6.垃圾回收算法？<br>主要是分代算法（堆内存中)<br>按照对象的生命周期将内存进行划分<br>分为年轻代和老年代<br>年轻代分为eden、from、to<br>首先对象会在eden、中，但满了之后会将还在使用的放到from中，出发gc，清理eden、然后eden满了，将eden和from中正在使用的放在to中，一次类推，直到一定次数，将还在使用的对象放到老年区，经过一些列折腾后，出发full GC影响性能</p>
 <p>7.垃圾收集器?<br>serial(单线程，暂停)<br>prnew（多线程版）<br>serial old<br>parnew old<br>cms（老年代收集器，实现一边清理一边工作，大大提高性能，需要配合使用）<br>G1收集器（将java堆分成大小相等的独立区域，进行年轻代和老年代的回收）</p>
 <p>8.怎样进入老年代？<br>1.新生代每经过一次gc，年龄加1，当达到阙值，默认15就会进入老年代<br>2.大对象直接进入老年代<br>3.在复制算法中，s轮换区无法容纳的对象直接进入老年区</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 从头开始 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 从头开始 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[学习面经一]]></title>
+      <url>http://www.myzwl.win/2018/04/05/dream_17/</url>
+      <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>失败并不可怕，可怕的是不能从失败的阴影中走出来。以下主要来自牛客网别人分享或者有些自己面试记得的题目</p>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><p>从三月中旬到四月初，前前后后大概有些在线笔试机会。给自己帮助最大的就是算法了，自己也是非常喜欢算法的，之前也是准备好久的，很多都是leetcode或者剑指offer的题，有些则是结合各公司实际的题，当然做的效果很一般（自己太渣），不得不说算法是程序的灵魂</p>
+<h4 id="部分一"><a href="#部分一" class="headerlink" title="部分一"></a>部分一</h4><p>加密解密了解么？几种算法，讲一下你了解的<br>多线程了解么？什么是线程安全？<br>说一个你最熟悉的设计模式<br>讲一下你项目中用到了哪些设计模式<br>Java的hashmap的原理<br>Hashmap的线程安全性，什么是线程安全的？如何实现线程安全<br>Mysql的数据库引擎，区别特点<br>写一个单例模式，用双检查锁单例<br>单例模式在你项目里哪些应用？<br>数据连接池<br>说一说高并发<br>项目介绍，最复杂的表<br>Hashmap的原理<br>Hashmap为什么大小是2的幂次<br>介绍一下红黑树<br>Arraylist的原理<br>堆排序的原理<br>抽象工厂和工厂方法模式的区别<br>工厂模式的思想<br>object类你知道的方法<br>哪里用到了工厂模式<br>Forward和redirect的区别<br>线程池的使用时的注意事项<br>Spring中autowire和resourse关键字的区别<br>Hashmap的原理<br>Hashmap的大小为什么指定为2的幂次<br>简单说一说消息队列和分布式<br>Redis的应用场景<br>Hashmap的原理<br>Hashmap中jdk1.8之后做了哪些优化<br>垃圾回收的过程<br>Jvm的参数设置<br>项目中的优化<br>快排的思想</p>
+<h4 id="部分二"><a href="#部分二" class="headerlink" title="部分二"></a>部分二</h4><p>Tcp怎么保证可靠传输<br>Tcp的拥塞控制<br>让你设计一个即时聊天的系统<br>支付宝转账，是如何实现，几个小时通知转账成功的<br>解释一下长连接<br>对面向对象的理解<br>介绍多态<br>Java新建线程有哪几种方式<br>线程池的作用<br>一棵二叉排序树，给定一个数，找到与给定数差值最小的数<br>设计一个系统，解决抢购时所需要的大量的短链接的功能，如何保证高并发，如何设计短链接<br>设计一个系统，记录qq用户前一天的登录状态，提供16g内存和2tb的硬盘，要做到查询指定qq号的前一天的登录状态<br>两个排序的数组A和B分别含有m和n个数，找到两个排序数组的中位数<br>数据库的索引原理<br>索引使用的注意事项<br>数据库的引擎<br>Java垃圾回收机制<br>Java的finalize，finally，final三个关键字的区别和应用场景<br>String类可以被继承么<br>给一个整数数组，找到两个数使得他们的和等于一个给定的数 target<br>红黑树<br>Redis的应用<br>自己写一个tomcat服务器，你会怎么写<br>分布式服务器会出现哪些问题<br>怎么解决session一致性缓存的问题<br>Redis的优势和特点<br>一千万用户并发抢购，怎么设计<br>如果成功的用户有10万，redis存不下怎么处理<br>Redis和mysql的区别<br>Redis的持久化有哪些方式，具体原理<br>Java collection类，集合<br>多线程并发包<br>countDownLatch<br>Hashmap的原理<br>hashmap容量为什么是2的幂次<br>hashset的源码<br>object类你知道的方法<br>hashcode和equals<br>Redis的持久化？有哪些方式，原理是什么？<br>稳定的排序算法和不稳定的排序算法<br>快速排序的思想</p>
+<h4 id="部分三"><a href="#部分三" class="headerlink" title="部分三"></a>部分三</h4><p>Java的内存模型，垃圾回收<br>Nio和IO有什么区别<br>Nio和aio的区别<br>Spring的aop怎么实现<br>Spring的aop有哪些实现方式<br>动态代理的实现方式和区别<br>Linux，查找磁盘上最大的文件的命令<br>Linux，如何查看系统日志文件<br>Java中的多态<br>Object类下的方法<br>Finalize的作用和使用场景<br>Hashcode和equals<br>为什么要同时重写hashcode和equals<br>不同时重写会出现哪些问题<br>Hashmap的原理<br>Hashmap如何变线程安全，每种方式的优缺点<br>垃圾回收机制<br>反转单链表<br>实现类似微博子结构的数据结构，输入一系列父子关系，输出一个类似微博评论的父子结构图<br>手写java多线程<br>手写java的soeket编程，服务端和客户端<br>进程间的通信方式<br>Mysql的容灾备份<br>Redis和memcache 的区别<br>Java的full gc<br>Full gc会导致什么问题<br>两个有序链表合并成一个有序链表<br>死锁是什么呢<br>怎么解决死锁</p>
+<h4 id="部分四"><a href="#部分四" class="headerlink" title="部分四"></a>部分四</h4><p>http请求流程<br>为什么负载均衡<br>数据库挂了怎么办？除了热备份还有什么方法<br>找出两个数组相等的数，不能用其他数据结构<br>给定一个数字，一个数组，找出数组中相加等于这两个数的和，不能用数据结构<br>如何判断一个树是不是另一颗树的子树<br>I++操作怎么保证线程安全<br>设计一个下单系统，下单成功后可以给用户发优惠券<br>接上面场景题：服务器挂了，优惠券还没发怎么办<br>数据库挂了怎么怎么办<br>怎么保证一致性<br>Nio的原理<br>Channel和buffer<br>directBuffer和buffer的区别<br>nio和aio的区别<br>锁的实现原理<br>怎么解决缓存和主存的一致性问题<br>缓存还没更新到主存，服务器挂了怎么办<br>数据库挂了怎么办<br>读写锁<br>什么时候用读锁<br>什么时候用写锁<br>Cas的原理，使用场景<br>数据库的瓶颈<br>序列化的底层怎么实现的<br>synchronized 的底层怎么实现的<br>乐观锁vs 悲观锁<br>gc<br>concurrenthashmap 分段锁的细节<br>设计模式怎么分类，每一类都有哪些<br>并发包里了解哪些<br>b 树，b+树，b*树</p>
+<h4 id="部分五"><a href="#部分五" class="headerlink" title="部分五"></a>部分五</h4><p>jdk 动态代理vscglib 动态代理，他们底层分别怎么实现的<br>synchronizedMap 知道吗？他和concurrenthashmap 分别使用于什么场景？<br>https 过程?公钥能用公钥解吗<br>描述一下java 线程池。<br>怎么保证redis 和db 中的数据一致<br>设计模式怎么用到项目中<br>类加载<br>jvm 分区<br>spring ioc，aop 以及其优点<br>浏览器访问一个网址的时候都有哪些过程（还要了解DNS 查找的过程）<br>tcp 三次握手，四次分手<br>线程池<br>java 同步机制有哪些<br>进程和线程</p>
 ]]></content>
       
         <categories>
@@ -1303,45 +1369,6 @@ ${number[0..3]} &lt;#-- 输出子串“0123” --&gt;
     </entry>
     
     <entry>
-      <title><![CDATA[redis笔记之三]]></title>
-      <url>http://www.myzwl.win/2017/11/06/redis_3/</url>
-      <content type="html"><![CDATA[<h4 id="redis高级命令及特性"><a href="#redis高级命令及特性" class="headerlink" title="redis高级命令及特性"></a>redis高级命令及特性</h4><p>1.返回满足的所有键keys <em>（可以模糊匹配）<br>2.exists是否存在指定的key<br>3.expire设置某个key的过期时间，使用ttl查看剩余时间<br>4.persist取消过期时间<br><img src="/images/imgs5/19.jpg" alt="Alt text"><br>5.select 选择数据库 数据库为0到15（一共16个数据库）默认进入的是0数据库<br>6 move key [数据库下标]将当前数据库中的key转移到其他数据库中<br>7.randomkey 随机返回数据库里的一个key<br>8.rename 重命名key<br><img src="/images/imgs5/20.jpg" alt="Alt text"><br>9.dbsize 查看数据库的key数量<br>10.info获取数据库信息<br>11.config get </em>返回所有配置<br>12 flushdb清空当前数据库，flushall清空所有数据库</p>
-<h4 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h4><p>通俗的讲就是一个用户访问一台服务器，该服务器假设为主服务器，具有读写功能，而在该主服务器下关联了一台从服务器，该从服务只具有读功能不具有写功能，并且数据是从主服务器经过一些列同步算法到该服务器上<br>配置过程</p>
-<blockquote>
-<p>1.修改redis.conf文件下<br>找到slaveof <masterip> <masterport><br>该服务器为从服务器</masterport></masterip></p>
-</blockquote>
-<p>主从复制对比<br><img src="/images/imgs5/21.jpg" alt="Alt text"><br>分析：<br>1.master可以拥有多个slave<br>2.多个slave可以连接同一个master外，还可以连接其他的slave<br>3.主从复制不会阻塞master在同步数据时，master可以据需处理client请求<br>4提供系统的伸缩性<br>主从复制过程<br>1.slave与master建立连接，发送sync同步命令<br>2.master会开启一个后台进程，将数据库快照保存到文件中，同时master主进程会开始收集新的写命令并缓存<br>3.后台完成保存后，就将文件发送给slave<br>4.slave将此文件保存在硬盘上</p>
-<h4 id="redis持久化机制"><a href="#redis持久化机制" class="headerlink" title="redis持久化机制"></a>redis持久化机制</h4><p>redis需要经常将内存中的数据同步到硬盘来保证持久化<br>1.快照（默认方式）<br>将内存中以快照的方式写入到二进制文件中，默认为dump.rdb，可以通过配置设置自动做快照持久化的方式。可以配置redis在n秒内如果超过m个key则修改就自动做快照<br>具体配置如下</p>
-<blockquote>
-<p>save 900 1 #900秒内如果超过1个key被修改 则发起快照保存<br>save 300 10<br>save 60 10000</p>
-</blockquote>
-<p>2.aof（日志方式）<br>由于快照方式是在一定时间间隔做一次，所以可能发生redis意外down的情况就会丢失最后一次快照后的所有修改的数据。使用aof时，redis会将每一个收到的写命令都通过write函数追加到命令中<br>aof设置</p>
-<blockquote>
-<p>appendonly yes //启动aof，有三种修改方式</p>
-<p>#appendfsync always//收到命令就立即写入到磁盘，效率最慢，但是保证完全的持久化</p>
-<p>#appendysync everysec//每秒钟写入磁盘一次，在性能和持久化方面做了很好的折中</p>
-<p>#appendysync no //完全依赖os性能，持久化没保证</p>
-</blockquote>
-<p>如图<br><img src="/images/imgs5/22.jpg" alt="Alt text"><br>有了aof我们就可以利用主从复制保证数据的完整性了</p>
-<h4 id="发布与订阅消息"><a href="#发布与订阅消息" class="headerlink" title="发布与订阅消息"></a>发布与订阅消息</h4><p>使用subscribe [频道] 进行订阅监听<br>使用publish [频道] [发布内容] 进行发布消息广播<br><img src="/images/imgs5/23.jpg" alt="Alt text"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> 分布式 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> redis </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[nginx笔记之一]]></title>
       <url>http://www.myzwl.win/2017/11/06/Nginx_1/</url>
       <content type="html"><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>Nginx是一款轻量级的web服务器/反向代理服务器及电子邮件代理服务器，其特点是占有内存少，并发能力强可以反向代理和负载均衡等等，总之功能强大</p>
@@ -1393,6 +1420,45 @@ ${number[0..3]} &lt;#-- 输出子串“0123” --&gt;
         <tags>
             
             <tag> nginx </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[redis笔记之三]]></title>
+      <url>http://www.myzwl.win/2017/11/06/redis_3/</url>
+      <content type="html"><![CDATA[<h4 id="redis高级命令及特性"><a href="#redis高级命令及特性" class="headerlink" title="redis高级命令及特性"></a>redis高级命令及特性</h4><p>1.返回满足的所有键keys <em>（可以模糊匹配）<br>2.exists是否存在指定的key<br>3.expire设置某个key的过期时间，使用ttl查看剩余时间<br>4.persist取消过期时间<br><img src="/images/imgs5/19.jpg" alt="Alt text"><br>5.select 选择数据库 数据库为0到15（一共16个数据库）默认进入的是0数据库<br>6 move key [数据库下标]将当前数据库中的key转移到其他数据库中<br>7.randomkey 随机返回数据库里的一个key<br>8.rename 重命名key<br><img src="/images/imgs5/20.jpg" alt="Alt text"><br>9.dbsize 查看数据库的key数量<br>10.info获取数据库信息<br>11.config get </em>返回所有配置<br>12 flushdb清空当前数据库，flushall清空所有数据库</p>
+<h4 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h4><p>通俗的讲就是一个用户访问一台服务器，该服务器假设为主服务器，具有读写功能，而在该主服务器下关联了一台从服务器，该从服务只具有读功能不具有写功能，并且数据是从主服务器经过一些列同步算法到该服务器上<br>配置过程</p>
+<blockquote>
+<p>1.修改redis.conf文件下<br>找到slaveof <masterip> <masterport><br>该服务器为从服务器</masterport></masterip></p>
+</blockquote>
+<p>主从复制对比<br><img src="/images/imgs5/21.jpg" alt="Alt text"><br>分析：<br>1.master可以拥有多个slave<br>2.多个slave可以连接同一个master外，还可以连接其他的slave<br>3.主从复制不会阻塞master在同步数据时，master可以据需处理client请求<br>4提供系统的伸缩性<br>主从复制过程<br>1.slave与master建立连接，发送sync同步命令<br>2.master会开启一个后台进程，将数据库快照保存到文件中，同时master主进程会开始收集新的写命令并缓存<br>3.后台完成保存后，就将文件发送给slave<br>4.slave将此文件保存在硬盘上</p>
+<h4 id="redis持久化机制"><a href="#redis持久化机制" class="headerlink" title="redis持久化机制"></a>redis持久化机制</h4><p>redis需要经常将内存中的数据同步到硬盘来保证持久化<br>1.快照（默认方式）<br>将内存中以快照的方式写入到二进制文件中，默认为dump.rdb，可以通过配置设置自动做快照持久化的方式。可以配置redis在n秒内如果超过m个key则修改就自动做快照<br>具体配置如下</p>
+<blockquote>
+<p>save 900 1 #900秒内如果超过1个key被修改 则发起快照保存<br>save 300 10<br>save 60 10000</p>
+</blockquote>
+<p>2.aof（日志方式）<br>由于快照方式是在一定时间间隔做一次，所以可能发生redis意外down的情况就会丢失最后一次快照后的所有修改的数据。使用aof时，redis会将每一个收到的写命令都通过write函数追加到命令中<br>aof设置</p>
+<blockquote>
+<p>appendonly yes //启动aof，有三种修改方式</p>
+<p>#appendfsync always//收到命令就立即写入到磁盘，效率最慢，但是保证完全的持久化</p>
+<p>#appendysync everysec//每秒钟写入磁盘一次，在性能和持久化方面做了很好的折中</p>
+<p>#appendysync no //完全依赖os性能，持久化没保证</p>
+</blockquote>
+<p>如图<br><img src="/images/imgs5/22.jpg" alt="Alt text"><br>有了aof我们就可以利用主从复制保证数据的完整性了</p>
+<h4 id="发布与订阅消息"><a href="#发布与订阅消息" class="headerlink" title="发布与订阅消息"></a>发布与订阅消息</h4><p>使用subscribe [频道] 进行订阅监听<br>使用publish [频道] [发布内容] 进行发布消息广播<br><img src="/images/imgs5/23.jpg" alt="Alt text"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 分布式 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> redis </tag>
             
         </tags>
         
@@ -4213,11 +4279,13 @@ abstract boolean onAccessDenied(ServletRequest request, ServletResponse response
     </entry>
     
     <entry>
-      <title><![CDATA[数组中出现次数超过一半的数字]]></title>
-      <url>http://www.myzwl.win/2017/05/05/offer_26/</url>
-      <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。</p>
-<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>通过双重循环，先将第一个数开始，通过计数器，如果后面的书和计数的数一样，则计数器加一，直至计数器满足条件退出，然后依次从第二个数开始，因为到中位数时肯定后面不满足，所以可在这里终止</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public int MoreThanHalfNum_Solution(int [] array) &#123;</div><div class="line">        int count=0;</div><div class="line">        int temp=0;</div><div class="line">        for(int j=0;j&lt;array.length;j++)&#123;</div><div class="line">        for(int i=j;i&lt;array.length;i++)&#123;</div><div class="line">            temp=array[j];</div><div class="line">            if(temp==array[i])&#123;</div><div class="line">                count++;</div><div class="line">            &#125;</div><div class="line">            if(count&gt;array.length/2)&#123;</div><div class="line">                return temp;</div><div class="line">            &#125;</div><div class="line">            if(j&gt;array.length/2)</div><div class="line">                return 0;</div><div class="line">        &#125;</div><div class="line">                count=0;</div><div class="line">        &#125;</div><div class="line">        return 0;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>]]></content>
+      <title><![CDATA[最小的K个数]]></title>
+      <url>http://www.myzwl.win/2017/05/05/offer_25/</url>
+      <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。</p>
+<h4 id="思路分析-解法一"><a href="#思路分析-解法一" class="headerlink" title="思路分析(解法一)"></a>思路分析(解法一)</h4><p>可先将整数数组进行排序，利用快排（nlogn）为从小到大，然后取出前k项</p>
+<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public ArrayList&lt;Integer&gt; GetLeastNumbers_Solution(int [] input, int k) &#123;</div><div class="line">        ArrayList&lt;Integer&gt; list=new ArrayList&lt;Integer&gt;();</div><div class="line">        if(k&lt;0||k&gt;input.length)</div><div class="line">            return list;      </div><div class="line">        Arrays.sort(input);</div><div class="line">        for(int i=0;i&lt;k;i++)</div><div class="line">            list.add(input[i]);</div><div class="line">        return list;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h4 id="思路分析-解法二"><a href="#思路分析-解法二" class="headerlink" title="思路分析(解法二)"></a>思路分析(解法二)</h4><p>这里可进行海量数据的处理，先将前k个数据放在treeset中，这里数据不能重复，并且是按照红黑树从小到大存储，然后依次比较k之后的元素，如果小于最大的，就替换掉，最后遍历完成后就是所求的</p>
+<h4 id="码上有戏-1"><a href="#码上有戏-1" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public ArrayList&lt;Integer&gt; GetLeastNumbers_Solution(int [] input, int k) &#123;</div><div class="line">              ArrayList&lt;Integer&gt; list=new ArrayList&lt;Integer&gt;();</div><div class="line">            if(k&lt;=0||k&gt;input.length||input.length==0||input==null)</div><div class="line">                return list; </div><div class="line">            TreeSet&lt;Integer&gt; s=new TreeSet&lt;Integer&gt;();</div><div class="line">            for(int i=0;i&lt;input.length;i++)&#123;</div><div class="line">                if(s.size()&lt;k)&#123;</div><div class="line">                    s.add(input[i]);</div><div class="line">                &#125;else&#123;</div><div class="line">                    if(input[i]&lt;s.last())&#123;</div><div class="line">                        s.remove(s.last());</div><div class="line">                        s.add(input[i]);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            Iterator&lt;Integer&gt; it=s.iterator();</div><div class="line">            while(it.hasNext())&#123;</div><div class="line">                list.add(it.next());</div><div class="line">            &#125;</div><div class="line">            return list;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>]]></content>
       
         <categories>
             
@@ -4235,13 +4303,11 @@ abstract boolean onAccessDenied(ServletRequest request, ServletResponse response
     </entry>
     
     <entry>
-      <title><![CDATA[最小的K个数]]></title>
-      <url>http://www.myzwl.win/2017/05/05/offer_25/</url>
-      <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。</p>
-<h4 id="思路分析-解法一"><a href="#思路分析-解法一" class="headerlink" title="思路分析(解法一)"></a>思路分析(解法一)</h4><p>可先将整数数组进行排序，利用快排（nlogn）为从小到大，然后取出前k项</p>
-<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public ArrayList&lt;Integer&gt; GetLeastNumbers_Solution(int [] input, int k) &#123;</div><div class="line">        ArrayList&lt;Integer&gt; list=new ArrayList&lt;Integer&gt;();</div><div class="line">        if(k&lt;0||k&gt;input.length)</div><div class="line">            return list;      </div><div class="line">        Arrays.sort(input);</div><div class="line">        for(int i=0;i&lt;k;i++)</div><div class="line">            list.add(input[i]);</div><div class="line">        return list;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<h4 id="思路分析-解法二"><a href="#思路分析-解法二" class="headerlink" title="思路分析(解法二)"></a>思路分析(解法二)</h4><p>这里可进行海量数据的处理，先将前k个数据放在treeset中，这里数据不能重复，并且是按照红黑树从小到大存储，然后依次比较k之后的元素，如果小于最大的，就替换掉，最后遍历完成后就是所求的</p>
-<h4 id="码上有戏-1"><a href="#码上有戏-1" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public ArrayList&lt;Integer&gt; GetLeastNumbers_Solution(int [] input, int k) &#123;</div><div class="line">              ArrayList&lt;Integer&gt; list=new ArrayList&lt;Integer&gt;();</div><div class="line">            if(k&lt;=0||k&gt;input.length||input.length==0||input==null)</div><div class="line">                return list; </div><div class="line">            TreeSet&lt;Integer&gt; s=new TreeSet&lt;Integer&gt;();</div><div class="line">            for(int i=0;i&lt;input.length;i++)&#123;</div><div class="line">                if(s.size()&lt;k)&#123;</div><div class="line">                    s.add(input[i]);</div><div class="line">                &#125;else&#123;</div><div class="line">                    if(input[i]&lt;s.last())&#123;</div><div class="line">                        s.remove(s.last());</div><div class="line">                        s.add(input[i]);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            Iterator&lt;Integer&gt; it=s.iterator();</div><div class="line">            while(it.hasNext())&#123;</div><div class="line">                list.add(it.next());</div><div class="line">            &#125;</div><div class="line">            return list;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>]]></content>
+      <title><![CDATA[数组中出现次数超过一半的数字]]></title>
+      <url>http://www.myzwl.win/2017/05/05/offer_26/</url>
+      <content type="html"><![CDATA[<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。</p>
+<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>通过双重循环，先将第一个数开始，通过计数器，如果后面的书和计数的数一样，则计数器加一，直至计数器满足条件退出，然后依次从第二个数开始，因为到中位数时肯定后面不满足，所以可在这里终止</p>
+<h4 id="码上有戏"><a href="#码上有戏" class="headerlink" title="码上有戏"></a>码上有戏</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public int MoreThanHalfNum_Solution(int [] array) &#123;</div><div class="line">        int count=0;</div><div class="line">        int temp=0;</div><div class="line">        for(int j=0;j&lt;array.length;j++)&#123;</div><div class="line">        for(int i=j;i&lt;array.length;i++)&#123;</div><div class="line">            temp=array[j];</div><div class="line">            if(temp==array[i])&#123;</div><div class="line">                count++;</div><div class="line">            &#125;</div><div class="line">            if(count&gt;array.length/2)&#123;</div><div class="line">                return temp;</div><div class="line">            &#125;</div><div class="line">            if(j&gt;array.length/2)</div><div class="line">                return 0;</div><div class="line">        &#125;</div><div class="line">                count=0;</div><div class="line">        &#125;</div><div class="line">        return 0;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>]]></content>
       
         <categories>
             

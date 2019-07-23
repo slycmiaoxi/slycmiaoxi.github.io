@@ -1,0 +1,1199 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="算法," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言游戏一般分为房间场和匹配场，现实中游戏匹配的算法需要考虑的因素比较多。笔者只是纯粹娱乐，分析一下一个简单的游戏匹配。假设场景是简单的LOL玩家匹配1.当玩家数量达到一定规定最小数时匹配，比如最小玩家匹配数是2吧2.有时候玩家匹配的数量不确定，比如匹配是只要小于最大玩家数，比如3个玩家也可以玩游戏总结上面，匹配到2或3个人数时，开始游戏
+整体设计整个匹配分为两个阶段
+
+第一阶段match：一直等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手写简单策略版游戏匹配算法">
+<meta property="og:url" content="http://www.myzwl.win/2019/07/21/algo_match1/index.html">
+<meta property="og:site_name" content="秒西">
+<meta property="og:description" content="前言游戏一般分为房间场和匹配场，现实中游戏匹配的算法需要考虑的因素比较多。笔者只是纯粹娱乐，分析一下一个简单的游戏匹配。假设场景是简单的LOL玩家匹配1.当玩家数量达到一定规定最小数时匹配，比如最小玩家匹配数是2吧2.有时候玩家匹配的数量不确定，比如匹配是只要小于最大玩家数，比如3个玩家也可以玩游戏总结上面，匹配到2或3个人数时，开始游戏
+整体设计整个匹配分为两个阶段
+
+第一阶段match：一直等">
+<meta property="og:updated_time" content="2019-07-20T19:05:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="手写简单策略版游戏匹配算法">
+<meta name="twitter:description" content="前言游戏一般分为房间场和匹配场，现实中游戏匹配的算法需要考虑的因素比较多。笔者只是纯粹娱乐，分析一下一个简单的游戏匹配。假设场景是简单的LOL玩家匹配1.当玩家数量达到一定规定最小数时匹配，比如最小玩家匹配数是2吧2.有时候玩家匹配的数量不确定，比如匹配是只要小于最大玩家数，比如3个玩家也可以玩游戏总结上面，匹配到2或3个人数时，开始游戏
+整体设计整个匹配分为两个阶段
+
+第一阶段match：一直等">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":true,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.myzwl.win/2019/07/21/algo_match1/"/>
+
+
+
+
+
+  <title> 手写简单策略版游戏匹配算法 | 秒西 </title>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"   background="imags/bg.jpg" style="opacity: 0.7;background-color: transparent;">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?88f930aa9015ea3bc0b7c7f4f5f1b981";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秒西</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+	
+	<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+    function c() {
+        var e = document.createElement("link");
+        e.setAttribute("type", "text/css");
+        e.setAttribute("rel", "stylesheet");
+        e.setAttribute("href", f);
+        e.setAttribute("class", l);
+        document.body.appendChild(e)
+    }
+
+    function h() {
+        var e = document.getElementsByClassName(l);
+        for (var t = 0; t < e.length; t++) {
+            document.body.removeChild(e[t])
+        }
+    }
+
+    function p() {
+        var e = document.createElement("div");
+        e.setAttribute("class", a);
+        document.body.appendChild(e);
+        setTimeout(function() {
+            document.body.removeChild(e)
+        }, 100)
+    }
+
+    function d(e) {
+        return {
+            height : e.offsetHeight,
+            width : e.offsetWidth
+        }
+    }
+
+    function v(i) {
+        var s = d(i);
+        return s.height > e && s.height < n && s.width > t && s.width < r
+    }
+
+    function m(e) {
+        var t = e;
+        var n = 0;
+        while (!!t) {
+            n += t.offsetTop;
+            t = t.offsetParent
+        }
+        return n
+    }
+
+    function g() {
+        var e = document.documentElement;
+        if (!!window.innerWidth) {
+            return window.innerHeight
+        } else if (e && !isNaN(e.clientHeight)) {
+            return e.clientHeight
+        }
+        return 0
+    }
+
+    function y() {
+        if (window.pageYOffset) {
+            return window.pageYOffset
+        }
+        return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+    }
+
+    function E(e) {
+        var t = m(e);
+        return t >= w && t <= b + w
+    }
+
+    function S() {
+        var e = document.createElement("audio");
+        e.setAttribute("class", l);
+        e.src = i;
+        e.loop = false;
+        e.addEventListener("canplay", function() {
+            setTimeout(function() {
+                x(k)
+            }, 500);
+            setTimeout(function() {
+                N();
+                p();
+                for (var e = 0; e < O.length; e++) {
+                    T(O[e])
+                }
+            }, 15500)
+        }, true);
+        e.addEventListener("ended", function() {
+            N();
+            h()
+        }, true);
+        e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+        document.body.appendChild(e);
+        e.play()
+    }
+
+    function x(e) {
+        e.className += " " + s + " " + o
+    }
+
+    function T(e) {
+        e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+    }
+
+    function N() {
+        var e = document.getElementsByClassName(s);
+        var t = new RegExp("\\b" + s + "\\b");
+        for (var n = 0; n < e.length; ) {
+            e[n].className = e[n].className.replace(t, "")
+        }
+    }
+
+    var e = 30;
+    var t = 30;
+    var n = 350;
+    var r = 350;
+    var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+    var s = "mw-harlem_shake_me";
+    var o = "im_first";
+    var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+    var a = "mw-strobe_light";
+    var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+    var l = "mw_added_css";
+    var b = g();
+    var w = y();
+    var C = document.getElementsByTagName("*");
+    var k = null;
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            if (E(A)) {
+                k = A;
+                break
+            }
+        }
+    }
+    if (A === null) {
+        console.warn("Could not find a node of the right size. Please try a different page.");
+        return
+    }
+    c();
+    S();
+    var O = [];
+    for (var L = 0; L < C.length; L++) {
+        var A = C[L];
+        if (v(A)) {
+            O.push(A)
+        }
+    }
+})()    '>让标题抖起来</a> </li>
+	
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.myzwl.win/2019/07/21/algo_match1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秒西">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                手写简单策略版游戏匹配算法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta" style="color:red;">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text" style="color:red;">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-21T00:48:51+08:00">
+                2019-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+		  
+		  
+  <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+		  
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>游戏一般分为房间场和匹配场，现实中游戏匹配的算法需要考虑的因素比较多。笔者只是纯粹娱乐，分析一下一个简单的游戏匹配。<br>假设场景是简单的LOL玩家匹配<br>1.当玩家数量达到一定规定最小数时匹配，比如最小玩家匹配数是2吧<br>2.有时候玩家匹配的数量不确定，比如匹配是只要小于最大玩家数，比如3个玩家也可以玩游戏<br>总结上面，匹配到2或3个人数时，开始游戏</p>
+<h4 id="整体设计"><a href="#整体设计" class="headerlink" title="整体设计"></a>整体设计</h4><p>整个匹配分为两个阶段</p>
+<ol>
+<li>第一阶段match：一直等到满足最低人数要求，然后进入第二阶段match2</li>
+<li>第二阶段match2：额外等待一段时间，然后创建房间<br>所以需要的属性至少得包括房间最小人数、房间最小人数额外等的人的数量、额外需要等待的秒数、游戏类型的名称、玩家队列、匹配日志<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">  /**</div><div class="line">     * 是否显示匹配日志：显示(true), 不显示(false)</div><div class="line">     */</div><div class="line">    private static final boolean SHOW_MATCH_LOG = true;</div><div class="line">    </div><div class="line">    /**</div><div class="line">     * 房间最小人数</div><div class="line">     */</div><div class="line">    private static final int ROOM_MIN_NUM = 2;</div><div class="line">    </div><div class="line">    /**</div><div class="line">     * 房间最小人数额外等的人的数量</div><div class="line">     */</div><div class="line">    private static final int ROOM_ADDITION_NUM = 1;</div><div class="line">    </div><div class="line">    /**</div><div class="line">     * 额外需要等待的秒数</div><div class="line">     */</div><div class="line">    private static final int ROOM_ADDITION_SECOND = 5;</div><div class="line">    </div><div class="line">    </div><div class="line">    /**</div><div class="line">     * 游戏类型的名称</div><div class="line">     */</div><div class="line">    private static final Map&lt;Integer, String&gt; GAME_TYPE_NAME = new HashMap&lt;Integer, String&gt;()</div><div class="line">    &#123;</div><div class="line">        &#123;</div><div class="line">            put(0, "匹配自选模式");</div><div class="line">            put(1, "极地大乱斗");</div><div class="line">            put(2, "单双排");</div><div class="line">            put(3, "灵活排位");</div><div class="line">            put(4, "无线火力");</div><div class="line">            put(5, "镜像模式");</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">    </div><div class="line">    /**</div><div class="line">     * 玩家队列</div><div class="line">     */</div><div class="line">    private static final Map&lt;Integer, List&lt;BaseUser&gt;&gt; PLAYER_QUEUE = new ConcurrentHashMap&lt;Integer, List&lt;BaseUser&gt;&gt;()</div><div class="line">    &#123;</div><div class="line">        &#123;</div><div class="line">            put(0, new ArrayList&lt;&gt;());</div><div class="line">            put(1, new ArrayList&lt;&gt;());</div><div class="line">            put(2, new ArrayList&lt;&gt;());</div><div class="line">            put(3, new ArrayList&lt;&gt;());</div><div class="line">            put(4, new ArrayList&lt;&gt;());</div><div class="line">            put(5, new ArrayList&lt;&gt;());</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line"></div><div class="line">    public class BaseUser &#123;</div><div class="line">    private int id ;</div><div class="line"></div><div class="line">    private String name;</div><div class="line"></div><div class="line">    public BaseUser(int id, String name) &#123;</div><div class="line">        this.id = id;</div><div class="line">        this.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int getId() &#123;</div><div class="line">        return id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setId(int id) &#123;</div><div class="line">        this.id = id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public String getName() &#123;</div><div class="line">        return name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setName(String name) &#123;</div><div class="line">        this.name = name;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="玩家匹配加入"><a href="#玩家匹配加入" class="headerlink" title="玩家匹配加入"></a>玩家匹配加入</h4><p>当玩家点击开始匹配时，将玩家加入对应的游戏中的玩家队列中<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/**</div><div class="line">  * 将玩家加入匹配</div><div class="line">  *</div><div class="line">  * @param user 进行匹配的玩家</div><div class="line">  * @param type 房间类型：</div><div class="line">  * @return 操作成功(true), 操作失败(false)</div><div class="line">  */</div><div class="line"> public static boolean put(BaseUser user, int type) &#123;</div><div class="line">     add(user, type);</div><div class="line">     System.out.println("startMatch");</div><div class="line">     return true;</div><div class="line"> &#125;</div><div class="line"></div><div class="line">  /**</div><div class="line">  * 向匹配池添加玩家</div><div class="line">  *</div><div class="line">  * @param user 进行匹配的玩家</div><div class="line">  * @param type 需要匹配的类型</div><div class="line">  * @return 操作成功(true), 操作失败(false)</div><div class="line">  */</div><div class="line"> private synchronized static boolean add(BaseUser user, int type) &#123;</div><div class="line">     if (!PLAYER_QUEUE.containsKey(type)) &#123;</div><div class="line">         PLAYER_QUEUE.put(type, new ArrayList&lt;&gt;());</div><div class="line">     &#125;</div><div class="line">     List&lt;BaseUser&gt; playerQueue = PLAYER_QUEUE.computeIfAbsent(type, k -&gt; new ArrayList&lt;&gt;());</div><div class="line">     if (!playerQueue.contains(user)) &#123;</div><div class="line">         playerQueue.add(user);</div><div class="line">     &#125;</div><div class="line">     return true;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<h4 id="匹配第一阶段"><a href="#匹配第一阶段" class="headerlink" title="匹配第一阶段"></a>匹配第一阶段</h4><p>先用最简单的方式，这里简化了（应该用while（true）控制，匹配线程一直处于监听状态。<br>核心思想就是遍历玩家队列，如果规定指定人数开局，那么就不需要下一阶段，直接创建房间，队列中踢出玩家即可。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">  /**</div><div class="line">    * 匹配第一阶段</div><div class="line">    */</div><div class="line">   private static void match() &#123;</div><div class="line">           try &#123;</div><div class="line"></div><div class="line">               synchronized (PLAYER_QUEUE) &#123;</div><div class="line">                   PLAYER_QUEUE.forEach((type, userList) -&gt; &#123;</div><div class="line">                       if (ROOM_MIN_NUM &gt; 0 &amp;&amp; userList.size() &gt;= ROOM_MIN_NUM) &#123;</div><div class="line">                           // 已达到最低可开局人数，还需要额外等一会儿</div><div class="line">                           scheduledExecutorService.schedule(() -&gt; match2(type), 0, TimeUnit.SECONDS);           </div><div class="line">                       &#125;</div><div class="line">                   &#125;);</div><div class="line">                   if (SHOW_MATCH_LOG) &#123;</div><div class="line">                       testLog();</div><div class="line">                   &#125;</div><div class="line">               &#125;</div><div class="line">               Thread.sleep(1000);</div><div class="line">           &#125;</div><div class="line">           catch (InterruptedException e) &#123;</div><div class="line">               log.error(e.getMessage());</div><div class="line">           &#125;</div><div class="line">   &#125;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line">    * 线程池</div><div class="line">    */</div><div class="line">   public static ScheduledExecutorService scheduledExecutorService =</div><div class="line">       Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() * 2);</div><div class="line">   </div><div class="line"></div><div class="line"></div><div class="line">   public static void sleepSomeMillis(long millis) &#123;</div><div class="line">       try &#123;</div><div class="line">           Thread.sleep(millis);</div><div class="line">       &#125;</div><div class="line">       catch (InterruptedException e) &#123;</div><div class="line">           log.error("睡眠等待时出现错误：" + e.getMessage());</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   /**</div><div class="line">    * 匹配日志</div><div class="line">    */</div><div class="line">   private static void testLog() &#123;</div><div class="line">       PLAYER_QUEUE.forEach((type, userList) -&gt; &#123;</div><div class="line">           if (userList.size() &gt; 0) &#123;</div><div class="line">               System.out.println(GAME_TYPE_NAME.get(type) + "人数为：" + userList.size());</div><div class="line">           &#125;</div><div class="line">       &#125;);</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<h4 id="匹配第二阶段"><a href="#匹配第二阶段" class="headerlink" title="匹配第二阶段"></a>匹配第二阶段</h4><p>该阶段主要考虑的因素包括等待额外的时间，以及玩家队列是否有人取消匹配导致不满足最小匹配人数等等，然后去匹配，<br>用线程池去控制匹配第二阶段<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/**</div><div class="line">  * 匹配第二阶段</div><div class="line">  *</div><div class="line">  * @param type 房间类型</div><div class="line">  */</div><div class="line"> private static void match2(int type) &#123;</div><div class="line">     List&lt;BaseUser&gt; users = PLAYER_QUEUE.get(type);</div><div class="line">     long deadline = System.currentTimeMillis() + ROOM_ADDITION_SECOND * 1000;</div><div class="line">     // 需要的最大的人数</div><div class="line">     int realNeedNum = ROOM_MIN_NUM + ROOM_ADDITION_NUM;</div><div class="line">     while (true) &#123;</div><div class="line">         if (System.currentTimeMillis() &gt; deadline) &#123;</div><div class="line">             break;</div><div class="line">         &#125;</div><div class="line">         synchronized (PLAYER_QUEUE) &#123;</div><div class="line">             if (users.size() &lt; ROOM_MIN_NUM) &#123;</div><div class="line">                 return;</div><div class="line">             &#125;</div><div class="line">             if (users.size() &gt;= realNeedNum) &#123;</div><div class="line">                 break;</div><div class="line">             &#125;</div><div class="line">         &#125;</div><div class="line">         sleepSomeMillis(500);</div><div class="line">     &#125;</div><div class="line">     synchronized (PLAYER_QUEUE) &#123;</div><div class="line">         // 等待结束之后实际的人数</div><div class="line">         int realNum = users.size() &gt; realNeedNum ? realNeedNum : users.size();</div><div class="line">         // 如果人数仍然满足最小匹配人数，则创建房间</div><div class="line">         if (realNum &gt;= ROOM_MIN_NUM) &#123;</div><div class="line">             createRoom(type, realNum);</div><div class="line">         &#125;</div><div class="line">     &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<h4 id="创建房间"><a href="#创建房间" class="headerlink" title="创建房间"></a>创建房间</h4><p>该阶段显示在玩家队列中踢出已匹配的玩家，然后在创建房间<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/**</div><div class="line"> * 创建房间</div><div class="line"> *</div><div class="line"> * @param type 房间类型</div><div class="line"> * @param playerNum 房间人数</div><div class="line"> */</div><div class="line">private static void createRoom(int type, int playerNum) &#123;</div><div class="line">    synchronized (PLAYER_QUEUE) &#123;</div><div class="line">        BaseUser[] baseUsers = new BaseUser[playerNum];</div><div class="line">        List&lt;BaseUser&gt; users = PLAYER_QUEUE.get(type);</div><div class="line">        if (users.size() &gt;= playerNum) &#123;</div><div class="line">            for (int i = 0; i &lt; playerNum; i++) &#123;</div><div class="line">                baseUsers[i] = users.get(i);</div><div class="line">            &#125;</div><div class="line">            users.removeAll(Arrays.asList(baseUsers));</div><div class="line">            // 创建房间            </div><div class="line">            System.out.println("create room success");          </div><div class="line">           </div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>这里是每增加一个用户匹配一次，事实上match方法应该是一个类似监听器<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">@Test</div><div class="line"> public  void matchUser() throws InterruptedException &#123;</div><div class="line">     int type = 0;</div><div class="line">     BaseUser user1 = new BaseUser(1, "aa");</div><div class="line">     BaseUser user2 = new BaseUser(2, "bb");</div><div class="line">     BaseUser user3 = new BaseUser(3, "cc");</div><div class="line">     Match.put(user1, type);</div><div class="line">     Match.match();</div><div class="line">     Match.put(user2, type);</div><div class="line">     Match.match();</div><div class="line">     Match.put(user3, type);</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<p>最后显示的结果为<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">  startMatch</div><div class="line">匹配自选模式人数为：<span class="number">1</span></div><div class="line">startMatch</div><div class="line">匹配自选模式人数为：<span class="number">2</span></div><div class="line">startMatch</div><div class="line">[cn<span class="selector-class">.slycmiaoxi</span><span class="selector-class">.match</span><span class="selector-class">.BaseUser</span>@<span class="number">21001</span>, cn<span class="selector-class">.slycmiaoxi</span><span class="selector-class">.match</span><span class="selector-class">.BaseUser</span>@c5e0b1, cn<span class="selector-class">.slycmiaoxi</span><span class="selector-class">.match</span><span class="selector-class">.BaseUser</span>@fa7b71]</div><div class="line">create room success</div></pre></td></tr></table></figure></p>
+<h4 id="最后说明"><a href="#最后说明" class="headerlink" title="最后说明"></a>最后说明</h4><p>1.至于取消匹配，做法类似<br>2.现实中匹配要考虑好多因素，可以想象LOL中的匹配~<br>当然目前只是一个简单的demo，仅供参考！</p>
+
+      
+    </div>
+
+    <div>
+	
+	<!-- 添加版权 -->
+	<div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>快乐源于分享，总结溢于提高</b>
+    </span></p>
+    </div>
+  
+</div>
+	
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/算法/" rel="tag"># 算法</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/17/saveMe_1/" rel="next" title="面试官的question之一">
+                <i class="fa fa-chevron-left"></i> 面试官的question之一
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+         <div id="uyan_frame"></div>
+    
+  </div>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description">I believe my dream will come true</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">184</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://www.slycmiaoxi.xyz" target="_blank" title="微型论坛">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微型论坛
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/images/zwl.png" target="_blank" title="Weixin">
+                  
+                    <i class="fa fa-fw fa-weixin"></i>
+                  
+                  Weixin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+      
+        
+
+
+		
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#整体设计"><span class="nav-text">整体设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#玩家匹配加入"><span class="nav-text">玩家匹配加入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#匹配第一阶段"><span class="nav-text">匹配第一阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#匹配第二阶段"><span class="nav-text">匹配第二阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建房间"><span class="nav-text">创建房间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试"><span class="nav-text">测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最后说明"><span class="nav-text">最后说明</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=86 height=100 src="http://music.163.com/outchain/player?type=0&id=120897804&auto=0&height=90&auto=1&height=86&autoPlay=true" style="width:0px;height:0px;"></iframe>
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+
+
+
+
+
+
+<br/>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+    
+  
+ 
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2127192"></script>
+      <!-- UY END -->
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.min.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {          
+          jQuery("img").lazyload({
+            placeholder:"http://www.arao.me/loading.gif",
+              effect:"fadeIn"
+            });
+          });
+    </script>
+	<!-- 动态线条 -->
+	<script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+	
+
+
+
+</body>
+</html>
